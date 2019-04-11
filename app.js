@@ -3,7 +3,9 @@ const app = express();
 const port = 3005
 const fs = require('fs')
 const people = JSON.parse(fs.readFileSync('./people.json'))
-console.log(people)
+const server = app.listen(port, () => {
+  console.log(`Express running → PORT ${server.address().port}`);
+});
 
 // Set the viewing engine
 app.set('view engine', 'pug')
@@ -29,14 +31,14 @@ app.get('/profile', (req, res) => {
       person.push(people.profiles[ i ])
     }
   }
-  console.log(person, id)
   res.render('profile', {
     title: `About ${person.name}`,
     person
   })
 })
 
-// Listen for port
-const server = app.listen(port, () => {
-  console.log(`Express running → PORT ${server.address().port}`);
-});
+server.on('error', function (error) {
+  res.render('error', {
+    errorMsg: error
+  })
+})
