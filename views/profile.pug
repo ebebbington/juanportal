@@ -1,0 +1,9 @@
+extends layout
+block header
+block content
+    div.profile
+        div.profile-image("Profile image")
+        div.profile-details
+            h1.profile-name
+                | #{person[0].name} #{person[0].description}
+            br

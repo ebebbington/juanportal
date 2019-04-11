@@ -1,0 +1,26 @@
+extends layout
+block content
+    div.container
+        each person in people
+            div.person
+                image(alt="Image of user")
+                h2.person-name
+                    | #{person.name} #{person.description}
+                a(href=`/profile?id=${person.id}`)
+                    | View Profile
+
+    // Elements
+    div.container
+        p Showing standard elements
+        p#welcome Hello Pug!
+        button#button click me
+    br
+    // Access passed in variables
+    div.container
+        p Showing variables as text
+        p#name Hello my name is #{name}
+    br
+    // Use variables inside an attribute
+    div.container
+        p Showing variables as attributes
+        img(alt=`mr-${name}`)
