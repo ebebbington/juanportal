@@ -6,6 +6,9 @@ const express = require('express')
 const app = express()
 const fs = require('fs')
 const people = JSON.parse(fs.readFileSync('/mnt/c/xampp/htdocs/juanportal/people.json'))
+const morgan = require('morgan')
+
+app.use(morgan('tiny'))
 
 // On '/profiles' render profiles page getting the ID sent across
 app.get('/', (req, res) => {
