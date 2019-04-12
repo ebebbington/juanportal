@@ -4,7 +4,8 @@ module.exports =
       [
         {
           name: 'JuanPortal',
-          script: '/mnt/c/xampp/htdocs/juanportal/app.js'
+          script: '/mnt/c/xampp/htdocs/juanportal/app.js',
+          watch: true
         }
       ]
   };
