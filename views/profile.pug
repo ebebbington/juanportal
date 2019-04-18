@@ -1,9 +1,13 @@
 extends layout
-block header
+block append header
+    link(rel="stylesheet", href="http://localhost/juanportal/public/stylesheets/profile.css")
 block content
-    div.profile
-        div.profile-image("Profile image")
-        div.profile-details
-            h1.profile-name
-                | #{name} #{description}
-            br
+    div.container
+        div.profile
+            div.col-xs-12
+                div.col-xs-6
+                    img#profile-image(src="http://localhost/copytube/images/sample.jpg")
+                div.col-xs-6
+                    h1#profile-name #{name}
+                    h1#profile-description #{description}
+        div

@@ -1,36 +1,33 @@
 //
 // URL: localhost:3005/profile
 //
-const express = require('express')
-const app = express()
-const fs = require('fs')
-const people = JSON.parse(fs.readFileSync('/mnt/c/xampp/htdocs/juanportal/people.json'))
+const app = require('express')()
+const Profile = require('./../models/profile')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
+const dbUrl = require('./../config/db').url
 
 app.use(morgan('tiny'))
-
-//
-// Prepare profile model
-//
-mongoose.connect('mongodb://localhost/test', { useNewUrlParser: true })
-const profileSchema = new mongoose.Schema({
-  'name': String,
-  'description': String
-})
-const Prof = mongoose.model('Profile', profileSchema)
 
 // On '/profiles' render profiles page getting the ID sent across
 app.get('/', (req, res) => {
   let id = Number(req.query.id)
-  let person = []
-  Prof.find({ id: id }, function (err, profile) {
+  mongoose.connect(dbUrl, { useNewUrlParser: true})
+  Profile.findOne({ id: id }, function (err, profile) {
     console.log(profile)
-    res.render('profile', {
-      title: `About ${profile.name}`,
-      name: profile[0].name,
-      description: profile[0].description
-    })
+    // If error
+    if (err) res.end('Error:', err)
+    // Check if data was pulled
+    if (!profile) {
+      res.end('No id was found')
+    } else {
+      res.render('profile', {
+        title: `About ${profile.name}`,
+        name: profile.name,
+        description: profile.description
+      })
+    }
+    mongoose.disconnect()
   })
 
   /* Old way

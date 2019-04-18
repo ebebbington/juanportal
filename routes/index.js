@@ -2,15 +2,26 @@
 // URL: localhost:3005/
 //
 
-const express = require('express')
-const app = express()
-const fs = require('fs')
-const people = JSON.parse(fs.readFileSync('/mnt/c/xampp/htdocs/juanportal/people.json'))
+const app = require('express')()
 const morgan = require('morgan')
 const mongoose = require('mongoose')
+const dbUrl = require('./../config/db').url
+const Profile = require('./../models/profile')
 
 app.use(morgan('tiny'))
 
+// On '/' render index.pug in views/ as pug expects it to be in views
+app.get('/', (req, res) => {
+  mongoose.connect(dbUrl, { useNewUrlParser: true })
+  Profile.find(function (err, profiles) {
+    res.render('index.pug', { // pass in variables to the file
+      name: 'Edward',
+      title: 'Homepage',
+      people: profiles
+    });
+    mongoose.disconnect()
+  })
+});
 
 // ///////////////////////////////
 // Get Profiles Promise
@@ -48,14 +59,5 @@ profiles
     console.log('Data of user 0s name:', resolved[0].name)
   })
 */
-
-// On '/' render index.pug in views/ as pug expects it to be in views
-app.get('/', (req, res) => {
-  res.render('index', { // pass in variables to the file
-    name: 'Edward',
-    title: 'Homepage',
-    people: people.profiles
-  });
-});
 
 module.exports = app
