@@ -1,14 +1,20 @@
 extends layout
 block content
+    // Main content
     div.container
-        each person in people
-            div.person.well
-                image(alt="Image of user")
-                h2.person-name
-                    | #{person.name}
-                a(href=`/profile?id=${person.id}`)
-                    | View Profile
-            br
+        // Side bar list
+        div.col-xs-3
+            a(href="#") Add a Profile
+        // Brief profiles
+        div.col-xs-9
+            each person in people
+                div.person.well
+                    image(alt="Image of user")
+                    h2.person-name
+                        | #{person.name}
+                    a(href=`/profile?id=${person.id}`)
+                        | View Profile
+                br
 
     // Elements
     div.container
