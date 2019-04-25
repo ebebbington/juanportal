@@ -26,7 +26,7 @@ app.post('/', (req, res) => {
   if (req.body.image) {
     imageUrl = String(req.body.image)
   } else {
-    imageUrl = 'http://localhost/copytube/images/sample.jpg'
+    imageUrl = 'http://localhost/copytube/images/sample.jpg' // todo :: hard coded section, some reason this code always runs
   }
   // check imageUrl extension
   const acceptedImageExtensions = ['.png', '.jpg']
@@ -52,11 +52,6 @@ app.post('/', (req, res) => {
     return
   }
   // escape/encode data todo
-
-  // todo :: - Download image
-  //         - Save to directory: http://localhost/juanportal/images/
-  const targetPath = 'http://localhost/juanportal/images/'
-  imageUrl = targetPath + imageUrl
 
   mongoose.connect(dbUrl, { useNewUrlParser: true })
   const newProfile = new Profile({ name: name, description: description, image: imageUrl })

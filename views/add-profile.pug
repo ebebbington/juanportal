@@ -3,7 +3,7 @@ block content
     // Main content
     div.container
         div.col-xs-12
-            form(method="post", action="/add-profile")
+            form(method="post", action="/add-profile", enctype="multipart/form-data")
                 div
                     if nameErr
                         p #{nameErr}
