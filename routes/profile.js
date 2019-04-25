@@ -11,20 +11,22 @@ app.use(morgan('tiny'))
 
 // On '/profiles' render profiles page getting the ID sent across
 app.get('/', (req, res) => {
-  let id = Number(req.query.id)
+  const ObjectId = require('mongoose').Types.ObjectId
+  const id = new ObjectId(req.query.id)
   mongoose.connect(dbUrl, { useNewUrlParser: true})
-  Profile.findOne({ id: id }, function (err, profile) {
-    console.log(profile)
+  Profile.findOne({ _id: id }, function (err, profile) {
     // If error
     if (err) res.end('Error:', err)
     // Check if data was pulled
     if (!profile) {
       res.end('No id was found')
     } else {
+      console.log(profile.image)
       res.render('profile', {
         title: `About ${profile.name}`,
         name: profile.name,
-        description: profile.description
+        description: profile.description,
+        image: profile.image
       })
     }
     mongoose.disconnect()

@@ -5,9 +5,11 @@ block content
     div.container
         div.profile
             div.col-xs-12
+                div.col-xs-1
+                    a(href="http://localhost:3005/") Home
                 div.col-xs-6
-                    img#profile-image(src="http://localhost/copytube/images/sample.jpg")
-                div.col-xs-6
+                    img#profile-image(src=`${image}`)
+                div.col-xs-5
                     h1#profile-name #{name}
                     h1#profile-description #{description}
         div

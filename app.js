@@ -11,39 +11,26 @@ const profile = require('./routes/profile.js')
 const index = require('./routes/index.js')
 const mongoose = require('mongoose')
 const db = mongoose.connection
+const addProfile = require('./routes/add-profile.js')
+const databaseConnHandler = require('./models/database-handler.js')
 
 // ///////////////////////////////
 // Configurations
 // ///////////////////////////////
 app.set('view engine', 'pug') // view engine
-app.use(express.static(__dirname + '/public')) // server from public
+app.use(express.static(__dirname + '/public')) // serve from public
 app.use('/profile', profile) // routes
 app.use('/', index)
-
+app.use('/add-profile', addProfile)
+app.use('*', databaseConnHandler)
 
 // ////////////////////////////////
-// Error/Connection Handlers
+// Error Handler
 // ////////////////////////////////
 app.on('error', function (req, res) { // server
   res.render('error', {
     errorMsg: req
   })
-})
-db.on('error', console.error.bind( // on mongoose error
-  console, 'connection error'
-))
-db.once('open', function () { // on connect
-  console.log('db connected')
-})
-db.once('close', function () { // on close
-  console.log('db closed')
-})
-db.once('disconnect', function () { // on disconnect
-  console.log('db disconnected')
-})
-process.on('SIGINT', function () { // on node process ending
-  mongoose.disconnect()
-  console.log('db disconnected due to node process ending')
 })
 
 // ////////////////////////////////

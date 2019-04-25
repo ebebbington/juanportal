@@ -3,16 +3,16 @@ block content
     // Main content
     div.container
         // Side bar list
-        div.col-xs-3
-            a(href="#") Add a Profile
+        div.col-xs-2
+            a(href="/add-profile") Add a Profile
         // Brief profiles
-        div.col-xs-9
+        div.col-xs-10
             each person in people
                 div.person.well
                     image(alt="Image of user")
                     h2.person-name
                         | #{person.name}
-                    a(href=`/profile?id=${person.id}`)
+                    a(href=`/profile?id=${person._id}`)
                         | View Profile
                 br
 

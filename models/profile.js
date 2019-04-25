@@ -4,9 +4,9 @@ const mongoose = require('mongoose')
 // Profile Schema - Define the data we want access to
 //
 const profileSchema = new mongoose.Schema({
-  'id': Number,
   'name': String,
-  'description': String
+  'description': String,
+  'image': String
 })
 //
 // Define the model (Document)
