@@ -13,15 +13,18 @@ const mongoose = require('mongoose')
 const db = mongoose.connection
 const addProfile = require('./routes/add-profile.js')
 const databaseConnHandler = require('./models/database-handler.js')
+const deleteProfile = require('./routes/delete-profile.js')
 
 // ///////////////////////////////
 // Configurations
 // ///////////////////////////////
 app.set('view engine', 'pug') // view engine
+app.set('views', 'http://localhost/juanportal/views')
 app.use(express.static(__dirname + '/public')) // serve from public
 app.use('/profile', profile) // routes
 app.use('/', index)
 app.use('/add-profile', addProfile)
+app.use('/delete-profile', deleteProfile)
 app.use('*', databaseConnHandler)
 
 // ////////////////////////////////

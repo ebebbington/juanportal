@@ -1,19 +1,28 @@
 extends layout
+block append header
+    link(rel="stylesheet", href="http://localhost/juanportal/public/stylesheets/index.css")
 block content
     // Main content
     div.container
         // Side bar list
         div.col-xs-2
             a(href="/add-profile") Add a Profile
+            a(hidden="true")
         // Brief profiles
-        div.col-xs-10
+        div.col-xs-10.people
             each person in people
                 div.person.well
-                    image(alt="Image of user")
-                    h2.person-name
-                        | #{person.name}
-                    a(href=`/profile?id=${person._id}`)
-                        | View Profile
+                    div.col-xs-4
+                        div
+                            img.image(alt="Image of user", src=`${person.image}`)
+                        div
+                            br
+                            a(href=`/profile?id=${person._id}`) View Profile
+                        div
+                            br
+                            a(href=`/delete-profile?id=${person._id}`) Delete Profile
+                    div.col-xs-8
+                        h2.person-name #{person.name}
                 br
 
     // Elements
