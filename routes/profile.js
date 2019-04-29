@@ -21,7 +21,6 @@ app.get('/', (req, res) => {
     if (!profile) {
       res.end('No id was found')
     } else {
-      console.log(profile.image)
       res.render('profile', {
         title: `About ${profile.name}`,
         name: profile.name,

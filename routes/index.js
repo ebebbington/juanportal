@@ -7,6 +7,7 @@ const morgan = require('morgan')
 const mongoose = require('mongoose')
 const dbUrl = require('./../config/db').url
 const Profile = require('./../models/profile')
+const logo = 'http://localhost/juanportal/favicon.ico'
 
 app.use(morgan('tiny'))
 
@@ -17,7 +18,8 @@ app.get('/', (req, res) => {
     res.render('index.pug', { // pass in variables to the file
       name: 'Edward',
       title: 'Homepage',
-      people: profiles
+      people: profiles,
+      logo: logo
     });
     mongoose.disconnect()
   })

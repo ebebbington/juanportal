@@ -9,7 +9,8 @@ const formidable = require('formidable')
 const multer = require('multer')
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
-
+const { check, validationResult, body } = require('express-validator/check')
+const { sanitiseBody } = require('express-validator/filter')
 const title = 'Add a Profile'
 
 app.use(morgan('tiny'))
@@ -22,7 +23,17 @@ app.get('/', (req, res) => {
   })
 })
 
-app.post('/', upload.single('image'), function (req, res) {
+app.post('/', upload.single('image'), [
+  // Sanitisation
+  body('name')
+    .not().isEmpty()
+    .trim()
+    .escape(),
+  body('description')
+    .not().isEmpty()
+    .trim()
+    .escape(),
+], function (req, res) {
   /*
   * Can access props of image.
   * Can also access buffer stream with imageFile.buffer or use a foreach on it like:
@@ -85,6 +96,12 @@ app.post('/', upload.single('image'), function (req, res) {
 
   return
   */
+  // Check for errors in sanitisation
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() })
+  }
+  return res.status(422).json({ errors: errors.array() })
   // get data
   const name = String(req.body.name)
   const description = String(req.body.description)
