@@ -11,6 +11,7 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 const { check, validationResult, body } = require('express-validator/check')
 const { sanitiseBody } = require('express-validator/filter')
+
 const title = 'Add a Profile'
 
 app.use(morgan('tiny'))
@@ -101,7 +102,6 @@ app.post('/', upload.single('image'), [
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() })
   }
-  return res.status(422).json({ errors: errors.array() })
   // get data
   const name = String(req.body.name)
   const description = String(req.body.description)
