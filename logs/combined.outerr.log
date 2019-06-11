@@ -1,0 +1,39 @@
+23-05-2019: Express running → PORT 3005
+23-05-2019: hey up
+23-05-2019: 5ce66f536050860093b6c74f
+23-05-2019: GET /delete-profile?id=5ce66f536050860093b6c74f 302 46 - 21.599 ms
+23-05-2019: GET /delete-profile?id=5ce66f536050860093b6c74f 302 46 - 21.599 ms
+23-05-2019: db connected
+23-05-2019: db closed
+23-05-2019: deleted a single record
+23-05-2019: GET / 200 4848 - 2552.361 ms
+23-05-2019: GET /favicon.ico - - - - ms
+23-05-2019: hey up
+23-05-2019: 5ce66f64f444b700ab1938ef
+23-05-2019: GET /delete-profile?id=5ce66f64f444b700ab1938ef 302 46 - 4.666 ms
+23-05-2019: GET /delete-profile?id=5ce66f64f444b700ab1938ef 302 46 - 4.666 ms
+23-05-2019: db connected
+23-05-2019: db closed
+23-05-2019: deleted a single record
+23-05-2019: GET / 200 4457 - 2081.934 ms
+23-05-2019: GET /favicon.ico - - - - ms
+23-05-2019: GET /add-profile 200 1245 - 34.657 ms
+23-05-2019: GET /add-profile 200 1245 - 34.657 ms
+23-05-2019: GET /favicon.ico - - - - ms
+23-05-2019: POST /add-profile 302 46 - 23.993 ms
+23-05-2019: POST /add-profile 302 46 - 23.993 ms
+23-05-2019: db connected
+23-05-2019: db connected
+23-05-2019: db closed
+23-05-2019: db closed
+23-05-2019: GET / 200 4855 - 2062.826 ms
+23-05-2019: GET /favicon.ico - - - - ms
+23-05-2019: GET /favicon.ico - - - - ms
+23-05-2019: GET /favicon.ico - - - - ms
+23-05-2019: db disconnected due to node process ending
+23-05-2019: db disconnected due to node process ending
+23-05-2019: db disconnected due to node process ending
+23-05-2019: db disconnected due to node process ending
+23-05-2019: db disconnected due to node process ending
+23-05-2019: db disconnected due to node process ending
+23-05-2019: Express running → PORT 3005
