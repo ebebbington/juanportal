@@ -4,7 +4,7 @@ module.exports =
       [
         {
           name: 'JuanPortal',
-          script: '/mnt/c/xampp/htdocs/juanportal/app.js',
+          script: '/var/www/juanportal/app.js',
           watch: true,
           output: 'logs/out.log', // Console logs
           error: 'logs/err.log', // Errors
