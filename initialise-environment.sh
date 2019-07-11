@@ -34,5 +34,5 @@ installNpmPackages ()
 	sleep 1
 }
 
-installServices()
-installNpmPackages()
+installServices
+installNpmPackages
