@@ -24,7 +24,7 @@ installNpmPackages ()
 	sleep 1
 	npm install mongoose
 	sleep 1
-	npm install mongoose-sanitiser
+	npm install mongoose-sanitizer
 	sleep 1
 	npm install morgan
 	sleep 1
