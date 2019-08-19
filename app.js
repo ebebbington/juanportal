@@ -19,7 +19,7 @@ const deleteProfile = require('./routes/delete-profile.js')
 // Configurations
 // ///////////////////////////////
 app.set('view engine', 'pug') // view engine
-app.set('views', 'http://localhost/juanportal/views')
+app.set('views', __dirname + '/views')
 app.use(express.static(__dirname + '/public')) // serve from public
 app.use('/profile', profile) // routes
 app.use('/', index)
@@ -31,6 +31,7 @@ app.use('*', databaseConnHandler)
 // Error Handler
 // ////////////////////////////////
 app.on('error', function (req, res) { // server
+  console.log('error')
   res.render('error', {
     errorMsg: req
   })
