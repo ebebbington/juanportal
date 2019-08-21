@@ -4,4 +4,4 @@ node_modules/
 .git
 .idea/
 favicon.ico
-logs/*
+logs/
