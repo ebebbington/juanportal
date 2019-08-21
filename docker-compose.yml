@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+
+  nginx:
+    container_name: juanportal_nginx
+    build:
+      context: .
+      dockerfile: .docker/dockerfile.nginx
+    ports:
+      - "9002:9002"
+    volumes:
+      - ./src:/var/www/src
+    working_dir: /var/www/src
+    networks:
+      - juanportal-network
+
+  node:
+    container_name: juanportal_node
+    build:
+      context: .
+      dockerfile: .docker/dockerfile.node
+    volumes:
+      - ./src:/var/www/src
+    working_dir: /var/www/src
+    command: bash -c "npm i --verbose && pm2-runtime ecosystem.json"
+    networks:
+      - juanportal-network
+
+  mongodb:
+    container_name: juanportal_mongo
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - juanportal-network
+
+  mongoseeder:
+    container_name: op_mongoseeder
+    build:
+      context: .
+      dockerfile: .docker/dockerfile.mongo.seeder
+    depends_on:
+      - mongodb
+    networks:
+      - juanportal-network
+
+networks:
+  juanportal-network:
+    driver: bridge

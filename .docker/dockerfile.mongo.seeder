@@ -1,0 +1,4 @@
+FROM mongo
+
+COPY ./.docker/data/juanportal /mongo_data
+CMD mongorestore --host mongodb --db juanportal /mongo_data
