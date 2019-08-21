@@ -53,3 +53,46 @@
 11-07-2019: Express running → PORT 3005
 11-07-2019: Express running → PORT 3005
 11-07-2019: Express running → PORT 3005
+21-08-2019: Express running → PORT 3005
+21-08-2019: GET / - - - - ms
+21-08-2019: Express running → PORT 3005
+21-08-2019: GET / - - - - ms
+21-08-2019: Express running → PORT 3005
+21-08-2019: GET / 200 1538 - 2233.308 ms
+21-08-2019: Express running → PORT 3005
+21-08-2019: GET / 200 1538 - 2184.756 ms
+21-08-2019: Express running → PORT 3005
+21-08-2019: GET / 200 1538 - 2512.993 ms
+21-08-2019: db connected
+21-08-2019: GET / 200 1538 - 93.105 ms
+21-08-2019: db closed
+21-08-2019: GET /favicon.ico - - - - ms
+21-08-2019: db connected
+21-08-2019: GET / 200 1538 - 76.478 ms
+21-08-2019: db closed
+21-08-2019: GET /favicon.ico - - - - ms
+21-08-2019: db connected
+21-08-2019: GET / 200 1538 - 66.209 ms
+21-08-2019: db closed
+21-08-2019: GET /favicon.ico - - - - ms
+21-08-2019: db connected
+21-08-2019: GET / 200 1538 - 61.072 ms
+21-08-2019: db closed
+21-08-2019: GET /favicon.ico - - - - ms
+21-08-2019: db connected
+21-08-2019: GET / 200 1538 - 67.252 ms
+21-08-2019: db closed
+21-08-2019: GET /favicon.ico - - - - ms
+21-08-2019: GET /favicon.ico - - - - ms
+21-08-2019: db connected
+21-08-2019: GET / 200 1538 - 60.951 ms
+21-08-2019: db closed
+21-08-2019: db connected
+21-08-2019: GET / 200 1538 - 49.928 ms
+21-08-2019: db closed
+21-08-2019: GET /favicon.ico - - - - ms
+21-08-2019: db connected
+21-08-2019: GET / 200 1538 - 79.369 ms
+21-08-2019: db closed
+21-08-2019: GET /favicon.ico - - - - ms
+21-08-2019: GET /favicon.ico - - - - ms

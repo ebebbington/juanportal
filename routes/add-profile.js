@@ -135,9 +135,9 @@ app.post('/', upload.single('image'), [
   // Create the path to the file
   let absoluteImagePath = ''
   if (image) { // path to enw file
-    absoluteImagePath = 'http://localhost/juanportal/images/' + imageName
+    absoluteImagePath = '/images/' + imageName
   } else { // path to sampke image is not supplied
-    absoluteImagePath = 'http://localhost/juanportal/images/sample.jpg'
+    absoluteImagePath = '/images/sample.jpg'
   }
   // create the document
   mongoose.connect(dbUrl, { useNewUrlParser: true })

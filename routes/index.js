@@ -7,7 +7,7 @@ const morgan = require('morgan')
 const mongoose = require('mongoose')
 const dbUrl = require('./../config/db').url
 const Profile = require('./../models/profile')
-const logo = 'http://localhost/juanportal/favicon.ico'
+const logo = '/favicon.ico'
 
 app.use(morgan('tiny'))
 
