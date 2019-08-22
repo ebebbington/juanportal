@@ -7,7 +7,7 @@ block content
     div.container
         // Side bar list
         div.col-xs-2
-            a(href="/add-profile") Add a Profile
+            a(href="/profile/add") Add a Profile
             a(hidden="true")
         // Brief profiles
         div.col-xs-10.people
@@ -21,7 +21,7 @@ block content
                             a(href=`/profile?id=${person._id}`) View Profile
                         div
                             br
-                            a(href=`/delete-profile?id=${person._id}`) Delete Profile
+                            a(href=`/profile/delete?id=${person._id}`) Delete Profile
                     div.col-xs-8
                         h2.person-name #{person.name}
                 br

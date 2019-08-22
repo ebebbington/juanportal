@@ -1,8 +1,9 @@
 // ///////////////////////////////
-// Global Variables/Requires
+// Variables
 // ///////////////////////////////
 const express = require('express');
 const app = express();
+const config = require('./config/juanportal-config.js')
 const port = 3005
 const server = app.listen(port, () => {
   console.log(`Express running → PORT ${server.address().port}`);
@@ -11,9 +12,7 @@ const profile = require('./routes/profile.js')
 const index = require('./routes/index.js')
 const mongoose = require('mongoose')
 const db = mongoose.connection
-const addProfile = require('./routes/add-profile.js')
 const databaseConnHandler = require('./models/database-handler.js')
-const deleteProfile = require('./routes/delete-profile.js')
 
 // ///////////////////////////////
 // Configurations
@@ -23,8 +22,6 @@ app.set('views', __dirname + '/views')
 app.use(express.static(__dirname + '/public')) // serve from public
 app.use('/profile', profile) // routes
 app.use('/', index)
-app.use('/add-profile', addProfile)
-app.use('/delete-profile', deleteProfile)
 app.use('*', databaseConnHandler)
 
 // ////////////////////////////////

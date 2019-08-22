@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
     res.render('index.pug', { // pass in variables to the file
       name: 'Edward',
       title: 'Homepage',
-      people: profiles,
+      people: profiles ? profiles : [],
       logo: logo
     });
     mongoose.disconnect()

@@ -9,6 +9,9 @@ app.use(morgan('tiny'))
 app.use(bodyParser.urlencoded({ extended: false}))
 app.use(bodyParser.json())
 
+app.get('/id', () => {
+  console.log('sup')
+})
 // On '/profiles' render profiles page getting the ID sent across
 app.get('/', (req, res) => {
   console.log('hey up')

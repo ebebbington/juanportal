@@ -160,7 +160,7 @@ app.post('/', upload.single('image'), [
   newProfile.save(function (err) {
     if (err) return console.log(err)
   })
-  mongoose.disconnect()
+  //mongoose.disconnect()
   // redirect
   res.redirect('/')
 })
