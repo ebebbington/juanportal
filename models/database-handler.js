@@ -5,16 +5,16 @@ module.exports = function () {
     console, 'connection error'
   ))
   db.once('open', function () { // on connect
-    console.log('db connected')
+    console.info('db connected')
   })
   db.once('close', function () { // on close
-    console.log('db closed')
+    console.info('db closed')
   })
   db.once('disconnect', function () { // on disconnect
-    console.log('db disconnected')
+    console.info('db disconnected')
   })
   process.on('SIGINT', function () { // on node process ending
     mongoose.disconnect()
-    console.log('db disconnected due to node process ending')
+    console.info('db disconnected due to node process ending')
   })
 }
