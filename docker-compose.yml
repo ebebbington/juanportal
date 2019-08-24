@@ -32,6 +32,14 @@ services:
     image: mongo
     ports:
       - "27017:27017"
+    environment:
+      - MONGODB_ROOT_USERNAME=dbadmin
+      - MONGODB_ROOT_PASSWD=password
+      - MONGODB_ROOT_ROLE=root
+      - MONGODB_USERNAME=webrole
+      - MONGODB_PASSWD=password
+      - MONGODB_DBNAME=juanportal
+      - MONGODB_ROLE=readWrite
     networks:
       - juanportal-network
 
