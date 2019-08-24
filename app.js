@@ -4,7 +4,7 @@
 const express = require('express');
 const app = express();
 const config = require('./config/juanportal-config.js')
-const port = 3005
+const port = config.nodePort
 const server = app.listen(port, () => {
   console.log(`Express running → PORT ${server.address().port}`);
 });
