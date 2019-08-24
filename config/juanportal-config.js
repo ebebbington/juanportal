@@ -1,5 +1,3 @@
-config = {
-    'NodePort': 3005,
+module.exports = {
+    'nodePort': 3005,
 }
-
-module.exports = config

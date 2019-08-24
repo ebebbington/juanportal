@@ -1,34 +1,40 @@
 // ///////////////////////////////
-// Variables
+// Packages
 // ///////////////////////////////
 const express = require('express');
 const app = express();
+
+// ///////////////////////////////
+// Server Set Up
+// ///////////////////////////////
 const config = require('./config/juanportal-config.js')
 const port = config.nodePort
 const server = app.listen(port, () => {
   console.log(`Express running → PORT ${server.address().port}`);
 });
+
+// ///////////////////////////////
+// Routes
+// ///////////////////////////////
 const profile = require('./routes/profile.js')
 const index = require('./routes/index.js')
-const mongoose = require('mongoose')
-const db = mongoose.connection
 const databaseConnHandler = require('./models/database-handler.js')
+app.use('/profile', profile) // routes
+app.use('/', index)
+app.use('*', databaseConnHandler)
 
 // ///////////////////////////////
 // Configurations
 // ///////////////////////////////
 app.set('view engine', 'pug') // view engine
-app.set('views', __dirname + '/views')
+app.set('views', __dirname + '/views') // set dir to look for views
 app.use(express.static(__dirname + '/public')) // serve from public
-app.use('/profile', profile) // routes
-app.use('/', index)
-app.use('*', databaseConnHandler)
 
 // ////////////////////////////////
 // Error Handler
 // ////////////////////////////////
 app.on('error', function (req, res) { // server
-  console.log('error')
+  console.error(`ERROR: ${req}`)
   res.render('error', {
     errorMsg: req
   })
