@@ -4,40 +4,18 @@ block append header
     link(rel="shortcut icon", href=`${logo}`)
 block content
     // Main content
-    div.container
+    .container
         // Side bar list
-        div.col-xs-2
+        .col-xs-2
             a(href="/profile/add") Add a Profile
-            a(hidden="true")
         // Brief profiles
-        div.col-xs-10.people
+        .col-xs-10.people
             each person in people
-                div.person.well
-                    div.col-xs-4
-                        div
-                            img.image(alt="Image of user", src=`${person.image}`)
-                        div
-                            br
-                            a(href=`/profile?id=${person._id}`) View Profile
-                        div
-                            br
-                            a(href=`/profile/delete?id=${person._id}`) Delete Profile
-                    div.col-xs-8
+                .person.well
+                    .col-xs-4
+                        img.image(alt="Image of user", src=`${person.image}`)
+                        a.view-profile(href=`/profile?id=${person._id}`) View Profile
+                        a.delete-profile(href=`/profile/delete?id=${person._id}`) Delete Profile
+                    .col-xs-8
                         h2.person-name #{person.name}
                 br
-
-    // Elements
-    div.container
-        p Showing standard elements
-        p#welcome Hello Pug!
-        button#button click me
-    br
-    // Access passed in variables
-    div.container
-        p Showing variables as text
-        p#name Hello my name is #{name}
-    br
-    // Use variables inside an attribute
-    div.container
-        p Showing variables as attributes
-        img(alt=`mr-${name}`)

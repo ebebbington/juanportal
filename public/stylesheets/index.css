@@ -16,3 +16,7 @@ a {
 .person-name {
     word-wrap: break-word;
 }
+a.view-profile {
+    padding-top: 1em;
+    margin-top: 1em;
+}
