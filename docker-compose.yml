@@ -33,11 +33,11 @@ services:
     ports:
       - "27017:27017"
     environment:
-      - MONGODB_ROOT_USERNAME=dbadmin
-      - MONGODB_ROOT_PASSWD=password
+      - MONGODB_ROOT_USERNAME=root
+      - MONGODB_ROOT_PASSWD=rootpassword
       - MONGODB_ROOT_ROLE=root
-      - MONGODB_USERNAME=webrole
-      - MONGODB_PASSWD=password
+      - MONGODB_USERNAME=user
+      - MONGODB_PASSWD=userpassword
       - MONGODB_DBNAME=juanportal
       - MONGODB_ROLE=readWrite
     networks:
