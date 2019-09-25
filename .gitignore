@@ -1,0 +1,7 @@
+package-lock.json
+node_modules/
+.git
+.idea/
+favicon.ico
+logs/
+images/
