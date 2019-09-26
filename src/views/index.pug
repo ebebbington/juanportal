@@ -1,0 +1,22 @@
+extends layout
+block append header
+    link(rel="stylesheet", href="/public/stylesheets/index.css")
+block content
+    // Main content
+    .container
+        // Side bar list
+        .col-xs-2.col-sm-2.col-md-2
+            a(href="/profile/add") Add a Profile
+        // Brief profiles
+        .col-xs-10.col-sm-10.col-md-10.people
+            if (!people)
+                .p No profies were found
+            each person in people
+                .person.well
+                    .col-xs-4
+                        img.image(alt="Image of user", src=`${person.image}`)
+                        a.view-profile(href=`/profile?id=${person._id}`) View Profile
+                        a.delete-profile(href=`/profile/delete?id=${person._id}`) Delete Profile
+                    .col-xs-8
+                        h2.person-name #{person.name}
+                br

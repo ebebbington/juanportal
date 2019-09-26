@@ -1,0 +1,23 @@
+.image {
+    max-width: 95%;
+    max-height: 95%;
+    overflow: hidden;
+    border-radius: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.person{
+    overflow: hidden;
+}
+
+a {
+    text-align: center;
+    margin-top: 0.5em;
+    display: block;
+}
+
+.person-name {
+    word-wrap: break-word;
+    text-align: center;
+}

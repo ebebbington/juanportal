@@ -1,0 +1,15 @@
+extends layout
+block append header
+    link(rel="stylesheet", href="/public/stylesheets/profile.css")
+block content
+    div.container
+        div.profile
+            div.col-xs-12
+                div.col-xs-1
+                    a(href="/") Home
+                div.col-xs-6
+                    img#profile-image(src=`${image}`)
+                div.col-xs-5
+                    h1#profile-name #{name}
+                    h1#profile-description #{description}
+        div

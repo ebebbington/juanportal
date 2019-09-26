@@ -1,13 +1,5 @@
-<<<<<<< HEAD
-package-lock.json
-node_modules/
+src/package-lock.json
+src/node_modules/
 .git
-.idea/
-favicon.ico
-logs/
-images/
-=======
-.git
-.idea/
-src/
->>>>>>> repo_2/master
+.idea
+src/logs
