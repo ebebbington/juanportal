@@ -106,8 +106,7 @@ app.post('/', upload.single('image'), [
   const name = String(req.body.name)
   const description = String(req.body.description)
   const image = req.file
-  let imageName = ''
-  image ? imageName = image.originalname : imageName = 'sample.jpg'
+  const imageName = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
   const imagePath = './images/' + imageName
   // check image extension
   const acceptedImageExtensions = ['.png', '.jpg']

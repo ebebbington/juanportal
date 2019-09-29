@@ -1,3 +1,13 @@
+Creating a dum of mongo
+
+* Insert the data into the db inside the docker container
+
+* `mongodump -o /mongo-data-dump/
+
+* `exit`
+
+* `docker cp juanportal_mongo:/mongo-data-dump .`
+
 Mac Environment
 
 - Web Address: 0.0.0.0:9002

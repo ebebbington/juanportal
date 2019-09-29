@@ -11,7 +11,7 @@
     overflow: hidden;
 }
 
-a {
+.profile-actions {
     text-align: center;
     margin-top: 0.5em;
     display: block;
@@ -20,4 +20,15 @@ a {
 .person-name {
     word-wrap: break-word;
     text-align: center;
+}
+
+.sidebar-items {
+    font-size: 1.2em;
+    text-align: center;
+    display: block;
+    margin-top: 0.5em;
+}
+
+#sidebar {
+    display: inline-block;
 }

@@ -6,7 +6,7 @@ services:
     container_name: juanportal_nginx
     build:
       context: .
-      dockerfile: .docker/dockerfile.nginx
+      dockerfile: .docker/nginx.dockerfile
     ports:
       - "9002:9002"
     volumes:
@@ -19,7 +19,7 @@ services:
     container_name: juanportal_node
     build:
       context: .
-      dockerfile: .docker/dockerfile.node
+      dockerfile: .docker/node.dockerfile
     volumes:
       - ./src:/var/www/juanportal
     working_dir: /var/www/juanportal
@@ -47,7 +47,7 @@ services:
     container_name: juanportal_mongoseeder
     build:
       context: .
-      dockerfile: .docker/dockerfile.mongo.seeder
+      dockerfile: .docker/mongo.seeder.dockerfile
     depends_on:
       - mongodb
     networks:
