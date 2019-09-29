@@ -8,13 +8,12 @@ const dbUrl = require('.././juanportal').dbUrl
 const Profile = require('./../models/profile')
 const bodyParser = require('body-parser')
 const fs = require('fs')
-const formidable = require('formidable')
+
 const multer = require('multer')
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
-const { check, validationResult, body } = require('express-validator/check')
-const { sanitiseBody } = require('express-validator/filter')
-const addView = 'add'
+
+const { validationResult, body } = require('express-validator')
 
 app.use(morgan('tiny'))
 app.use(bodyParser.urlencoded({ extended: false}))
@@ -97,12 +96,10 @@ app.post('/add', upload.single('image'), [
   // Sanitisation
   body('name')
     .not().isEmpty()
-    .trim()
-    .escape(),
+    .trim(),
   body('description')
     .not().isEmpty()
-    .trim()
-    .escape(),
+    .trim(),
 ], function (req, res) {
   // Check for errors in sanitisation
   const errors = validationResult(req)
@@ -112,6 +109,8 @@ app.post('/add', upload.single('image'), [
   // get data
   const name = String(req.body.name)
   const description = String(req.body.description)
+  console.log(name, description)
+  return false
   const image = req.file
   console.log(image)
   if (!image) {

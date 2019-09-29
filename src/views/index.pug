@@ -7,12 +7,16 @@ block content
         // Side bar list
         .col-xs-3.col-sm-3.col-md-3
             #sidebar
-                a#add.sidebar-items(href="/profile/add") Add a Profile
-                a#home.sidebar-items(href="/") Home
+                a.add-profile-link.sidebar-items(href="/profile/add") Add a Profile
+                a.go-home-link.sidebar-items(href="/") Home
         // Brief profiles
         .col-xs-9.col-sm-9.col-md-9.people
+            // When no profiles exist
             if (!people.length)
-                .p No profiles were found
+                .well.no-profiles
+                    h3 Oh no, there aren't any profiles!
+                    a.add-profile(href="/profile/add") Why not be the first and add a new profile?
+            // When profiles do exist
             each person in people
                 .person.well
                     .col-xs-4.col-sm-4.col-md-4

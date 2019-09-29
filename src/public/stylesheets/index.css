@@ -22,7 +22,7 @@
     text-align: center;
 }
 
-.sidebar-items {
+.sidebar-items, .no-profiles {
     font-size: 1.2em;
     text-align: center;
     display: block;
@@ -31,4 +31,8 @@
 
 #sidebar {
     display: inline-block;
+}
+
+.no-profiles {
+    text-align: center;
 }
