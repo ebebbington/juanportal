@@ -57,8 +57,6 @@ function saveProfile (name, description, image, imgPath, res) {
   })
 }
 
-// On '/profiles' render profiles page getting the ID sent across
-//
 // View of Single Profile
 app.get('/', (req, res) => {
   const ObjectId = require('mongoose').Types.ObjectId
@@ -73,20 +71,19 @@ app.get('/', (req, res) => {
     if (!profile) {
       return res.status(404).send({error: 'No profiles were found'})
     } else {
-      res.render('profile', {
+      return res.render('profile', {
         title: `About ${profile.name}`,
         name: profile.name,
         description: profile.description,
         image: profile.image
       })
     }
-    mongoose.disconnect()
   })
 })
 
 // On selecting to create a new profile
 app.get('/add', (req, res) => {
-  res.render('add', {
+  return res.render('add', {
     title: 'Add a profile'
   })
 })
@@ -109,10 +106,7 @@ app.post('/add', upload.single('image'), [
   // get data
   const name = String(req.body.name)
   const description = String(req.body.description)
-  console.log(name, description)
-  return false
   const image = req.file
-  console.log(image)
   if (!image) {
     const imageName = './images/sample.jpg'
     saveProfile(name, description, null, imageName, res)
@@ -141,10 +135,8 @@ app.get('/delete', (req, res) => {
     mongoose.connect(dbUrl, { useNewUrlParser: true })
     Profile.deleteOne({ _id: id }, function (err) {
       if (err) {
-        mongoose.disconnect()
         return res.status(500).send({ errors: 'Problem deleting that profile' })
       } else {
-        mongoose.disconnect()
       return res.redirect('/')
       }
     })

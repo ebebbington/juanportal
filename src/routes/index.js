@@ -10,12 +10,10 @@ app.get('/', (req, res) => {
   mongoose.connect(dbUrl, { useNewUrlParser: true })
   const db = mongoose.connection
   ProfileModel.find({}).sort({'date': -1}).limit(10).exec(function (err, profiles) {
-    console.info(profiles.Query)
-    res.render('index.pug', { // pass in variables to the file
+    return res.render('index.pug', { // pass in variables to the file
       title: 'Homepage',
       people: profiles || []
     });
-    mongoose.disconnect()
   })
 });
 
