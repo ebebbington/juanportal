@@ -28,13 +28,3 @@ app.use('*', databaseLogger)
 app.set('view engine', 'pug') // view engine
 app.set('views', __dirname + '/views') // set dir to look for views
 app.use(express.static(__dirname + '/public')) // serve from public
-
-// ////////////////////////////////
-// Error Handler
-// ////////////////////////////////
-app.on('error', function (req, res) {
-  console.error(`ERROR: ${req}`)
-  res.render('error', {
-    errorMsg: req
-  })
-})
