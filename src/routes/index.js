@@ -8,7 +8,6 @@ const ProfileModel = require('./../models/profile')
 // On '/' render index.pug in views/ as pug expects it to be in views
 app.get('/', (req, res) => {
   mongoose.connect(dbUrl, { useNewUrlParser: true })
-  const db = mongoose.connection
   ProfileModel.find({}).sort({'date': -1}).limit(10).exec(function (err, profiles) {
     return res.render('index.pug', { // pass in variables to the file
       title: 'Homepage',

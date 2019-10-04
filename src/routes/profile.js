@@ -38,6 +38,7 @@ function saveProfile (name, description, image, imgPath, res) {
   // validation
   newProfile.validate(function (err) {
     if (err) {
+      mongoose.connection.close()
       return res.status(500).send({error: 'Problem validating your new profile'})
     }
   })
@@ -45,6 +46,7 @@ function saveProfile (name, description, image, imgPath, res) {
   if (image) {
     fs.writeFile(imgPath, image.buffer, 'base64', function (err) {
       if (err) {
+        mongoose.connection.close()
         return res.status(500).send({error: 'Problem saving the supplied image'})
       }
     })
@@ -52,17 +54,30 @@ function saveProfile (name, description, image, imgPath, res) {
   // save to mongoose
   newProfile.save(function (err) {
     if (err) {
+      mongoose.connection.close()
       return res.status(500).send({error: 'Problem saving this to the database'})
     }
   })
 }
 
+function getObjectIdFromQuery (id) {
+  try {
+    const ObjectId = require('mongoose').Types.ObjectId
+    return new ObjectId(id)
+  } catch (e) {
+    return false
+  }
+}
+
 // View of Single Profile
 app.get('/', (req, res) => {
-  const ObjectId = require('mongoose').Types.ObjectId
-  const id = new ObjectId(req.query.id)
+  const id = getObjectIdFromQuery(req.query.id)
+  if (!id) {
+    return res.status(500).send({ error: 'Unable to process this request'})
+  }
   mongoose.connect(dbUrl, { useNewUrlParser: true})
   Profile.findOne({ _id: id }, function (err, profile) {
+    mongoose.connection.close()
     // If error
     if (err) {
       return res.status(500).send({error: 'Problem fetching profiles'})
@@ -70,15 +85,17 @@ app.get('/', (req, res) => {
     // Check if data was pulled
     if (!profile) {
       return res.status(404).send({error: 'No profiles were found'})
-    } else {
-      return res.render('profile', {
-        title: `About ${profile.name}`,
-        name: profile.name,
-        description: profile.description,
-        image: profile.image
-      })
     }
+    // return data
+    return res.render('profile', {
+      title: `About ${profile.name}`,
+      name: profile.name,
+      description: profile.description,
+      image: profile.image
+    })
   })
+  // If execution reaches here, the connection to the db isnt active
+  return res.status(500).send({error: 'An error occured'})
 })
 
 // On selecting to create a new profile
@@ -107,6 +124,7 @@ app.post('/add', upload.single('image'), [
   const name = String(req.body.name)
   const description = String(req.body.description)
   const image = req.file
+  // If no image is supplied, use thedefault one, this means no other processing is needed to save the profile
   if (!image) {
     const imageName = './images/sample.jpg'
     saveProfile(name, description, null, imageName, res)
