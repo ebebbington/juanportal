@@ -2,12 +2,11 @@
 // URL: localhost:3005/profile
 //
 const app = require('express')()
-const mongoose = require('mongoose')
-const dbUrl = require('.././juanportal').dbUrl
 const Profile = require('./../models/profile')
 const bodyParser = require('body-parser')
 const fs = require('fs')
 const logger = require('.././logger')
+const config = require('.././juanportal')
 
 const multer = require('multer')
 const storage = multer.memoryStorage()
@@ -19,7 +18,7 @@ app.use(bodyParser.json())
 function generateImagePathWithRandomisedName (imgName) {
   const arr = imgName.split('.')
   const ext = arr[arr.length - 1]
-  const name = './images/'
+  const name = config.images.rootPath
     + Math.random().toString(36).substring(2, 15)
     + Math.random().toString(36).substring(2, 15)
     + '.' + ext
@@ -38,7 +37,8 @@ function saveImageToFileSystem (image, imagePath) {
   }
   if (!image) {
     // create a copy of the file
-    const sampleImg = fs.createReadStream('./images/sample.jpg')
+    const sampleImgPath = config.images.sampleImgPath
+    const sampleImg = fs.createReadStream(sampleImgPath)
     const newImg = fs.createWriteStream(imagePath)
     sampleImg.pipe(newImg)
   }
@@ -91,7 +91,7 @@ app.get('/add', (req, res) => { // /profile/add
  */
 app.post('/add', upload.single('image'), function (req, res) {
   // Default the image name incase one isn't supplied
-  let imgName = 'sample.jpg'
+  let imgName = config.images.sampleImgName
   let imgFile = false
   // Redefine image vars if image is supplied
   if (req.file) {
@@ -126,10 +126,28 @@ app.post('/add', upload.single('image'), function (req, res) {
 
 app.get('/delete', (req, res) => {
   const id = getObjectIdFromQuery(req.query.id)
-  Profile.deleteOne({ _id: id }, function (err) {
-    if (err)
+  // First get the image path from the user
+  Profile.findOne({_id: id}, function (err, profile) {
+    if (err) {
+      logger.error(err)
       return res.status(500).send({ errors: 'Problem deleting that profile' })
-    return res.redirect('/')
+    }
+    const pathOfImageToDelete = profile.image
+    // Remove the image from the FS
+    try {
+      fs.unlinkSync(pathOfImageToDelete)
+    } catch (err) {
+      // but disregard
+      logger.error(err)
+    }
+    // then delete profile
+    Profile.deleteOne({ _id: id }, function (err) {
+      if (err) {
+        logger.error(err)
+        return res.status(500).send({ errors: 'Problem deleting that profile' })
+      }
+      return res.redirect('/')
+    })
   })
 })
 

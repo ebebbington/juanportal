@@ -8,7 +8,13 @@ const profileSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Name has not been supplied'],
     minlength: [2, 'Name is too short and should be at least 2 characters in length'],
-    maxlength: [140, 'Name is too long and should not exceed 140 characters']
+    maxlength: [140, 'Name is too long and should not exceed 140 characters'],
+    validate: {
+      validator: function (v) {
+        return /.+[^\s]/.test(v)
+      },
+      message: props => `${props.value} is not set`
+    }
   },
   'description': {
     type: String,
