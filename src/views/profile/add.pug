@@ -1,4 +1,4 @@
-extends layout
+extends ../layout
 block content
     // Main content
     div.container
@@ -12,7 +12,7 @@ block content
                 div
                     if descriptionErr
                         p #{descriptionErr}
-                    input#description(type="text", placeholder="description", size="105" name="description", required)
+                    input#description(type="text", placeholder="description", size="105" name="description")
                 br
                 div
                     if imageErr
@@ -20,4 +20,4 @@ block content
                     input#image(type="file", name="image")
                 br
                 div
-                    input#add(value="Submit", type="submit", required)
+                    input#add(value="Submit", type="submit")

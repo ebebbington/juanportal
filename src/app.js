@@ -3,24 +3,48 @@
 // ///////////////////////////////
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose')
+const morgan = require('morgan')
+
+// ///////////////////////////////
+// HTTP Logging
+// ///////////////////////////////
+app.use(morgan('dev', {
+  skip: function (req, res) {
+      return res.statusCode < 400
+  }, stream: process.stderr
+}));
+app.use(morgan('dev', {
+  skip: function (req, res) {
+      return res.statusCode >= 400
+  }, stream: process.stdout
+}));
 
 // ///////////////////////////////
 // Server Set Up
 // ///////////////////////////////
+const logger = require('./logger') // .debug, .info, error
+const nodeEnv = require('./juanportal').nodeEnv
 const port = require('./juanportal').nodePort
 const server = app.listen(port, () => {
-  console.log(`Express running → PORT ${server.address().port}`);
-});
+  logger.info(`Server has started on ${port} on ${nodeEnv}`)
+})
+
+// ///////////////////////////////
+// Database Set Up
+// ///////////////////////////////
+const dbUrl = require('./juanportal').dbUrl
+mongoose.connect(dbUrl, {useNewUrlParser: true})
 
 // ///////////////////////////////
 // Define the routes
 // ///////////////////////////////
 const profile = require('./routes/profile.js')
 const index = require('./routes/index.js')
-const databaseLogger = require('./models/database-logger.js')
+const db = require('./db.js')
 app.use('/profile', profile)
 app.use('/', index)
-app.use('*', databaseLogger)
+app.use('*', db)
 
 // ///////////////////////////////
 // Configurations

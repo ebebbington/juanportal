@@ -6,18 +6,25 @@ const mongoose = require('mongoose')
 const profileSchema = new mongoose.Schema({
   'name': {
     type: String,
-    required: true,
-    minlength: 1
+    required: [true, 'Name has not been supplied'],
+    minlength: [2, 'Name is too short and should be at least 2 characters in length'],
+    maxlength: [140, 'Name is too long and should not exceed 140 characters']
   },
   'description': {
     type: String,
-    required: true,
-    minlength: 1
+    required: false,
+    maxlength: [400, 'Description is too long and should not exceed 400 characters']
   },
   'image': {
     type: String,
     required: true,
-    minlength: 5 //eg z.png
+    validate: {
+      validator: function (v) {
+        return /\.(gif|jpg|jpeg|tiff|png)$/.test(v)
+      },
+      message: props => `${props.value} is not a valid image extension`
+    },
+    minlength: [5, 'Image name is to small, therefore not a valid name'] //eg z.png
   }
 })
 //
