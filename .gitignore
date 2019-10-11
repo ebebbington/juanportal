@@ -3,4 +3,4 @@ src/node_modules/
 .git
 .idea
 src/logs
-src/images
+src/public/images

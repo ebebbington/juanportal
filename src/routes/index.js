@@ -1,6 +1,6 @@
 const app = require('express')()
-const ProfileModel = require('./../models/profile')
-const logger = require('.././logger')
+const ProfileModel = Object(require('./../models/profile'))
+const logger = Object(require('.././logger'))
 
 // On '/' render index.pug in views/ as pug expects it to be in views
 app.get('/', (req, res) => {

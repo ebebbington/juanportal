@@ -2,11 +2,12 @@
 // URL: localhost:3005/profile
 //
 const app = require('express')()
-const Profile = require('./../models/profile')
+const Profile = Object(require('./../models/profile'))
 const bodyParser = require('body-parser')
 const fs = require('fs')
-const logger = require('.././logger')
-const config = require('.././juanportal')
+const logger = Object(require('.././logger'))
+const config = Object(require('.././juanportal'))
+const _ = require('lodash')
 
 const multer = require('multer')
 const storage = multer.memoryStorage()
@@ -17,7 +18,7 @@ app.use(bodyParser.json())
 
 function generateImagePathWithRandomisedName (imgName) {
   const arr = imgName.split('.')
-  const ext = arr[arr.length - 1]
+  const ext = _.last(arr)
   const name = config.images.rootPath
     + Math.random().toString(36).substring(2, 15)
     + Math.random().toString(36).substring(2, 15)
@@ -37,7 +38,7 @@ function saveImageToFileSystem (image, imagePath) {
   }
   if (!image) {
     // create a copy of the file
-    const sampleImgPath = config.images.sampleImgPath
+    const sampleImgPath = String(config.images.sampleImgPath)
     const sampleImg = fs.createReadStream(sampleImgPath)
     const newImg = fs.createWriteStream(imagePath)
     sampleImg.pipe(newImg)

@@ -23,9 +23,9 @@ app.use(morgan('dev', {
 // ///////////////////////////////
 // Server Set Up
 // ///////////////////////////////
-const logger = require('./logger') // .debug, .info, error
-const nodeEnv = require('./juanportal').nodeEnv
-const port = require('./juanportal').nodePort
+const logger = Object(require('./logger')) // .debug, .info, error
+const nodeEnv = String(require('./juanportal').nodeEnv)
+const port = parseInt(require('./juanportal').nodePort)
 const server = app.listen(port, () => {
   logger.info(`Server has started on ${port} on ${nodeEnv}`)
 })
@@ -33,7 +33,7 @@ const server = app.listen(port, () => {
 // ///////////////////////////////
 // Database Set Up
 // ///////////////////////////////
-const dbUrl = require('./juanportal').dbUrl
+const dbUrl = String(require('./juanportal').dbUrl)
 mongoose.connect(dbUrl, {useNewUrlParser: true})
 
 // ///////////////////////////////
