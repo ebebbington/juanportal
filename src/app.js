@@ -5,6 +5,9 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose')
 const morgan = require('morgan')
+require('dotenv').config()
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
 
 // ///////////////////////////////
 // HTTP Logging
@@ -23,28 +26,32 @@ app.use(morgan('dev', {
 // ///////////////////////////////
 // Server Set Up
 // ///////////////////////////////
-const logger = Object(require('./logger')) // .debug, .info, error
-const nodeEnv = String(require('./juanportal').nodeEnv)
-const port = parseInt(require('./juanportal').nodePort)
+const logger = Object(require('./helpers/logger')) // .debug, .info, error
+const nodeEnv = process.env.NODE_ENV
+const port = process.env.NODE_PORT
 const server = app.listen(port, () => {
-  logger.info(`Server has started on ${port} on ${nodeEnv}`)
+  logger.info(`Server has started on ${port} in ${nodeEnv}`)
 })
 
 // ///////////////////////////////
 // Database Set Up
 // ///////////////////////////////
-const dbUrl = String(require('./juanportal').dbUrl)
-mongoose.connect(dbUrl, {useNewUrlParser: true})
+const dbUrl = process.env.DB_URL
+mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true}).then(() => {
+  if (nodeEnv === 'development') {
+    logger.info(`Connected to ${dbUrl}`)
+  }
+}).catch(err => {
+  logger.error(`Error connecting to database: ${err.message}`)
+})
 
 // ///////////////////////////////
 // Define the routes
 // ///////////////////////////////
-const profile = require('./routes/profile.js')
-const index = require('./routes/index.js')
-const db = require('./db.js')
-app.use('/profile', profile)
-app.use('/', index)
-app.use('*', db)
+const profileRoute = require('./routes/profile.js')
+const indexRoute = require('./routes/index.js')
+app.use('/profile', profileRoute)
+app.use('/', indexRoute)
 
 // ///////////////////////////////
 // Configurations
@@ -52,3 +59,6 @@ app.use('*', db)
 app.set('view engine', 'pug') // view engine
 app.set('views', __dirname + '/views') // set dir to look for views
 app.use(express.static(__dirname + '/public')) // serve from public
+app.use(cookieParser())
+app.use(bodyParser.urlencoded({ extended: false}))
+app.use(bodyParser.json())

@@ -4,3 +4,4 @@ src/node_modules/
 .idea
 src/logs
 src/public/images
+.vscode

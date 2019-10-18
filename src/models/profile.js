@@ -24,15 +24,16 @@ const profileSchema = new mongoose.Schema({
   'image': {
     type: String,
     required: true,
+    lowercase: true,
     validate: {
       validator: function (v) {
-        return /\.(gif|jpg|jpeg|tiff|png)$/.test(v)
+        return /\.(jpg|jpeg|JPG|JPEG|png|PNG)$/.test(v)
       },
       message: props => `${props.value} is not a valid image extension`
     },
     minlength: [5, 'Image name is to small, therefore not a valid name'] //eg z.png
   }
-})
+}, {timestamps: true})
 //
 // Define the model (Document)
 //
