@@ -1,6 +1,6 @@
 # JuanPortal
 
-JuanPortal is supposed to replicate (in sme sense) a website that holds profiles of people, in which they can add and delete profiles. This utilises saving to a mongoose database, using a templating engine and limiting results.This project was created to help myself understand:
+JuanPortal is supposed to replicate (in some sense) a website that holds profiles of people, in which they can add and delete profiles. This utilises saving to a mongoose database, using a templating engine and limiting results. This project was created to help myself understand:
 * HTML
 * CSS
 * Pug
@@ -11,6 +11,8 @@ JuanPortal is supposed to replicate (in sme sense) a website that holds profiles
   * Models
   * Documents
   * Seeding
+* NPM
+* PM2
 
 ## Prerequisites
 
