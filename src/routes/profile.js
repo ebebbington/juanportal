@@ -9,7 +9,7 @@ const upload = multer({ storage: storage })
 /**
  * /profile?id
  */
-app.get("/", ProfileController.getOneById)
+app.get("/", ProfileController.get)
 /**
  * /profile/add
  */
@@ -17,7 +17,7 @@ app.get('/add', ((req, res) => { res.render('profile/add', {title: 'Add a profil
 /**
  * /profile/add
  */
-app.post('/add', upload.single('image'), ProfileController.add)
+app.post('/add', upload.single('image'), ProfileController.post)
 /**
  * /profile/delete?id
  */
