@@ -1,4 +1,5 @@
-const app = require('express')()
+const express = require('express')
+const router = express.Router()
 const ProfileController = require('../controllers/ProfileController.js')
 
 // For when an image is submited in the form when POSTing a profile
@@ -6,21 +7,22 @@ const multer = require('multer')
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
-/**
- * /profile?id
- */
-app.get("/", ProfileController.get)
-/**
- * /profile/add
- */
-app.get('/add', ((req, res) => { res.render('profile/add', {title: 'Add a profile'})}))
-/**
- * /profile/add
- */
-app.post('/add', upload.single('image'), ProfileController.post)
-/**
- * /profile/delete?id
- */
-app.get('/delete', ProfileController.delete)
+router
+  /**
+  * GET /profile?id
+  */
+  .get("/", ProfileController.get)
+  /**
+   * GET /profile/add
+   */
+  .get('/add', ((req, res) => { res.render('profile/add', {title: 'Add a profile'})}))
+  /**
+   * POST /profile/add
+   */
+  .post('/add', upload.single('image'), ProfileController.post)
+  /**
+   * GET /profile/delete?id
+   */
+  .get('/delete', ProfileController.delete)
 
-module.exports = app
+module.exports = router
