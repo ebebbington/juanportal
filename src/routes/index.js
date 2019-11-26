@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const ProfileModel = require('./../models/ProfileModel')
-const logger = Object(require('../helpers/logger'))
 
 // On '/' render index.pug in views/ as pug expects it to be in views
 router

@@ -1,5 +1,4 @@
 const ProfileModel = require('../models/ProfileModel.js')
-const mongoose = require('mongoose')
 const logger = require('../helpers/logger.js')
 const _ = require('lodash')
 const fs = require('fs')
