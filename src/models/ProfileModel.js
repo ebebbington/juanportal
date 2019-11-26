@@ -118,10 +118,19 @@ const deleteOneById = function (id) {
   })
 }
 
+const getOneByName = function (name) {
+  return new Promise((resolve, reject) => {
+    ProfileModel.findOne({name: name}, (err, profile) => {
+      resolve(profile)
+    })
+  })
+}
+
 module.exports = {
   create: create,
   findOneById: findOneById,
   findTen: findTen,
   deleteOneById: deleteOneById,
-  save: save
+  save: save,
+  getOneByName: getOneByName
 }
