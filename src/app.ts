@@ -16,7 +16,9 @@ const logger = require('./helpers/logger')
  * 
  * @author    Edward Bebbington
  * 
- * @example   Server.bootstrap() || const Server: any = Server.bootstrap()
+ * @example
+ *            const server = Server.bootstrap()
+ *            const app = server.app
  * 
  * @fires     Server#start
  * @fires     Server#initiateLogging
@@ -24,10 +26,10 @@ const logger = require('./helpers/logger')
  * @fires     Server#configure
  * @fires     Server#instantiateDbConnection
  * 
- * @property  {any}     app             - App object
- * @property  {string}  viewEngine      - View engine to use
- * @property  {string}  env             - The environment to run in
- * @property  {string}  dbUrl           - URL of the database to connect to
+ * @property  {express.Application}     app             - Express app object
+ * @property  {string}                  viewEngine      - View engine to use
+ * @property  {string}                  env             - The environment to run in
+ * @property  {string}                  dbUrl           - URL of the database to connect to
  * 
  * @function  bootstrap                 - Return an start an instance of the class
  * @function  constructor               - Fires events
