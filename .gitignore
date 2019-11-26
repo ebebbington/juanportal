@@ -6,3 +6,4 @@ src/logs
 src/public/images
 .vscode
 src/app.js
+src/controllers/ProfileController.js
