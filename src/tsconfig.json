@@ -66,11 +66,11 @@
     "types": [
       "node"
     ],
+    "rootDir": ".",
     "typeRoots": [
       "./node_modules/@types",
       "./types"
-    ],
-    "watch": true
+    ]
   },
   "include": ["app.ts"]
 }

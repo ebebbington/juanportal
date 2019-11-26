@@ -5,3 +5,4 @@ src/node_modules/
 src/logs
 src/public/images
 .vscode
+src/app.js

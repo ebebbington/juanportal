@@ -2,12 +2,12 @@
 // Packages
 // ///////////////////////////////
 import express from 'express'
-// const app = express();
 const mongoose = require('mongoose')
 const morgan = require('morgan')
 require('dotenv').config()
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
+const logger = require('./helpers/logger')
 
 /**
  * Server
@@ -27,16 +27,15 @@ const bodyParser = require('body-parser')
  * @property  {any}     app             - App object
  * @property  {string}  viewEngine      - View engine to use
  * @property  {string}  env             - The environment to run in
- * @property  {any}     port            - The port for the node server to run on
  * @property  {string}  dbUrl           - URL of the database to connect to
  * 
  * @function  bootstrap                 - Return an start an instance of the class
  * @function  constructor               - Fires events
  * @function  initiateLogging           - Start HTTP logging
- * @function  start                     - Start the server
  * @function  defineRoutes              - Set up the routes
  * @function  configure                 - Configure such as view engine
  * @function  instantiateDbConnection   - Create connection to database
+ * @function  initiateDbLogging         - Start listening for events on the database and log them
  * 
  * @returns   {ng.auto.IInjectorService} - Returns the newly created injector for this app.
  * 
@@ -48,37 +47,30 @@ class Server {
   /**
    * Application object
    * 
-   * public @var any
+   * @var any     public
    */
   public app: express.Application;
 
   /**
    * View engine to use
    * 
-   * private @var string
+   * @var string  private
    */
-  private viewEngine: string
+  private readonly viewEngine: string
 
   /**
    * Environment to run e.g development, staging
    * 
-   * private @var string
+   * @var string  private
    */
-  private env: string
-
-  /**
-   * Port for the Node server to listen on
-   * 
-   * private @var any
-   */
-  private port: any
+  private readonly env: string
 
   /**
    * Url to use when connecting to the mongoose database
    * 
-   * private @var string
+   * @var string  private
    */
-  private dbUrl: string
+  private readonly dbUrl: string
 
   /**
    * Bootstrap the application.
@@ -102,32 +94,20 @@ class Server {
     // define properties
     this.viewEngine = 'pug'
     this.env = process.env.NODE_ENV || ''
-    this.port = process.env.PORT || 3005
+    // this.port = process.env.PORT || 3005
     this.dbUrl = process.env.DB_URL || ''
     //create expressjs application
     this.app = express();
-    // start server
-    this.start()
     //configure application
     this.configure();
     // start HTTP logging
     this.initiateLogging()
-
+    // setup routes
     this.defineRoutes()
+    // connect to the database
     this.instantiateDbConnection()
-  }
-
-  /**
-   * Start the server
-   * 
-   * @class Server
-   * @method start
-   * @return {void}
-   */
-  start (): void {
-    this.app.listen(this.port, () => {
-      console.info('Server started')
-    })
+    // start db logging
+    this.initiateDbLogging()
   }
 
   /**
@@ -137,7 +117,7 @@ class Server {
    * @method configure
    * @return {void}
    */
-  configure (): void {
+  private configure (): void {
     this.app.set('view engine', this.viewEngine) // view engine
     this.app.set('views', __dirname + '/views') // set dir to look for views
     this.app.use(express.static(__dirname + '/public')) // serve from public
@@ -153,7 +133,7 @@ class Server {
    * @method initiateLogging
    * @return {void}
    */
-  initiateLogging (): void {
+  private initiateLogging (): void {
     this.app.use(morgan('dev', {
       skip: function (req: any, res: any) {
           return res.statusCode < 400
@@ -173,7 +153,7 @@ class Server {
    * @method defineRoutes
    * @return {void}
    */
-  defineRoutes (): void {
+  private defineRoutes (): void {
     const profileRoute = require('./routes/profile.js')
     const indexRoute = require('./routes/index.js')
     this.app.use('/profile', profileRoute)
@@ -181,28 +161,54 @@ class Server {
   }
 
   /**
-   * Make the conection to the database
+   * Make the connection to the database
    * 
    * @class Server
    * @method instantiateDbConnection
    * @return {void}
    */
-  instantiateDbConnection (): void {
+  private instantiateDbConnection (): void {
     mongoose.connect(this.dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
       .then(() => {
         if (this.env === 'development') {
-          console.info('Database connection has opened')
+          logger.info('Database connection has opened')
         } 
       })
       .catch((err: any) => {
-        console.info('Error when making conn to db')
-        console.error(err)
+        logger.info('Error when making conn to db')
+        logger.error(err)
       })
+  }
+
+  /**
+   * Start logging database actions
+   *
+   * @class Server
+   * @method initiateDblogging
+   * @return {void}
+   */
+  private initiateDbLogging (): void {
+    mongoose.connection
+        .on('connecting', () => {
+          logger.info('Connecting to the database')
+        })
+        .on('connected', () => {
+          logger.info('Connected to the database')
+        })
+        .on('close', () => {
+          logger.info('Closed the connection to the database')
+        })
+        .on('error', () => {
+          logger.error('Connection error with the database')
+        })
+        .on('disconnected', () => {
+          logger.info('Lost connection with the database')
+        })
   }
 }
 
-// Instantiate the server
-Server.bootstrap()
+const server = Server.bootstrap()
+module.exports = server.app
 
 // ///////////////////////////////
 // HTTP Logging

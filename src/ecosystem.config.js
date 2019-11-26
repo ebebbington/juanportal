@@ -4,7 +4,7 @@ module.exports =
       [
         {
           name: 'JuanPortal',
-          script: '/var/www/juanportal/app.js',
+          script: 'bin/www',
           watch: true,
           //output: 'logs/out.log', // Console logs
           //error: 'logs/err.log', // Errors
