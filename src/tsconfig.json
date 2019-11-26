@@ -72,5 +72,5 @@
       "./types"
     ]
   },
-  "include": ["app.ts"]
+  "include": ["app.ts", "controllers/ProfileController.ts"]
 }
