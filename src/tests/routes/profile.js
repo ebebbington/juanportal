@@ -5,6 +5,13 @@ const app = require('../../app')
 const chaiHttp = require('chai-http')
 const ProfileModel = require('../../models/ProfileModel')
 const fs = require('fs')
+const logger = require('../../helpers/logger')
+const mongoose = require('mongoose')
+const ProfileController = require('../../controllers/ProfileController')
+
+const multer = require('multer')
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
 
 chai.use(chaiAsPromised)
 chai.use(chaiHttp)
@@ -28,7 +35,7 @@ describe('Profile Route', () => {
    */
   it('Should POST /profile/add', (done) => {
     chai.request(app)
-      .post('/profile/add')
+      .post('/profile/add', upload.single('image'))
       .field('name', newTestProfile.name)
       .field('description', newTestProfile.description)
       .attach('image', fs.readFileSync('/var/www/juanportal/public/images/sample.jpg'), 'sample.jpg')
@@ -39,9 +46,12 @@ describe('Profile Route', () => {
   })
 
   let newUserId = null
+  let newUserImage = null
   before('Get the test account id', () => {
     ProfileModel.getOneByName(newTestProfile.name)
       .then((profile) => {
+        logger.info(['IDS', profile._id, new mongoose.Types.ObjectId(profile._id)])
+        newUserImage = profile.image
         newUserId = profile._id
       })
   })
@@ -54,7 +64,12 @@ describe('Profile Route', () => {
   it('Should GET /profile?id=[...]', () => {
     ProfileModel.findOneById(newUserId)
       .then((profile) => {
+        logger.info(profile._id)
+        logger.info(newUserId)
         expect(profile._id).to.equal(newUserId)
+      })
+      .catch((err) => {
+        logger.error(err)
       })
   })
 
@@ -85,6 +100,7 @@ describe('Profile Route', () => {
    * Remove the newly created account
    */
   after('Remove the test account', () => {
+    ProfileController.deleteImageFromFileSystem(newUserImage)
     ProfileModel.deleteOneById(newUserId)
   })
 })

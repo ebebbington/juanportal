@@ -3,6 +3,7 @@ const logger = require('../helpers/logger.js')
 const _ = require('lodash')
 const fs = require('fs')
 const util = require('util')
+const ImageHelper = require('../helpers/image')
 
 
 class ProfileController {
@@ -64,7 +65,7 @@ class ProfileController {
    * 
    * @param {*} imageName Image name saved with the profile
    */
-  private static deleteImageFromFileSystem (imagePath = '') {
+  public static deleteImageFromFileSystem (imagePath = ''): void {
     logger.debug('inside the delete image function')
     const projectRoot = process.env.PROJECT_ROOT
     const pathToImage = projectRoot + imagePath // image path is: /public/images/...
@@ -110,55 +111,30 @@ class ProfileController {
    * 
    * @param {*} req
    * @param {*} res
-   * @param {*} next
    * @return response
    */
-  public static post (req: any, res: any, next: any) {
-    // Default the image name in case one isn't supplied
-    const randomString: string = ProfileController.generateRandomString()
-    const image: {
-      name: string,
-      file: any,
-      hasSuppliedImage: boolean,
-      databasePath: any,
-      fileSystemPath: any
-    } = {
-      name: req.file ? req.file.originalname : 'sample.jpg',
-      file: req.file ? req.file : false,
-      hasSuppliedImage: req.file ? true : false,
-      databasePath: function () {
-        if (req.file) {
-          return '/public/images/' + randomString + ProfileController.getFileExtension(req.file.originalname)
-        }
-        // will point to a copy of the sample image later so just add the same extension
-        return '/public/images/' + randomString + '.jpg'
-      },
-      fileSystemPath: function () {
-        if (req.file) {
-          return '/var/www/juanportal/public/images/' + randomString + ProfileController.getFileExtension(req.file.originalname)
-        }
-        // will point to a copy of the sample image later so just add the same extension
-        return '/var/www/juanportal/public/images/' + randomString + '.jpg'
-      }
-    }
-    logger.debug(util.inspect(image, false, null, true))
-    // Set up the profile
+  public static post (req: any, res: any) {
+    const Image = new ImageHelper;
+    const imageFileName = Image.createNewFilename(req.file.originalname)
     const newProfile = ProfileModel.create(
         req.body.name,
         req.body.description,
-        image.databasePath()
-    )
-    logger.debug(util.inspect(newProfile, false, null, true))
+        '/public/images/' + imageFileName
+    );
     // save profile and image
     const hasSaved: boolean = ProfileModel.save(newProfile)
     if (!hasSaved) {
+      logger.debug('User couldnt save')
       res.status(500)
       return res.render('error', {title: 500})
     }
     if (hasSaved) {
-      ProfileController.saveImageToFileSystem(image.file, image.fileSystemPath(), res)
-      logger.info('Saved image')
-      return res.redirect('/')
+      logger.debug('User saved to database, saving to file system')
+      if (Image.saveToFS(imageFileName, req.file)) {
+          res.redirect('/')
+      } else {
+          return res.status(500).send({error: 'problem saving he supplied image'})
+      }
     }
   }
 
