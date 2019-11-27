@@ -7,3 +7,7 @@ src/public/images
 .vscode
 src/app.js
 src/controllers/ProfileController.js
+src/interfaces/models/*.js
+src/interfaces/controllers/*.js
+src/models/*.js
+src/controllers/*.js
