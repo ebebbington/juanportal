@@ -116,6 +116,9 @@ class ProfileController {
   public static post (req: any, res: any) {
     const Image = new ImageHelper;
     const imageFileName = Image.createNewFilename(req.file.originalname)
+    const Profile = new ProfileModel(req.body.name, req.body.description, req.file.originalname)
+    const validationErrors = Profile.validate()
+    const saved = Profile.createOne()
     const newProfile = ProfileModel.create(
         req.body.name,
         req.body.description,
