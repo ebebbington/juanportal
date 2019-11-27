@@ -1,10 +1,14 @@
 import {types} from "util";
 import isModuleNamespaceObject = module
 import validate = WebAssembly.validate;
+import { Schema } from "inspector";
+import { FILE } from "dns";
 
 const mongoose = require('mongoose')
 const logger = require('../helpers/logger')
 const util = require('util')
+const BaseModel = require('BaseModel.js')
+const BaseModelInterface = require('../interfaces/models/BaseModelInterface')
 
 //
 // Profile Schema - Define the data we want access to
@@ -13,10 +17,20 @@ const util = require('util')
 interface testa {
   name?: string,
   description: string,
-  image: string
+  image: string,
+  test: Function
 }
 
-class ProfileModelTEST {
+/**
+ * 
+ * @example
+ *    // When wanting to save a new user
+ *    const newProfile = new ProfileModel({name, descr, image})
+ *    // When getting a user
+ *    const ProfileModel = new ProfileModel;
+ *    const profile = ProfileMode.find...
+ */
+class ProfileModel<BaseModelInterface> extends BaseModel {
 
   public name: string
 
@@ -24,39 +38,40 @@ class ProfileModelTEST {
 
   public image: string
 
-  public profile: any
+  private readonly tablename: string
 
-  private expose: string[] = [
+  private readonly fieldsToExpose: string[] = [
       '_id',
       'name',
       'description',
       'image'
   ]
 
-  private fillables: string[] = [
-      'name',
-      'description',
-      'image'
-  ]
-
+  /**
+   * Sets the fillable fields if defined, and if so, then
+   * it creates a model to use e.g. when wanting to add a user
+   * 
+   * @param {object} props Contains the name, description and image on register
+   */
   constructor(props: any) {
+    super(props)
     this.name = props.name
     this.description = props.description
     this.image = props.image
-    this.generateProfile()
+    this.tablename = 'Profile'
+    if (props)
+      this.create()
   }
 
-  private generateProfile () {
-    const Model = mongoose.model('Profile', this.Schema())
-    const profile = new Model({
-      name: this.name,
-      description: this.description,
-      image: this.image
-    })
-    this.profile = profile
-  }
-
-  private Schema () {
+  /**
+   * Defines and returns the schema for the Profile model
+   * 
+   * This method should never be called again as it used by the
+   * Model method to result in a new model.
+   * 
+   * @return {*} mongoose.Schema  The schema for the profile model
+   */
+  private Schema (): any {
     return new mongoose.Schema({
       'name': {
         type: String,
@@ -90,148 +105,158 @@ class ProfileModelTEST {
     }, {timestamps: true})
   }
 
-  private validate (): any {
-    const validationErrors: any = this.profile.validateSync()
-    return validationErrors
+  /**
+   * Returns a model baseline
+   * 
+   * Used the schema to generate a model. Use this to create a model baseline
+   * 
+   * @return {*} Mongoose Model
+   */
+  private Model (): any {
+    return mongoose.model(this.tablename, this.Schema())
   }
 
-  public createOne(): boolean {
-    const Model = mongoose.model('Profile', this.Schema())
+  /**
+   * Create a profile model object
+   * 
+   * Used to create a model from data to then be saved into the database
+   * 
+   * @return {obejct} The profile model
+   */
+  private create (): any {
+    const Model = this.Model()
     const newProfile = new Model({
       name: this.name,
       description: this.description,
       image: this.image
     })
-    const errors: any = validate(newProfile)
+    return newProfile
   }
-}
 
-const profileSchema = new mongoose.Schema({
-  'name': {
-    type: String,
-    required: [true, 'Name has not been supplied'],
-    minlength: [2, 'Name is too short and should be at least 2 characters in length'],
-    maxlength: [140, 'Name is too long and should not exceed 140 characters'],
-    validate: {
-      validator: function (v) {
-        return /.+[^\s]/.test(v)
-      },
-      message: props => `${props.value} is not set`
-    }
-  },
-  'description': {
-    type: String,
-    required: false,
-    maxlength: [400, 'Description is too long and should not exceed 400 characters']
-  },
-  'image': {
-    type: String,
-    required: true,
-    lowercase: true,
-    validate: {
-      validator: function (v) {
-        return /\.(jpg|jpeg|JPG|JPEG|png|PNG)$/.test(v)
-      },
-      message: props => `${props.value} is not a valid image extension`
-    },
-    minlength: [5, 'Image name is to small, therefore not a valid name'] //eg z.png
-  }
-}, {timestamps: true})
-
-//
-// Define the model (Document)
-//
-const ProfileModel = mongoose.model('Profile', profileSchema)
-
-const create = function (name, description, imagePath) {
-  const newProfile = new ProfileModel({
-    name: name,
-    description: description,
-    image: imagePath
-  })
-  const validationErrors = newProfile.validateSync()
-  if (validationErrors) {
-      logger.error(validationErrors)
-      return false
-  }
-  return newProfile
-}
-
-const save = function (profile) {
-  try {
-    profile.save()
-    return true
-  } catch (err) {
-    logger.error(`error saving a profile: ${err.message}`)
-    return false
-  }
-}
-
-const findOneById = function (id = 0) {
-  return new Promise((resolve, reject) => {
+  /**
+   * Insert a single record
+   * 
+   * @param {object} newProfile 
+   * 
+   * @return {boolean} Result of it saving or not
+   */
+  public insertOne(newProfile: any): boolean {
     try {
-      id = new mongoose.Types.ObjectId(id)
+      newProfile.save()
+      return true
     } catch (err) {
-      logger.error(`failed convert ${id} to a mongoose object id`)
+      logger.error(`error saving a profile: ${err.message}`)
       return false
     }
-    ProfileModel.findOne({ _id: id }, function (err, profile) {
-      if (err) {
-        logger.error(`Problem finding a profile: ${err.message}`)
-        resolve(false)
+  }
+
+  /**
+   * Find a profile by the id field
+   * 
+   * The id passed is converted to an object id if it isnt one,
+   * so you dont need to worry about converting or resetting
+   * 
+   * @param {number} id The id of the profile to get
+   * 
+   * @return {Promise} Resolved if found a profile with the profile, rejected for anything else
+   */
+  public findOneById(id: number)  {
+    return new Promise<boolean|object>((resolve, reject) => {
+      try {
+        // if the id isnt already an object id, convert it
+        if (mongoose.Types.ObjectId.isValid(id) === false)
+          id = new mongoose.Types.ObjectId(id)
+      } catch (err) {
+        logger.error(`failed convert ${id} to a mongoose object id`)
+        reject(false)
       }
-      // Check if data was pulled
-      if (!profile) {
-        logger.info(`No profile matched ${id}`)
-        resolve(false)
+      const Model = this.Model()
+      Model.findOne({ _id: id }, (err: any, profile: any) => {
+        if (err) {
+          logger.error(`Problem finding a profile: ${err.message}`)
+          reject(false)
+        }
+        // Check if data was pulled
+        if (!profile) {
+          logger.info(`No profile matched ${id}`)
+          reject(false)
+        }
+        if (profile) {
+          profile = this.validateOutputFields(profile, this.fieldsToExpose)
+          resolve(profile)
+        }
+      })
+    })
+  }
+
+  /**
+   * Delete a profile by their id
+   * 
+   * @param id 
+   */
+  public deleteOneById (id: number) {
+    return new Promise((resolve, reject) => {
+      try {
+        // if the id isnt already an object id, convert it
+        if (mongoose.Types.ObjectId.isValid(id) === false)
+          id = new mongoose.Types.ObjectId(id)
+      } catch (err) {
+        logger.error(`failed convert ${id} to a mongoose object id`)
+        reject(false)
       }
-      if (profile) {
+      // delete profile
+      const Model = this.Model()
+      Model.deleteOne({ _id: id }, function (err: any) {
+        if (err) {
+          logger.error(err)
+          reject(false)
+        }
+        resolve(true)
+      })
+    })
+  }
+
+  /**
+   * Find 10 profiles
+   * 
+   * @return {promise} Resolved for profiles, rejected for anything else
+   */
+  public findTen () {
+    return new Promise<object|boolean>((resolve, reject) => {
+      logger.debug('Going to find ten profiles')
+      const Model = this.Model()
+      Model.find({}).sort({'date': -1}).limit(10).exec((err: any, profiles: any) => {
+        if (err) {
+          logger.error(`Problem finding a profile: ${err.message}`)
+          reject(false)
+        }
+        logger.info('Resolving profiles from the findTen method')
+        profiles = this.validateOutputFields(profiles, this.fieldsToExpose)
+        resolve(profiles)
+      })
+    })
+  }
+
+  /**
+   * Get a profile by a name
+   * 
+   * @param {string} name Name of the profile to find 
+   * 
+   * @return {promise} Resolved if found, rejected if not
+   */
+  public getOneByName (name: string) {
+    return new Promise((resolve, reject) => {
+      const Model = this.Model()
+      Model.findOne({name: name}, (err: any, profile: any) => {
+        if (err) {
+          logger.error(err)
+          reject(false)
+        }
+        profile = this.validateOutputFields(profile, this.fieldsToExpose)
         resolve(profile)
-      }
+      })
     })
-  })
+  }
 }
 
-const findTen = function () {
-  return new Promise((resolve, reject) => {
-    logger.debug('Going to find ten profiles')
-    ProfileModel.find({}).sort({'date': -1}).limit(10).exec(function (err, profiles) {
-      if (err) {
-        logger.error(`Problem finding a profile: ${err.message}`)
-        resolve(false)
-      }
-      logger.info('Resolving profiles from the findTen method')
-      resolve(profiles)
-    })
-  })
-}
-
-const deleteOneById = function (id) {
-  return new Promise((resolve, reject) => {
-    // delete profile
-    ProfileModel.deleteOne({ _id: id }, function (err) {
-      if (err) {
-        logger.error(err)
-        resolve(false)
-      }
-      resolve(true)
-    })
-  })
-}
-
-const getOneByName = function (name) {
-  return new Promise((resolve, reject) => {
-    ProfileModel.findOne({name: name}, (err, profile) => {
-      resolve(profile)
-    })
-  })
-}
-
-module.exports = {
-  create: create,
-  findOneById: findOneById,
-  findTen: findTen,
-  deleteOneById: deleteOneById,
-  save: save,
-  getOneByName: getOneByName
-}
+module.exports = ProfileModel
