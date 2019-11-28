@@ -8,6 +8,8 @@ require('dotenv').config()
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const logger = require('./helpers/logger')
+const path = require('path')
+const rootDir = '/var/www/juanportal'
 
 /**
  * Server

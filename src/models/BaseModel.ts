@@ -1,4 +1,9 @@
-class BaseModel {
+interface I {
+    validateOutputFields(model: any, fieldsToExpose: string[]): Function,
+    validateInputFields (model: any): Function
+}
+
+class BaseModel implements I {
 
     /**
    * Validate object properties against the schema before submitting to the database
@@ -7,7 +12,7 @@ class BaseModel {
    * 
    * @return {object|undefined} Set to undefined if no errors
    */
-  protected validateInputFields (model: any): any {
+  public validateInputFields (model: any): any {
     return model.validateSync()
   }
 
@@ -23,7 +28,7 @@ class BaseModel {
    * 
    * @return {object} The same passed in model but stripping the non-exposable fields
    */
-  protected validateOutputFields (model: any, fieldsToExpose: string[]): any {
+  public validateOutputFields (model: any, fieldsToExpose: string[]): any {
     Object.keys(model).forEach((profileProp) => {
       fieldsToExpose.forEach((field) => {
         if (profileProp !== field) // remove the key from the object as we dont want toe xpose it

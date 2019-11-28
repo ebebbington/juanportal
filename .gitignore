@@ -11,3 +11,4 @@ src/interfaces/models/*.js
 src/interfaces/controllers/*.js
 src/models/*.js
 src/controllers/*.js
+src/helpers/*.js

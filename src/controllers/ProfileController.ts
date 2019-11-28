@@ -88,7 +88,8 @@ class ProfileController {
    * @return response
    */
   public static get (req: any, res: any, next: any) {
-    ProfileModel.findOneById(req.query.id).then((profile: any) => {
+    const Profile = new ProfileModel
+    Profile.findOneById(req.query.id).then((profile: any) => {
       if (!profile) {
         logger.error('couldnt find a single profile')
         res.status(404)
@@ -115,27 +116,40 @@ class ProfileController {
    */
   public static post (req: any, res: any) {
     const Image = new ImageHelper;
-    const imageFileName = Image.createNewFilename(req.file.originalname)
-    const Profile = new ProfileModel(req.body.name, req.body.description, req.file.originalname)
-    const validationErrors = Profile.validate()
-    const saved = Profile.createOne()
-    const newProfile = ProfileModel.create(
-        req.body.name,
-        req.body.description,
-        '/public/images/' + imageFileName
-    );
-    // save profile and image
-    const hasSaved: boolean = ProfileModel.save(newProfile)
-    if (!hasSaved) {
-      logger.debug('User couldnt save')
-      res.status(500)
-      return res.render('error', {title: 500})
+    // generate a new file name regardless if one was passed
+    let imageFileName: string = 'sample.jpg'
+    if (req.file) {
+      imageFileName =  req.file.originalname
     }
-    if (hasSaved) {
+    imageFileName = Image.createNewFilename(imageFileName)
+    const Profile = new ProfileModel({
+      name: req.body.name, 
+      description: req.body.description, 
+      image: '/public/images/' + imageFileName
+    })
+    logger.debug(Profile)
+    const newProfile = Profile.create()
+    logger.debug(newProfile)
+    // save profile and image
+    const validationErrors = Profile.validateInputFields(newProfile)
+    if (validationErrors) {
+      logger.error(validationErrors)
+      return res.status(400).send({error: validationErrors})
+    }
+    const saved = Profile.insertOne(newProfile)
+    if (!saved) {
+      logger.err('didnt save a profile')
+      return res.status(500).send({error: 'idk'})
+    }
+    if (saved) {
       logger.debug('User saved to database, saving to file system')
-      if (Image.saveToFS(imageFileName, req.file)) {
+      const filesaved = Image.saveToFS(imageFileName, req.file)
+      logger.debug(['status of filesaved', filesaved])
+      if (filesaved === true) {
+        logger.debug('FILE DIDSAVE')
           res.redirect('/')
       } else {
+        logger.debug('FILE DID NOT SAVE')
           return res.status(500).send({error: 'problem saving he supplied image'})
       }
     }

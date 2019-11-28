@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = __importDefault(require("fs"));
 var _ = require('lodash');
+var logger = require('./logger');
 var ImageHelper = /** @class */ (function () {
     function ImageHelper() {
     }
@@ -23,29 +24,38 @@ var ImageHelper = /** @class */ (function () {
         return ext ? '.' + ext : '.jpg';
     };
     ImageHelper.prototype.saveToFS = function (filename, file) {
+        var _this = this;
         // Save the image if we have one
         var rootDir = '/var/www/juanportal/public/images/';
         if (file) {
+            logger.debug('file has been passed in');
             try {
                 fs_1.default.createWriteStream(rootDir + filename).write(file.buffer);
+                return this.existsOnFS(filename);
                 // then check it actually saved
             }
             catch (e) {
                 logger.error(e);
+                return false;
             }
         }
         // Else just copy the default image
         if (!file) {
+            logger.debug('no file was passed in');
             fs_1.default.copyFile(rootDir + 'sample.jpg', rootDir + filename, function (err) {
                 if (err) {
+                    logger.debug('error when saving a copy');
                     logger.error(err.message);
                 }
+                return _this.existsOnFS(filename);
             });
         }
-        return this.existsOnFS(filename);
     };
     ImageHelper.prototype.existsOnFS = function (name) {
-        var fullPath = 'var/www/juanportal/public/images/' + name;
+        logger.debug(['file name to check if exists', name]);
+        var fullPath = '/var/www/juanportal/public/images/' + name;
+        logger.debug(fullPath);
+        logger.debug(fs_1.default.existsSync(fullPath));
         return fs_1.default.existsSync(fullPath);
     };
     ImageHelper.prototype.generateRandomName = function () {

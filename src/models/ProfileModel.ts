@@ -7,7 +7,7 @@ import { FILE } from "dns";
 const mongoose = require('mongoose')
 const logger = require('../helpers/logger')
 const util = require('util')
-const BaseModel = require('BaseModel.js')
+const BaseModel = require('/var/www/juanportal/models/BaseModel')
 const BaseModelInterface = require('../interfaces/models/BaseModelInterface')
 
 //
@@ -21,6 +21,40 @@ interface testa {
   test: Function
 }
 
+const Schema = new mongoose.Schema({
+  'name': {
+    type: String,
+    required: [true, 'Name has not been supplied'],
+    minlength: [2, 'Name is too short and should be at least 2 characters in length'],
+    maxlength: [140, 'Name is too long and should not exceed 140 characters'],
+    validate: {
+      validator: function (v) {
+        return /.+[^\s]/.test(v)
+      },
+      message: props => `${props.value} is not set`
+    }
+  },
+  'description': {
+    type: String,
+    required: false,
+    maxlength: [400, 'Description is too long and should not exceed 400 characters']
+  },
+  'image': {
+    type: String,
+    required: true,
+    lowercase: true,
+    validate: {
+      validator: function (v) {
+        return /\.(jpg|jpeg|JPG|JPEG|png|PNG)$/.test(v)
+      },
+      message: props => `${props.value} is not a valid image extension`
+    },
+    minlength: [5, 'Image name is to small, therefore not a valid name'] //eg z.png
+  }
+}, {timestamps: true})
+
+const Document = mongoose.model('Profile', Schema)
+
 /**
  * 
  * @example
@@ -30,13 +64,15 @@ interface testa {
  *    const ProfileModel = new ProfileModel;
  *    const profile = ProfileMode.find...
  */
-class ProfileModel<BaseModelInterface> extends BaseModel {
+class ProfileModel extends BaseModel {
 
   public name: string
 
   public description: string
 
   public image: string
+
+  private document: any
 
   private readonly tablename: string
 
@@ -53,14 +89,14 @@ class ProfileModel<BaseModelInterface> extends BaseModel {
    * 
    * @param {object} props Contains the name, description and image on register
    */
-  constructor(props: any) {
+  constructor(props: any = {}) {
     super(props)
+    logger.debug(props)
+    this.tablename = 'Profile'
     this.name = props.name
     this.description = props.description
     this.image = props.image
-    this.tablename = 'Profile'
-    if (props)
-      this.create()
+    this.create()
   }
 
   /**
@@ -71,39 +107,39 @@ class ProfileModel<BaseModelInterface> extends BaseModel {
    * 
    * @return {*} mongoose.Schema  The schema for the profile model
    */
-  private Schema (): any {
-    return new mongoose.Schema({
-      'name': {
-        type: String,
-        required: [true, 'Name has not been supplied'],
-        minlength: [2, 'Name is too short and should be at least 2 characters in length'],
-        maxlength: [140, 'Name is too long and should not exceed 140 characters'],
-        validate: {
-          validator: function (v) {
-            return /.+[^\s]/.test(v)
-          },
-          message: props => `${props.value} is not set`
-        }
-      },
-      'description': {
-        type: String,
-        required: false,
-        maxlength: [400, 'Description is too long and should not exceed 400 characters']
-      },
-      'image': {
-        type: String,
-        required: true,
-        lowercase: true,
-        validate: {
-          validator: function (v) {
-            return /\.(jpg|jpeg|JPG|JPEG|png|PNG)$/.test(v)
-          },
-          message: props => `${props.value} is not a valid image extension`
-        },
-        minlength: [5, 'Image name is to small, therefore not a valid name'] //eg z.png
-      }
-    }, {timestamps: true})
-  }
+  // private Schema (): any {
+  //   new mongoose.Schema({
+  //     'name': {
+  //       type: String,
+  //       required: [true, 'Name has not been supplied'],
+  //       minlength: [2, 'Name is too short and should be at least 2 characters in length'],
+  //       maxlength: [140, 'Name is too long and should not exceed 140 characters'],
+  //       validate: {
+  //         validator: function (v) {
+  //           return /.+[^\s]/.test(v)
+  //         },
+  //         message: props => `${props.value} is not set`
+  //       }
+  //     },
+  //     'description': {
+  //       type: String,
+  //       required: false,
+  //       maxlength: [400, 'Description is too long and should not exceed 400 characters']
+  //     },
+  //     'image': {
+  //       type: String,
+  //       required: true,
+  //       lowercase: true,
+  //       validate: {
+  //         validator: function (v) {
+  //           return /\.(jpg|jpeg|JPG|JPEG|png|PNG)$/.test(v)
+  //         },
+  //         message: props => `${props.value} is not a valid image extension`
+  //       },
+  //       minlength: [5, 'Image name is to small, therefore not a valid name'] //eg z.png
+  //     }
+  //   }, {timestamps: true})
+  // }
 
   /**
    * Returns a model baseline
@@ -112,9 +148,9 @@ class ProfileModel<BaseModelInterface> extends BaseModel {
    * 
    * @return {*} Mongoose Model
    */
-  private Model (): any {
-    return mongoose.model(this.tablename, this.Schema())
-  }
+  // private Model (): any {
+  //   return mongoose.model(this.tablename, this.Schema())
+  // }
 
   /**
    * Create a profile model object
@@ -124,8 +160,7 @@ class ProfileModel<BaseModelInterface> extends BaseModel {
    * @return {obejct} The profile model
    */
   private create (): any {
-    const Model = this.Model()
-    const newProfile = new Model({
+    const newProfile = new Document({
       name: this.name,
       description: this.description,
       image: this.image
@@ -170,8 +205,7 @@ class ProfileModel<BaseModelInterface> extends BaseModel {
         logger.error(`failed convert ${id} to a mongoose object id`)
         reject(false)
       }
-      const Model = this.Model()
-      Model.findOne({ _id: id }, (err: any, profile: any) => {
+      Document.findOne({ _id: id }, (err: any, profile: any) => {
         if (err) {
           logger.error(`Problem finding a profile: ${err.message}`)
           reject(false)
@@ -205,8 +239,7 @@ class ProfileModel<BaseModelInterface> extends BaseModel {
         reject(false)
       }
       // delete profile
-      const Model = this.Model()
-      Model.deleteOne({ _id: id }, function (err: any) {
+      Document.deleteOne({ _id: id }, function (err: any) {
         if (err) {
           logger.error(err)
           reject(false)
@@ -224,8 +257,7 @@ class ProfileModel<BaseModelInterface> extends BaseModel {
   public findTen () {
     return new Promise<object|boolean>((resolve, reject) => {
       logger.debug('Going to find ten profiles')
-      const Model = this.Model()
-      Model.find({}).sort({'date': -1}).limit(10).exec((err: any, profiles: any) => {
+      Document.find({}).sort({'date': -1}).limit(10).exec((err: any, profiles: any) => {
         if (err) {
           logger.error(`Problem finding a profile: ${err.message}`)
           reject(false)
@@ -246,8 +278,7 @@ class ProfileModel<BaseModelInterface> extends BaseModel {
    */
   public getOneByName (name: string) {
     return new Promise((resolve, reject) => {
-      const Model = this.Model()
-      Model.findOne({name: name}, (err: any, profile: any) => {
+      Document.findOne({name: name}, (err: any, profile: any) => {
         if (err) {
           logger.error(err)
           reject(false)
