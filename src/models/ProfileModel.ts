@@ -71,10 +71,14 @@ const Document = mongoose.model('Profile', Schema)
  * @author Edward Bebbington
  * 
  * @extends BaseModel
+ *
+ * @property _id
+ * @property name
+ * @property description
+ * @property image
+ *
  * 
  * @method
- * 
- * @property
  * 
  * @example
  *    // When wanting to save a new user
