@@ -1,3 +1,5 @@
+import { promises } from "dns"
+
 const ProfileModel = require('../models/ProfileModel.js')
 const logger = require('../helpers/logger.js')
 const _ = require('lodash')
@@ -115,6 +117,23 @@ class ProfileController {
    * @return response
    */
   public static post (req: any, res: any) {
+    /**
+     * const Profile = new Profile;
+     * const newProfile = Profile.create()
+     * const validationErrors = Profile.validateInsertFields
+     * if (!validationErrors) {
+     *  const saved = Profile.save(newProfile)
+     * }
+     */
+    // const Profile = new ProfileModel
+    // const dummyDatabaseData = {
+    //   name: 'Edward',
+    //   description: 'Edward is 21 years old',
+    //   iShouldntExist: 'i should be here'
+    // }
+    // Profile.fill(dummyDatabaseData)
+    // logger.debug(util.inspect(Profile))
+    // return false
     const Image = new ImageHelper;
     // generate a new file name regardless if one was passed
     let imageFileName: string = 'sample.jpg'
@@ -122,13 +141,12 @@ class ProfileController {
       imageFileName =  req.file.originalname
     }
     imageFileName = Image.createNewFilename(imageFileName)
-    const Profile = new ProfileModel({
+    const Profile = new ProfileModel
+    const newProfile = Profile.create({
       name: req.body.name, 
       description: req.body.description, 
       image: '/public/images/' + imageFileName
     })
-    logger.debug(Profile)
-    const newProfile = Profile.create()
     logger.debug(newProfile)
     // save profile and image
     const validationErrors = Profile.validateInputFields(newProfile)
@@ -162,28 +180,17 @@ class ProfileController {
    * @param {*} next 
    */
   static delete (req: any, res: any, next: any) {
-    ProfileModel.findOneById(req.query.id).then((profile: any) => {
-      if (!profile) {
-        logger.error('couldnt find a profile to delete')
-        res.status(403)
-        return res.render('error', {title: 403})
-      }
-      if (profile) {
-        const id: number = profile._id
-        // delete image
-        ProfileController.deleteImageFromFileSystem(profile.image)
-        // delete profile
-        ProfileModel.deleteOneById(id).then((success: any) => {
-          if (!success) {
-            res.status(500)
-            return res.render('error', {title: 500})
-          }
-          if (success){
-            return res.redirect('/')
-          }
+    const Profile = new ProfileModel
+    Profile.findOneById(req.query.id)
+      .then((profile: any) => {
+        Profile.deleteOneById(profile._id)
+          .then ((result: boolean) => {
+            const Image = new ImageHelper
+            const exists = Image.deleteFromFS(profile.image)
+            logger.debug('exists: ' + exists)
+            res.redirect('/')
         })
-      }
-    })
+      })
   }
 }
 

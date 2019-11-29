@@ -21,6 +21,11 @@ interface testa {
   test: Function
 }
 
+/**
+ * Profile Schema
+ * 
+ * Defines the baseline for the Profile model
+ */
 const Schema = new mongoose.Schema({
   'name': {
     type: String,
@@ -28,10 +33,10 @@ const Schema = new mongoose.Schema({
     minlength: [2, 'Name is too short and should be at least 2 characters in length'],
     maxlength: [140, 'Name is too long and should not exceed 140 characters'],
     validate: {
-      validator: function (v) {
+      validator: function (v: string) {
         return /.+[^\s]/.test(v)
       },
-      message: props => `${props.value} is not set`
+      message: (props: { value: any; }) => `${props.value} is not set`
     }
   },
   'description': {
@@ -44,18 +49,32 @@ const Schema = new mongoose.Schema({
     required: true,
     lowercase: true,
     validate: {
-      validator: function (v) {
+      validator: function (v: string) {
         return /\.(jpg|jpeg|JPG|JPEG|png|PNG)$/.test(v)
       },
-      message: props => `${props.value} is not a valid image extension`
+      message: (props: { value: any; }) => `${props.value} is not a valid image extension`
     },
     minlength: [5, 'Image name is to small, therefore not a valid name'] //eg z.png
   }
 }, {timestamps: true})
 
+/**
+ * Profile Document
+ * 
+ * Creates a model instance of the table schema
+ */
 const Document = mongoose.model('Profile', Schema)
 
 /**
+ * @class ProfileModel
+ * 
+ * @author Edward Bebbington
+ * 
+ * @extends BaseModel
+ * 
+ * @method
+ * 
+ * @property
  * 
  * @example
  *    // When wanting to save a new user
@@ -66,16 +85,44 @@ const Document = mongoose.model('Profile', Schema)
  */
 class ProfileModel extends BaseModel {
 
-  public name: string
+  public _id: number = 0
 
-  public description: string
+  /**
+   * Name field of the profile model
+   * 
+   * @var {string} name
+   */
+  public name: string = ''
 
-  public image: string
+  /**
+   * Description field of the profile model
+   * 
+   * @var {string} description
+   */
+  public description: string = ''
 
-  private document: any
+  /**
+   * Image field of the profile model
+   * 
+   * @var {string} image
+   */
+  public image: string = ''
 
-  private readonly tablename: string
+  /**
+   * The name of the table associated with this model
+   * 
+   * @var {string} tablename
+   */
+  private readonly tablename: string = 'Profile'
 
+  /**
+   * Fields in the database to be assigned to this model
+   * 
+   * Sometimes we dont want to retrieve sensitive data,
+   * this allows us to map database columns to the model
+   * 
+   * @var {string[]} fieldsToExpose
+   */
   private readonly fieldsToExpose: string[] = [
       '_id',
       'name',
@@ -84,20 +131,90 @@ class ProfileModel extends BaseModel {
   ]
 
   /**
-   * Sets the fillable fields if defined, and if so, then
-   * it creates a model to use e.g. when wanting to add a user
+   * The list of database table columns to be assigned to this model
    * 
-   * @param {object} props Contains the name, description and image on register
+   * @var {string[]} fillables
    */
-  constructor(props: any = {}) {
-    super(props)
-    logger.debug(props)
-    this.tablename = 'Profile'
-    this.name = props.name
-    this.description = props.description
-    this.image = props.image
-    this.create()
+  // private fillables: string[] = [
+  //   'name',
+  //   'description',
+  //   'image'
+  // ]
+                                                                                                                                                                                                                                                             
+
+
+  /**
+   * Constructor
+   * 
+   * Can be called without the parameter. If a parameter
+   * is defined, the constructor will find a profile by that id
+   * and return the profile
+   * 
+   * @example
+   *    // Wanting to create a user
+   *    const Profile = new ProfileModel
+   *    Profile.create({params})
+   *    // When getting a user
+   *    const Profile = new Profile(id)
+   * 
+   * @param id The id of the user to find, regardless of it being a mongoose object id or not
+   */
+  constructor (id?: number) {
+    super(id)
+    if (id) {
+      logger.debug('an id was passed in to the profile model constructor')
+      this.findOneById(id)
+    }
+   }
+
+  /**
+  * Fill the model properties with data from the database  
+  * 
+  * @method fill 
+  * 
+  * @param {*} object The object containing the data receieved or sent to the db
+  * 
+  * @return void
+  */
+  private fill (object: any): void {
+    // Loops through array of table columns this model should have
+    this.fieldsToExpose.forEach((field) => {
+      // first check this class has the fillable property
+      if (this.hasOwnProperty(field)) {
+        // Then assign the fillable property with the matching property in the parameter
+        this[field] = object[field]
+      }
+    })
   }
+
+  /**
+   * 
+   */
+  private empty () {
+    this.fieldsToExpose.forEach((field) => {
+      if (this.hasOwnProperty(field)) {
+        switch (typeof this[field]) {
+          case 'string':
+            this[field] = ''
+          case 'number':
+            this[field] = 0
+        }
+      }
+    })
+  }
+
+   public testMethod () {
+     logger.info('I am inside the test method, i have been called')
+   }
+
+   public testPromise () {
+     return new Promise((resolve, reject) => {
+       setTimeout(() => {
+       this.test = 'hello'
+       }, 1000)
+       resolve(true)
+     })
+   }
 
   /**
    * Defines and returns the schema for the Profile model
@@ -157,27 +274,32 @@ class ProfileModel extends BaseModel {
    * 
    * Used to create a model from data to then be saved into the database
    * 
-   * @return {obejct} The profile model
+   * @param {object} data Name, description?, and image location :/public/images/randomname.extension:
+   * 
+   * @return {object} @var Document The profile model
    */
-  private create (): any {
+  public create (data: {name: string, description?: string, image: string}): Document {
+    logger.debug(data)
     const newProfile = new Document({
-      name: this.name,
-      description: this.description,
-      image: this.image
+      name: data.name,
+      description: data.description,
+      image: data.image
     })
+    this.fill(newProfile)
     return newProfile
   }
 
   /**
    * Insert a single record
    * 
-   * @param {object} newProfile 
+   * @param {object} newProfile  The profile document instance holding name, description? and image path
    * 
    * @return {boolean} Result of it saving or not
    */
   public insertOne(newProfile: any): boolean {
     try {
       newProfile.save()
+      this.fill(newProfile)
       return true
     } catch (err) {
       logger.error(`error saving a profile: ${err.message}`)
@@ -194,8 +316,10 @@ class ProfileModel extends BaseModel {
    * @param {number} id The id of the profile to get
    * 
    * @return {Promise} Resolved if found a profile with the profile, rejected for anything else
+   * 
+   * todo :: this is asynchronous so when called from the constructor it needs a .then, find a synchronous method of
    */
-  public findOneById(id: number)  {
+  public async findOneById(id: number): Promise<any>  {
     return new Promise<boolean|object>((resolve, reject) => {
       try {
         // if the id isnt already an object id, convert it
@@ -216,7 +340,7 @@ class ProfileModel extends BaseModel {
           reject(false)
         }
         if (profile) {
-          profile = this.validateOutputFields(profile, this.fieldsToExpose)
+          logger.debug('found a profile')
           resolve(profile)
         }
       })
@@ -224,26 +348,20 @@ class ProfileModel extends BaseModel {
   }
 
   /**
-   * Delete a profile by their id
+   * Delete a profile by their id and empty the properties
    * 
    * @param id 
    */
   public deleteOneById (id: number) {
     return new Promise((resolve, reject) => {
-      try {
-        // if the id isnt already an object id, convert it
-        if (mongoose.Types.ObjectId.isValid(id) === false)
-          id = new mongoose.Types.ObjectId(id)
-      } catch (err) {
-        logger.error(`failed convert ${id} to a mongoose object id`)
-        reject(false)
-      }
+      id = new mongoose.Types.ObjectId(id)
       // delete profile
       Document.deleteOne({ _id: id }, function (err: any) {
         if (err) {
           logger.error(err)
           reject(false)
         }
+        logger.debug('seemed to delete one')
         resolve(true)
       })
     })
@@ -283,8 +401,8 @@ class ProfileModel extends BaseModel {
           logger.error(err)
           reject(false)
         }
-        profile = this.validateOutputFields(profile, this.fieldsToExpose)
-        resolve(profile)
+        this.fill(profile)
+        resolve(true)
       })
     })
   }

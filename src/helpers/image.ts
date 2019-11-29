@@ -38,13 +38,17 @@ class ImageHelper {
         // Else just copy the default image
         if (!file) {
             logger.debug('no file was passed in')
-            fs.copyFile(rootDir + 'sample.jpg', rootDir + filename, (err: any) => {
-                if (err) {
-                    logger.debug('error when saving a copy')
-                    logger.error(err.message)
-                }
-                return this.existsOnFS(filename)
-            })
+            fs.createReadStream(rootDir + 'sample.jpg').pipe(fs.createWriteStream(rootDir + filename))
+            // fs.copyFile(rootDir + 'sample.jpg', rootDir + filename, (err: any) => {
+            //     if (err) {
+            //         logger.debug('error when saving a copy')
+            //         logger.error(err.message)
+            //         return false
+            //     }
+            //     logger.debug('inside the ccopyfil fn, read to check if it exists')
+            //     return this.existsOnFS(filename)
+            // })
+            return this.existsOnFS(filename)
         }
     }
 
@@ -53,7 +57,7 @@ class ImageHelper {
         const fullPath: string = '/var/www/juanportal/public/images/' + name
         logger.debug(fullPath)
         logger.debug(fs.existsSync(fullPath))
-        return fs.existsSync(fullPath)
+        return fs.existsSync(fullPath) ? true : false
     }
 
     private generateRandomName(): string {
@@ -66,7 +70,7 @@ class ImageHelper {
     }
 
     public deleteFromFS(imageName: string): boolean {
-        const pathToImage = '/var/www/juanportal/public/images/' + imageName // image path is: /public/images/...
+        const pathToImage = '/var/www/juanportal' + imageName // image path is: /public/images/...
         // delete image
         try {
             fs.unlinkSync(pathToImage)
@@ -74,6 +78,9 @@ class ImageHelper {
             // but disregard
             logger.error(err)
         }
+        const arr = imageName.split('/')
+        imageName = arr[arr.length - 1]
+        logger.debug('going to check if ' + imageName + ' exists')
         return this.existsOnFS(imageName)
     }
 
