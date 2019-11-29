@@ -72,5 +72,5 @@
       "./types"
     ]
   },
-  "include": ["app.ts", "controllers/ProfileController.ts", "helpers/image.ts", "models/ProfileModel.ts", "models/BaseModel.ts", "interfaces/models/BaseModelInterface.ts"]
+  "include": ["app.ts", "controllers/ProfileController.ts", "helpers/image.ts", "models/ProfileModel.ts", "models/BaseModel.ts", "interfaces/models/BaseModelInterface.ts", "middleware/jwt.ts"]
 }

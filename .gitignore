@@ -12,3 +12,4 @@ src/interfaces/controllers/*.js
 src/models/*.js
 src/controllers/*.js
 src/helpers/*.js
+src/middleware/*.js
