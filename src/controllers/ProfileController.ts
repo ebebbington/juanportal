@@ -10,59 +10,6 @@ const ImageHelper = require('../helpers/image')
 
 class ProfileController {
 
-  /** Get the extension from a file name
-   * 
-   * @param {String} fileName Full original name of the file
-   * @returns {String} The extension if found, else an empty string
-   */
-  private static getFileExtension (fileName: string = ''): string {
-    if (!fileName) {
-      return ''
-    }
-    const extArr = fileName.split('.')
-    const ext = _.last(extArr)
-    return ext ? '.' + ext : ''
-  }
-
-  /**
-   * Generate a random 36 character string
-   * 
-   * @returns {String} A 36 character randomised string
-   */
-  private static generateRandomString (): string {
-    return Math.random().toString(36).substring(2, 8)
-    + Math.random().toString(36).substring(2, 8)
-    + Math.random().toString(36).substring(2, 8)
-    + Math.random().toString(36).substring(2, 8)
-    + Math.random().toString(36).substring(2, 8)
-    + Math.random().toString(36).substring(2, 8)
-  }
-
-  /** Save an image file
-   * 
-   * @param {Object} image The image file from req.file
-   * @param {String} pathAndName Full path and randomised name to save the file
-   * @param {Object} res Response object
-   * @return {void}
-   */
-  private static saveImageToFileSystem (image: any = {}, pathAndName: string = '', res: any) {
-    if (image) {
-      logger.debug(`Saving the image ${pathAndName} to the file system`)
-      fs.createWriteStream(pathAndName).write(image.buffer)
-    }
-    if (!image) {
-      logger.debug(`Copying the sample image file to be saved as ${pathAndName}`)
-      // create a copy of the file
-      const pathToSampleImage: string = '/var/www/juanportal/public/images/sample.jpg'
-      fs.copyFile(pathToSampleImage, pathAndName, (err: any) => {
-        if (err) {
-          logger.error(err.message)
-          return res.status(500).send({error: 'problem saving he supplied image'})
-        }
-      })
-    }
-  }
-
   /** Delete a profiles image from the file system
    * 
    * @param {*} imageName Image name saved with the profile
