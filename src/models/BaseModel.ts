@@ -1,9 +1,23 @@
-interface I {
-    validateOutputFields(model: any, fieldsToExpose: string[]): Function,
-    validateInputFields (model: any): Function
-}
+/**
+ * @class BaseModel
+ * 
+ * @description Every model should extend this as it provides core methods models should use
+ * 
+ * @property {string[]} fieldsToExpose To fill children fields
+ * 
+ * @method validateInputFields Validate a model
+ * @method validateOutputFields Strips unrequired fields from a database document
+ * @method fill Fill the parents properties of a document defined in fieldstoexpose
+ * @method empty Empty the childs properties defined in fieldstoexpose
+ */
+class BaseModel {
 
-class BaseModel implements I {
+  /**
+   * Here to implement the fill method
+   * 
+   * @var {string[]} fieldsToExpose
+   */
+  protected fieldsToExpose: {[key: string]: string[]} = {}
 
     /**
    * Validate object properties against the schema before submitting to the database
@@ -36,6 +50,60 @@ class BaseModel implements I {
       })
     })
     return model
+  }
+
+  /**
+  * Fill the model properties with data from the database  
+  * 
+  * @method fill 
+  * 
+  * @example const Profile = new ProfileModel; const newProfile = Profile.create(...); Profile.insertOne(newProfile);
+  * 
+  * @example From a child function: this.fill(object)
+  * 
+  * @param {*} object The object containing the data receieved or sent to the db
+  * 
+  * @return void
+  */
+  protected fill (object: object): void {
+    // Loops through array of table columns this model should have
+
+    // Method 2 - More suitable for a key value pair for fields to expose
+    Object.keys(object).forEach((propName, propValue) => {
+      if (this.hasOwnProperty(propName)) {
+        // @ts-ignore: Unreachable code error /* TS doesnt like "this[propName]" but it works so ignore it */
+        this[propName] = object[propName]
+      }
+    })
+
+    // Method 1 - this should be used when the fieldstoexpose prop is a string[]
+    // this.fieldsToExpose.forEach((field) => {
+    //   // first check this class has the fillable property
+    //   if (this.hasOwnProperty(field)) {
+    //     // Then assign the fillable property with the matching property in the parameter
+    //     this[field] = object[field]
+    //   }
+    // })
+  }
+
+  /**
+   * Empty the current object of profile fields
+   * 
+   * @method empty
+   * 
+   * @example From a child function: this.empty(this.fieldsToExpose);
+   * 
+   * @param {string[]} childFieldsToExpose The string array property of the child class
+   * 
+   * @return void
+   */
+  protected empty (childFieldsToExpose: string[]): void {
+    childFieldsToExpose.forEach((value: string, index: number) => {
+      if (this.hasOwnProperty(value)) {
+         // @ts-ignore: Unreachable code error
+        this[value] = typeof this[value]
+      }
+    })
   }
 }
 
