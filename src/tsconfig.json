@@ -79,6 +79,7 @@
     "helpers/*.ts",
     "models/*.ts",
     "interfaces/models/*.ts",
-    "middleware/*.ts"
+    "middleware/*.ts",
+    "interfaces/controllers/*.ts"
   ]
 }
