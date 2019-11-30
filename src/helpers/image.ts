@@ -50,6 +50,7 @@ class ImageHelper {
             // })
             return this.existsOnFS(filename)
         }
+        return false
     }
 
     private existsOnFS(name: string): boolean {
