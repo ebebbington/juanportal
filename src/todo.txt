@@ -1,7 +1,4 @@
-- Refactor and implement interfaces in the respectivve folder
-- Investigate usage of files inside the data dir
 - Refactor routing for profile, in the sense of thinking better route names, and how to add params
 - refactor the public dir
 - complete tests
 - correct views
-- look into if bin/www is needed anymore
