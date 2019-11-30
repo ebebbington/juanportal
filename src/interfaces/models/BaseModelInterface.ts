@@ -1,5 +1,10 @@
+/**
+ * Interface for each model
+ * 
+ * Must implement the following 
+ */
 interface BaseModelInterface {
-    Schema(): Function,
-    Model(): Function,
-    create(): Function
+    create(data: object): Document,
+    readonly fieldsToExpose: string[],
+    readonly tablename: string
 }
