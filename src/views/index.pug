@@ -1,6 +1,7 @@
 extends layout
 block append header
     link(rel="stylesheet", href="/public/stylesheets/index.css")
+    script(src="/public/javascripts/index.js")
 block content
     // Main content
     .container
@@ -20,8 +21,8 @@ block content
                 .person.well
                     .col-xs-4.col-sm-4.col-md-4
                         img.image(alt="Image of user", src=`${person.image}`)
-                        a.view-profile.profile-actions(href=`/profile?id=${person._id}`) View Profile
-                        a.delete-profile.profile-actions(href=`/profile/delete?id=${person._id}`) Delete Profile
+                        a.view-profile.profile-actions(href=`/profile/id/${person._id}`) View Profile
+                        button.delete-profile.profile-actions(data-id=`${person._id}`) Delete Profile
                     .col-xs-8.col-sm-8.col-sm-8
                         h2.person-name #{person.name}
                 br
