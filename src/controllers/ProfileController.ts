@@ -5,7 +5,7 @@ const logger = require('../helpers/logger.js')
 const _ = require('lodash')
 const fs = require('fs')
 const util = require('util')
-const ImageHelper = require('../helpers/image')
+const ImageHelper = require('../helpers/ImageHelper')
 
 /**
  * @class ProfileController
