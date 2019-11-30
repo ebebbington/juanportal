@@ -1,4 +1,4 @@
-import {promises} from "dns"
+import {promises, resolveSoa} from "dns"
 
 const ProfileModel = require('../models/ProfileModel.js')
 const logger = require('../helpers/logger.js')
@@ -6,6 +6,8 @@ const _ = require('lodash')
 const fs = require('fs')
 const util = require('util')
 const ImageHelper = require('../helpers/ImageHelper')
+import express from 'express'
+import {BaseControllerInterface} from '../interfaces/controllers/BaseControllerInterface'
 
 /**
  * @class ProfileController
@@ -15,12 +17,13 @@ const ImageHelper = require('../helpers/ImageHelper')
  * @method get
  * @method post
  * @method delete
+ * @method update
  *
  * @example
  *    const ProfileController = require('...ProfileController')
  *    ProfileController.get
  */
-class ProfileController {
+class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC METODS IN AN INTERFACE
 
     /**
      * Get a single profile matching an id
@@ -30,7 +33,7 @@ class ProfileController {
      * @param {*} next
      * @return response
      */
-    public static get(req: any, res: any, next: any) {
+    public static get(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): void {
         const Profile = new ProfileModel;
         Profile.findOneById(req.query.id)
             .then((profile: any) => {
@@ -63,11 +66,13 @@ class ProfileController {
      * @param {*} res
      * @return response
      */
-    public static post(req: any, res: any) {
+    public static post(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): void {
         const Image: any = new ImageHelper;
         // generate a new file name regardless if one was passed
         let imageFileName: string = 'sample.jpg'
+        // @ts-ignore: Unreachable code error
         if (req.file) {
+            // @ts-ignore: Unreachable code error
             imageFileName = req.file.originalname
         }
         imageFileName = Image.createNewFilename(imageFileName)
@@ -91,6 +96,7 @@ class ProfileController {
         }
         if (saved) {
             logger.debug('User saved to database, saving to file system')
+            // @ts-ignore: Unreachable code error
             const fileSaved: boolean = Image.saveToFS(imageFileName, req.file)
             logger.debug(['status of filesaved', fileSaved])
             if (fileSaved) {
@@ -110,7 +116,7 @@ class ProfileController {
      * @param {*} next
      * @return response
      */
-    public static delete(req: any, res: any, next: any) {
+    public static delete(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): void {
         const Profile: any = new ProfileModel
         Profile.findOneById(req.query.id)
             .then((profile: any) => {
@@ -119,7 +125,7 @@ class ProfileController {
                         const Image = new ImageHelper
                         const exists = Image.deleteFromFS(profile.image)
                         logger.debug('exists: ' + exists)
-                        res.redirect('/')
+                        return res.redirect('/')
                     })
                     .catch((err: any) => {
                         logger.error(err)
@@ -130,6 +136,10 @@ class ProfileController {
                 logger.error(err)
                 return res.status(500).render('error', {title: 500})
             })
+    }
+
+    public static update(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): void {
+        
     }
 }
 
