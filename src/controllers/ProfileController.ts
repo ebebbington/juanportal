@@ -34,8 +34,10 @@ class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC 
      * @return response
      */
     public static get(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): void {
+        console.log(req.params)
+        console.log(req.query)
         const Profile = new ProfileModel;
-        Profile.findOneById(req.query.id)
+        Profile.findOneById(req.params.id)
             .then((profile: any) => {
                 if (!profile) {
                     logger.error('couldnt find a single profile')
@@ -118,7 +120,7 @@ class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC 
      */
     public static delete(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): void {
         const Profile: any = new ProfileModel
-        Profile.findOneById(req.query.id)
+        Profile.findOneById(req.params.id)
             .then((profile: any) => {
                 Profile.deleteOneById(profile._id)
                     .then((result: boolean) => {
