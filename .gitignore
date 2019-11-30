@@ -11,4 +11,5 @@ src/interfaces/controllers/*.js
 src/models/*.js
 src/controllers/*.js
 src/helpers/ImageHelper.js
+src/helpers/MailHelper.js
 src/middleware/*.js
