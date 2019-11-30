@@ -2,7 +2,10 @@ const jwt = require('jsonwebtoken');
 const {privateKey} = require('../juanportal.config.js')
 const logger = require('../helpers/logger');
 
-const options: object = {
+const options: {
+    expiresIn: string,
+    algorithm: string
+} = {
     expiresIn: '1h',
     algorithm: 'HS256' //RS256 was broken
 }
@@ -28,8 +31,8 @@ class Authentication {
      * 
      * @return {void|res} Void when accepted, or render error when not
      */
-    public static checkToken (req: any, res: any, next: Function) {
-        const tokenHeader = req.headers['x-access-token'] || req.headers['authorisation'] || req.headers['authorization']
+    public static checkToken (req: any, res: any, next: Function): void|Response {
+        const tokenHeader: string = req.headers['x-access-token'] || req.headers['authorisation'] || req.headers['authorization']
         const bearer: string[] = tokenHeader.split(' ')
         const token: string = bearer[1]
         // Will throw an error if it cannot vertify the token
