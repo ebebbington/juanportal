@@ -29,5 +29,8 @@
     "types": "^0.1.1",
     "typescript": "^3.7.2",
     "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "chai-files": "^1.4.0"
   }
 }
