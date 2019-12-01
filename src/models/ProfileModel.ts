@@ -45,6 +45,20 @@ const Schema = new mongoose.Schema({
     minlength: [5, 'Image name is to small, therefore not a valid name'] //eg z.png
   }
 }, {timestamps: true})
+
+// Schema.pre('save', function (next: any)  {
+//   const self: any = this
+//   Document.findOne({name: self.name}, function (err: any, profile: any) {
+//     console.log(err)
+//     console.log(profile)
+//     if (!profile) {
+//       next() 
+//     } else {
+//       logger.error('user already exists')
+//       console.log('inside save vlidation schema')
+//     }
+//   })
+// })
 /**
  * Profile Document
  * 
@@ -72,6 +86,7 @@ const Document = mongoose.model('Profile', Schema)
  * @method deleteOneById Delete a profile by their id
  * @method findTen Find the top 10 profiles
  * @method getOneByName Get a profile by their name  
+ * @method deleteManyById Delete all profiles by id
  * 
  * @method fill Fill this object with database data
  * @method empty Empty this object       
@@ -248,6 +263,33 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
   }
 
   /**
+   * Delete profiles by their id and empty the properties
+   * 
+   * @method deleteManyById
+   * 
+   * @example Profile.deleteManyById(id).then((success) => { console.log(`User deleted: ${success}`)})
+   * 
+   * @param {number} id Id of the profile to delete
+   * 
+   * @return {Promise} False or true, depending on the success
+   */
+  public deleteManyById (id: number) {
+    return new Promise((resolve, reject) => {
+      id = new mongoose.Types.ObjectId(id)
+      // delete profile
+      Document.deleteMany({ _id: id }, (err: any) => {
+        if (err) {
+          logger.error(err)
+          reject(false)
+        }
+        this.empty(this.fieldsToExpose)
+        logger.debug('seemed to delete many')
+        resolve(true)
+      })
+    })
+  }
+
+  /**
    * Find 10 profiles
    * 
    * @return {promise} Resolved for profiles, rejected for anything else
@@ -281,9 +323,12 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
           logger.error(err)
           reject(false)
         }
+        if (!profile) {
+          resolve(false)
+        }
         this.empty(this.fieldsToExpose)
         this.fill(profile)
-        resolve(true)
+        resolve(profile)
       })
     })
   }
