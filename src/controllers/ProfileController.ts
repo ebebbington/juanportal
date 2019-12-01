@@ -103,7 +103,7 @@ class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC 
             logger.debug(['status of filesaved', fileSaved])
             if (fileSaved) {
                 logger.debug('FILE DIDSAVE')
-                res.redirect('/')
+                res.status(200).redirect('/')
             } else {
                 logger.debug('FILE DID NOT SAVE')
                 return res.status(500).render('error', {title: 500})
