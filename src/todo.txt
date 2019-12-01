@@ -1,4 +1,6 @@
-- Refactor routing for profile, in the sense of thinking better route names, and how to add params
-- refactor the public dir
 - complete tests
-- correct views
+- Client side
+    - Redesign views
+    - Create components in react
+    - Restyle using current stylesheets
+    - Vetter implement js file for adding a profile and delete handler
