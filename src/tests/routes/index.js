@@ -14,6 +14,7 @@ describe('Index Route', () => {
       .get('/')
       .end((err, res) => {
         expect(res.status, 200)
+        expect(err).to.equal(null)
         done();
       });
   })
