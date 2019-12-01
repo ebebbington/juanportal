@@ -8,6 +8,7 @@ const util = require('util')
 const ImageHelper = require('../helpers/ImageHelper')
 import express from 'express'
 import {BaseControllerInterface} from '../interfaces/controllers/BaseControllerInterface'
+import { endianness } from "os"
 
 /**
  * @class ProfileController
@@ -88,8 +89,11 @@ class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC 
         // save profile and image
         const validationErrors: any = Profile.validateInputFields(newProfile)
         if (validationErrors) {
-            logger.error(validationErrors)
-            return res.status(400).render('error', {title: 400})
+            const data = {
+                success: false,
+                message: validationErrors.errors
+            }
+            return res.status(400).json(data).end()
         }
         const saved: boolean = Profile.insertOne(newProfile)
         if (!saved) {
