@@ -1,3 +1,5 @@
+
+
 /**
  * @class BaseModel
  * 
@@ -61,18 +63,21 @@ class BaseModel {
   * 
   * @example From a child function: this.fill(object)
   * 
-  * @param {*} object The object containing the data receieved or sent to the db
+  * @param {object} dbDocument The document retrieved from a database query. When looping through the keys, it turns out
+  *                             the object has hidden properties, hence when we are type hinting so strictly and 
+  *                             looking inside the '_doc' property
   * 
   * @return void
   */
-  protected fill (object: object): void {
-    // Loops through array of table columns this model should have
-
-    // Method 2 - More suitable for a key value pair for fields to expose
-    Object.keys(object).forEach((propName, propValue) => {
+  protected fill (dbDocument: {$__: any, isNew: any, errors: any, _doc: object, $locals: any}): void {
+    const trueData = dbDocument._doc
+    // Loops through the document properties
+    Object.keys(trueData).forEach((propName, propValue) => {
+      // If the child class has the property
       if (this.hasOwnProperty(propName)) {
+        // Assign it 
         // @ts-ignore: Unreachable code error /* TS doesnt like "this[propName]" but it works so ignore it */
-        this[propName] = object[propName]
+        this[propName] = trueData[propName]
       }
     })
 
