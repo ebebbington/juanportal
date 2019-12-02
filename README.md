@@ -124,3 +124,13 @@ Nginx runs on port 9002, and will proxy pass to the Node container running the a
 
 Mongoseeder will seed the database with the dump from .docker/data/mongo-db-dump
 
+### Including React
+
+* Create a `.tsx` file
+
+* Add in the required code
+
+* Call this file in a script tag inside the body
+
+* Call the react and react-dom files/CDN's inside a script tag inside the header
+

@@ -3,4 +3,4 @@
     - Redesign views
     - Create components in react
     - Restyle using current stylesheets
-    - Vetter implement js file for adding a profile and delete handler
+    - Better implement js file for adding a profile and delete handler

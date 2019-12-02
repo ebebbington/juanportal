@@ -3,14 +3,6 @@ const props = {
     title: 'Some dynamic title'
 }
 
-
-const a: string = 'jj'
-
-interface IGenericForm {
-    exampleProp1?: string,
-    exampleProp2?: string
-}
-
 /**
  * Form
  *
@@ -41,16 +33,17 @@ interface IGenericForm {
  * @method handleClick    Handles click of submit button
  * @method render         Displays the form
  */
-class GenericForm extends React.Component<IGenericForm> {
+interface IProps {
+    exampleProp1?: string,
+}
+class RegisterForm extends React.Component<IProps> {
 
     state: {
-        value: string
-    } = {
-        value: ''
+        value: string,
+        submit: boolean
     }
-    exampleProp1: string
 
-    exampleProp2: string
+    exampleProp1: string
 
     /**
      * Constructor
@@ -60,13 +53,10 @@ class GenericForm extends React.Component<IGenericForm> {
      */
     constructor(props: object) {
         super(props);
-
+        this.state = {value: '', submit: false}
         this.exampleProp1 = this.props.exampleProp1 || ''
-        this.exampleProp2 = this.props.exampleProp2 || ''
-        console.log([this.exampleProp1, this.exampleProp2])
-
         this.handleChange = this.handleChange.bind(this);
-        this.handleClick = this.handleClick.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     /**
@@ -75,6 +65,7 @@ class GenericForm extends React.Component<IGenericForm> {
      * @param event
      */
     handleChange(event: any) {
+        // re renders the element on state change
         this.setState({value: event.target.value});
     }
 
@@ -88,54 +79,65 @@ class GenericForm extends React.Component<IGenericForm> {
         event.preventDefault();
     }
 
+    handleSubmit(event: any) {
+        console.log('Clicked submit!')
+        console.log(this.state)
+        this.setState({submit: true})
+    }
+
+    componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        console.log('Component updated!')
+        if (this.state.submit) {
+            console.log('the submit prop is true!')
+        }
+    }
+
+    /**
+     * This is called when the component is rendered
+     */
+    componentDidMount(): void {
+        console.log('I have been mounted!')
+    }
+
+    /**
+     * Generate the HTML
+     */
     render() {
         return (
-            <form>
+            <form id="form">
                 <legend>Register a Profile</legend>
                 <fieldset>
                     <legend>Information</legend>
                     <div className="notify"></div>
                     <label>
                         Name<label className="required-field">*</label>
-                        <input className="form-control" name="name" placeholder="Jane Doe" type="text"
+                        <input id="name" className="form-control" name="name" placeholder="Jane Doe" type="text"
                                onChange={this.handleChange} required/>
                     </label>
                     <label>
-                        Description<label className="required-field">*</label>
-                        <input className="form-control" name="description" placeholder="I am edward" type="text"
+                        Description
+                        <input className="form-control" name="description" placeholder="My name is Jane Doe, hello!" type="text"
                                onChange={this.handleChange} required/>
                     </label>
                     <label>
-                        Image<label className="required-field">*</label>
-                        <input className="form-control" name="image" placeholder="Enter a password" type="file"
+                        Image
+                        <input className="form-control" name="image" type="file"
                                onChange={this.handleChange} required/>
                     </label>
-                    <button type="button" className="btn btn-primary" onClick={this.handleClick}>Submit</button>
+                    <input type="submit" className="btn btn-primary" onClick={this.handleSubmit} value="Submit"/>
                 </fieldset>
             </form>
         )
     }
 }
 
-// Create a function to wrap up your component
 /**
- * Grab the form component
- *
- * @returns {*}
- * @constructor
+ * Render the element
  */
-// Passing in a property here can be used in the component
-function GetForm() {
-    return (
-        <div>
-            <GenericForm exampleProp1="I am a valid property value!"/>
-        </div>
-    )
-}
-
-// Use the ReactDOM.render to show your component on the browser
 ReactDOM.render(
     // Passing in a property here isn't accessible(?) inside the component
-    <GetForm/>,
+    <RegisterForm
+        exampleProp1="I am a validdd prop val maaan"
+    />,
     document.getElementById('form-container')
 )

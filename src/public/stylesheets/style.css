@@ -3,3 +3,21 @@
     margin-top: 3em;
     margin-bottom: 3em;
 }
+
+form {
+    text-align: center;
+}
+form input {
+    text-align: center;
+    display: block;
+    margin: auto;
+}
+form input[type="submit"] {
+    margin: auto;
+}
+form label.required-field {
+    color: red;
+}
+form fieldset {
+    display: flex;
+}
