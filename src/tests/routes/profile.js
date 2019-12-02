@@ -22,8 +22,8 @@ chai.use(chaiHttp)
 chai.should()
 
 // turn off logging
-logger.info = function (a) {}
-logger.debug = function (e) {}
+// logger.info = function (a) {}
+// logger.debug = function (e) {}
 
 describe('Profile Route', () => {
 
@@ -42,7 +42,8 @@ describe('Profile Route', () => {
    *
    * Test adding a user, which we will also use further down
    */
-  describe('POST /profile/add', () => {
+  describe('POST /profile/add', function () {
+    this.timeout(5000)
   
     it('Should respond with a 200 with valid data', (done) => {
       chai.request(app)
@@ -230,9 +231,88 @@ describe('Profile Route', () => {
   })
 
   describe('DELETE /profile/id/:id', () => {
-    it('Should respond with 200 on valid profile')
-    it('Should not respond with 200 on invalid profile')
-    it('Should have removed the profile')
-    it('Should have removed the file from the filesystem')
+    it('Should respond with 200 on valid profile', async () => {
+      const Profile = new ProfileModel
+      const newProfile = Profile.create({
+        name: newTestProfile.name,
+        image: '/public/images/teeeeet.png'
+      })
+      const saved = Profile.insertOne(newProfile)
+      await Profile.findOneByName(newTestProfile.name)
+      expect(Profile._id).to.exist
+      const id = Profile._id
+      chai.request(app)
+        .delete('/profile/id/' + id)
+        .end(async (err, res) => {
+          expect(res.status).to.equal(200)
+          const json = JSON.parse(res.text)
+          expect(json.success).to.equal(true)
+
+        });
+
+    })
+    it('Should not respond with 404 on invalid profile', (done) => {
+      chai.request(app)
+        .delete('/profile/id/4748745hu4uhg48')
+        .end((err, res) => {
+          expect(res.status).to.equal(404)
+          const json = JSON.parse(res.text)
+          expect(json.success).to.equal(false)
+          done()
+        });
+    })
+    it('Should have removed the profile', async () => {
+      const Profile = new ProfileModel
+      const newProfile = Profile.create({
+        name: newTestProfile.name,
+        image: '/public/images/teeeeet.png'
+      })
+      const saved = Profile.insertOne(newProfile)
+      await Profile.findOneByName(newTestProfile.name)
+      expect(Profile._id).to.exist
+      const id = Profile._id
+      chai.request(app)
+        .delete('/profile/id/' + id)
+        .end(async (err, res) => {
+          expect(res.status).to.equal(200)
+          const json = JSON.parse(res.text)
+          expect(json.success).to.equal(true)
+          await Profile.findOneByName(newTestProfile.name)
+          expect(Profile._id).to.equal('')
+          expect(Profile.name).to.equal('')
+          expect(Profile.description).to.equal('')
+          expect(Profile.name).to.equal('')
+        });
+    })
+    it('Should have removed the file from the filesystem', async () => {
+      const Profile = new ProfileModel
+      const newProfile = Profile.create({
+        name: newTestProfile.name,
+        image: '/public/images/teeeeet.png'
+      })
+      const saved = Profile.insertOne(newProfile)
+      await Profile.findOneByName(newTestProfile.name)
+      expect(Profile._id).to.exist
+      const id = Profile._id
+      chai.request(app)
+        .delete('/profile/id/' + id)
+        .end((err, res) => {
+          expect(res.status).to.equal(200)
+          const json = JSON.parse(res.text)
+          expect(json.success).to.equal(true)
+          const path = '/var/www/juanportal' + Profile.image
+          const exists = fs.existsSync(path)
+          expect(exists).to.equal(false)
+        });
+    })
+
+    afterEach('Remove the test user', async () => {
+      const Profile = new ProfileModel
+      await Profile.findOneByName(newTestProfile.name)
+      const id = Profile._id
+      chai.request(app)
+        .delete('/profile/id/' + id)
+        .end((err, res) => {});
+    })
   })
 })
