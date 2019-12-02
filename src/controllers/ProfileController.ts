@@ -35,7 +35,7 @@ class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC 
      * @param {*} next
      * @return response
      */
-    public static async get(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): void {
+    public static async get(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response) {
         const Profile = new ProfileModel;
         await Profile.findOneById(req.params.id)
         if (Profile.hasOwnProperty('_id') && Profile._id) {
@@ -81,6 +81,7 @@ class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC 
 
         // Check they dont already exist
         const exists = await ProfileModel.existsByName(newProfile.name)
+        console.log(`exists: ${exists}`)
         if (exists === true) {
             const data = {
                 success: false,
@@ -127,7 +128,7 @@ class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC 
      * @param {*} next
      * @return response
      */
-    public static async delete(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): void {
+    public static async delete(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response) {
         const Profile: any = new ProfileModel
         await Profile.findOneById(req.params.id)
         if (!Profile._id) {
