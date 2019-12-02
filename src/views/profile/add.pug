@@ -5,6 +5,7 @@ block content
     // Main content
     div.container
         div.col-xs-12
+            div.form-container
             // (method="post", action="/profile/add", enctype="multipart/form-data")
             form#form(method="post", action="/profile/add", enctype="multipart/form-data" name="add-profile")
                 div
@@ -27,3 +28,12 @@ block content
                 div
                     input#add.btn.btn-secondary(value="Submit", type="submit")
             a(href="/") Home
+
+        div.col-xs-12
+            div#form-container
+        div.col-xs-12
+            div#root
+        div.col-xs-12
+            div#like_button_container
+
+        script(type="text/babel" src="/public/javascripts/components/Form.js")
