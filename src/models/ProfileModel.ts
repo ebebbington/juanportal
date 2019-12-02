@@ -145,6 +145,11 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
       'image'
   ]
 
+  public async test () {
+    const test = await Document.find({})
+    return test
+  }
+
   /**
    * Create a profile model object
    * 
@@ -205,34 +210,31 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * 
    * todo :: this is asynchronous so when called from the constructor it needs a .then, find a synchronous method of
    */
-  public findOneById(id: number): Promise<any>  {
-    return new Promise<boolean|object>((resolve, reject) => {
-      try {
-        // if the id isnt already an object id, convert it
-        if (mongoose.Types.ObjectId.isValid(id) === false)
-          id = new mongoose.Types.ObjectId(id)
-      } catch (err) {
-        logger.error(`failed convert ${id} to a mongoose object id`)
-        reject(false)
-      }
-      Document.findOne({ _id: id }, (err: any, profile: any) => {
+  public async findOneById(id: number): Promise<any>  {
+    try {
+      // if the id isnt already an object id, convert it
+      if (mongoose.Types.ObjectId.isValid(id) === false)
+        id = new mongoose.Types.ObjectId(id)
+        console.log('finished the try')
+    } catch (err) {
+      logger.error(`failed convert ${id} to a mongoose object id`)
+      return false
+    }
+    console.log('at the await')
+    await Document.findOne({ _id: id }, (err: any, profile: any) => {
         if (err) {
           logger.error(`Problem finding a profile: ${err.message}`)
-          reject(false)
         }
         // Check if data was pulled
         if (!profile) {
           logger.info(`No profile matched ${id}`)
-          reject(false)
         }
         if (profile) {
           logger.debug('found a profile')
           this.empty(this.fieldsToExpose)
           this.fill(profile)
-          resolve(profile)
         }
       })
-    })
   }
 
   /**
@@ -289,6 +291,10 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
     })
   }
 
+  public async deleteManyByName (name: string) {
+    await Document.deleteMany({name: name})
+  }
+
   /**
    * Find 10 profiles
    * 
@@ -309,6 +315,11 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
     })
   }
 
+  public static async existsByName (name: string) {
+    const profile = await Document.findOne({name: name})
+    return profile ? true : false
+  }
+
   /**
    * Get a profile by a name
    * 
@@ -316,21 +327,21 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * 
    * @return {promise} Resolved if found, rejected if not
    */
-  public getOneByName (name: string) {
-    return new Promise((resolve, reject) => {
-      Document.findOne({name: name}, (err: any, profile: any) => {
+  public async findOneByName (name: string) {
+      await Document.findOne({name: name}, (err: any, profile: any) => {
         if (err) {
           logger.error(err)
-          reject(false)
         }
-        if (!profile) {
-          resolve(false)
+        if (!err && profile) {
+          this.empty(this.fieldsToExpose)
+          this.fill(profile)
         }
-        this.empty(this.fieldsToExpose)
-        this.fill(profile)
-        resolve(profile)
       })
-    })
+  }
+
+  public async findManyByName (name: string) {
+    const profiles = await Document.find({name: name})
+    return profiles
   }
 }
 
