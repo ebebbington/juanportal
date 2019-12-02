@@ -31,6 +31,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "chai-files": "^1.4.0"
+    "chai-files": "^1.4.0",
+    "sinon": "^7.5.0"
   }
 }
