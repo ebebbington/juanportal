@@ -1,6 +1,6 @@
 extends layout
 block append header
-    link(rel="stylesheet", href="/public/stylesheets/index.css")
+    link(rel="stylesheet", href="/public/stylesheets/profile.css")
     script(src="/public/javascripts/index.js")
 block content
     // Main content
@@ -10,7 +10,7 @@ block content
             #sidebar
                 a.add-profile-link.sidebar-items(href="/profile/add") Add a Profile
         // Brief profiles
-        .col-xs-9.col-sm-9.col-md-9.people
+        .col-xs-9.col-sm-9.col-md-9#profile-container
             // When no profiles exist
             if (!people.length)
                 .well.no-profiles
@@ -18,11 +18,4 @@ block content
                     a.add-profile(href="/profile/add") Why not be the first and add a new profile?
             // When profiles do exist
             each person in people
-                .person.well
-                    .col-xs-4.col-sm-4.col-md-4
-                        img.image(alt="Image of user", src=`${person.image}`)
-                        a.view-profile.profile-actions(href=`/profile/id/${person._id}`) View Profile
-                        button.delete-profile.profile-actions(data-id=`${person._id}`) Delete Profile
-                    .col-xs-8.col-sm-8.col-sm-8
-                        h2.person-name #{person.name}
-                br
+                script(src="/public/javascripts/components/profile.js")
