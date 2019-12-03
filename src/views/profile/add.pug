@@ -1,35 +1,12 @@
 extends ../layout
 block append header
     script(src="/public/javascripts/profile/add.js")
+    link(rel="stylesheet" href="/public/stylesheets/form.css")
 block content
     // Main content
     div.container
-        div.col-xs-12
-            div.form-container
-            // (method="post", action="/profile/add", enctype="multipart/form-data")
-            form#form(method="post", action="/profile/add", enctype="multipart/form-data" name="add-profile")
-                div
-                    p.form-error
-                div
-                    if nameErr
-                        p #{nameErr}
-                    input#name.form-field(type="text", placeholder="name", name="name", size="35", required)
-                br
-                div
-                    if descriptionErr
-                        p #{descriptionErr}
-                    input#description.form-field(type="text", placeholder="description", size="105" name="description")
-                br
-                div
-                    if imageErr
-                        p #{imageErr}
-                    input#image(type="file", name="image")
-                br
-                div
-                    input#add.btn.btn-secondary(value="Submit", type="submit")
-            a(href="/") Home
-
         div.col-xs-6.col-xs-offset-3
             div#form-container
+            a(href="/") Home
 
-        script(type="text/babel" src="/public/javascripts/components/Form.js")
+        script(type="text/babel" src="/public/javascripts/components/form.js")
