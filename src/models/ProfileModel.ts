@@ -207,8 +207,6 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * @param {number} id The id of the profile to get
    * 
    * @return {Promise} Resolved if found a profile with the profile, rejected for anything else
-   * 
-   * todo :: this is asynchronous so when called from the constructor it needs a .then, find a synchronous method of
    */
   public async findOneById(id: number): Promise<any>  {
     try {
