@@ -93,10 +93,22 @@ class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC 
         // Validate
         const validationErrors: any = Profile.validateInputFields(newProfile)
         if (validationErrors) {
+            const errors = validationErrors.errors
+
+            const props: any = Object.keys(errors)
+            const fieldName: string = props[0]
+
+            const message = errors[fieldName].message
+
+            console.log(errors)
+            // const message = errors.message || errors.message[0].message
+
             const data = {
                 success: false,
-                message: validationErrors.errors
+                message: message,
+                data: fieldName
             }
+            console.log(data)
             return res.status(400).json(data).end()
         }
 
@@ -113,10 +125,18 @@ class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC 
             logger.debug(['status of filesaved', fileSaved])
             if (fileSaved) {
                 logger.debug('FILE DIDSAVE')
-                res.status(200).redirect('/')
+                const data = {
+                    success: true,
+                    message: 'Saved the profile'
+                }
+                res.status(200).json(data).end()
             } else {
                 logger.debug('FILE DID NOT SAVE')
-                return res.status(500).render('error', {title: 500})
+                const data = {
+                    success: false,
+                    message: 'File did not save'
+                }
+                return res.status(500).json(data).end()
             }
         }
     }
