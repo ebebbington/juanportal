@@ -1,0 +1,19 @@
+#header{
+    text-align: center;
+    margin-top: 3em;
+    margin-bottom: 3em;
+}
+.sidebar-items, .no-profiles {
+    font-size: 1.2em;
+    text-align: center;
+    display: block;
+    margin-top: 0.5em;
+}
+
+#sidebar {
+    display: inline-block;
+}
+
+.no-profiles {
+    text-align: center;
+}
