@@ -13,3 +13,4 @@ src/controllers/*.js
 src/helpers/ImageHelper.js
 src/helpers/MailHelper.js
 src/middleware/*.js
+src/public/javascripts/components/*.js
