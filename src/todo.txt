@@ -4,3 +4,4 @@
     - Create components in react
     - Restyle using current stylesheets
     - Better implement js file for adding a profile and delete handler
+    - see how to loop trough data form express to displayt the profile component
