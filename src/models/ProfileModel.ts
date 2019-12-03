@@ -40,7 +40,7 @@ const Schema = new mongoose.Schema({
       validator: function (v: string) {
         return /\.(jpg|jpeg|JPG|JPEG|png|PNG)$/.test(v)
       },
-      message: (props: { value: any; }) => `${props.value} is not a valid image extension`
+      message: (props: { value: any; }) => 'Image does not have a valid extension. Please use: .jpg, .jpeg or .png'
     },
     minlength: [5, 'Image name is to small, therefore not a valid name'] //eg z.png
   }
