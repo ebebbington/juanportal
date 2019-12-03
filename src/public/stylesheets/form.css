@@ -1,0 +1,33 @@
+#form-container > form {
+    text-align: center;
+}
+#form-container > form .field-container > input {
+    text-align: center;
+    display: block;
+    margin: auto;
+    padding: 0.2em;
+}
+#form-container > form label.required-field {
+    color: red;
+}
+#form-container > form label.field-container {
+    margin: 1em 0 1em 0;
+}
+#form-container > form fieldset {
+    display: flex;
+}
+#form-contaner > form input[type="file"] {
+    margin-left: 8.5em;
+}
+#form-container > form .notify {
+    border-radius: 5px;
+    color: white;
+    background: white;
+    padding: 0.2em;
+}
+#form-container > form .notify.success {
+    background: green;
+}
+#form-container > form .notify.error {
+    background: red;
+}
