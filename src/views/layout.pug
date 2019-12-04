@@ -2,6 +2,7 @@ doctype html
 // Responsible for Global stuff such as title and links/scripts, headers etc.
 html
     head
+    block head
         title #{title}
         meta(name="viewport" content="width=device-width, initial-scale=1")
         // jQuery
@@ -19,10 +20,9 @@ html
         // own css
         link(rel="stylesheet", href="/public/stylesheets/layout.css")
     body
-        main
-        block header
-            header#header
-                h1
-                    strong.well #{title}
-                    br
+        header#header
+            h1
+                strong.well #{title}
+                br
+        .container        
         block content
