@@ -1,0 +1,27 @@
+.profile-container {
+
+}
+
+#profile-container .profile > img {
+    max-width: 95%;
+    max-height: 95%;
+    overflow: hidden;
+    border-radius: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+#profile-container .profile{
+    overflow: hidden;
+}
+
+#profile-container .profile > .actions {
+    text-align: center;
+    margin-top: 0.5em;
+    display: block;
+}
+
+#profile-container > .profile > h3 {
+    word-wrap: break-word;
+    text-align: center;
+}

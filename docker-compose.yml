@@ -10,7 +10,7 @@ services:
     ports:
       - "9002:9002"
     volumes:
-      - ./src:/var/www/juanportal
+      - ./src/juanportal:/var/www/juanportal
     working_dir: /var/www/juanportal
     networks:
       - juanportal-network
@@ -21,7 +21,7 @@ services:
       context: .
       dockerfile: .docker/node.dockerfile
     volumes:
-      - ./src:/var/www/juanportal
+      - ./src/juanportal:/var/www/juanportal
     working_dir: /var/www/juanportal
     command: bash -c "npm i --verbose && pm2-runtime ecosystem.config.js"
     networks:
@@ -44,6 +44,18 @@ services:
       dockerfile: .docker/mongo.seeder.dockerfile
     depends_on:
       - mongodb
+    networks:
+      - juanportal-network
+
+  api:
+    container_name: api_node
+    build:
+      context: .
+      dockerfile: .docker/node.dockerfile
+    volumes:
+      - ./src/api:/var/www/api
+    working_dir: /var/www/api
+    command: bash -c "npm i --verbose && pm2-runtime ecosystem.config.js"
     networks:
       - juanportal-network
 

@@ -1,0 +1,28 @@
+doctype html
+// Responsible for Global stuff such as title and links/scripts, headers etc.
+html
+    head
+    block head
+        title #{title}
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        // jQuery
+        script(src="/libs/jquery-3.3.1.min.js")
+        // bootstrap js
+        script(src="/libs/bootstrap.min.js", crossorigin="anonymous")
+        // bootstrap css
+        link(rel="stylesheet", href="/libs/bootstrap.min.css", crossorigin="anonymous")
+        link(rel="shortcut icon", href="/public/images/juanportal-logo.png")
+        script(src="/libs/babel.js")
+        script(src="/libs/react.js")
+        script(src="/libs/react-dom.js")
+        script(src="/libs/typescript.min.js")
+        script(src="/libs/typescript.compile.min.js")
+        // own css
+        link(rel="stylesheet", href="/public/stylesheets/layout.css")
+    body
+        header#header
+            h1
+                strong.well #{title}
+                br
+        .container        
+        block content
