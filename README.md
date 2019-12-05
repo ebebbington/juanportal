@@ -1,11 +1,12 @@
 # JuanPortal
 
-JuanPortal is supposed to replicate (in some sense) a website that holds profiles of people, in which they can add and delete profiles. This utilises saving to a mongoose database, using a templating engine and limiting results. This project was created to help myself understand:
+JuanPortal is supposed to replicate (in some sense) a website that holds profiles of people, in which they can add and delete profiles. This utilises saving to a mongoose database, using a templating engine and limiting results. This project was created to help myself understand and learn the following:
 * HTML
 * CSS
+* JavaScript/jQuery
 * Pug
 * NodeJS
-* ExpressJS
+  * ExpressJS
 * Mongoose
   * Schemas
   * Models
@@ -13,6 +14,32 @@ JuanPortal is supposed to replicate (in some sense) a website that holds profile
   * Seeding
 * NPM
 * PM2
+* React
+* TypeScript
+* RESTful
+
+## Project Overview
+
+This project is split into 2 sections:
+
+### Juanportal
+
+This is the main server, that handles the requests to endpoints, renders views and holds the client data side data (e.g. React components)
+
+* ExpressJS Server
+* TypeScript
+* React Components
+* Pug
+* Client Side Focus
+
+### API
+
+This RESTful API provides the front-end with it's data (the profiles)
+
+* ExpressJS Server
+* TypeScript
+* MongoDB
+* Server Side Focus
 
 ## Prerequisites
 
