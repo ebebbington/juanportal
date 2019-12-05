@@ -52,5 +52,15 @@ describe('Route /profile/view/:id', () => {
                     done();
                 });
         })
+        it('Should have the id as a data attribute in the view', (done) => {
+            const profileId = 44466765
+            chai.request(app)
+            .get(`/profile/view/${profileId}`)
+            .end((err, res) => {
+                const hasDivWithId = res.text.includes(`<div id="profile-id" data-id="${profileId}"></div>`)
+                expect(hasDivWithId).to.equal(true)
+                done();
+            });
+        })
     })
 })
