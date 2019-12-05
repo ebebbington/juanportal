@@ -12,6 +12,12 @@ chai.use(chaiAsPromised)
 chai.should()
 chai.use(chaiHttp)
 
+describe('Route *', () => {
+    describe('JWT', () => {
+        it('Should create a token')
+    })
+})
+
 describe('Route /', () => {
     describe('GET', () => {
         it('Should respond with a 200 status', (done) => {

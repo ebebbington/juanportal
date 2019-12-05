@@ -25,18 +25,31 @@ chai.should()
 // logger.info = function (a) {}
 // logger.debug = function (e) {}
 
-describe('Profile Route w/ Valid Token', () => {
-  describe('GET /profile/count/:count', () => {
-    it('Should respond with a 200 status')
-    it('Should return nothing if count is 0')
-    it('Should respond with the specified number of profiles')
-    it('Should have valid values for each profile')
+describe('Profile Route', () => {
+  describe('With Valid Token', () => {
+    describe('GET /profile/count/:count', () => {
+      it('Should respond with a 200 status', (done) => {
+        chai.request(app)
+          .get('/api/profile/count/5')
+          .end((err, res) => {
+            expect(res.status).to.equal(200)
+          })
+      })
+      it('Should return nothing if count is 0')
+      it('Should respond with the specified number of profiles')
+      it('Should have valid values for each profile')
+    })
+    describe('DELETE /profile/id/:id', () => {
+
+    })
   })
-})
-describe('Profile Route w/o Valid Token', () => {
-  describe('GET /profile/count/:count', () => {
-    it('Should respond with a 403 status')
-    it('Should respond with no data')
+  describe('Without Valid Token', () => {
+    describe('GET /profile/count/:count', () => {
+      it('Should respond with a 200 status')
+      it('Should return nothing if count is 0')
+      it('Should respond with the specified number of profiles')
+      it('Should have valid values for each profile')
+    })
   })
 })
 
