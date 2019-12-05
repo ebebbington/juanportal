@@ -30,6 +30,7 @@ describe('Profile Route w/ Valid Token', () => {
     it('Should respond with a 200 status')
     it('Should return nothing if count is 0')
     it('Should respond with the specified number of profiles')
+    it('Should have valid values for each profile')
   })
 })
 describe('Profile Route w/o Valid Token', () => {

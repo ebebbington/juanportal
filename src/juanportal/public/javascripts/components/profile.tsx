@@ -3,11 +3,9 @@ class Profile extends React.Component {
     state: {
         profiles: [{name: string, description: string, image: string, id: string}],
         hasProfiles: boolean,
-        amountToGet: number
     } = {
         profiles: [{ name: '', description: '', image: '', id: '' }],
-        hasProfiles: false,
-        amountToGet: 0
+        hasProfiles: false
     }
 
     idOfProfileToFind: number = 0
@@ -64,12 +62,9 @@ class Profile extends React.Component {
         }
     }
 
-    componentDidUpdate () {
-        
-    }
-
-    handleDelete (e: any) {
-
+    handleDelete (event: any) {
+        const id: number = parseInt(event.target.dataset.id) || 0
+        console.log(id)
     }
 
     /**
@@ -87,25 +82,6 @@ class Profile extends React.Component {
         }
         if (this.state.hasProfiles === true) {
             const profiles = this.state.profiles
-            console.log(profiles)
-            const domElements = profiles.map((profile) => 
-                <div>
-
-                        <div className="well profile">
-                            <div className="col-xs-4">
-                                <img alt="Image of user" src={profile.image}></img>
-                            </div>
-                            <div className="col-xs-8">
-                                <h3>{profile.name}</h3>
-                                <div className="actions">
-                                    <a className="view" href={`/profile/id/${profile.id}`}>View Profile</a>
-                                    <button className="delete" data-id={profile.id} >Delete Profile</button>
-                                </div>
-                            </div>
-                        </div>
-                 
-                </div>
-            )
             return (
                 <div>
                     {profiles.map((profile: any) => 
@@ -116,7 +92,7 @@ class Profile extends React.Component {
                             <div className="col-xs-8">
                                 <h3>{profile.name}</h3>
                                 <div className="actions">
-                                    <a className="view" href={`/profile/id/${profile._id}`}>View Profile</a>
+                                    <a className="view" href={`/api/profile/id/${profile._id}`}>View Profile</a>
                                     <button className="delete" data-id={profile._id} onClick={this.handleDelete}>Delete Profile</button>
                                 </div>
                             </div>
