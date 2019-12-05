@@ -6,7 +6,7 @@ import {types} from "util";
 
 const mongoose = require('mongoose')
 const logger = require('../helpers/logger')
-const BaseModel = require('/var/www/juanportal/models/BaseModel')
+const BaseModel = require('./BaseModel')
 const BaseModelInterface = require('../interfaces/models/BaseModelInterface')
 
 /**

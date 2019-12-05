@@ -48,7 +48,7 @@ services:
       - juanportal-network
 
   api:
-    container_name: api_node
+    container_name: juanportal_api
     build:
       context: .
       dockerfile: .docker/node.dockerfile

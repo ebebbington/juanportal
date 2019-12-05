@@ -1,7 +1,8 @@
 extends ../layout
 block append head
-    link(rel="stylesheet", href="/public/stylesheets/profile.css")
+    
 block append content
+    div(data-id=`${id}`)
     div.container
         div.profile
             div.col-xs-12

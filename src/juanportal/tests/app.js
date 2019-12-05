@@ -2,7 +2,6 @@ const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
 const app = require('.././app')
-const mongoose = require('mongoose')
 
 const logger = require('../helpers/logger')
 logger.info = function (a) {}
@@ -46,17 +45,6 @@ describe('App', () => {
           found = true
       });
       expect(found).to.equal(true)
-    })
-  })
-  describe('Database', () => {
-    it('Should have connected to the database', () => {
-      expect(mongoose.connection.readyState).to.equal(1)
-    })
-    it('Should successfully disconnect from the database', (done) => {
-      mongoose.connection.close().then(() => {
-        expect(mongoose.connection.readyState).to.equal(0)
-        done()
-      })
     })
   })
   describe('Confirgurations', () => {

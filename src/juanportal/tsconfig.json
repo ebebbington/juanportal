@@ -68,12 +68,8 @@
   },
   "include": [
     "app.ts",
-    "controllers/*.ts",
     "helpers/*.ts",
-    "models/*.ts",
-    "interfaces/models/*.ts",
     "middleware/*.ts",
-    "interfaces/controllers/*.ts",
     "public/javascripts/"
   ]
 }

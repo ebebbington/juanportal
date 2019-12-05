@@ -2,14 +2,11 @@
 // Packages
 // ///////////////////////////////
 import express from 'express'
-const mongoose = require('mongoose')
 const morgan = require('morgan')
 require('dotenv').config()
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const logger = require('./helpers/logger')
-const path = require('path')
-const rootDir = '/var/www/juanportal'
 
 /**
  * Server
@@ -26,20 +23,16 @@ const rootDir = '/var/www/juanportal'
  * @fires     Server#initiateLogging
  * @fires     Server#defineRoutes
  * @fires     Server#configure
- * @fires     Server#instantiateDbConnection
  * 
  * @property  {express.Application}     app             - Express app object
  * @property  {string}                  viewEngine      - View engine to use
  * @property  {string}                  env             - The environment to run in
- * @property  {string}                  dbUrl           - URL of the database to connect to
  * 
  * @function  bootstrap                 - Return an start an instance of the class
  * @function  constructor               - Fires events
  * @function  initiateLogging           - Start HTTP logging
  * @function  defineRoutes              - Set up the routes
  * @function  configure                 - Configure such as view engine
- * @function  instantiateDbConnection   - Create connection to database
- * @function  initiateDbLogging         - Start listening for events on the database and log them
  * 
  * @returns   {ng.auto.IInjectorService} - Returns the newly created injector for this app.
  * 
@@ -70,13 +63,6 @@ class Server {
   private readonly env: string
 
   /**
-   * Url to use when connecting to the mongoose database
-   * 
-   * @var string  private
-   */
-  private readonly dbUrl: string
-
-  /**
    * Bootstrap the application.
    *
    * @class Server
@@ -98,8 +84,6 @@ class Server {
     // define properties
     this.viewEngine = 'pug'
     this.env = process.env.NODE_ENV || ''
-    // this.port = process.env.PORT || 3005
-    this.dbUrl = process.env.DB_URL || ''
     //create expressjs application
     this.app = express();
     //configure application
@@ -108,10 +92,6 @@ class Server {
     this.initiateLogging()
     // setup routes
     this.defineRoutes()
-    // connect to the database
-    this.instantiateDbConnection()
-    // start db logging
-    this.initiateDbLogging()
   }
 
   /**
@@ -162,52 +142,6 @@ class Server {
     const indexRoute = require('./routes/index.js')
     this.app.use('/profile', profileRoute)
     this.app.use('/', indexRoute)
-  }
-
-  /**
-   * Make the connection to the database
-   * 
-   * @class Server
-   * @method instantiateDbConnection
-   * @return {void}
-   */
-  private instantiateDbConnection (): void {
-    mongoose.connect(this.dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
-      .then(() => {
-        if (this.env === 'development') {
-          logger.info('Database connection has opened')
-        } 
-      })
-      .catch((err: any) => {
-        logger.info('Error when making conn to db')
-        logger.error(err)
-      })
-  }
-
-  /**
-   * Start logging database actions
-   *
-   * @class Server
-   * @method initiateDblogging
-   * @return {void}
-   */
-  private initiateDbLogging (): void {
-    mongoose.connection
-        .on('connecting', () => {
-          logger.info('Connecting to the database')
-        })
-        .on('connected', () => {
-          logger.info('Connected to the database')
-        })
-        .on('close', () => {
-          logger.info('Closed the connection to the database')
-        })
-        .on('error', () => {
-          logger.error('Connection error with the database')
-        })
-        .on('disconnected', () => {
-          logger.info('Lost connection with the database')
-        })
   }
 }
 

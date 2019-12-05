@@ -56,13 +56,6 @@ class Server {
   public app: express.Application;
 
   /**
-   * View engine to use
-   * 
-   * @var string  private
-   */
-  private readonly viewEngine: string
-
-  /**
    * Environment to run e.g development, staging
    * 
    * @var string  private
@@ -96,7 +89,6 @@ class Server {
    */
   constructor() {
     // define properties
-    this.viewEngine = 'pug'
     this.env = process.env.NODE_ENV || ''
     // this.port = process.env.PORT || 3005
     this.dbUrl = process.env.DB_URL || ''
@@ -122,9 +114,6 @@ class Server {
    * @return {void}
    */
   private configure (): void {
-    this.app.set('view engine', this.viewEngine) // view engine
-    this.app.set('views', __dirname + '/views') // set dir to look for views
-    this.app.use(express.static(__dirname + '/public')) // serve from public
     this.app.use(cookieParser())
     this.app.use(bodyParser.urlencoded({ extended: false}))
     this.app.use(bodyParser.json())
@@ -158,10 +147,8 @@ class Server {
    * @return {void}
    */
   private defineRoutes (): void {
-    const profileRoute = require('./routes/profile.js')
-    const indexRoute = require('./routes/index.js')
-    this.app.use('/profile', profileRoute)
-    this.app.use('/', indexRoute)
+    const routes = require('./routes/routes.js')
+    this.app.use('/api', routes)
   }
 
   /**

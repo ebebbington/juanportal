@@ -59,12 +59,4 @@ describe('App', () => {
       })
     })
   })
-  describe('Confirgurations', () => {
-    it('Should set the view engine to Pug', () => {
-      expect(app.get('view engine')).to.equal('pug')
-    })
-    it('Should correctly set the views directory', () => {
-      expect(app.get('views')).to.equal('/var/www/juanportal/views')
-    })
-  })
 })
