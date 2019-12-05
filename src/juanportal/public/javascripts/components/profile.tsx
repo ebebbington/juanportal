@@ -3,9 +3,11 @@ class Profile extends React.Component {
     state: {
         profiles: [{name: string, description: string, image: string, id: string}],
         hasProfiles: boolean,
+        viewSingle: boolean
     } = {
         profiles: [{ name: '', description: '', image: '', id: '' }],
-        hasProfiles: false
+        hasProfiles: false,
+        viewSingle: false
     }
 
     idOfProfileToFind: number = 0
@@ -34,7 +36,9 @@ class Profile extends React.Component {
                 dataType: 'json'
             })
             .done((res) => {
-                this.setState({profiles: res, hasProfiles: true})
+                // this.state.profiles must be an array
+                const arr = [res.data]
+                this.setState({profiles: arr, hasProfiles: true, viewSingle: true})
                 return true
             })
             .catch((err) => {
@@ -51,7 +55,7 @@ class Profile extends React.Component {
             })
             .done((res) => {
                 if (res.success === true) {
-                    this.setState({profiles: res.data, hasProfiles: true})
+                    this.setState({profiles: res.data, hasProfiles: true, viewSingle: false})
                     return true
                 }
             })
@@ -62,15 +66,40 @@ class Profile extends React.Component {
         }
     }
 
+    componentDidUpdate () {
+        console.log(this.state)
+    }
+
     handleDelete (event: any) {
-        const id: number = parseInt(event.target.dataset.id) || 0
-        console.log(id)
+        const id: string = event.target.dataset.id || ''
+        $.ajax({
+            method: 'DELETE',
+            url: '/api/profile/id/' + id,
+            dataType: 'json'
+        })
+        .done((res) => {
+            // Check if we are viewing a single profile, to then redirect
+            if (this.state.viewSingle) {
+                window.location.href = '/'
+            }
+            // If we aren't, remove this profile from the DOM
+            if (!this.state.viewSingle) {
+                const topParent = document.querySelector(event.target).closest(`.well.profile`)
+                topParent.remove()
+                return true
+            }
+        })
+        .catch((err) => {
+            console.error(err)
+            return false
+        })
     }
 
     /**
      * Generate the HTML
      */
     render() {
+        // No profiles are currently found
         if (this.state.hasProfiles === false) {
             return (
                 <div className="well profile">
@@ -80,6 +109,7 @@ class Profile extends React.Component {
                 </div>
             )
         }
+        // Display Profiles in the state
         if (this.state.hasProfiles === true) {
             const profiles = this.state.profiles
             return (
@@ -92,7 +122,9 @@ class Profile extends React.Component {
                             <div className="col-xs-8">
                                 <h3>{profile.name}</h3>
                                 <div className="actions">
-                                    <a className="view" href={`/api/profile/id/${profile._id}`}>View Profile</a>
+                                    {this.state.viewSingle === false &&
+                                        <a className="view" href={`/profile/id/${profile._id}`}>View Profile</a>
+                                    }
                                     <button className="delete" data-id={profile._id} onClick={this.handleDelete}>Delete Profile</button>
                                 </div>
                             </div>
@@ -100,7 +132,7 @@ class Profile extends React.Component {
                     )}
                 </div>
             )
-                }    
+        }
     }
 }
 

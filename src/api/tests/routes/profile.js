@@ -33,6 +33,7 @@ describe('Profile Route', () => {
           .get('/api/profile/count/5')
           .end((err, res) => {
             expect(res.status).to.equal(200)
+            done()
           })
       })
       it('Should return nothing if count is 0')

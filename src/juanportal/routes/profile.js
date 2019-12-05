@@ -8,7 +8,7 @@ const multer = require('multer')
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
-app.route('/view/:id')
+app.route('/id/:id')
   //.get(ProfileController.get)
   .get((req, res) => {
     const id = req.params.id

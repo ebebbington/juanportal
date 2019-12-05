@@ -26,6 +26,30 @@ app.route('/profile/count/:count')
     console.log(req.params.count)
   })
 
+app.route('/profile/id/:id')
+.get( async (req, res) => {
+  const id = req.params.id
+  const Profile = new ProfileModel
+  await Profile.findOneById(id)
+  console.log(Profile)
+  if (Profile._id) {
+    const result = {
+      success: true,
+      message: 'Successfully got profile',
+      data: {
+        _id: Profile._id,
+        name: Profile.name,
+        description: Profile.description,
+        image: Profile.image
+      }
+    }
+    return res.status(200).json(result).end()
+  }
+  if (!Profile._id) {
+    return res.status(404).json({success: false, message: 'Couldnt find a profile'}).end()
+  }
+})
+
 // app.route('/id/:id')
 //   .get(ProfileController.get)
 //   .delete(ProfileController.delete)

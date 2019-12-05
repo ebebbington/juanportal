@@ -42,11 +42,11 @@ describe('Route /profile/add', () => {
         })
     })
 })
-describe('Route /profile/view/:id', () => {
+describe('Route /profile/id/:id', () => {
     describe('GET', () => {
         it('Should respond with a 200 status', (done) => {
             chai.request(app)
-                .get('/profile/view/4439034')
+                .get('/profile/id/4439034')
                 .end((err, res) => {
                     expect(res.status).to.equal(200)
                     done();
@@ -55,7 +55,7 @@ describe('Route /profile/view/:id', () => {
         it('Should have the id as a data attribute in the view', (done) => {
             const profileId = 44466765
             chai.request(app)
-            .get(`/profile/view/${profileId}`)
+            .get(`/profile/id/${profileId}`)
             .end((err, res) => {
                 const hasDivWithId = res.text.includes(`<div id="profile-id" data-id="${profileId}"></div>`)
                 expect(hasDivWithId).to.equal(true)

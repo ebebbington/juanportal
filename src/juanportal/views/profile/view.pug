@@ -3,14 +3,28 @@ block append head
     
 block append content
     div#profile-id(data-id=`${id}`)
-    div.container
-        div.profile
-            div.col-xs-12
-                div.col-xs-1
-                    a(href="/") Home
-                div.col-xs-6
-                    img#profile-image(src=`${image}`)
-                div.col-xs-5
-                    h1#profile-name #{name}
-                    h1#profile-description #{description}
-        div
+    div.col-xs-12
+        div.col-xs-2
+            a(href="/") Home
+        div.col-xs-10#profile-container
+        
+
+        script(data-plugins="transform-es2015-modules-umd" type="text/babel" src="/public/javascripts/components/Profile.js")
+            //- // When no profiles exist
+            //- if (!people.length)
+            //-     .well.no-profiles
+            //-         h3 Oh no, there aren't any profiles!
+            //-         a.add-profile(href="/profile/add") Why not be the first and add a new profile?
+            //- // When profiles do exist
+            //- each person in people
+            //-     .well
+            //-         img(src=`${person.image}`)
+            //-         h1 #{person.name}
+        script(data-plugins="transform-es2015-modules-umd" type="text/babel").
+            import Profile from '../public/javascripts/components/Profile.js'
+            const id = $('#profile-id').data('id')
+            console.log(id)
+            ReactDOM.render(
+              <Profile id={id} />,
+              document.getElementById('profile-container')
+            )
