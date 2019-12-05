@@ -69,7 +69,7 @@ class Profile extends React.Component {
             return (
                 <div className="well profile">
                     <h3>Oh no! No profiles were found! Why not
-                        <a> add one?</a>
+                        <a href="/profile/add"> add one?</a>
                     </h3>
                 </div>
             )
