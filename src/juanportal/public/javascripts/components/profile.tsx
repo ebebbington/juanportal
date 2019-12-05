@@ -51,8 +51,10 @@ class Profile extends React.Component {
                 dataType: 'json'
             })
             .done((res) => {
-                this.setState({profiles: res, hasProfiles: true})
-                return true
+                if (res.success === true) {
+                    this.setState({profiles: res.data, hasProfiles: true})
+                    return true
+                }
             })
             .catch((err) => {
                 console.error(err)

@@ -296,19 +296,27 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
   /**
    * Find 10 profiles
    * 
+   * @param {number} amount  The amount of profiles to find
+   * 
    * @return {promise} Resolved for profiles, rejected for anything else
    */
-  public findTen () {
+  public findManyByCount (amount: number) {
     return new Promise<object|boolean>((resolve, reject) => {
-      logger.debug('Going to find ten profiles')
-      Document.find({}).sort({'date': -1}).limit(10).exec((err: any, profiles: any) => {
+      logger.debug('Going to find many profiles')
+      Document.find({}).sort({'date': -1}).limit(amount).exec((err: any, profiles: any) => {
         if (err) {
           logger.error(`Problem finding a profile: ${err.message}`)
           reject(false)
         }
-        logger.info('Resolving profiles from the findTen method')
-        profiles = this.validateOutputFields(profiles, this.fieldsToExpose)
-        resolve(profiles)
+        if (profiles) {
+          logger.info('Resolving profiles from the findManyByCount method')
+          const trimmedProfiles: any = []
+          profiles.forEach((profile: any) => {
+            const validProfile = this.validateOutputFields(profile, this.fieldsToExpose)
+            trimmedProfiles.push(validProfile)
+          });
+          resolve(trimmedProfiles)
+        }
       })
     })
   }
