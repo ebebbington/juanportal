@@ -24,6 +24,7 @@ class Profile extends React.Component {
         super(props);
         this.idOfProfileToFind = props.id || 0
         this.numberOfProfilesToGet = props.count || 0
+        this.handleDelete = this.handleDelete.bind(this)
     }
 
     componentDidMount () {
@@ -63,6 +64,14 @@ class Profile extends React.Component {
         }
     }
 
+    componentDidUpdate () {
+        
+    }
+
+    handleDelete (e: any) {
+
+    }
+
     /**
      * Generate the HTML
      */
@@ -78,9 +87,10 @@ class Profile extends React.Component {
         }
         if (this.state.hasProfiles === true) {
             const profiles = this.state.profiles
-            return (
+            console.log(profiles)
+            const domElements = profiles.map((profile) => 
                 <div>
-                    {profiles.map((profile: any, i: number) => {
+
                         <div className="well profile">
                             <div className="col-xs-4">
                                 <img alt="Image of user" src={profile.image}></img>
@@ -93,7 +103,25 @@ class Profile extends React.Component {
                                 </div>
                             </div>
                         </div>
-                    })}
+                 
+                </div>
+            )
+            return (
+                <div>
+                    {profiles.map((profile: any) => 
+                        <div className="well profile" key={profile._id}>
+                            <div className="col-xs-4">
+                                <img alt="Image of user" src={profile.image}></img>
+                            </div>
+                            <div className="col-xs-8">
+                                <h3>{profile.name}</h3>
+                                <div className="actions">
+                                    <a className="view" href={`/profile/id/${profile._id}`}>View Profile</a>
+                                    <button className="delete" data-id={profile._id} onClick={this.handleDelete}>Delete Profile</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             )
                 }    

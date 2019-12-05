@@ -14,7 +14,7 @@ const upload = multer({ storage: storage })
  */
 app.route('/profile/count/:count')
   .get((req, res) => {
-    const count = req.params.count
+    const count = parseInt(req.params.count)
     const Profile = new ProfileModel
     Profile.findManyByCount(count)
     .then((profiles) => {

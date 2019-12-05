@@ -25,7 +25,6 @@ block append content
             //-         h1 #{person.name}
         script(data-plugins="transform-es2015-modules-umd" type="text/babel").
             import Profile from '../public/javascripts/components/Profile.js'
-            console.log('hello')
             ReactDOM.render(
               <Profile count="5" />,
               document.getElementById('profile-container')
