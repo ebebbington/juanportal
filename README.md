@@ -16,7 +16,7 @@ JuanPortal is supposed to replicate (in some sense) a website that holds profile
 * PM2
 * React
 * TypeScript
-* RESTful
+* RESTful API
 
 ## Project Overview
 
@@ -24,7 +24,7 @@ This project is split into 2 sections:
 
 ### Juanportal
 
-This is the main server, that handles the requests to endpoints, renders views and holds the client data side data (e.g. React components)
+This is the main server, that handles the requests to endpoints, renders views and holds the client side data (e.g. React components)
 
 * ExpressJS Server
 * TypeScript
@@ -40,6 +40,7 @@ This RESTful API provides the front-end with it's data (the profiles)
 * TypeScript
 * MongoDB
 * Server Side Focus
+* MVC Architecture 9request -> route -> controller -> model -> controller -> response)
 
 ## Prerequisites
 
@@ -81,14 +82,29 @@ Finally, go to the website
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
+* Simply use mocha to test the whole `tests` directory in either `juanportal` or `api`
+
+`node_modules/.bin/mocha tests`
+
+* Alternatively you can limit the tests
+
+`node_modules/.bin/mocha tests/app.js`
 
 ### Break down into end to end tests
 
-Explain what these tests test and why
+Currently both `juanportal` and `api` support tests for all routes.
+
+These tests will test every possibility to each endpoint with the expected results e.g
 
 ```
-Give an example
+it('Should respond with a 200 status code', (done) => {
+  chai.use(app)
+    .get('/')
+    .end((err, res) => {
+      expect(res.status).to.equal(200)
+      done()
+    })
+})
 ```
 
 ### And coding style tests
@@ -104,6 +120,9 @@ Give an example
 * [NodeJS](http://www.nodejs.com) - Server Side Language
 * [Nginx](https://nginx.com) - Webserver
 * [Docker](https://docker.com) - Used for Building the Environment
+* [ReactJS](https://reactjs.com) - UI
+* [MongoDB](https://mongodb.com) - Database
+* [TypeScript](https://typescript.com) - Strict Data Types
 
 ## Contributing
 
