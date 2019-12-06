@@ -22,7 +22,7 @@ class ImageHelper {
      * 
      * @param {string} filename The file name with the extension
      * 
-     * @return {string} the new file name
+     * @return {string} the new file name with the extension from the original name
      */
     public createNewFilename(filename: string): string {
         const randomString = this.generateRandomName()
@@ -56,6 +56,10 @@ class ImageHelper {
      * @return {boolean} False if it still exists or an error occured, true if successed
      */
     public saveToFS(filename: string, file: any): boolean {
+        if (!filename) {
+            logger.debug('No filename was passed in to save to fs')
+            return false
+        }
         if (file) {
             logger.debug('file has been passed in')
             try {
