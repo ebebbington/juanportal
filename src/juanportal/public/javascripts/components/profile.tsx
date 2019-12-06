@@ -106,9 +106,14 @@ class Profile extends React.Component {
             })
             .done((res) => {
                 // this.state.profiles must be an array
-                const arr = [res.data]
-                this.setState({profiles: arr, hasProfiles: true, viewSingle: true})
-                return true
+                if (res.success && res.data._id) {
+                    const arr = [res.data]
+                    this.setState({profiles: arr, hasProfiles: true, viewSingle: true})
+                    return true
+                } else {
+                    console.log('Something isnt right...')
+                    console.log(res)
+                }
             })
             .catch((err) => {
                 console.error(err)
@@ -156,30 +161,35 @@ class Profile extends React.Component {
         })
         .done((res) => {
             // remove the profile from this component
-            this.state.profiles.forEach((obj, i) => {
-                if (obj._id === id) {
-                    this.state.profiles.splice(i, 1)
+            if (res.success) {
+                this.state.profiles.forEach((obj, i) => {
+                    if (obj._id === id) {
+                        this.state.profiles.splice(i, 1)
+                    }
+                })
+                // Re declare the state
+                console.log('checking if any profiles exist')
+                const hasProfiles = this.state.profiles.length > 0 ? true : false
+                console.log(hasProfiles)
+                this.setState({profiles: this.state.profiles, hasProfiles: hasProfiles})
+                // Check if we are viewing a single profile, to then redirect
+                if (this.state.viewSingle) {
+                    console.log('redirecting')
+                    window.location.href = '/'
                 }
-            })
-            // Re declare the state
-            console.log('checking if any profiles exist')
-            const hasProfiles = this.state.profiles.length > 0 ? true : false
-            console.log(hasProfiles)
-            this.setState({profiles: this.state.profiles, hasProfiles: hasProfiles})
-            // Check if we are viewing a single profile, to then redirect
-            if (this.state.viewSingle) {
-                console.log('redirecting')
-                window.location.href = '/'
-            }
-            // If we aren't, remove this profile from the DOM
-            if (!this.state.viewSingle) {
-                console.log('removing a profile from the dom')
-                const deleteButton = document.querySelector(`button.delete[data-id="${id}"`)
-                // @ts-ignore
-                const topParent = deleteButton.closest('.well.profile')
-                // @ts-ignore
-                topParent.remove()
-                return true
+                // If we aren't, remove this profile from the DOM
+                if (!this.state.viewSingle) {
+                    console.log('removing a profile from the dom')
+                    const deleteButton = document.querySelector(`button.delete[data-id="${id}"`)
+                    // @ts-ignore
+                    const topParent = deleteButton.closest('.well.profile')
+                    // @ts-ignore
+                    topParent.remove()
+                    return true
+                }
+            } else {
+                console.log('Something isnt right...')
+                console.log(res)
             }
         })
         // 
@@ -216,6 +226,7 @@ class Profile extends React.Component {
                             </div>
                             <div className="col-xs-8">
                                 <h3>{profile.name}</h3>
+                                <p>{profile.description}</p>
                                 <div className="actions">
                                     {this.state.viewSingle === false &&
                                         <a className="view" href={`/profile/id/${profile._id}`}>View Profile</a>

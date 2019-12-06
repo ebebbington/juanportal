@@ -317,6 +317,9 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
           });
           resolve(trimmedProfiles)
         }
+        if (!profiles) {
+          resolve(false)
+        }
       })
     })
   }
