@@ -59,4 +59,10 @@ describe('App', () => {
       })
     })
   })
+  describe('Environment', () => {
+    it('Environment should match the one in the .env file', () => {
+      const env = process.env.NODE_ENV
+      expect(app.settings.env).to.equal(env)
+    })
+  })
 })

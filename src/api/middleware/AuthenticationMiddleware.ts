@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const {privateKey} = require('../juanportal.config.js')
+const {privateKey} = require('../api.config.js')
 const logger = require('../helpers/logger');
 
 const options: {

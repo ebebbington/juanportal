@@ -106,7 +106,7 @@ class BaseModel {
     childFieldsToExpose.forEach((value: string, index: number) => {
       if (this.hasOwnProperty(value)) {
          // @ts-ignore: Unreachable code error
-        this[value] = typeof this[value]
+        this[value] = null
       }
     })
   }

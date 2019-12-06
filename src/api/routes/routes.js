@@ -3,6 +3,7 @@ const router = express.Router()
 const app = express()
 const ProfileController = require('../controllers/ProfileController.js')
 const ProfileModel = require('../models/ProfileModel')
+const logger = require('../helpers/logger')
 
 // For when an image is submited in the form when POSTing a profile
 const multer = require('multer')
@@ -15,8 +16,12 @@ const upload = multer({ storage: storage })
 app.route('/profile/count/:count')
   .get( async (req, res) => {
     const count = parseInt(req.params.count)
+    if (count < 1) {
+      return res.status(400).json({success: false, message: 'Number of requested profiles did not meet the minimum of 1'}).end()
+    }
     const Profile = new ProfileModel
     const profiles = await Profile.findManyByCount(count)
+    logger.debug(profiles)
     if (!profiles) {
       return res.status(404).json({success: false, message: 'No profiles were found'}).end()
     }
@@ -30,7 +35,6 @@ app.route('/profile/id/:id')
     const id = req.params.id
     const Profile = new ProfileModel
     await Profile.findOneById(id)
-    console.log(Profile)
     if (Profile._id) {
       const result = {
         success: true,
@@ -50,6 +54,7 @@ app.route('/profile/id/:id')
   })
   .delete((req, res) => {
     const id = req.params.id
+    console.log(id)
     const Profile = new ProfileModel
     Profile.deleteOneById(id)
     .then((success) => {
@@ -58,9 +63,7 @@ app.route('/profile/id/:id')
       }
     })
     .catch((success) => {
-      if (!success) {
-        return res.status(500).json({success: false, message: 'Failed to delete'}).end()
-      }
+      return res.status(500).json({success: false, message: 'Failed to delete'}).end()
     })
   })
 

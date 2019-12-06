@@ -54,3 +54,5 @@ function onListening() {
         : 'port ' + addr.port
     logger.info('Listening on ' + bind)
 }
+
+module.exports = server

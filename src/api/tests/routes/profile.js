@@ -16,6 +16,9 @@ const multer = require('multer')
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
+logger.debug = function (){}
+logger.info = function (){}
+
 const chaiFile = chaiFiles.file
 chai.use(chaiAsPromised)
 chai.use(chaiHttp)
@@ -36,15 +39,92 @@ describe('Profile Route', () => {
             done()
           })
       })
-      it('Should return nothing if count is 0')
-      it('Should respond with the specified number of profiles if they exist')
-      it('Should have valid values for each profile')
+      it('Should return nothing if count is less than 1', (done) => {
+        chai.request(app)
+          .get('/api/profile/count/0')
+          .end((err, res) => {
+            const json = JSON.parse(res.text)
+            expect(json.success).to.equal(false)
+            expect(res.status).to.equal(400)
+            done()
+          })
+      })
+      it('Should respond with the specified number of profiles if they exist', async () => {
+        // First we are going to get how many profiles exist
+        const Profile = new ProfileModel
+        const numberOfProfilesToFind = 400
+        const profiles = await Profile.findManyByCount(numberOfProfilesToFind)
+        // Check if we got many profiles, else a single profile will be retirved, and as we cant check a length on that, we check the props to determine if even a single result came back
+        const actualNumberOfProfiles = profiles.length || profiles._id ? 1 : 0
+        // then we are going to compare that number with the real result
+        chai.request(app)
+        .get('/api/profile/count/' + numberOfProfilesToFind)
+        .end((err, res) => {
+          const json = JSON.parse(res.text)
+          // So here it's a fix to get the amount of profiles whether an array or single object (one profile) was given back
+          expect(json.data.length || json.data._id ? 1 : 0).to.equal(actualNumberOfProfiles)
+        })
+      })
       it('Should respond with a 404 status on no profiles found')
     })
-    describe('DELETE /profile/id/:id', () => {
-    
+    describe('GET /profile/id/:id', () => {
+      it('Should have valid values for the profile', async () => {
+        const Profile = new ProfileModel
+        await Profile.findOneByName('edward')
+        chai.request(app)
+        .get('/api/profile/id/' + Profile._id)
+        .end((err, res) => {
+          const json = JSON.parse(res.text)
+          expect(json.success).to.equal(true)
+          expect(json.data._id).to.exist
+        })
+      })
+      it('Should respond with 200 on a valid profile', async () => {
+        const Profile = new ProfileModel
+        await Profile.findOneByName('edward')
+        chai.request(app)
+        .get('/api/profile/id/' + Profile._id)
+        .end((err, res) => {
+          expect(res.status).to.equal(200)
+        })
+      })
+      it('Should respond with 404 if no profile was found', (done) => {
+        chai.request(app)
+        .get('/api/profile/id/' + '8949549n848n94n899897b788n8gyhghyi7878')
+        .end((err, res) => {
+          expect(res.status).to.equal(404)
+          expect(JSON.parse(res.text).success).to.equal(false)
+          done()
+        })
+      })
     })
-    describe('POST /profile')
+    describe('DELETE /profile/id/:id', function () {
+      this.timeout(5000)
+      it('Should delete a valid profile', async () => {
+        const Profile = new ProfileModel
+        await Profile.findOneByName('edward')
+        chai.request(app)
+        .delete('/api/profile/id/' + Profile._id)
+        .end((err, res) => {
+          const json = JSON.parse(res.text)
+          expect(res.status).to.equal(200)
+          expect(json.success).to.equal(true)
+        })
+      })
+      it('Should fail on an invalid profile', (done) => {
+        chai.request(app)
+          .delete('/api/profile/id/4h89g58h9g589h89g589hg5h98g598g589h')
+          .end((err, res) => {
+            const json = JSON.parse(res.text)
+            expect(res.status).to.equal(500)
+            expect(json.success).to.equal(false)
+            done()
+          })
+      })
+    })
+    describe('POST /profile', () =>{
+
+    })
 })
 
 // describe('Profile Route', () => {

@@ -8,8 +8,6 @@ require('dotenv').config()
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const logger = require('./helpers/logger')
-const path = require('path')
-const rootDir = '/var/www/juanportal'
 
 /**
  * Server
@@ -127,6 +125,7 @@ class Server {
    * @return {void}
    */
   private initiateLogging (): void {
+    // todo :; add logging for test and production
     this.app.use(morgan('dev', {
       skip: function (req: any, res: any) {
           return res.statusCode < 400

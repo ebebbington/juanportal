@@ -1,7 +1,7 @@
 import fs from 'fs'
 const _ = require('lodash')
 const logger = require('./logger')
-const { imagesDir, rootDir } = require('../juanportal.config.js')
+const { imagesDir, rootDir } = require('../api.config.js')
 
 /**
  * @class ImageHelper
