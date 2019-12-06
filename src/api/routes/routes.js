@@ -49,6 +49,21 @@ app.route('/profile/id/:id')
     return res.status(404).json({success: false, message: 'Couldnt find a profile'}).end()
   }
 })
+.delete((req, res) => {
+  const id = req.params.id
+  const Profile = new ProfileModel
+  Profile.deleteOneById(id)
+  .then((success) => {
+    if (success) {
+      return res.status(200).json({success: true, message: 'Successfully deleted'}).end()
+    }
+  })
+  .catch((success) => {
+    if (!success) {
+      return res.status(500).json({success: false, message: 'Failed to delete'}).end()
+    }
+  })
+})
 
 // app.route('/id/:id')
 //   .get(ProfileController.get)

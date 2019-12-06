@@ -1,3 +1,4 @@
+
 class Profile extends React.Component {
 
     state: {
@@ -28,7 +29,7 @@ class Profile extends React.Component {
     }
 
     componentDidMount () {
-        // Render a single profile by id
+        // Render a single profile by id if requested
         if (this.idOfProfileToFind) {
             $.ajax({
                 method: 'GET',
@@ -46,7 +47,7 @@ class Profile extends React.Component {
                 return false
             })
         }
-        // Render number of profiles to find
+        // Render number of profiles to find if requested
         if (this.numberOfProfilesToGet) {
             $.ajax({
                 method: 'GET',
@@ -84,7 +85,9 @@ class Profile extends React.Component {
             }
             // If we aren't, remove this profile from the DOM
             if (!this.state.viewSingle) {
-                const topParent = document.querySelector(event.target).closest(`.well.profile`)
+                console.log(event)
+                const deleteButton = document.querySelector(`button.delete[data-id="${id}"`)
+                const topParent = deleteButton.closest('.well.profile')
                 topParent.remove()
                 return true
             }
