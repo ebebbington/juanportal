@@ -93,6 +93,10 @@ class Profile extends React.Component {
      * @return {void}
      */
     componentDidMount (): void {
+        // check if any profiles are present to correctly display the UI
+        if (this.state.profiles.length < 1) {
+            this.setState({hasProfiles: false})
+        }
         // Render a single profile by id if requested
         if (this.idOfProfileToFind) {
             $.ajax({
@@ -119,7 +123,8 @@ class Profile extends React.Component {
                 dataType: 'json'
             })
             .done((res) => {
-                if (res.success === true) {
+                if (res.success === true && res.data.length > 0) {
+                    console.log('res is true and daa is pesent')
                     this.setState({profiles: res.data, hasProfiles: true, viewSingle: false})
                     return true
                 }
@@ -157,14 +162,18 @@ class Profile extends React.Component {
                 }
             })
             // Re declare the state
+            console.log('checking if any profiles exist')
             const hasProfiles = this.state.profiles.length > 0 ? true : false
+            console.log(hasProfiles)
             this.setState({profiles: this.state.profiles, hasProfiles: hasProfiles})
             // Check if we are viewing a single profile, to then redirect
             if (this.state.viewSingle) {
+                console.log('redirecting')
                 window.location.href = '/'
             }
             // If we aren't, remove this profile from the DOM
             if (!this.state.viewSingle) {
+                console.log('removing a profile from the dom')
                 const deleteButton = document.querySelector(`button.delete[data-id="${id}"`)
                 // @ts-ignore
                 const topParent = deleteButton.closest('.well.profile')
