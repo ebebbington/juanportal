@@ -153,7 +153,7 @@ class RegisterForm extends React.Component<IThePassedInProps> {
             method: 'post',
             processData: false,
             contentType: false,
-            url: '/profile/add',
+            url: '/profile',
             data: new FormData(form),
             dataType: 'json'
         })

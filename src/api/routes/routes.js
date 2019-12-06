@@ -18,12 +18,61 @@ app.route('/profile/count/:count')
     const Profile = new ProfileModel
     Profile.findManyByCount(count)
     .then((profiles) => {
-      return res.status(200).json({success: true, message: 'Grabbed profiles', data: profiles})
+      if (profiles) {
+        return res.status(200).json({success: true, message: 'Grabbed profiles', data: profiles})
+      }
+      if (!profiles) {
+        return res.status(404).json({success: false, message: 'No profiles were found'}).end()
+      }
     })
     .catch((err) => {
-      return res.status(500).json({success: false, message: 'An error occured'}).end()
+      return res.status(500).json({success: false, message: `An error occured: ${err.message}`}).end()
     })
     console.log(req.params.count)
+  })
+
+app.route('/profile/id/:id')
+  .get( async (req, res) => {
+    const id = req.params.id
+    const Profile = new ProfileModel
+    await Profile.findOneById(id)
+    console.log(Profile)
+    if (Profile._id) {
+      const result = {
+        success: true,
+        message: 'Successfully got profile',
+        data: {
+          _id: Profile._id,
+          name: Profile.name,
+          description: Profile.description,
+          image: Profile.image
+        }
+      }
+      return res.status(200).json(result).end()
+    }
+    if (!Profile._id) {
+      return res.status(404).json({success: false, message: 'Couldnt find a profile'}).end()
+    }
+  })
+  .delete((req, res) => {
+    const id = req.params.id
+    const Profile = new ProfileModel
+    Profile.deleteOneById(id)
+    .then((success) => {
+      if (success) {
+        return res.status(200).json({success: true, message: 'Successfully deleted'}).end()
+      }
+    })
+    .catch((success) => {
+      if (!success) {
+        return res.status(500).json({success: false, message: 'Failed to delete'}).end()
+      }
+    })
+  })
+
+app.route('/profile')
+  .post(upload.single('image'), (req, res) => {
+
   })
 
 // app.route('/id/:id')
