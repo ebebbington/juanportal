@@ -170,8 +170,6 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
       description: data.description,
       image: data.image
     })
-    this.empty(this.fieldsToExpose)
-    this.fill(newProfile)
     return newProfile
   }
 
@@ -215,7 +213,7 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
         id = new mongoose.Types.ObjectId(id)
         console.log('finished the try')
     } catch (err) {
-      logger.error(`failed convert ${id} to a mongoose object id`)
+      logger.error(`failed to convert ${id} to a mongoose object id`)
       return false
     }
     console.log('at the await')
@@ -289,41 +287,35 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
     })
   }
 
+  /**
+   * Delete many profiles by their name
+   * 
+   * @param {string} name Name of the profile to delete 
+   */
   public async deleteManyByName (name: string) {
     await Document.deleteMany({name: name})
   }
 
   /**
-   * Find 10 profiles
+   * Find many profiles by a specified amount
    * 
    * @param {number} amount  The amount of profiles to find
    * 
-   * @return {promise} Resolved for profiles, rejected for anything else
+   * @return {[{}]} Profiles or false if not found any
    */
-  public findManyByCount (amount: number) {
-    return new Promise<object|boolean>((resolve, reject) => {
+  public async findManyByCount (amount: number) {
       logger.debug('Going to find many profiles')
-      Document.find({}).sort({'date': -1}).limit(amount).exec((err: any, profiles: any) => {
-        if (err) {
-          logger.error(`Problem finding a profile: ${err.message}`)
-          reject(false)
-        }
-        if (profiles) {
-          logger.info('Resolving profiles from the findManyByCount method')
-          const trimmedProfiles: any = []
-          profiles.forEach((profile: any) => {
-            const validProfile = this.validateOutputFields(profile, this.fieldsToExpose)
-            trimmedProfiles.push(validProfile)
-          });
-          resolve(trimmedProfiles)
-        }
-        if (!profiles) {
-          resolve(false)
-        }
-      })
-    })
+      const profiles: any = await Document.find({}).sort({'date': -1}).limit(amount).exec()
+      return profiles
   }
 
+  /**
+   * Check if a profile exists by their name
+   * 
+   * @param {string} name Name of the profile to find
+   * 
+   * @return {boolean}
+   */
   public static async existsByName (name: string) {
     const profile = await Document.findOne({name: name})
     return profile ? true : false
@@ -348,6 +340,13 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
       })
   }
 
+  /**
+   * Find many profiles by their name
+   * 
+   * @param name Name of the profiles to find
+   * 
+   * @return {[{}]} Profiles found
+   */
   public async findManyByName (name: string) {
     const profiles = await Document.find({name: name})
     return profiles

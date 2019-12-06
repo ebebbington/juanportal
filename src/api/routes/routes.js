@@ -13,22 +13,16 @@ const upload = multer({ storage: storage })
  * /api/profile/count/:count
  */
 app.route('/profile/count/:count')
-  .get((req, res) => {
+  .get( async (req, res) => {
     const count = parseInt(req.params.count)
     const Profile = new ProfileModel
-    Profile.findManyByCount(count)
-    .then((profiles) => {
-      if (profiles) {
-        return res.status(200).json({success: true, message: 'Grabbed profiles', data: profiles})
-      }
-      if (!profiles) {
-        return res.status(404).json({success: false, message: 'No profiles were found'}).end()
-      }
-    })
-    .catch((err) => {
-      return res.status(500).json({success: false, message: `An error occured: ${err.message}`}).end()
-    })
-    console.log(req.params.count)
+    const profiles = await Profile.findManyByCount(count)
+    if (!profiles) {
+      return res.status(404).json({success: false, message: 'No profiles were found'}).end()
+    }
+    if (profiles) {
+      return res.status(200).json({success: true, message: 'Grabbed profiles', data: profiles})
+    }
   })
 
 app.route('/profile/id/:id')

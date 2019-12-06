@@ -5,3 +5,4 @@
     - Restyle using current stylesheets
     - Better implement js file for adding a profile and delete handler
     - see how to loop trough data form express to displayt the profile component
+    - Profile component: when no profiles are left and count is active, find more
