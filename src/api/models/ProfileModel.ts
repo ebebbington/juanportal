@@ -318,6 +318,8 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    */
   public static async existsByName (name: string) {
     const profile = await Document.findOne({name: name})
+    console.info('showing res from exists function')
+    console.info(profile)
     return profile ? true : false
   }
 

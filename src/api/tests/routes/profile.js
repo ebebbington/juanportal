@@ -24,6 +24,8 @@ chai.use(chaiAsPromised)
 chai.use(chaiHttp)
 chai.should()
 
+
+
 // turn off logging
 // logger.info = function (a) {}
 // logger.debug = function (e) {}
@@ -122,8 +124,130 @@ describe('Profile Route', () => {
           })
       })
     })
-    describe('POST /profile', () =>{
-
+    describe.only('POST /profile', function () {
+      this.timeout(5000)
+      it('Should succedd with valid data, and update the database', (done) => {
+        chai.request(app)
+          .post('/api/profile', upload.single('image'))
+          .field('name', 'king tut')
+          .field('description', 'hello')
+          .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), 'sample.jpg')
+          .end( async (err, res) => {
+            expect(res.status).to.equal(200)
+            const json = JSON.parse(res.text)
+            expect(json.success).to.equal(true)
+            // and as it passes back the immage name
+            expect(json.data).to.exist
+            expect(typeof json.data).to.equal('string')
+            const Profile = new ProfileModel
+            await Profile.findOneByName('king tut')
+            expect(Profile.name).to.equal('king tut')
+            done()
+          });
+      })
+      it('Should fail is the name fails validation', (done) => {
+        chai.request(app)
+          .post('/api/profile', upload.single('image'))
+          .field('name', '')
+          .field('description', 'hello')
+          .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), 'sample.jpg')
+          .end((err, res) => {
+            expect(res.status).to.equal(400)
+            const json = JSON.parse(res.text)
+            expect(json.success).to.equal(false)
+            expect(json.data).to.equal('name')
+            done()
+          });
+      })
+      it('Should pass if no description is given', (done) => {
+        chai.request(app)
+          .post('/api/profile', upload.single('image'))
+          .field('name', 'king tut')
+          .field('description', '')
+          .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), 'sample.jpg')
+          .end( async (err, res) => {
+            expect(res.status).to.equal(200)
+            const json = JSON.parse(res.text)
+            expect(json.success).to.equal(true)
+            // and as it passes back the immage name
+            expect(json.data).to.exist
+            expect(typeof json.data).to.equal('string')
+            const Profile = new ProfileModel
+            await Profile.findOneByName('king tut')
+            expect(Profile.name).to.equal('king tut')
+            done()
+          });
+      })
+      it('Should fail is image fails validation', (done) => {
+        chai.request(app)
+          .post('/api/profile', upload.single('image'))
+          .field('name', 'king tut')
+          .field('description', 'hello')
+          .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), 'sample')
+          .end((err, res) => {
+            expect(res.status).to.equal(400)
+            const json = JSON.parse(res.text)
+            expect(json.success).to.equal(false)
+            // and as it passes back the immage name
+            expect(json.data).to.equal('image')
+            done()
+          });
+      })
+      it('Should pass if no image is given', () => {
+        chai.request(app)
+          .post('/api/profile')
+          .field('name', 'king tut')
+          .field('description', 'hello')
+          .end( async (err, res) => {
+            expect(res.status).to.equal(200)
+            const json = JSON.parse(res.text)
+            expect(json.success).to.equal(true)
+            expect(json.data).to.exist
+            expect(typeof json.data).to.equal('string')
+            const Profile = new ProfileModel
+            await Profile.findOneByName('king tut')
+            expect(Profile.name).to.equal('king tut')
+          });
+      })
+      it('Should fail if the user already exists', (done) => {
+        console.log('posting 1st one')
+        chai.request(app)
+          .post('/api/profile', upload.single('image'))
+          .field('name', 'king tut')
+          .field('description', 'hello')
+          .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), 'sample.jpg')
+          .end( async (err, res) => {
+            expect(res.status).to.equal(200)
+            const json = JSON.parse(res.text)
+            expect(json.success).to.equal(true)
+            // and as it passes back the immage name
+            expect(json.data).to.exist
+            expect(typeof json.data).to.equal('string')
+            const Profile = new ProfileModel
+            await Profile.findOneByName('king tut')
+            expect(Profile.name).to.equal('king tut')
+            console.log('posting 2nd one')
+            chai.request(app)
+              .post('/api/profile', upload.single('image'))
+              .field('name', 'king tut')
+              .field('description', 'hello')
+              .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), 'sample.jpg')
+              .end((err, res) => {
+                expect(res.status).to.equal(400)
+                const json = JSON.parse(res.text)
+                expect(json.success).to.equal(false)
+                done()
+              });
+          });
+      })
+      afterEach('Remove the test user', async () => {
+              const Profile = new ProfileModel
+              await Profile.findOneByName('king tut')
+              const id = Profile._id
+              chai.request(app)
+                .delete('/api/profile/id/' + id)
+                .end((err, res) => {});
+            })
     })
 })
 
