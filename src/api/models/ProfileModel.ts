@@ -167,7 +167,15 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
       description: data.description,
       image: data.image
     })
-    return newProfile
+    const errors = newProfile.validateSync()
+    if (errors) {
+      return errors
+    }
+    if (!errors) {
+      newProfile.save()
+      this.empty(this.fieldsToExpose)
+      this.fill(newProfile)
+    }
   }
 
   /**
