@@ -1,4 +1,6 @@
 import {types} from "util";
+import { pathToFileURL } from "url";
+import e = require("express");
 // import isModuleNamespaceObject = module
 // import validate = WebAssembly.validate;
 // import { Schema } from "inspector";
@@ -145,11 +147,6 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
       'image'
   ]
 
-  public async test () {
-    const test = await Document.find({})
-    return test
-  }
-
   /**
    * Create a profile model object
    * 
@@ -211,26 +208,20 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
       // if the id isnt already an object id, convert it
       if (mongoose.Types.ObjectId.isValid(id) === false)
         id = new mongoose.Types.ObjectId(id)
-        console.log('finished the try')
     } catch (err) {
       logger.error(`failed to convert ${id} to a mongoose object id`)
       return false
     }
-    console.log('at the await')
-    await Document.findOne({ _id: id }, (err: any, profile: any) => {
-        if (err) {
-          logger.error(`Problem finding a profile: ${err.message}`)
-        }
-        // Check if data was pulled
-        if (!profile) {
-          logger.info(`No profile matched ${id}`)
-        }
-        if (profile) {
-          logger.debug('found a profile')
-          this.empty(this.fieldsToExpose)
-          this.fill(profile)
-        }
-      })
+    const profile = await Document.findOne({ _id: id })
+    // check for an empty response
+    if (Array.isArray(profile) && !profile.length) {
+      // empty
+      return false
+    } else {
+      this.empty(this.fieldsToExpose)
+      this.fill(profile)
+      return true
+    }
   }
 
   /**

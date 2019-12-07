@@ -30,7 +30,7 @@ chai.should()
 // logger.info = function (a) {}
 // logger.debug = function (e) {}
 
-describe('Profile Route', () => {
+describe.only('Profile Route', () => {
 
     describe('GET /profile/count/:count', () => {
       it('Should respond with a 200 status', (done) => {
@@ -69,8 +69,8 @@ describe('Profile Route', () => {
       })
       it('Should respond with a 404 status on no profiles found')
     })
-    describe('GET /profile/id/:id', () => {
-      it('Should have valid values for the profile', async () => {
+    describe.only('GET /profile/id/:id', () => {
+      it.only('Should have valid values for the profile', async () => {
         const Profile = new ProfileModel
         await Profile.findOneByName('edward')
         chai.request(app)
