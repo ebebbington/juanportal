@@ -36,7 +36,7 @@ app.route('/profile/id/:id')
     const id = req.params.id
     const Profile = new ProfileModel
     console.log('going to find the profile')
-    await Profile.findOneById(id)
+    const success = await Profile.findOneById(id)
     if (Profile._id) {
       const result = {
         success: true,

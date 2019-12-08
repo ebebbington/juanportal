@@ -216,12 +216,8 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * @return {Promise} Resolved if found a profile with the profile, rejected for anything else
    */
   public async findOneById(id: number): Promise<any>  {
-    try {
-      // if the id isnt already an object id, convert it
-      if (mongoose.Types.ObjectId.isValid(id) === false)
-        id = new mongoose.Types.ObjectId(id)
-    } catch (err) {
-      logger.error(`failed to convert ${id} to a mongoose object id`)
+    id = this.getObjectId(id)
+    if (!id) {
       return false
     }
     const profile = await Document.findOne({ _id: id })
