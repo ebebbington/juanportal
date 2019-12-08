@@ -118,7 +118,7 @@ describe('Profile Model', () => {
             })
             afterEach(() => {
                 const Profile = new ProfileModel
-                Profile.deleteManyByName(profileData.name)
+                Profile.deleteOneByName(profileData.name)
             })
         })
         describe('`findOneById`', function () {
@@ -175,15 +175,12 @@ describe('Profile Model', () => {
                 expect(Profile._id).to.equal('')
             })
         })
-        describe('`deleteManyById`', () => {
-            
-        })
-        describe('`deleteManyByName`', () => {
-           
-        
-        })
         describe('`findManyByCount`', () => {
-
+            it('Should return the number of profiles specified')
+            it('Should fail if no count is specified')
+        })
+        describe('`deleteOneByName`', () => {
+            
         })
         describe('`existsByName`', () => {
 
