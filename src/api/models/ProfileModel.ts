@@ -160,8 +160,7 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * 
    * @return {object} @var Document The profile model
    */
-  public create (data: {name: string, description?: string, image: string}): Document {
-    logger.debug(data)
+  public create (data: {name: string, description?: string, image: string}) {
     const newProfile = new Document({
       name: data.name,
       description: data.description,
@@ -189,17 +188,17 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * 
    * @return {boolean} Result of it saving or not
    */
-  public insertOne(newProfile: any): boolean {
-    try {
-      newProfile.save()
-      this.empty(this.fieldsToExpose)
-      this.fill(newProfile)
-      return true
-    } catch (err) {
-      logger.error(`error saving a profile: ${err.message}`)
-      return false
-    }
-  }
+  // public insertOne(newProfile: any): boolean {
+  //   try {
+  //     newProfile.save()
+  //     this.empty(this.fieldsToExpose)
+  //     this.fill(newProfile)
+  //     return true
+  //   } catch (err) {
+  //     logger.error(`error saving a profile: ${err.message}`)
+  //     return false
+  //   }
+  // }
 
   /**
    * Find a profile by the id field
@@ -329,16 +328,16 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * 
    * @return {promise} Resolved if found, rejected if not
    */
-  public async findOneByName (name: string) {
-      await Document.findOne({name: name}, (err: any, profile: any) => {
-        if (err) {
-          logger.error(err)
-        }
-        if (!err && profile) {
-          this.empty(this.fieldsToExpose)
-          this.fill(profile)
-        }
-      })
+  public async findOneByName (nameOfProfile: string) {
+      const profile = await Document.findOne({name: nameOfProfile})
+      if (Array.isArray(profile) && !profile.length) {
+        // empty
+        return false
+      } else {
+        this.empty(this.fieldsToExpose)
+        this.fill(profile)
+        return true
+      }
   }
 
   /**

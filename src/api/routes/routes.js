@@ -81,16 +81,8 @@ app.route('/profile')
     }
     imageFileName = Image.createNewFilename(imageFileName)
 
-    // Create data
-    const Profile = new ProfileModel
-    const newProfile = Profile.create({
-        name: req.body.name,
-        description: req.body.description,
-        image: '/public/images/' + imageFileName
-    })
-
     // Check they dont already exist
-    const exists = await ProfileModel.existsByName(newProfile.name)
+    const exists = await ProfileModel.existsByName(req.body.name)
     console.log(`exists: ${exists}`)
     if (exists === true) {
         const data = {
@@ -100,10 +92,17 @@ app.route('/profile')
         return res.status(400).json(data).end()
     }
 
-    // Validate
-    const validationErrors = Profile.validateInputFields(newProfile)
-    if (validationErrors) {
-        const errors = validationErrors.errors
+    // Create data
+    const Profile = new ProfileModel
+    const errors = Profile.create({
+        name: req.body.name,
+        description: req.body.description,
+        image: '/public/images/' + imageFileName
+    })
+
+    // Check any vlidtion errors
+    if (errors) {
+        const errors = errors.errors
 
         const props = Object.keys(errors)
         const fieldName = props[0]
@@ -122,34 +121,43 @@ app.route('/profile')
         return res.status(400).json(data).end()
     }
 
-    // Save the user
-    const saved = Profile.insertOne(newProfile)
-    if (!saved) {
-        logger.error('didnt save a profile')
-        return res.status(500).json({succesS: false, message: 'Profile did not save correctly'}).end()
+    // Make sure the profile was added
+    await Profile.findOneByName(req.body.name)
+    if (Profile.name === req.body.name) {
+      logger.debug('User saved to database')
+      return res.status(200).json({success: true, message: 'Saved to the database', data: newProfile.image})
+    } else {
+      logger.error('didnt save a profile')
+      return res.status(500).json({succesS: false, message: 'Profile did not save correctly'}).end()
     }
-    if (saved) {
-        logger.debug('User saved to database')
-        return res.status(200).json({success: true, message: 'Saved to the database', data: newProfile.image})
-        // @ts-ignore: Unreachable code error
-        // const fileSaved = Image.saveToFS(imageFileName, req.file)
-        // logger.debug(['status of filesaved', fileSaved])
-        // if (fileSaved) {
-        //     logger.debug('FILE DIDSAVE')
-        //     const data = {
-        //         success: true,
-        //         message: 'Saved the profile'
-        //     }
-        //     res.status(200).json(data).end()
-        // } else {
-        //     logger.debug('FILE DID NOT SAVE')
-        //     const data = {
-        //         success: false,
-        //         message: 'File did not save'
-        //     }
-        //     return res.status(500).json(data).end()
-        // }
-    }
+    // // Save the user
+    // const saved = Profile.insertOne(newProfile)
+    // if (!saved) {
+    //     logger.error('didnt save a profile')
+    //     return res.status(500).json({succesS: false, message: 'Profile did not save correctly'}).end()
+    // }
+    // if (saved) {
+    //     logger.debug('User saved to database')
+    //     return res.status(200).json({success: true, message: 'Saved to the database', data: newProfile.image})
+    //     // @ts-ignore: Unreachable code error
+    //     // const fileSaved = Image.saveToFS(imageFileName, req.file)
+    //     // logger.debug(['status of filesaved', fileSaved])
+    //     // if (fileSaved) {
+    //     //     logger.debug('FILE DIDSAVE')
+    //     //     const data = {
+    //     //         success: true,
+    //     //         message: 'Saved the profile'
+    //     //     }
+    //     //     res.status(200).json(data).end()
+    //     // } else {
+    //     //     logger.debug('FILE DID NOT SAVE')
+    //     //     const data = {
+    //     //         success: false,
+    //     //         message: 'File did not save'
+    //     //     }
+    //     //     return res.status(500).json(data).end()
+    //     // }
+    // }
   })
 
 module.exports = app
