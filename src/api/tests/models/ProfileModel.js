@@ -157,10 +157,26 @@ describe('Profile Model', () => {
             // })
         })
         describe('`deleteOneById`', () => {
-            
+            it('Should delete a profile on valid id', async () => {
+                const Profile = new ProfileModel
+                await Profile.create({
+                    name: 'edward',
+                    image: 'sample.jpg'
+                })
+                await Profile.findOneById(Profile._id)
+                expect(Profile._id).to.exist
+                await Profile.findOneById(Profile._id)
+                expect(Profile._id).to.exist
+            })
+            it('Should fail on an invalid id', async () => {
+                const Profile = new ProfileModel
+                const success = Profile.findOneById('45854895498')
+                expect(success).to.equal(false)
+                expect(Profile._id).to.equal('')
+            })
         })
         describe('`deleteManyById`', () => {
-
+            
         })
         describe('`deleteManyByName`', () => {
            
