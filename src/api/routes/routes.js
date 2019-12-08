@@ -35,6 +35,7 @@ app.route('/profile/id/:id')
   .get( async (req, res) => {
     const id = req.params.id
     const Profile = new ProfileModel
+    console.log('going to find the profile')
     await Profile.findOneById(id)
     if (Profile._id) {
       const result = {
@@ -94,7 +95,7 @@ app.route('/profile')
 
     // Create data
     const Profile = new ProfileModel
-    const errors = Profile.create({
+    const errors = await Profile.create({
         name: req.body.name,
         description: req.body.description,
         image: '/public/images/' + imageFileName
@@ -102,12 +103,12 @@ app.route('/profile')
 
     // Check any vlidtion errors
     if (errors) {
-        const errors = errors.errors
+        const error = errors.errors
 
-        const props = Object.keys(errors)
+        const props = Object.keys(error)
         const fieldName = props[0]
 
-        const message = errors[fieldName].message
+        const message = error[fieldName].message
 
         console.log(errors)
         // const message = errors.message || errors.message[0].message
@@ -125,7 +126,7 @@ app.route('/profile')
     await Profile.findOneByName(req.body.name)
     if (Profile.name === req.body.name) {
       logger.debug('User saved to database')
-      return res.status(200).json({success: true, message: 'Saved to the database', data: newProfile.image})
+      return res.status(200).json({success: true, message: 'Saved to the database', data: '/public/images/' + imageFileName})
     } else {
       logger.error('didnt save a profile')
       return res.status(500).json({succesS: false, message: 'Profile did not save correctly'}).end()

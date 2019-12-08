@@ -160,18 +160,23 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * 
    * @return {object} @var Document The profile model
    */
-  public create (data: {name: string, description?: string, image: string}) {
+  public async create (data: {name: string, description?: string, image: string}) {
     const newProfile = new Document({
       name: data.name,
       description: data.description,
       image: data.image
     })
+    console.log('Inside create method, heres the data:')
+    console.log(newProfile)
     const errors = newProfile.validateSync()
     if (errors) {
+      console.log('there were errors when validation profile')
       return errors
     }
     if (!errors) {
+      console.log('no errors when validation')
       newProfile.save()
+      console.log('seemed to save')
       this.empty(this.fieldsToExpose)
       this.fill(newProfile)
     }
@@ -221,6 +226,8 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
     }
     const profile = await Document.findOne({ _id: id })
     // check for an empty response
+    console.log('the profile')
+    console.log(profile)
     if (Array.isArray(profile) && !profile.length) {
       // empty
       return false
@@ -329,8 +336,10 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * @return {promise} Resolved if found, rejected if not
    */
   public async findOneByName (nameOfProfile: string) {
+    console.log('entered findOneByName')
       const profile = await Document.findOne({name: nameOfProfile})
-      if (Array.isArray(profile) && !profile.length) {
+      console.log(profile)
+      if (Array.isArray(profile) && !profile.length || !profile) {
         // empty
         return false
       } else {

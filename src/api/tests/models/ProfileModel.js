@@ -4,6 +4,9 @@ const expect = chai.expect
 const rewire = require('rewire')
 const ProfileModel = rewire('../../models/ProfileModel')
 
+chai.use(chaiAsPromised)
+chai.should()
+
 describe('Profile Model', () => {
     describe('Properties', () => {
         describe('_id', () => {
@@ -67,48 +70,50 @@ describe('Profile Model', () => {
         })
     })
     describe('Methods', () => {
-        describe('`create`', () => {
+        describe('`create`', function () {
             const profileData = {
                 name: 'Edward',
                 description: 'Hello',
                 image: 'sample.jpg'
             }
-            it('Should create a profile with valid params', () => {
+            it('Should create a profile with valid params', async () => {
                 const Profile = new ProfileModel
-                const errors = Profile.create(profileData)
-                expect(errors).to.not.exist
+                const errors = await Profile.create(profileData)
+                console.log('showig errors')
+                console.log(errors)
+                console.log('showing profile')
+                console.log(Profile)
                 expect(Profile.name).to.equal(profileData.name)
-                expect(Profile.description).to.equal(profileData.description)
-                expect(Profile.image).to.equal(profileData.image)
             })
-            it('Should fail when a name isnt passed in', () => {
+            it('Should fail when a name isnt passed in', async () => {
                 const Profile = new ProfileModel
                 const data = {
                     description: 'Hello',
                     image: 'sample.jpg'
                 }
-                const errors = Profile.create(data)
+                const errors = await Profile.create(data)
+                console.log(errors)
                 expect(errors.errors).to.haveOwnProperty('name')  
             })
-            it('Should pass when description isnt passed in', () => {
+            it('Should pass when description isnt passed in', async () => {
                 const Profile = new ProfileModel
                 const data = {
                     name: 'Edward',
                     image: 'sample.jpg'
                 }
-                const errors = Profile.create(data)
+                const errors = await Profile.create(data)
                 expect(errors).to.not.exist
                 expect(Profile.name).to.equal(data.name)
                 expect(Profile.description).to.equal(data.description)
                 expect(Profile.image).to.equal(data.image)
             })
-            it('Should fail when no image is passed in', () => {
+            it('Should fail when no image is passed in', async () => {
                 const Profile = new ProfileModel
                 const data = {
                     name: 'Edward',
                     description: 'Hello'
                 }
-                const errors = Profile.create(data)
+                const errors = await Profile.create(data)
                 expect(errors.errors).to.haveOwnProperty('image')  
             })
             afterEach(() => {
@@ -152,7 +157,7 @@ describe('Profile Model', () => {
             // })
         })
         describe('`deleteOneById`', () => {
-
+            
         })
         describe('`deleteManyById`', () => {
 

@@ -69,10 +69,11 @@ describe.only('Profile Route', () => {
       })
       it('Should respond with a 404 status on no profiles found')
     })
-    describe.only('GET /profile/id/:id', () => {
-      it.only('Should have valid values for the profile', async () => {
+    describe('GET /profile/id/:id', () => {
+      it('Should have valid values for the profile', async () => {
         const Profile = new ProfileModel
         await Profile.findOneByName('edward')
+        console.log('jjekkj')
         chai.request(app)
         .get('/api/profile/id/' + Profile._id)
         .end((err, res) => {
@@ -124,9 +125,9 @@ describe.only('Profile Route', () => {
           })
       })
     })
-    describe.only('POST /profile', function () {
+    describe('POST /profile', function () {
       this.timeout(5000)
-      it('Should succedd with valid data, and update the database', (done) => {
+      it('Should succeed with valid data, and update the database', (done) => {
         chai.request(app)
           .post('/api/profile', upload.single('image'))
           .field('name', 'king tut')
@@ -140,7 +141,10 @@ describe.only('Profile Route', () => {
             expect(json.data).to.exist
             expect(typeof json.data).to.equal('string')
             const Profile = new ProfileModel
+            
             await Profile.findOneByName('king tut')
+            console.log('showing the profile in test')
+            console.log(Profile)
             expect(Profile.name).to.equal('king tut')
             done()
           });
