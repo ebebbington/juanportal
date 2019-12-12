@@ -7,7 +7,7 @@ const ProfileModel = rewire('../../models/ProfileModel')
 chai.use(chaiAsPromised)
 chai.should()
 
-describe('Profile Model', () => {
+describe.only('Profile Model', () => {
     describe('Properties', () => {
         describe('_id', () => {
             it('Should be defined', () => {
@@ -69,7 +69,7 @@ describe('Profile Model', () => {
             })
         })
     })
-    describe('Methods', () => {
+    describe.only('Methods', () => {
         describe('`create`', function () {
             const profileData = {
                 name: 'Edward',
@@ -175,15 +175,64 @@ describe('Profile Model', () => {
                 expect(Profile._id).to.equal('')
             })
         })
-        describe('`findManyByCount`', () => {
-            it('Should return the number of profiles specified')
+        describe('`findManyByCount`', function () {
+            this.timeout(10000)
+            it('Should return the number of profiles specified', async function () {
+                const Profile = new ProfileModel
+                const count = 5
+                const profiles = await Profile.findManyByCount(count)
+                expect(profiles.length).to.equal(count)   
+            })
             it('Should fail if no count is specified')
         })
-        describe('`deleteOneByName`', () => {
-            
+        describe('`deleteOneByName`', function () {
+            this.timeout(20000)
+            it('Should remove a single model with a valid name', async () => {
+                const profileData = {
+                    name: 'Eduardo Bebbingtano',
+                    image: 'nope.jpg'
+                }
+                const Profile = new ProfileModel
+                // first check it doesnt exist
+                await Profile.findOneByName(profileData.name)
+                expect(Profile._id).to.equal('')
+                // Create the profile and make sure it worked
+                await Profile.create(profileData)
+                expect(Profile.name).to.equal(profileData.name)
+                // Make sure the db was updated
+                await Profile.findOneByName(profileData.name)
+                expect(Profile.name).to.equal(profileData.name)
+                // Delete and make sure the model is empty
+                await Profile.deleteOneByName(profileData.name)
+                expect(Profile.name).to.equal('')
+                // Make sure the db removed it
+                await Profile.findOneByName(profileData.name)
+                expect(Profile.name).to.equal('')
+            })
+            it('Should not remove a model with an invlaid name', async () => {
+                const profileData = {
+                    name: '',
+                    image: 'nope.jpg'
+                }
+                const Profile = new ProfileModel
+                // first check it doesnt exist
+                await Profile.findOneByName(profileData.name)
+                expect(Profile._id).to.equal('')
+                // Create the profile and make sure it worked
+                const errors = Profile.create(profileData)
+                console.log(errors)
+                expect(Profile.name).to.equal('')
+                expect(errors.errors.name).to.exist
+            })
         })
-        describe('`existsByName`', () => {
-
+        describe.only('`existsByName`', () => {
+            it('Should return true for existing', async () => {
+                const profileData = {name: 'Eduardo Bombadio', description: 'Gabble', image: '/publieef/sample.jpg'}
+                const Profile = new ProfileModel
+                const exists = await ProfileModel.existsByName(profileData.name)
+                console.log(exists)
+                
+            })
         })
         describe('`findOneByName`', () => {
 
