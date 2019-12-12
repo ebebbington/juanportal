@@ -1,0 +1,2 @@
+- tests: test for different environments e.g. when connecting to the database
+- tests: be more strict on tests
