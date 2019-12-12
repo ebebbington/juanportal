@@ -1,2 +1,4 @@
 - tests: test for different environments e.g. when connecting to the database
 - tests: be more strict on tests
+- tests: somehow get connection string of db to check it gainst the config
+- tests: ytest files like config or .env
