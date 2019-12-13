@@ -20,8 +20,7 @@ app.route('/profile/count/:count')
     if (count < 1) {
       return res.status(400).json({success: false, message: 'Number of requested profiles did not meet the minimum of 1'}).end()
     }
-    const Profile = new ProfileModel
-    const profiles = await Profile.findManyByCount(count)
+    const profiles = await ProfileModel.findManyByCount(count)
     logger.debug(profiles)
     if (!profiles) {
       return res.status(404).json({success: false, message: 'No profiles were found'}).end()
