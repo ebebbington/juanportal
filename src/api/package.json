@@ -7,7 +7,9 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "ts": "node_modules/.bin/tsc & pm2 restart all",
+    "build": "pm2 restart all",
+    "test": "node_modules/.bin/tsc; pm2 restart all; node_modules/.bin/mocha tests"
   },
   "author": "",
   "license": "ISC",
