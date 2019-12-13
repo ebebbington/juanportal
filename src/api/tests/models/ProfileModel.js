@@ -1,8 +1,14 @@
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
+
 const rewire = require('rewire')
 const ProfileModel = rewire('../../models/ProfileModel')
+
+const mongoose = require('mongoose')
+require('dotenv').config()
+const dbUrl = process.env.DB_URL
+mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
 
 chai.use(chaiAsPromised)
 chai.should()
@@ -225,12 +231,12 @@ describe.only('Profile Model', () => {
                 expect(errors.errors.name).to.exist
             })
         })
-        describe.only('`existsByName`', () => {
+        describe.only('`existsByName`', function () {
             it('Should return true for existing', async () => {
-                const profileData = {name: 'Eduardo Bombadio', description: 'Gabble', image: '/publieef/sample.jpg'}
+                const profileData = {name: 'TESTPROFILENAME', description: 'Gabble', image: '/publieef/sample.jpg'}
                 const Profile = new ProfileModel
+                const errors = await Profile.create(profileData)
                 const exists = await ProfileModel.existsByName(profileData.name)
-                console.log(exists)
                 
             })
         })
