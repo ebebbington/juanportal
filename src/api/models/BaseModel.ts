@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const loggerr = require('../helpers/logger')
 
 /**
  * @class BaseModel
@@ -39,7 +40,7 @@ class BaseModel {
         id = new mongoose.Types.ObjectId(id)
         return id
     } catch (err) {
-      logger.error(`failed to convert ${id} to a mongoose object id`)
+      loggerr.error(`failed to convert ${id} to a mongoose object id`)
       return false
     }
   } 
