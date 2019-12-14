@@ -293,8 +293,46 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * 
    * @param {string} name Name of the profile to delete 
    */
-  public async deleteOneByName (name: string) {
+  public static async deleteOneByName (name: string) {
     await Document.deleteOne({name: name})
+  }
+
+  public static async createMany (docs: [{name: string, description?: string, image: string}]) {
+    if (!docs || !docs.length) {
+      return true
+    }
+    let newProfiles = Document.create(docs)
+    // create the docs
+    // docs.forEach((profile: {name: string, description?: string, image: string}) => {
+    //   const newProfile = new Document({
+    //     name: profile.name,
+    //     description: profile.description,
+    //     image: profile.image
+    //   })
+    //   newProfiles.push(newProfile)
+    // })
+
+    // validate each profile
+    // const errors = newProfiles.forEach((profile: any) => {
+    //   const err = profile.validateSync()
+    //   if (err) {
+    //     return err
+    //   }
+    // })
+    // if (errors) {
+    //   return errors
+    // }
+
+    // insert
+    // if (!errors) {
+      // console.log('no errors when validation')
+      console.log('going to insert many with a len of: ' + docs.length)
+      const errors = await Document.insertMany(docs)
+      console.log(errors)
+
+      console.log('seemed to save')
+      return false
+    // }
   }
 
   /**
@@ -336,11 +374,13 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
   public async findOneByName (nameOfProfile: string) {
     console.log('entered findOneByName')
       const profile = await Document.findOne({name: nameOfProfile})
-      console.log(profile)
       if (Array.isArray(profile) && !profile.length || !profile) {
+        logger.debug('Empty result from findonevbyname')
         // empty
         return false
       } else {
+        logger.debug('Found a profile in findonebyname: ')
+        logger.debug(profile)
         this.empty(this.fieldsToExpose)
         this.fill(profile)
         return true
