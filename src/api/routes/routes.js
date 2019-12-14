@@ -22,7 +22,7 @@ app.route('/profile/count/:count')
     }
     const profiles = await ProfileModel.findManyByCount(count)
     logger.debug(profiles)
-    if (!profiles) {
+    if (!profiles || !profiles.length) {
       return res.status(404).json({success: false, message: 'No profiles were found'}).end()
     }
     if (profiles) {
