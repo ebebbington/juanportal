@@ -7,9 +7,8 @@
     "test": "tests"
   },
   "scripts": {
-    "ts": "node_modules/.bin/tsc & pm2 restart all",
-    "build": "pm2 restart all",
-    "test": "node_modules/.bin/tsc; pm2 restart all; node_modules/.bin/mocha tests"
+    "build": "node_modules/.bin/tsc & pm2 restart all",
+    "test": "node_modules/.bin/tsc & pm2 restart all & node_modules/.bin/mocha"
   },
   "author": "",
   "license": "ISC",
