@@ -75,7 +75,7 @@ describe.only('Profile Model', () => {
             })
         })
     })
-    describe.only('Methods', () => {
+    describe('Methods', () => {
         describe('`create`', function () {
             const profileData = {
                 name: 'Edward',
@@ -231,7 +231,7 @@ describe.only('Profile Model', () => {
                 expect(errors.errors.name).to.exist
             })
         })
-        describe.only('`existsByName`', function () {
+        describe('`existsByName`', function () {
             it('Should return true for existing', async () => {
                 const profileData = {name: 'TESTPROFILENAME', description: 'Gabble', image: '/publieef/sample.jpg'}
                 const Profile = new ProfileModel
