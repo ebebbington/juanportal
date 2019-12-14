@@ -20,12 +20,18 @@ chai.should()
 describe('Profile Route', () => {
 
     describe('GET /api/profile/count/:count', () => {
-      it('Should respond with a 200 status', (done) => {
+      it('Should respond with a 200 status', async () => {
+        // add a profile
+        const newProfile = {
+          name: 'TESTPROFILENAME',
+          image: 'TESTPROFILEIMAGE.jpg'
+        }
+        const Profile = new ProfileModel
+        await Profile.create(newProfile)
         chai.request(app)
           .get('/api/profile/count/5')
           .end((err, res) => {
             expect(res.status).to.equal(200)
-            done()
           })
       })
       it('Should return nothing if count is less than 1', (done) => {
@@ -46,7 +52,9 @@ describe('Profile Route', () => {
         const profiles = await ProfileModel.findManyByCount(numberOfProfilesToFind)
         // Check if we got many profiles, else a single profile will be retirved, and as we cant check a length on that, we check the props to determine if even a single result came back
         const actualNumberOfProfiles = profiles.length || profiles._id ? 1 : 0 || 0
+        console.log('actual number of profiles there are: ' + actualNumberOfProfiles)
         const hasProfiles = actualNumberOfProfiles ? true : false
+        console.log('has profiles: ' + hasProfiles)
         expect(hasProfiles).to.equal(true) // some profiles should already exist when running this
         // then we are going to compare that number with the real result
         chai.request(app)
@@ -58,7 +66,7 @@ describe('Profile Route', () => {
           })
       })
       it('Should respond with a 404 status on no profiles found', async () => {
-        await ProfileModel.deleteOneByName('edwuardo')
+        await ProfileModel.deleteAll()
         chai.request(app)
           .get('/api/profile/count/6')
           .end((err, res) => {
@@ -264,7 +272,7 @@ describe('Profile Route', () => {
         await Profile.findOneByName(newProfile.name)
         const id = Profile._id
         console.log(Profile)
-        await Profile.deleteOneByName(Profile.name)
+        await ProfileModel.deleteOneByName(Profile.name)
             //   chai.request(app)
             //     .delete('/api/profile/id/' + id)
             //     .end((err, res) => {});
