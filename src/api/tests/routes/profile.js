@@ -4,35 +4,22 @@ const expect = chai.expect
 const app = require('../../app')
 const chaiHttp = require('chai-http')
 const ProfileModel = require('../../models/ProfileModel')
-const Profile = new ProfileModel()
 const fs = require('fs')
-const logger = require('../../helpers/logger')
-const mongoose = require('mongoose')
-const ProfileController = require('../../controllers/ProfileController')
-const chaiFiles = require('chai-files')
-const ImageHelper = require('../../helpers/ImageHelper')
 
 const multer = require('multer')
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
-logger.debug = function (){}
-logger.info = function (){}
+// logger.debug = function (){}
+// logger.info = function (){}
 
-const chaiFile = chaiFiles.file
 chai.use(chaiAsPromised)
 chai.use(chaiHttp)
 chai.should()
 
+describe('Profile Route', () => {
 
-
-// turn off logging
-// logger.info = function (a) {}
-// logger.debug = function (e) {}
-
-describe.only('Profile Route', () => {
-
-    describe('GET /profile/count/:count', () => {
+    describe('GET /api/profile/count/:count', () => {
       it('Should respond with a 200 status', (done) => {
         chai.request(app)
           .get('/api/profile/count/5')
@@ -52,28 +39,53 @@ describe.only('Profile Route', () => {
           })
       })
       it('Should respond with the specified number of profiles if they exist', async () => {
-        // First we are going to get how many profiles exist
+        console.warn('This test assumes there is only 1 profile')
         const Profile = new ProfileModel
+        await Profile.create({name: 'TESTPROFILENAME', image: 'TESTPROFILEIMAGE.jpg'})
         const numberOfProfilesToFind = 400
-        const profiles = await Profile.findManyByCount(numberOfProfilesToFind)
+        const profiles = await ProfileModel.findManyByCount(numberOfProfilesToFind)
         // Check if we got many profiles, else a single profile will be retirved, and as we cant check a length on that, we check the props to determine if even a single result came back
-        const actualNumberOfProfiles = profiles.length || profiles._id ? 1 : 0
+        const actualNumberOfProfiles = profiles.length || profiles._id ? 1 : 0 || 0
+        const hasProfiles = actualNumberOfProfiles ? true : false
+        expect(hasProfiles).to.equal(true) // some profiles should already exist when running this
         // then we are going to compare that number with the real result
         chai.request(app)
-        .get('/api/profile/count/' + numberOfProfilesToFind)
-        .end((err, res) => {
-          const json = JSON.parse(res.text)
-          // So here it's a fix to get the amount of profiles whether an array or single object (one profile) was given back
-          expect(json.data.length || json.data._id ? 1 : 0).to.equal(actualNumberOfProfiles)
-        })
+          .get('/api/profile/count/' + numberOfProfilesToFind)
+          .end((err, res) => {
+            const json = JSON.parse(res.text)
+            // So here it's a fix to get the amount of profiles whether an array or single object (one profile) was given back
+            expect(json.data.length || json.data._id ? 1 : 0).to.equal(actualNumberOfProfiles)
+          })
       })
-      it('Should respond with a 404 status on no profiles found')
+      it('Should respond with a 404 status on no profiles found', async () => {
+        await ProfileModel.deleteOneByName('edwuardo')
+        chai.request(app)
+          .get('/api/profile/count/6')
+          .end((err, res) => {
+            const json = JSON.parse(res.text)
+            expect(json.success).to.equal(false)
+            expect(res.status).to.equal(404)
+           
+          })
+      })
     })
+
     describe('GET /profile/id/:id', () => {
+       
+      const newProfile = {
+        name: 'TESTPROFILENAME',
+        description: 'TESTPROFILEDESCRIPTION',
+        image: 'TESTPROFILEIMAGE.jpg'
+      }
+
+      beforeEach('Create test profile', async () => {
+        const Profile = new ProfileModel
+        await Profile.create(newProfile)
+      })
+
       it('Should have valid values for the profile', async () => {
         const Profile = new ProfileModel
-        await Profile.findOneByName('edward')
-        console.log('jjekkj')
+        await Profile.findOneByName(newProfile.name)
         chai.request(app)
         .get('/api/profile/id/' + Profile._id)
         .end((err, res) => {
@@ -84,7 +96,7 @@ describe.only('Profile Route', () => {
       })
       it('Should respond with 200 on a valid profile', async () => {
         const Profile = new ProfileModel
-        await Profile.findOneByName('edward')
+        await Profile.findOneByName(newProfile.name)
         chai.request(app)
         .get('/api/profile/id/' + Profile._id)
         .end((err, res) => {
@@ -100,12 +112,23 @@ describe.only('Profile Route', () => {
           done()
         })
       })
+
+      afterEach('Remove test profile', async () => {
+        await ProfileModel.deleteOneByName(newProfile.name)
+      })
     })
+
     describe('DELETE /profile/id/:id', function () {
       this.timeout(5000)
       it('Should delete a valid profile', async () => {
         const Profile = new ProfileModel
-        await Profile.findOneByName('edward')
+        const newProfile = {
+          name: 'TESTPROFILENAME',
+          description: 'TESTPROFILEDESCRIPTION',
+          image: 'TESTPROFILEIMAGE.jpg'
+        }
+        await Profile.create(newProfile)
+        await Profile.findOneByName(newProfile.name)
         chai.request(app)
         .delete('/api/profile/id/' + Profile._id)
         .end((err, res) => {
@@ -125,14 +148,22 @@ describe.only('Profile Route', () => {
           })
       })
     })
+
     describe('POST /profile', function () {
       this.timeout(5000)
-      it('Should succeed with valid data, and update the database', (done) => {
+
+      const newProfile = {
+        name: 'TESTPROFILENAME',
+        description: 'TESTPROFILEDESCRIPTION',
+        image: 'TESTPROFILEIMAGE.jpg'
+      }
+
+      it('Should succeed with valid data, and update the database', () => {
         chai.request(app)
           .post('/api/profile', upload.single('image'))
-          .field('name', 'king tut')
-          .field('description', 'hello')
-          .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), 'sample.jpg')
+          .field('name', newProfile.name)
+          .field('description', newProfile.description)
+          .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), newProfile.image)
           .end( async (err, res) => {
             expect(res.status).to.equal(200)
             const json = JSON.parse(res.text)
@@ -142,19 +173,19 @@ describe.only('Profile Route', () => {
             expect(typeof json.data).to.equal('string')
             const Profile = new ProfileModel
             
-            await Profile.findOneByName('king tut')
+            await Profile.findOneByName(newProfile.name)
             console.log('showing the profile in test')
             console.log(Profile)
-            expect(Profile.name).to.equal('king tut')
-            done()
+            expect(Profile.name).to.equal(newProfile.name)
+
           });
       })
       it('Should fail is the name fails validation', (done) => {
         chai.request(app)
           .post('/api/profile', upload.single('image'))
           .field('name', '')
-          .field('description', 'hello')
-          .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), 'sample.jpg')
+          .field('description', newProfile.description)
+          .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), newProfile.image)
           .end((err, res) => {
             expect(res.status).to.equal(400)
             const json = JSON.parse(res.text)
@@ -163,12 +194,12 @@ describe.only('Profile Route', () => {
             done()
           });
       })
-      it('Should pass if no description is given', (done) => {
+      it('Should pass if no description is given', () => {
         chai.request(app)
           .post('/api/profile', upload.single('image'))
-          .field('name', 'king tut')
+          .field('name', newProfile.name)
           .field('description', '')
-          .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), 'sample.jpg')
+          .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), newProfile.description)
           .end( async (err, res) => {
             expect(res.status).to.equal(200)
             const json = JSON.parse(res.text)
@@ -177,16 +208,16 @@ describe.only('Profile Route', () => {
             expect(json.data).to.exist
             expect(typeof json.data).to.equal('string')
             const Profile = new ProfileModel
-            await Profile.findOneByName('king tut')
-            expect(Profile.name).to.equal('king tut')
-            done()
+            await Profile.findOneByName(newProfile.name)
+            expect(Profile.name).to.equal(newProfile.name)
+
           });
       })
       it('Should fail is image fails validation', (done) => {
         chai.request(app)
           .post('/api/profile', upload.single('image'))
-          .field('name', 'king tut')
-          .field('description', 'hello')
+          .field('name', newProfile.name)
+          .field('description', newProfile.description)
           .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), 'sample')
           .end((err, res) => {
             expect(res.status).to.equal(400)
@@ -200,8 +231,8 @@ describe.only('Profile Route', () => {
       it('Should pass if no image is given', () => {
         chai.request(app)
           .post('/api/profile')
-          .field('name', 'king tut')
-          .field('description', 'hello')
+          .field('name', newProfile.name)
+          .field('description', newProfile.description)
           .end( async (err, res) => {
             expect(res.status).to.equal(200)
             const json = JSON.parse(res.text)
@@ -209,49 +240,36 @@ describe.only('Profile Route', () => {
             expect(json.data).to.exist
             expect(typeof json.data).to.equal('string')
             const Profile = new ProfileModel
-            await Profile.findOneByName('king tut')
-            expect(Profile.name).to.equal('king tut')
+            await Profile.findOneByName(newProfile.name)
+            expect(Profile.name).to.equal(newProfile.name)
           });
       })
-      it('Should fail if the user already exists', (done) => {
+      it('Should fail if the user already exists', async () => {
         console.log('posting 1st one')
+        const Profile = new ProfileModel
+        await Profile.create(newProfile)
         chai.request(app)
           .post('/api/profile', upload.single('image'))
-          .field('name', 'king tut')
-          .field('description', 'hello')
-          .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), 'sample.jpg')
-          .end( async (err, res) => {
-            expect(res.status).to.equal(200)
+          .field('name', newProfile.name)
+          .field('description', newProfile.description)
+          .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), newProfile.image)
+          .end((err, res) => {
+            expect(res.status).to.equal(400)
             const json = JSON.parse(res.text)
-            expect(json.success).to.equal(true)
-            // and as it passes back the immage name
-            expect(json.data).to.exist
-            expect(typeof json.data).to.equal('string')
-            const Profile = new ProfileModel
-            await Profile.findOneByName('king tut')
-            expect(Profile.name).to.equal('king tut')
-            console.log('posting 2nd one')
-            chai.request(app)
-              .post('/api/profile', upload.single('image'))
-              .field('name', 'king tut')
-              .field('description', 'hello')
-              .attach('image', fs.readFileSync('/var/www/api/sample.jpg'), 'sample.jpg')
-              .end((err, res) => {
-                expect(res.status).to.equal(400)
-                const json = JSON.parse(res.text)
-                expect(json.success).to.equal(false)
-                done()
-              });
-          });
+            expect(json.success).to.equal(false)
+          })
       })
       afterEach('Remove the test user', async () => {
-              const Profile = new ProfileModel
-              await Profile.findOneByName('king tut')
-              const id = Profile._id
-              chai.request(app)
-                .delete('/api/profile/id/' + id)
-                .end((err, res) => {});
-            })
+        const Profile = new ProfileModel
+        await Profile.findOneByName(newProfile.name)
+        const id = Profile._id
+        console.log(Profile)
+        await Profile.deleteOneByName(Profile.name)
+            //   chai.request(app)
+            //     .delete('/api/profile/id/' + id)
+            //     .end((err, res) => {});
+            // })
+      })
     })
 })
 
