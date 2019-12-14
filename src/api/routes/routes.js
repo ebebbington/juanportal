@@ -16,6 +16,16 @@ const upload = multer({ storage: storage })
  */
 app.route('/profile/count/:count')
   .get( async (req, res) => {
+    // Check a param is passed in AND we can parse it
+    console.log('hey')
+    console.log(req.params.count)
+    if (!req.params.count) {
+      return res.status(400).json({success: false, message: 'No count was passed in'})
+    }
+    const parsedCount = parseInt(req.params.count)
+    if (isNaN(parsedCount)) {
+      return res.status(400).json({success: false, message: 'Failed to parse the count to a number'})
+    }
     const count = parseInt(req.params.count)
     if (count < 1) {
       return res.status(400).json({success: false, message: 'Number of requested profiles did not meet the minimum of 1'}).end()

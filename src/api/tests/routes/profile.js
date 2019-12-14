@@ -20,6 +20,16 @@ chai.should()
 describe('Profile Route', () => {
 
     describe('GET /api/profile/count/:count', () => {
+      it('Should fail when the parameter cannot be parsed as a number', (done) => {
+        chai.request(app)
+          .get('/api/profile/count/hello')
+          .end((err, res) => {
+            expect(res.status).to.equal(400)
+            const json = JSON.parse(res.text)
+            expect(json.success).to.equal(false)
+            done()
+          })
+      })
       it('Should respond with a 200 status', async () => {
         // add a profile
         const newProfile = {

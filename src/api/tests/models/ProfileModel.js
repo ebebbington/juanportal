@@ -13,7 +13,7 @@ mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
 chai.use(chaiAsPromised)
 chai.should()
 
-describe.only('Profile Model', () => {
+describe('Profile Model', () => {
     describe('Properties', () => {
         describe('_id', () => {
             it('Should be defined', () => {
