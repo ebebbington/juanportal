@@ -288,6 +288,10 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
     })
   }
 
+  public static async deleteAll () {
+    await Document.deleteMany({})
+  }
+
   /**
    * Delete many profiles by their name
    * 
