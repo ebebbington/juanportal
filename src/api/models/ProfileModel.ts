@@ -37,7 +37,6 @@ const Schema = new mongoose.Schema({
   'image': {
     type: String,
     required: true,
-    lowercase: true,
     validate: {
       validator: function (v: string) {
         return /\.(jpg|jpeg|JPG|JPEG|png|PNG)$/.test(v)
