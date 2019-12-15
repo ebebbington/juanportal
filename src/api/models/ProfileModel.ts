@@ -101,28 +101,28 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * 
    * @var {string} _id
    */
-  public _id: string = ''
+  public _id: string|null = ''
 
   /**
    * Name field of the profile model
    * 
    * @var {string} name
    */
-  public name: string = ''
+  public name: string|null = ''
 
   /**
    * Description field of the profile model
    * 
    * @var {string} description
    */
-  public description: string = ''
+  public description: string|null = ''
 
   /**
    * Image field of the profile model
    * 
    * @var {string} image
    */
-  public image: string = ''
+  public image: string|null = ''
 
   /**
    * The name of the table associated with this model
