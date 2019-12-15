@@ -75,38 +75,43 @@ describe('Profile Model', () => {
             })
         })
     })
-    describe('Methods', () => {
-        describe('`create`', function () {
-            const profileData = {
-                name: 'Edward',
-                description: 'Hello',
-                image: 'sample.jpg'
-            }
-            it('Should fill the model on a successful creation')
+    describe.only('Methods', () => {
+        const profileData = {
+            name: 'TESTPROFILENAME',
+            description: 'TESTPROFILEDESCRIPTION',
+            image: 'TESTPROFILEIMAGE.jpg'
+        }
+        describe.only('`create`', function () {
+            it('Should fill the model on a successful creation', async () => {
+                const Profile = new ProfileModel
+                const errors = await Profile.create(profileData)
+                expect(errors).to.not.exist
+                expect(Profile.name).to.equal(profileData.name)
+                expect(Profile.description).to.equal(profileData.description)
+                expect(Profile.image).to.equal(profileData.image)
+            })
             it('Should create a profile with valid params', async () => {
                 const Profile = new ProfileModel
                 const errors = await Profile.create(profileData)
-                console.log('showig errors')
-                console.log(errors)
-                console.log('showing profile')
-                console.log(Profile)
+                expect(errors).to.not.exist
+                await Profile.findOneByName(profileData.name)
                 expect(Profile.name).to.equal(profileData.name)
             })
-            it('Should fail when a name isnt passed in', async () => {
+            it('Should fail validation when a name isnt passed in', async () => {
                 const Profile = new ProfileModel
                 const data = {
-                    description: 'Hello',
-                    image: 'sample.jpg'
+                    description: profileData.description,
+                    image: profileData.image
                 }
                 const errors = await Profile.create(data)
-                console.log(errors)
+                expect(errors).to.exist
                 expect(errors.errors).to.haveOwnProperty('name')  
             })
-            it('Should pass when description isnt passed in', async () => {
+            it('Should pass validation when description isnt passed in', async () => {
                 const Profile = new ProfileModel
                 const data = {
-                    name: 'Edward',
-                    image: 'sample.jpg'
+                    name: profileData.name,
+                    image: profileData.image
                 }
                 const errors = await Profile.create(data)
                 expect(errors).to.not.exist
@@ -114,41 +119,63 @@ describe('Profile Model', () => {
                 expect(Profile.description).to.equal(data.description)
                 expect(Profile.image).to.equal(data.image)
             })
-            it('Should fail when no image is passed in', async () => {
+            it('Should fail validation when no image is passed in', async () => {
                 const Profile = new ProfileModel
                 const data = {
-                    name: 'Edward',
-                    description: 'Hello'
+                    name: profileData.name,
+                    description: profileData.description
                 }
                 const errors = await Profile.create(data)
+                expect(errors).to.exist
                 expect(errors.errors).to.haveOwnProperty('image')  
             })
-            afterEach(() => {
+            it('Should pass validation with the correct file extensions', async () => {
                 const Profile = new ProfileModel
-                Profile.deleteOneByName(profileData.name)
+                const supportedExtensions = [
+                    '.jpg',
+                    '.png',
+                    '.PNG',
+                    '.JPG',
+                    '.JPEG',
+                    '.jpeg'
+                ]
+                const data = {
+                    name: profileData.name,
+                    description: profileData.description,
+                    image: 'TESTPROFILEIMAGE'
+                }
+                supportedExtensions.forEach( async (extension) => {
+                    data.image = 'TESTPROFILEIMAGE' + extension
+                    const errors = await Profile.create(data)
+                    expect(errors).to.not.exist
+                })
+            })
+            afterEach( async () => {
+                const Profile = new ProfileModel
+                await Profile.deleteOneByName(profileData.name)
             })
         })
         describe('`findOneById`', function () {
-            const profileData = {
-                name: 'Edward',
-                description: 'Hello',
-                image: 'sample.jpg'
-            }
-            before(() => {
+            before( async () => {
                 const Profile = new ProfileModel
-                const errors = Profile.create(profileData)
-                console.log(errors)
+                await Profile.create(profileData)
             })
-            it('Should fill the model on a successfil find')
-            // not sure why this takes so long
-            it('Should return a profile on valid id', async (done) => {
+            it('Should fill the model on a successfil find', async () => {
                 const Profile = new ProfileModel
-                const result = await Profile.findOneByName(profileData.name)
+                await Profile.findOneByName(profileData.name)
+                expect(Profile.name).to.equal(profileData.name)
+                expect(Profile.description).to.equal(profileData.description)
+                expect(Profile.image).to.equal(profileData.image)
+            })
+            // not sure why this takes so long
+            it('Should return a profile on valid id', async () => {
+                const Profile = new ProfileModel
+                await Profile.findOneByName(profileData.name)
+                expect(Profile._id).to.exist
                 await Profile.findOneById(Profile._id)
-                expect(Profile2.name).to.equal(profileData.name)
-                expect(Profile2.description).to.equal(profileData.description)
-                expect(Profile2.image).to.equal(profileData.image)
-                done()
+                expect(Profile.name).to.equal(profileData.name)
+                expect(Profile.description).to.equal(profileData.description)
+                expect(Profile.image).to.equal(profileData.image)
             })
             it('Should return an empty array in invalid data', async () => {
                 const Profile = new ProfileModel
@@ -158,40 +185,37 @@ describe('Profile Model', () => {
                 expect(Profile.description).to.equal('')
                 expect(Profile.image).to.equal('')
             })
-            //not sure why this takes so long
-            // afterEach( async () => {
-            //     const Profile = new ProfileModel
-            //     await Profile.deleteManyByName(profileData.name)
-            // })
+            afterEach( async () => {
+                const Profile = new ProfileModel
+                await Profile.deleteOneByName(profileData.name)
+            })
         })
         describe('`deleteOneById`', () => {
+            beforeEach(async () => {
+                const Profile = new ProfileModel
+                await Profile.create(profileData)
+            })
             it('Should delete a profile on valid id', async () => {
                 const Profile = new ProfileModel
-                await Profile.create({
-                    name: 'edward',
-                    image: 'sample.jpg'
-                })
-                await Profile.findOneById(Profile._id)
+                await Profile.findOneByName(profileData.name)
                 expect(Profile._id).to.exist
-                await Profile.findOneById(Profile._id)
-                expect(Profile._id).to.exist
+                await Profile.deleteOneById(Profile._id)
+                expect(Profile._id).to.equal('')
+                expect(Profile.name).to.equal('')
+                expect(Profile.description).to.equal('')
+                expect(Profile.image).to.equal('')
+                await Profile.findOneByName(profileData.name)
+                expect(Profile._id).to.equal('')
             })
             it('Should fail on an invalid id', async () => {
                 const Profile = new ProfileModel
-                const success = Profile.findOneById('45854895498')
+                const success = await Profile.findOneById('45854895498')
                 expect(success).to.equal(false)
                 expect(Profile._id).to.equal('')
             })
         })
-        describe('`findManyByCount`', function () {
-            this.timeout(10000)
-            it('Should return the number of profiles specified', async function () {
-                const Profile = new ProfileModel
-                const count = 5
-                const profiles = await Profile.findManyByCount(count)
-                expect(profiles.length).to.equal(count)   
-            })
-            it('Should fail if no count is specified')
+        describe('`deleteManyById`', () => {
+            
         })
         describe('`deleteOneByName`', function () {
             this.timeout(20000)
@@ -232,6 +256,16 @@ describe('Profile Model', () => {
                 expect(Profile.name).to.equal('')
                 expect(errors.errors.name).to.exist
             })
+        })
+        describe('`findManyByCount`', function () {
+            this.timeout(10000)
+            it('Should return the number of profiles specified', async function () {
+                const Profile = new ProfileModel
+                const count = 5
+                const profiles = await Profile.findManyByCount(count)
+                expect(profiles.length).to.equal(count)   
+            })
+            it('Should fail if no count is specified')
         })
         describe('`existsByName`', function () {
             it('Should return true for existing', async () => {
