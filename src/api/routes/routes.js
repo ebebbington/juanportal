@@ -17,8 +17,6 @@ const upload = multer({ storage: storage })
 app.route('/profile/count/:count')
   .get( async (req, res) => {
     // Check a param is passed in AND we can parse it
-    console.log('hey')
-    console.log(req.params.count)
     if (!req.params.count) {
       return res.status(400).json({success: false, message: 'No count was passed in'})
     }
@@ -42,6 +40,10 @@ app.route('/profile/count/:count')
 
 app.route('/profile/id/:id')
   .get( async (req, res) => {
+    const parsedId = parseInt(req.params.id)
+    if (isNaN(parsedId)) {
+      return res.status(400).json({success: false, message: 'Failed to parse the id to a number'})
+    }
     const id = req.params.id
     const Profile = new ProfileModel
     console.log('going to find the profile')
@@ -64,6 +66,10 @@ app.route('/profile/id/:id')
     }
   })
   .delete((req, res) => {
+    const parsedId = parseInt(req.params.id)
+    if (isNaN(parsedId)) {
+      return res.status(400).json({success: false, message: 'Failed to parse the id to a number'})
+    }
     const id = req.params.id
     console.log(id)
     const Profile = new ProfileModel

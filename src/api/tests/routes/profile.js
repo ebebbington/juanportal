@@ -100,7 +100,16 @@ describe('Profile Route', () => {
         const Profile = new ProfileModel
         await Profile.create(newProfile)
       })
-
+      it('Should fail when the id cannot be parsed', (done) => {
+        chai.request(app)
+        .get('/api/profile/id/hello')
+        .end((err, res) => {
+          expect(res.status).to.equal(400)
+          const json = JSON.parse(res.text)
+          expect(json.success).to.equal(false)
+          done()
+        })
+      })
       it('Should have valid values for the profile', async () => {
         const Profile = new ProfileModel
         await Profile.findOneByName(newProfile.name)
@@ -138,6 +147,16 @@ describe('Profile Route', () => {
 
     describe('DELETE /profile/id/:id', function () {
       this.timeout(5000)
+      it('Should fail when the id cannot be parsed', (done) => {
+        chai.request(app)
+        .delete('/api/profile/id/hello')
+        .end((err, res) => {
+          expect(res.status).to.equal(400)
+          const json = JSON.parse(res.text)
+          expect(json.success).to.equal(false)
+          done()
+        })
+      })
       it('Should delete a valid profile', async () => {
         const Profile = new ProfileModel
         const newProfile = {
