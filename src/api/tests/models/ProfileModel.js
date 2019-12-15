@@ -151,8 +151,7 @@ describe('Profile Model', () => {
                 })
             })
             afterEach( async () => {
-                const Profile = new ProfileModel
-                await Profile.deleteOneByName(profileData.name)
+                ProfileModel.deleteAllByName(profileData.name)
             })
         })
         describe('`findOneById`', function () {
