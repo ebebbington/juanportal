@@ -244,20 +244,15 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * 
    * @return {Promise} False or true, depending on the success
    */
-  public deleteOneById (id: number) {
-    return new Promise((resolve, reject) => {
-      id = new mongoose.Types.ObjectId(id)
-      // delete profile
-      Document.deleteOne({ _id: id }, (err: any) => {
-        if (err) {
-          logger.error(err)
-          reject(false)
-        }
-        this.empty(this.fieldsToExpose)
-        logger.debug('seemed to delete one')
-        resolve(true)
-      })
-    })
+  public async deleteOneById (id: number) {
+    id = this.getObjectId(id)
+    if (!id) {
+      return false
+    }
+    // delete profile
+    await Document.deleteOne({ _id: id })
+    this.empty(this.fieldsToExpose)
+    return true
   }
 
   /**
