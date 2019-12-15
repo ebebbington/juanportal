@@ -255,33 +255,6 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
     return true
   }
 
-  /**
-   * Delete profiles by their id and empty the properties
-   * 
-   * @method deleteManyById
-   * 
-   * @example Profile.deleteManyById(id).then((success) => { console.log(`User deleted: ${success}`)})
-   * 
-   * @param {number} id Id of the profile to delete
-   * 
-   * @return {Promise} False or true, depending on the success
-   */
-  public deleteManyById (id: number) {
-    return new Promise((resolve, reject) => {
-      id = new mongoose.Types.ObjectId(id)
-      // delete profile
-      Document.deleteMany({ _id: id }, (err: any) => {
-        if (err) {
-          logger.error(err)
-          reject(false)
-        }
-        this.empty(this.fieldsToExpose)
-        logger.debug('seemed to delete many')
-        resolve(true)
-      })
-    })
-  }
-
   public static async deleteAll () {
     await Document.deleteMany({})
   }
