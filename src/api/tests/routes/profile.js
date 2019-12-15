@@ -143,7 +143,8 @@ describe('Profile Route', () => {
       })
 
       afterEach('Remove test profile', async () => {
-        await ProfileModel.deleteOneByName(newProfile.name)
+        const Profile = new ProfileModel
+        await Profile.deleteOneByName(newProfile.name)
       })
     })
 
@@ -303,7 +304,7 @@ describe('Profile Route', () => {
         await Profile.findOneByName(newProfile.name)
         const id = Profile._id
         console.log(Profile)
-        await ProfileModel.deleteOneByName(Profile.name)
+        await Profile.deleteOneByName(Profile.name)
             //   chai.request(app)
             //     .delete('/api/profile/id/' + id)
             //     .end((err, res) => {});
