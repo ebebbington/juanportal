@@ -189,7 +189,7 @@ describe('Profile Model', () => {
                 await Profile.deleteOneByName(profileData.name)
             })
         })
-        describe.only('`deleteOneById`', () => {
+        describe('`deleteOneById`', () => {
             beforeEach(async () => {
                 const Profile = new ProfileModel
                 await Profile.create(profileData)
@@ -214,52 +214,40 @@ describe('Profile Model', () => {
                 expect(success).to.equal(false)
                 expect(Profile._id).to.equal('')
             })
+            it('Should empty the model on a successful delete')
             afterEach( async () => {
                 const Profile = new ProfileModel
                 await Profile.deleteOneByName(profileData.name)
             })
         })
-        describe('`deleteManyById`', () => {
-            
-        })
-        describe('`deleteOneByName`', function () {
-            this.timeout(20000)
-            it('Should remove a single model with a valid name', async () => {
-                const profileData = {
-                    name: 'Eduardo Bebbingtano',
-                    image: 'nope.jpg'
-                }
+        describe.only('`deleteOneByName`', function () {
+            beforeEach('Create test user', async () => {
                 const Profile = new ProfileModel
-                // first check it doesnt exist
-                await Profile.findOneByName(profileData.name)
-                expect(Profile._id).to.equal('')
-                // Create the profile and make sure it worked
                 await Profile.create(profileData)
-                expect(Profile.name).to.equal(profileData.name)
-                // Make sure the db was updated
+            })
+            it('Should remove a single model with a valid name', async () => {
+                const Profile = new ProfileModel
                 await Profile.findOneByName(profileData.name)
                 expect(Profile.name).to.equal(profileData.name)
                 // Delete and make sure the model is empty
                 await Profile.deleteOneByName(profileData.name)
-                expect(Profile.name).to.equal('')
-                // Make sure the db removed it
                 await Profile.findOneByName(profileData.name)
-                expect(Profile.name).to.equal('')
+                expect(Profile.name).to.equal(null)
             })
-            it('Should not remove a model with an invlaid name', async () => {
-                const profileData = {
-                    name: '',
-                    image: 'nope.jpg'
-                }
+            it('Should empty the model on a successful delete', async () => {
                 const Profile = new ProfileModel
-                // first check it doesnt exist
                 await Profile.findOneByName(profileData.name)
-                expect(Profile._id).to.equal('')
-                // Create the profile and make sure it worked
-                const errors = Profile.create(profileData)
-                console.log(errors)
-                expect(Profile.name).to.equal('')
-                expect(errors.errors.name).to.exist
+                expect(Profile.name).to.equal(profileData.name)
+                expect(Profile.description).to.equal(profileData.description)
+                expect(Profile.image).to.equal(profileData.image)
+                await Profile.deleteOneByName(Profile.name)
+                expect(Profile.name).to.equal(null)
+                expect(Profile.description).to.equal(null)
+                expect(Profile.image).to.equal(null)
+            })
+            afterEach('Remove test user', async () => {
+                const Profile = new ProfileModel
+                await Profile.deleteOneByName(profileData.name)
             })
         })
         describe('`findManyByCount`', function () {
