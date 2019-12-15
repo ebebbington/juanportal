@@ -273,43 +273,43 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
     this.empty(this.fieldsToExpose)
   }
 
-  public static async createMany (docs: [{name: string, description?: string, image: string}]) {
-    if (!docs || !docs.length) {
-      return true
-    }
-    let newProfiles = Document.create(docs)
-    // create the docs
-    // docs.forEach((profile: {name: string, description?: string, image: string}) => {
-    //   const newProfile = new Document({
-    //     name: profile.name,
-    //     description: profile.description,
-    //     image: profile.image
-    //   })
-    //   newProfiles.push(newProfile)
-    // })
+  // public static async createMany (docs: [{name: string, description?: string, image: string}]) {
+  //   if (!docs || !docs.length) {
+  //     return true
+  //   }
+  //   let newProfiles = Document.create(docs)
+  //   // create the docs
+  //   // docs.forEach((profile: {name: string, description?: string, image: string}) => {
+  //   //   const newProfile = new Document({
+  //   //     name: profile.name,
+  //   //     description: profile.description,
+  //   //     image: profile.image
+  //   //   })
+  //   //   newProfiles.push(newProfile)
+  //   // })
 
-    // validate each profile
-    // const errors = newProfiles.forEach((profile: any) => {
-    //   const err = profile.validateSync()
-    //   if (err) {
-    //     return err
-    //   }
-    // })
-    // if (errors) {
-    //   return errors
-    // }
+  //   // validate each profile
+  //   // const errors = newProfiles.forEach((profile: any) => {
+  //   //   const err = profile.validateSync()
+  //   //   if (err) {
+  //   //     return err
+  //   //   }
+  //   // })
+  //   // if (errors) {
+  //   //   return errors
+  //   // }
 
-    // insert
-    // if (!errors) {
-      // console.log('no errors when validation')
-      console.log('going to insert many with a len of: ' + docs.length)
-      const errors = await Document.insertMany(docs)
-      console.log(errors)
+  //   // insert
+  //   // if (!errors) {
+  //     // console.log('no errors when validation')
+  //     console.log('going to insert many with a len of: ' + docs.length)
+  //     const errors = await Document.insertMany(docs)
+  //     console.log(errors)
 
-      console.log('seemed to save')
-      return false
-    // }
-  }
+  //     console.log('seemed to save')
+  //     return false
+  //   // }
+  // }
 
   /**
    * Find many profiles by a specified amount
