@@ -112,10 +112,12 @@ describe('Profile Route', () => {
       })
       it('Should have valid values for the profile', async () => {
         const Profile = new ProfileModel
+        await Profile.create(newProfile)
         await Profile.findOneByName(newProfile.name)
+        console.log(Profile)
         chai.request(app)
         .get('/api/profile/id/' + Profile._id)
-        .end((err, res) => {
+        .end(async (err, res) => {
           const json = JSON.parse(res.text)
           expect(json.success).to.equal(true)
           expect(json.data._id).to.exist

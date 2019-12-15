@@ -82,6 +82,7 @@ describe('Profile Model', () => {
                 description: 'Hello',
                 image: 'sample.jpg'
             }
+            it('Should fill the model on a successful creation')
             it('Should create a profile with valid params', async () => {
                 const Profile = new ProfileModel
                 const errors = await Profile.create(profileData)
@@ -138,8 +139,9 @@ describe('Profile Model', () => {
                 const errors = Profile.create(profileData)
                 console.log(errors)
             })
+            it('Should fill the model on a successfil find')
             // not sure why this takes so long
-            it.skip('Should return a profile on valid id', async (done) => {
+            it('Should return a profile on valid id', async (done) => {
                 const Profile = new ProfileModel
                 const result = await Profile.findOneByName(profileData.name)
                 await Profile.findOneById(Profile._id)
@@ -241,10 +243,13 @@ describe('Profile Model', () => {
             })
         })
         describe('`findOneByName`', () => {
-
+            it('Should fill the model on successfil find')
+            it('Should return the profile on a correct namr')
+            it('Should fail when no profile was found')
         })
         describe('`findManyByName`', () => {
-
+            it('Should return the profiles on a correct name')
+            it('Should fail when no profiles were found')
         })
     })
 })
