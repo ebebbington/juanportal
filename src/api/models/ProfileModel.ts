@@ -296,8 +296,9 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * 
    * @param {string} name Name of the profile to delete 
    */
-  public static async deleteOneByName (name: string) {
+  public async deleteOneByName (name: string) {
     await Document.deleteOne({name: name})
+    this.empty(this.fieldsToExpose)
   }
 
   public static async createMany (docs: [{name: string, description?: string, image: string}]) {
