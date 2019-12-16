@@ -10,7 +10,7 @@ require('dotenv').config()
 const dbUrl = process.env.DB_URL
 mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
 
-const logger = require('../helpers/logger')
+const logger = require('../../helpers/logger')
 logger.debug = function () {}
 logger.info = function () {}
 
