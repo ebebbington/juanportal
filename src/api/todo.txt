@@ -3,3 +3,4 @@
 - tests: somehow get connection string of db to check it gainst the config
 - tests: ytest files like config or .env
 - tests: look into profile model deleteAll and deleteAllByName methods and their usage, also develop tests once i decide what to do with them
+- tests: race condition in ProfileModel, methods, findManyByName. Some reason there is a 7th profile - i asusme not being deleted from somewhere
