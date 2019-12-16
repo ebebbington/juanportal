@@ -250,9 +250,8 @@ describe('Profile Model', () => {
                 await Profile.deleteOneByName(profileData.name)
             })
         })
-        describe.only('`findManyByCount`', function () {
+        describe('`findManyByCount`', function () {
             before('Add 6 test profiles', async () => {
-                // First add spme profiles
                 const Profile = new ProfileModel
                 await Profile.create(profileData)
                 await Profile.create(profileData)
@@ -275,13 +274,24 @@ describe('Profile Model', () => {
                 await ProfileModel.deleteAllByName(profileData.name) 
             })
         })
-        describe('`existsByName`', function () {
-            it('Should return true for existing', async () => {
-                const profileData = {name: 'TESTPROFILENAME', description: 'Gabble', image: '/publieef/sample.jpg'}
+        describe.only('`existsByName`', function () {
+            before('Add a test profiles', async () => {
                 const Profile = new ProfileModel
-                const errors = await Profile.create(profileData)
+                await Profile.create(profileData)
+            })
+            it('Should return true for existing', async () => {
+                const Profile = new ProfileModel
+                await Profile.create(profileData)
                 const exists = await ProfileModel.existsByName(profileData.name)
-                
+                expect(exists).to.equal(true)
+            })
+            it('Should return false for not existing', async () => {
+                const exists = await ProfileModel.existsByName('I dont exist')
+                expect(exists).to.equal(false)
+            })
+            after('Remove test profile', async () => {
+                const Profile = new ProfileModel
+                await Profile.deleteOneByName(profileData.name) 
             })
         })
         describe('`findOneByName`', () => {
