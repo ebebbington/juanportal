@@ -223,8 +223,6 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
       // empty
       return false
     } else {
-      console.log('The profile!')
-      console.log(profile)
       this.empty(this.fieldsToExpose)
       this.fill(profile)
       return true
