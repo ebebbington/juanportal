@@ -81,7 +81,7 @@ class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC 
 
         // Check they dont already exist
         const exists = await ProfileModel.existsByName(newProfile.name)
-        console.log(`exists: ${exists}`)
+        logger.debug(`Profile with name ${newProfile.name} exists: ${exists}`)
         if (exists === true) {
             const data = {
                 success: false,
@@ -99,8 +99,6 @@ class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC 
             const fieldName: string = props[0]
 
             const message = errors[fieldName].message
-
-            console.log(errors)
             // const message = errors.message || errors.message[0].message
 
             const data = {
@@ -108,7 +106,6 @@ class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC 
                 message: message,
                 data: fieldName
             }
-            console.log(data)
             return res.status(400).json(data).end()
         }
 
