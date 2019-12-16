@@ -10,6 +10,10 @@ require('dotenv').config()
 const dbUrl = process.env.DB_URL
 mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
 
+const logger = require('../helpers/logger')
+logger.debug = function () {}
+logger.info = function () {}
+
 chai.use(chaiAsPromised)
 chai.should()
 
@@ -75,11 +79,11 @@ describe('Profile Model', () => {
             })
         })
     })
-    describe.only('Methods', () => {
+    describe('Methods', () => {
         const profileData = {
             name: 'TESTPROFILENAME',
             description: 'TESTPROFILEDESCRIPTION',
-            image: 'TESTPROFILEIMAGE.jpg'
+            image: 'TESTPROFILEIMAGE.jpeg'
         }
         describe('`create`', function () {
             it('Should fill the model on a successful creation', async () => {
@@ -159,7 +163,7 @@ describe('Profile Model', () => {
                 const Profile = new ProfileModel
                 await Profile.create(profileData)
             })
-            it('Should fill the model on a successfil find', async () => {
+            it('Should fill the model on a successful find', async () => {
                 const Profile = new ProfileModel
                 await Profile.findOneByName(profileData.name)
                 expect(Profile._id).to.not.equal('')
@@ -199,16 +203,17 @@ describe('Profile Model', () => {
             it('Should delete a profile on valid id', async () => {
                 const Profile = new ProfileModel
                 await Profile.findOneByName(profileData.name)
+                const id = Profile._id
                 expect(Profile._id).to.not.equal('')
                 const success = await Profile.deleteOneById(Profile._id)
-                console.log(Profile)
                 expect(success).to.equal(true)
                 expect(Profile._id).to.equal(null)
                 expect(Profile.name).to.equal(null)
                 expect(Profile.description).to.equal(null)
                 expect(Profile.image).to.equal(null)
-                await Profile.findOneByName(profileData.name)
+                const profile = await Profile.findOneById(id)
                 expect(Profile._id).to.equal(null)
+                expect(profile).to.equal(false)
             })
             it('Should fail on an invalid id', async () => {
                 const Profile = new ProfileModel
@@ -324,7 +329,7 @@ describe('Profile Model', () => {
                 await Profile.deleteOneByName(profileData.name) 
             })
         })
-        describe.only('`findManyByName`', () => {
+        describe('`findManyByName`', () => {
             before('Add 6 test profiles', async () => {
                 const Profile = new ProfileModel
                 await Profile.create(profileData)
@@ -336,6 +341,9 @@ describe('Profile Model', () => {
             })
             it('Should return the profiles on a correct name', async () => {
                 const profiles = await ProfileModel.findManyByName(profileData.name)
+                console.log('Showing all profiles')
+                console.log(profiles)
+                console.log('Profiles length: ' + profiles.length)
                 expect(profiles.length).to.equal(6)
             })
             it('Should fail when no profiles were found', async () => {
