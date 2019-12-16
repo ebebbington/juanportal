@@ -62,9 +62,7 @@ describe('Profile Route', () => {
         const profiles = await ProfileModel.findManyByCount(numberOfProfilesToFind)
         // Check if we got many profiles, else a single profile will be retirved, and as we cant check a length on that, we check the props to determine if even a single result came back
         const actualNumberOfProfiles = profiles.length || profiles._id ? 1 : 0 || 0
-        console.log('actual number of profiles there are: ' + actualNumberOfProfiles)
         const hasProfiles = actualNumberOfProfiles ? true : false
-        console.log('has profiles: ' + hasProfiles)
         expect(hasProfiles).to.equal(true) // some profiles should already exist when running this
         // then we are going to compare that number with the real result
         chai.request(app)
@@ -114,7 +112,6 @@ describe('Profile Route', () => {
         const Profile = new ProfileModel
         await Profile.create(newProfile)
         await Profile.findOneByName(newProfile.name)
-        console.log(Profile)
         chai.request(app)
         .get('/api/profile/id/' + Profile._id)
         .end(async (err, res) => {
@@ -214,8 +211,6 @@ describe('Profile Route', () => {
             const Profile = new ProfileModel
             
             await Profile.findOneByName(newProfile.name)
-            console.log('showing the profile in test')
-            console.log(Profile)
             expect(Profile.name).to.equal(newProfile.name)
 
           });
@@ -285,7 +280,6 @@ describe('Profile Route', () => {
           });
       })
       it('Should fail if the user already exists', async () => {
-        console.log('posting 1st one')
         const Profile = new ProfileModel
         await Profile.create(newProfile)
         chai.request(app)
@@ -303,7 +297,6 @@ describe('Profile Route', () => {
         const Profile = new ProfileModel
         await Profile.findOneByName(newProfile.name)
         const id = Profile._id
-        console.log(Profile)
         await Profile.deleteOneByName(Profile.name)
             //   chai.request(app)
             //     .delete('/api/profile/id/' + id)
