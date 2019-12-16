@@ -319,10 +319,12 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * @return {[{}]} Profiles or false if not found any
    */
   public static async findManyByCount (amount: number) {
+    if (!amount) {
+      logger.debug('[ProfileModel findManyByCount - Param isnt defined')
+      return []
+    }
       logger.debug('Going to find many profiles')
-      console.log(amount)
       const profiles: any = await Document.find({}).sort({'date': -1}).limit(amount)
-      console.log(profiles)
       return profiles
   }
 
