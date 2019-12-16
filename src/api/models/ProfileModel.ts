@@ -372,8 +372,13 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * 
    * @return {[{}]} Profiles found
    */
-  public async findManyByName (name: string) {
+  public static async findManyByName (name: string) {
     const profiles = await Document.find({name: name})
+    if (Array.isArray(profiles) && !profiles.length || !profiles) {
+      logger.debug('Empty result from findonevbyname')
+      // empty
+      return false
+    }
     return profiles
   }
 }
