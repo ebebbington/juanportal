@@ -296,7 +296,7 @@ describe('Profile Model', () => {
                 await Profile.deleteOneByName(profileData.name) 
             })
         })
-        describe.only('`findOneByName`', () => {
+        describe('`findOneByName`', () => {
             before('Add a test profiles', async () => {
                 const Profile = new ProfileModel
                 await Profile.create(profileData)
@@ -324,9 +324,27 @@ describe('Profile Model', () => {
                 await Profile.deleteOneByName(profileData.name) 
             })
         })
-        describe('`findManyByName`', () => {
-            it('Should return the profiles on a correct name')
-            it('Should fail when no profiles were found')
+        describe.only('`findManyByName`', () => {
+            before('Add 6 test profiles', async () => {
+                const Profile = new ProfileModel
+                await Profile.create(profileData)
+                await Profile.create(profileData)
+                await Profile.create(profileData)
+                await Profile.create(profileData)
+                await Profile.create(profileData)
+                await Profile.create(profileData)
+            })
+            it('Should return the profiles on a correct name', async () => {
+                const profiles = await ProfileModel.findManyByName(profileData.name)
+                expect(profiles.length).to.equal(6)
+            })
+            it('Should fail when no profiles were found', async () => {
+                const profiles = await ProfileModel.findManyByName('i dont exist')
+                expect(profiles).to.equal(false)
+            })
+            after('Remove all test profiles', async () => {
+                await ProfileModel.deleteAllByName(profileData.name) 
+            })
         })
     })
 })
