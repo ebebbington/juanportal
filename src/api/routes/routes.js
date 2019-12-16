@@ -46,7 +46,6 @@ app.route('/profile/id/:id')
     }
     const id = req.params.id
     const Profile = new ProfileModel
-    console.log('going to find the profile')
     const success = await Profile.findOneById(id)
     if (Profile._id) {
       const result = {
@@ -71,7 +70,6 @@ app.route('/profile/id/:id')
       return res.status(400).json({success: false, message: 'Failed to parse the id to a number'})
     }
     const id = req.params.id
-    console.log(id)
     const Profile = new ProfileModel
     Profile.deleteOneById(id)
     .then((success) => {
@@ -125,7 +123,6 @@ app.route('/profile')
 
         const message = error[fieldName].message
 
-        console.log(errors)
         // const message = errors.message || errors.message[0].message
 
         const data = {
@@ -133,7 +130,6 @@ app.route('/profile')
             message: message,
             data: fieldName
         }
-        console.log(data)
         return res.status(400).json(data).end()
     }
 
