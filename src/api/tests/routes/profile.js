@@ -10,8 +10,9 @@ const multer = require('multer')
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
-// logger.debug = function (){}
-// logger.info = function (){}
+const logger = require('../../helpers/logger')
+logger.debug = function (){}
+logger.info = function (){}
 
 chai.use(chaiAsPromised)
 chai.use(chaiHttp)
@@ -94,10 +95,11 @@ describe('Profile Route', () => {
         image: 'TESTPROFILEIMAGE.jpg'
       }
 
-      beforeEach('Create test profile', async () => {
+      before('Create test profile', async () => {
         const Profile = new ProfileModel
         await Profile.create(newProfile)
       })
+
       it('Should fail when the id cannot be parsed', (done) => {
         chai.request(app)
         .get('/api/profile/id/hello')
@@ -139,7 +141,8 @@ describe('Profile Route', () => {
         })
       })
 
-      afterEach('Remove test profile', async () => {
+      after('Remove test profile', async function () {
+        this.timeout(5000)
         const Profile = new ProfileModel
         await Profile.deleteOneByName(newProfile.name)
       })
