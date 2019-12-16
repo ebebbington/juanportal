@@ -72,7 +72,6 @@ app.route('/profile/id/:id')
     const id = req.params.id
     const Profile = new ProfileModel
     const success = await Profile.deleteOneById(id)
-    console.log('[HELLO WORLD] ' + success)
     if (success) {
       return res.status(200).json({success: true, message: 'Successfully deleted'}).end()
     }
@@ -96,7 +95,7 @@ app.route('/profile')
 
     // Check they dont already exist
     const exists = await ProfileModel.existsByName(req.body.name)
-    console.log(`exists: ${exists}`)
+    logger.debug(`exists: ${exists}`)
     if (exists === true) {
         const data = {
             success: false,
