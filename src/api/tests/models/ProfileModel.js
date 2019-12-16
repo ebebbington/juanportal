@@ -162,6 +162,8 @@ describe('Profile Model', () => {
             it('Should fill the model on a successfil find', async () => {
                 const Profile = new ProfileModel
                 await Profile.findOneByName(profileData.name)
+                expect(Profile._id).to.not.equal('')
+                await Profile.findOneById(Profile._id)
                 expect(Profile.name).to.equal(profileData.name)
                 expect(Profile.description).to.equal(profileData.description)
                 expect(Profile.image).to.equal(profileData.image)
@@ -274,7 +276,7 @@ describe('Profile Model', () => {
                 await ProfileModel.deleteAllByName(profileData.name) 
             })
         })
-        describe.only('`existsByName`', function () {
+        describe('`existsByName`', function () {
             before('Add a test profiles', async () => {
                 const Profile = new ProfileModel
                 await Profile.create(profileData)
@@ -294,10 +296,33 @@ describe('Profile Model', () => {
                 await Profile.deleteOneByName(profileData.name) 
             })
         })
-        describe('`findOneByName`', () => {
-            it('Should fill the model on successfil find')
-            it('Should return the profile on a correct namr')
-            it('Should fail when no profile was found')
+        describe.only('`findOneByName`', () => {
+            before('Add a test profiles', async () => {
+                const Profile = new ProfileModel
+                await Profile.create(profileData)
+            })
+            it('Should fill the model on successful find and succeed', async () => {
+                const Profile = new ProfileModel
+                const success = await Profile.findOneByName(profileData.name)
+                expect(success).to.equal(true)
+                expect(Profile._id).to.not.equal('').and.not.equal(null)
+                expect(Profile.name).to.not.equal('').and.not.equal(null)
+                expect(Profile.description).to.not.equal('').and.not.equal(null)
+                expect(Profile.image).to.not.equal('').and.not.equal(null)
+            })
+            it('Should fail when no profile was found', async () => {
+                const Profile = new ProfileModel
+                const success = await Profile.findOneByName('I dont exist')
+                expect(success).to.equal(false)
+                expect(Profile._id).to.equal('')
+                expect(Profile.name).to.equal('')
+                expect(Profile.description).to.equal('')
+                expect(Profile.image).to.equal('')
+            })
+            after('Remove test profile', async () => {
+                const Profile = new ProfileModel
+                await Profile.deleteOneByName(profileData.name) 
+            })
         })
         describe('`findManyByName`', () => {
             it('Should return the profiles on a correct name')
