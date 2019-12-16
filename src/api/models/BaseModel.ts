@@ -36,9 +36,8 @@ class BaseModel {
   protected getObjectId (id: string) {
     try {
       // if the id isnt already an object id, convert it
-      if (mongoose.Types.ObjectId.isValid(id) === false)
-        id = new mongoose.Types.ObjectId(id)
-        return id
+      id = new mongoose.Types.ObjectId(id)
+      return id
     } catch (err) {
       loggerr.error(`failed to convert ${id} to a mongoose object id`)
       return false
