@@ -16,7 +16,7 @@ const loggerr = require('../helpers/logger')
 class BaseModel {
 
   /**
-   * Here to implement the fill method
+   * Here to implement the fill method, represents an empty object with no children, or the childs matching property when extended
    * 
    * @var {string[]} fieldsToExpose
    */
@@ -56,7 +56,7 @@ class BaseModel {
    * 
    * @return {object} The same passed in model but stripping the non-exposable fields
    */
-  public validateOutputFields (model: any, fieldsToExpose: string[]): any {
+  private stripNonExposableProperties (model: any, fieldsToExpose: string[]): any {
     Object.keys(model).forEach((profileProp) => {
       fieldsToExpose.forEach((field) => {
         if (profileProp !== field) // remove the key from the object as we dont want toe xpose it
@@ -83,6 +83,8 @@ class BaseModel {
   */
   protected fill (dbDocument: {$__: any, isNew: any, errors: any, _doc: object, $locals: any}): void {
     const trueData = dbDocument._doc
+    const strippedDocument = null
+    //console.log(this.fieldsToExpose)
     // Loops through the document properties
     Object.keys(trueData).forEach((propName, propValue) => {
       // If the child class has the property
