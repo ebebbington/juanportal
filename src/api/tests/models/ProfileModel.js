@@ -329,8 +329,11 @@ describe('Profile Model', () => {
                 await Profile.deleteOneByName(profileData.name) 
             })
         })
-        describe('`findManyByName`', () => {
+        describe('`findManyByName`', async () => {
             before('Add 6 test profiles', async () => {
+                // just delete all existin profiles
+                await ProfileModel.deleteAllByName(profileData.name)
+                // then create
                 const Profile = new ProfileModel
                 await Profile.create(profileData)
                 await Profile.create(profileData)
@@ -341,9 +344,6 @@ describe('Profile Model', () => {
             })
             it('Should return the profiles on a correct name', async () => {
                 const profiles = await ProfileModel.findManyByName(profileData.name)
-                console.log('Showing all profiles')
-                console.log(profiles)
-                console.log('Profiles length: ' + profiles.length)
                 expect(profiles.length).to.equal(6)
             })
             it('Should fail when no profiles were found', async () => {
