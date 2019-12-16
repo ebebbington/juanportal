@@ -37,6 +37,7 @@ const Schema = new mongoose.Schema({
   'image': {
     type: String,
     required: true,
+    lowerCase: true,
     validate: {
       validator: function (v: string) {
         return /\.(jpg|jpeg|JPG|JPEG|png|PNG)$/.test(v)
@@ -165,17 +166,14 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
       description: data.description,
       image: data.image
     })
-    console.log('Inside create method, heres the data:')
-    console.log(newProfile)
     const errors = newProfile.validateSync()
     if (errors) {
-      console.log('there were errors when validation profile')
+      logger.error('there were errors when validation profile')
       return errors
     }
     if (!errors) {
-      console.log('no errors when validation')
+      logger.debug('no errors when validation')
       newProfile.save()
-      console.log('seemed to save')
       this.empty(this.fieldsToExpose)
       this.fill(newProfile)
     }
@@ -221,12 +219,12 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
     }
     const profile = await Document.findOne({ _id: id })
     // check for an empty response
-    console.log('the profile')
-    console.log(profile)
-    if (Array.isArray(profile) && !profile.length) {
+    if (Array.isArray(profile) && !profile.length || !profile) {
       // empty
       return false
     } else {
+      console.log('The profile!')
+      console.log(profile)
       this.empty(this.fieldsToExpose)
       this.fill(profile)
       return true
@@ -350,7 +348,6 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * @return {promise} Resolved if found, rejected if not
    */
   public async findOneByName (nameOfProfile: string) {
-    console.log('entered findOneByName')
       const profile = await Document.findOne({name: nameOfProfile})
       if (Array.isArray(profile) && !profile.length || !profile) {
         logger.debug('Empty result from findonevbyname')
