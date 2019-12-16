@@ -220,7 +220,7 @@ describe('Profile Model', () => {
                 await Profile.deleteOneByName(profileData.name)
             })
         })
-        describe.only('`deleteOneByName`', function () {
+        describe('`deleteOneByName`', function () {
             beforeEach('Create test user', async () => {
                 const Profile = new ProfileModel
                 await Profile.create(profileData)
@@ -250,15 +250,30 @@ describe('Profile Model', () => {
                 await Profile.deleteOneByName(profileData.name)
             })
         })
-        describe('`findManyByCount`', function () {
-            this.timeout(10000)
-            it('Should return the number of profiles specified', async function () {
+        describe.only('`findManyByCount`', function () {
+            before('Add 6 test profiles', async () => {
+                // First add spme profiles
                 const Profile = new ProfileModel
-                const count = 5
-                const profiles = await Profile.findManyByCount(count)
-                expect(profiles.length).to.equal(count)   
+                await Profile.create(profileData)
+                await Profile.create(profileData)
+                await Profile.create(profileData)
+                await Profile.create(profileData)
+                await Profile.create(profileData)
+                await Profile.create(profileData)
             })
-            it('Should fail if no count is specified')
+            it('Should return the number of profiles specified', async function () {
+                const count = 5
+                const profiles = await ProfileModel.findManyByCount(count)
+                expect(profiles.length).to.equal(count)  
+            })
+            it('Should return a empty array if no count is specified', async () => {
+                const profiles = await ProfileModel.findManyByCount(0)
+                expect(profiles.length).to.equal(0)
+                expect(Array.isArray(profiles)).to.equal(true)
+            })
+            after('Remove all test profiles', async () => {
+                await ProfileModel.deleteAllByName(profileData.name) 
+            })
         })
         describe('`existsByName`', function () {
             it('Should return true for existing', async () => {
