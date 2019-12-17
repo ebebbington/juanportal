@@ -105,7 +105,7 @@ class BaseModel {
    * 
    * @return void
    */
-  protected empty (childFieldsToExpose: string[]): void {
+  protected empty (): void {
     this.fieldsToExpose.forEach((value: string, index: number) => {
       if (this.hasOwnProperty(value)) {
          // @ts-ignore: Unreachable code error
