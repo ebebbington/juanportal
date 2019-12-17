@@ -1,21 +1,42 @@
 const winston = require('winston')
+require('dotenv').config()
+const { rootDir } = require('../api.config')
+const errorLogFile = rootDir + '/logs/error.log'
+let logger = {}
 
-const level = process.env.LOG_LEVEL || 'debug';
+// Log to file for production
+if (process.env.NODE_ENV === 'production') {
+    logger = new winston.createLogger({
+        format: winston.format.combine(
+            winston.format.simple(),
+            winston.format.align()
+        ),
+        transports: [
+            new winston.transports.File({
+                filename: errorLogFile,
+                level: 'warn'
+            })
+        ]
+    });
+}
 
-const logger = new winston.createLogger({
-    format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple(),
-        winston.format.align()
-    ),
-    transports: [
-        new winston.transports.Console({
-            level: level,
-            timestamp: function () {
-                return (new Date()).toISOString();
-            }
-        })
-    ]
-});
+// Log to console for anything else
+if (process.env.NODE_ENV !== 'production') {
+    logger = new winston.createLogger({
+        format: winston.format.combine(
+            winston.format.colorize(),
+            winston.format.simple(),
+            winston.format.align()
+        ),
+        transports: [
+            new winston.transports.Console({
+                level: 'debug',
+                timestamp: function () {
+                    return (new Date()).toISOString();
+                }
+            })
+        ]
+    });
+}
 
 module.exports = logger
