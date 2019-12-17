@@ -33,7 +33,7 @@ class BaseModel {
     return model.validateSync()
   }
 
-  protected getObjectId (id: string) {
+  protected generateObjectId (id: string) {
     try {
       // if the id isnt already an object id, convert it
       id = new mongoose.Types.ObjectId(id)
@@ -117,7 +117,7 @@ class BaseModel {
    * @return void
    */
   protected empty (childFieldsToExpose: string[]): void {
-    childFieldsToExpose.forEach((value: string, index: number) => {
+    this.fieldsToExpose.forEach((value: string, index: number) => {
       if (this.hasOwnProperty(value)) {
          // @ts-ignore: Unreachable code error
         this[value] = null
