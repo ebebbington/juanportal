@@ -18,6 +18,22 @@ chai.use(chaiAsPromised)
 chai.should()
 
 describe('Profile Model', () => {
+    it('Should extend BaseModel', () => {
+        const BaseModel = require('../../models/BaseModel')
+        const doesExtendBaseModel = ProfileModel.prototype instanceof BaseModel
+        expect(doesExtendBaseModel).to.equal(true)
+    })
+    it('Should implement BaseModelInterface', () => {
+        const Profile = new ProfileModel
+        const implementsCreateMethod = Profile.create !== undefined
+        const implementsFieldsToExposeProperty = Profile.fieldsToExpose !== undefined
+        const implementsTablenameProperty = Profile.tablename !== undefined
+        const doesImplement =
+            implementsTablenameProperty &&
+            implementsCreateMethod &&
+            implementsFieldsToExposeProperty
+        expect(doesImplement).to.equal(true)
+    })
     describe('Properties', () => {
         describe('_id', () => {
             it('Should be defined', () => {
