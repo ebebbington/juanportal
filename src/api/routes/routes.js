@@ -106,29 +106,22 @@ app.route('/profile')
 
     // Create data
     const Profile = new ProfileModel
-    const errors = await Profile.create({
+    const validationError = await Profile.create({
         name: req.body.name,
         description: req.body.description,
         image: '/public/images/' + imageFileName
     })
 
     // Check any vlidtion errors
-    if (errors) {
-        const error = errors.errors
-
-        const props = Object.keys(error)
-        const fieldName = props[0]
-
-        const message = error[fieldName].message
-
-        // const message = errors.message || errors.message[0].message
-
-        const data = {
-            success: false,
-            message: message,
-            data: fieldName
-        }
-        return res.status(400).json(data).end()
+    if (validationError) {
+      const fieldName = Object.keys(validationError.errors)[0]
+      const errorMessage = validationError.errors[fieldName].message
+      const data = {
+        success: false,
+        message: errorMessage,
+        data: fieldName
+      }
+      return res.status(400).json(data).end()
     }
 
     // Make sure the profile was added
