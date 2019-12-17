@@ -213,7 +213,7 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * @return {Promise} Resolved if found a profile with the profile, rejected for anything else
    */
   public async findOneById(id: number): Promise<any>  {
-    id = this.getObjectId(id)
+    id = this.generateObjectId(id)
     if (!id) {
       return false
     }
@@ -241,7 +241,7 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
    * @return {Promise} False or true, depending on the success
    */
   public async deleteOneById (id: number) {
-    id = this.getObjectId(id)
+    id = this.generateObjectId(id)
     if (!id) {
       return false
     }
