@@ -22,17 +22,6 @@ class BaseModel {
    */
   protected fieldsToExpose: string[] = []
 
-    /**
-   * Validate object properties against the schema before submitting to the database
-   * 
-   * @param {object} model The object model to validate
-   * 
-   * @return {object|undefined} Set to undefined if no errors
-   */
-  public validateInputFields (model: any): any {
-    return model.validateSync()
-  }
-
   protected generateObjectId (id: string) {
     try {
       // if the id isnt already an object id, convert it
