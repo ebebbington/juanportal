@@ -62,53 +62,50 @@ describe('BaseModel', () => {
             it('Should be protected', () => {
                 expect(T).to.haveOwnProperty('fieldsToExpose')
             })
-            it('Should be an empty object', () => {
-                const empty = _.isEmpty(T.fieldsToExpose)
-                const type = typeof T.fieldsToExpose
-                expect(empty).to.equal(true)
-                expect(type).to.equal('object')
+            it('Should be an empty array', () => {
+                expect(T.fieldsToExpose.length).to.equal(0)
+                expect(Array.isArray(T.fieldsToExpose)).to.equal(true)
             })
         })
 
     })
-    describe('Methods', () => {
+    describe.only('Methods', () => {
         describe('validateInputFields', () => {
             it('Should return errors when failed to validate against the model')
             it('Should return null when succesfully validated the model')
         })
-        describe('getObjectId', () => {
+        describe('generateObjectId', () => {
             const Base = new BaseModel
             const Schema = mongoose.Schema
             const ObjectIdType = Schema.ObjectId
             const stringId = '4edd40c86762e0fb12000003'
             it('Should return a mongoose object id on a successful parse', () => {
-                const objectId = Base.getObjectId(stringId)
+                const objectId = Base.generateObjectId(stringId)
                 const isValidObjectId = mongoose.Types.ObjectId.isValid(objectId)
                 expect(isValidObjectId).to.equal(true)
             })
             it('Should return the passed in id when already a mongoose id', () => {
                 const objectId = mongoose.Types.ObjectId()
-                const objectId2 = Base.getObjectId(objectId)
+                const objectId2 = Base.generateObjectId(objectId)
                 expect(objectId).to.equal(objectId2)
             })
             it('Should return false when failed to convert', () => {
                 const invalidStringId = '5'
-                const objectId = Base.getObjectId(invalidStringId)
-                console.log(objectId)
+                const objectId = Base.generateObjectId(invalidStringId)
                 expect(objectId).to.equal(false)
             })
             it('Should be a protected method', () => {
                 const Test = new TestModel({forename: null, surname: null, age: null, postcode: null})
-                const objectId = Test.getObjectId(stringId)
+                const objectId = Test.generateObjectId(stringId)
                 const isValidObjectId = mongoose.Types.ObjectId.isValid(objectId)
                 expect(isValidObjectId).to.equal(true)
             })
         })
-        describe('validateOutputFields', () => {
+        describe('stripNonExposableFields', () => {
             it('Should remove properties from a model that arent in `fieldsToExpose`')
             it('Should return the passed in model when no properties exist')
         })
-        describe.only('fill', () => {
+        describe('fill', () => {
             it('Should set the matching properties in fieldsToExpose of the passed in document', () => {
                 const Test = new TestModel({forename: null, surname: null, age: null, postcode: null})
                 // Mimick a DB document
@@ -123,9 +120,35 @@ describe('BaseModel', () => {
                         postcode: 'TESTPOSTCODE'
                     },
                     $locals: false
-                }
+                } 
                 Test.fill(doc)
                 console.log(Test)
+                
+            })
+        })
+        describe('empty', () => {
+            it('Should empty the models properties by their fieldsToExpose', () => {
+                const Test = new TestModel({forename: null, surname: null, age: null, postcode: null})
+                const doc = {
+                    $__: false,
+                    isNew: false,
+                    errors: false,
+                    _doc: {
+                        forename: 'TESTFORENAME',
+                        surname: 'TESTSURNAME',
+                        age: 100,
+                        postcode: 'TESTPOSTCODE'
+                    },
+                    $locals: false
+                } 
+                Test.fill(doc)
+                expect(Test.surname).to.equal(doc._doc.surname)
+                expect(Test.forename).to.equal(doc._doc.forename)
+                expect(Test.age).to.equal(doc._doc.age)
+                Test.empty()
+                expect(Test.surname).to.equal(null)
+                expect(Test.forename).to.equal(null)
+                expect(Test.age).to.equal(null)
             })
         })
     })
