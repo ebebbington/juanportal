@@ -4,3 +4,7 @@
 - tests: ytest files like config or .env
 - tests: look into profile model deleteAll and deleteAllByName methods and their usage, also develop tests once i decide what to do with them
 - tests: race condition in ProfileModel, methods, findManyByName. Some reason there is a 7th profile - i asusme not being deleted from somewhere
+- base model: maybe call the validateoutputfields method inside the fill method? idea is,
+              fill fills the model with data from a passed in document. whereas vof strips out proeprties that we dont wanna expose
+              so, a model should have a property matching each in in the database, and fte should define the ones to fill
+- base model: maybe implement fillabled property
