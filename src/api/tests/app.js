@@ -58,7 +58,6 @@ describe('App', () => {
         done()
       })
     })
-    it('Should connect to the URL in the env')
   })
   describe('Environment', () => {
     it('Environment should match the one in the .env file', () => {
