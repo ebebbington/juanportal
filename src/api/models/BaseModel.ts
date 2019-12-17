@@ -20,7 +20,7 @@ class BaseModel {
    * 
    * @var {string[]} fieldsToExpose
    */
-  protected fieldsToExpose: {[key: string]: string[]} = {}
+  protected fieldsToExpose: string[] = []
 
     /**
    * Validate object properties against the schema before submitting to the database
@@ -56,14 +56,15 @@ class BaseModel {
    * 
    * @return {object} The same passed in model but stripping the non-exposable fields
    */
-  private stripNonExposableProperties (model: any, fieldsToExpose: string[]): any {
-    Object.keys(model).forEach((profileProp) => {
-      fieldsToExpose.forEach((field) => {
-        if (profileProp !== field) // remove the key from the object as we dont want toe xpose it
-          delete model.item
-      })
+  private stripNonExposableProperties (document: any = {}, fieldsToExpose: string[] = []): object {
+    // Loop through the fields to expose
+    Object.keys(document).forEach((property: string, value: any) => {
+      const allowedToExpose: boolean = fieldsToExpose.includes(property)
+      if (!allowedToExpose) {
+        delete document[property]
+      }
     })
-    return model
+    return document
   }
 
   /**
@@ -82,16 +83,15 @@ class BaseModel {
   * @return void
   */
   protected fill (dbDocument: {$__: any, isNew: any, errors: any, _doc: object, $locals: any}): void {
-    const trueData = dbDocument._doc
-    const strippedDocument = null
-    //console.log(this.fieldsToExpose)
+    const documentData: object = dbDocument._doc
+    const strippedDocument: object = this.stripNonExposableProperties(documentData, this.fieldsToExpose)
     // Loops through the document properties
-    Object.keys(trueData).forEach((propName, propValue) => {
+    Object.keys(strippedDocument).forEach((propName, propValue) => {
       // If the child class has the property
       if (this.hasOwnProperty(propName)) {
         // Assign it 
         // @ts-ignore: Unreachable code error /* TS doesnt like "this[propName]" but it works so ignore it */
-        this[propName] = trueData[propName]
+        this[propName] = documentData[propName]
       }
     })
 
