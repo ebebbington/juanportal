@@ -3,8 +3,6 @@ const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
 
 const _ = require('lodash')
-
-const rewire = require('rewire')
 const BaseModel = require('../../models/BaseModel')
 
 const mongoose = require('mongoose')
@@ -49,6 +47,14 @@ class TestModel extends BaseModel {
 // })
 // console.log(Test)
 
+async function test () {
+const ProfileModel = require('../../models/ProfileModel')
+const Profile = new ProfileModel
+const result = await Profile.test({name: '', description: 'Hey', image: 'Image.jpg'})
+console.log(result)
+}
+test()
+
 describe('BaseModel', () => {
     describe('Properties', () => {
         describe('fieldsToExpose', () => {
@@ -69,11 +75,7 @@ describe('BaseModel', () => {
         })
 
     })
-    describe.only('Methods', () => {
-        describe('validateInputFields', () => {
-            it('Should return errors when failed to validate against the model')
-            it('Should return null when succesfully validated the model')
-        })
+    describe('Methods', () => {
         describe('generateObjectId', () => {
             const Base = new BaseModel
             const Schema = mongoose.Schema
@@ -102,8 +104,29 @@ describe('BaseModel', () => {
             })
         })
         describe('stripNonExposableFields', () => {
-            it('Should remove properties from a model that arent in `fieldsToExpose`')
-            it('Should return the passed in model when no properties exist')
+            it('Should remove properties from a model that arent in `fieldsToExpose`', () => {
+                const rewire = require('rewire')
+                const RewiredBaseModel = rewire('../../models/BaseModel')
+                const Base = new RewiredBaseModel
+                const exampleDoc = {
+                    _id: 'mongoose object id',
+                    forename: 'Edward',
+                    surname: 'Bebbington',
+                    age: 21,
+                    postcode: 'NG31 8FY'
+                }
+                const exampleFieldsToExpose = [
+                    'forename',
+                    'surname',
+                    'age'
+                ]
+                const stripped = Base.stripNonExposableProperties(exampleDoc, exampleFieldsToExpose)
+                expect (stripped._id).to.not.exist
+                expect(stripped.forename).to.equal(exampleDoc.forename)
+                expect(stripped.surname).to.equal(exampleDoc.surname)
+                expect(stripped.age).to.equal(exampleDoc.age)
+                expect(stripped.postcode).to.not.exist
+            })
         })
         describe('fill', () => {
             it('Should set the matching properties in fieldsToExpose of the passed in document', () => {
@@ -121,9 +144,7 @@ describe('BaseModel', () => {
                     },
                     $locals: false
                 } 
-                Test.fill(doc)
-                console.log(Test)
-                
+                Test.fill(doc)  
             })
         })
         describe('empty', () => {
