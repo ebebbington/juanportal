@@ -125,17 +125,23 @@ class Server {
    * @return {void}
    */
   private initiateLogging (): void {
-    // todo :; add logging for test and production
-    this.app.use(morgan('dev', {
-      skip: function (req: any, res: any) {
-          return res.statusCode < 400
-      }, stream: process.stderr
-    }));
-    this.app.use(morgan('dev', {
-      skip: function (req: any, res: any) {
-          return res.statusCode >= 400
-      }, stream: process.stdout
-    }));
+    // For production environment
+    if (process.env.NODE_ENV === 'production') {
+      this.app.use(morgan('combined'))
+    }
+    // Everything else use development logging
+    if (process.env.NODE_ENV !== 'production') {
+      this.app.use(morgan('dev', {
+        skip: function (req: any, res: any) {
+            return res.statusCode < 400
+        }, stream: process.stderr
+      }));
+      this.app.use(morgan('dev', {
+        skip: function (req: any, res: any) {
+            return res.statusCode >= 400
+        }, stream: process.stdout
+      }));
+    }
   }
 
   /**
