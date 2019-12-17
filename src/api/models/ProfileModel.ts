@@ -166,16 +166,16 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
       description: data.description,
       image: data.image
     })
-    const errors = newProfile.validateSync()
-    if (errors) {
-      logger.error('there were errors when validation profile')
-      return errors
-    }
-    if (!errors) {
-      logger.debug('no errors when validation')
-      newProfile.save()
-      this.empty(this.fieldsToExpose)
+    try {
+      await newProfile.save()
+      this.empty()
       this.fill(newProfile)
+      logger.info(`[ProfileModel - create: filled the model]`)
+    } catch (validationError) {
+      const fieldName = Object.keys(validationError.errors)[0]
+      const errorMessage = validationError.errors[fieldName].message
+      logger.error(`Validation error: ${errorMessage}`)
+      return validationError
     }
   }
 
