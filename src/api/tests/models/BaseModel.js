@@ -47,14 +47,6 @@ class TestModel extends BaseModel {
 // })
 // console.log(Test)
 
-async function test () {
-const ProfileModel = require('../../models/ProfileModel')
-const Profile = new ProfileModel
-const result = await Profile.test({name: '', description: 'Hey', image: 'Image.jpg'})
-console.log(result)
-}
-test()
-
 describe('BaseModel', () => {
     describe('Properties', () => {
         describe('fieldsToExpose', () => {
@@ -73,7 +65,6 @@ describe('BaseModel', () => {
                 expect(Array.isArray(T.fieldsToExpose)).to.equal(true)
             })
         })
-
     })
     describe('Methods', () => {
         describe('generateObjectId', () => {
