@@ -5,6 +5,7 @@ const ProfileController = require('../controllers/ProfileController.js')
 const ProfileModel = require('../models/ProfileModel')
 const logger = require('../helpers/logger')
 const ImageHelper = require('../helpers/ImageHelper')
+const JWT = require('../helpers/JWT')
 
 // For when an image is submited in the form when POSTing a profile
 const multer = require('multer')
@@ -65,6 +66,7 @@ app.route('/profile/id/:id')
     }
   })
   .delete( async (req, res) => {
+
     const parsedId = parseInt(req.params.id)
     if (isNaN(parsedId)) {
       return res.status(400).json({success: false, message: 'Failed to parse the id to a number'})
@@ -82,7 +84,6 @@ app.route('/profile/id/:id')
 
 app.route('/profile')
   .post(upload.single('image'), async (req, res) => {
-    console.info(req.body)
     // Create the file name
     const Image = new ImageHelper;
     let imageFileName = 'sample.jpg'
@@ -112,7 +113,7 @@ app.route('/profile')
         image: '/public/images/' + imageFileName
     })
 
-    // Check any vlidtion errors
+    // Check any validation errors
     if (validationError) {
       const fieldName = Object.keys(validationError.errors)[0]
       const errorMessage = validationError.errors[fieldName].message
@@ -123,6 +124,13 @@ app.route('/profile')
       }
       return res.status(400).json(data).end()
     }
+
+    // Create the JWT
+    const token = JWT.createToken({ name: Profile.name })
+    if (!token) {
+      return res.status(500).json({success: false, message: 'Tried creating a JWT but it couldnt be set', data: token})
+    }
+    logger.info('Created a token on POST /profile: ' + token)
 
     // Make sure the profile was added
     await Profile.findOneByName(req.body.name)
