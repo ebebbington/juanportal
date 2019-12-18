@@ -149,8 +149,8 @@ class Server {
    * @return {void}
    */
   private defineRoutes (): void {
-    const routes = require('./routes/routes.js')
-    this.app.use('/api', routes)
+    const profileRoute = require('./routes/profile.js')
+    this.app.use('/api/profile', profileRoute)
   }
 
   /**

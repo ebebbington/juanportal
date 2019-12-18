@@ -85,6 +85,5 @@ function example () {
     // Check a valid token
     jwt.verify(token, privateKey, options) // no error thrown
 }
-example()
 
 module.exports = JWT

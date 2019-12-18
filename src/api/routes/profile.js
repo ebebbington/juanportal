@@ -15,7 +15,7 @@ const upload = multer({ storage: storage })
 /**
  * /api/profile/count/:count
  */
-app.route('/profile/count/:count')
+app.route('/count/:count')
   .get( async (req, res) => {
     // Check a param is passed in AND we can parse it
     if (!req.params.count) {
@@ -39,7 +39,7 @@ app.route('/profile/count/:count')
     }
   })
 
-app.route('/profile/id/:id')
+app.route('/id/:id')
   .get( async (req, res) => {
     const parsedId = parseInt(req.params.id)
     if (isNaN(parsedId)) {
@@ -82,7 +82,7 @@ app.route('/profile/id/:id')
     }
   })
 
-app.route('/profile')
+app.route('/')
   .post(upload.single('image'), async (req, res) => {
     // Create the file name
     const Image = new ImageHelper;
