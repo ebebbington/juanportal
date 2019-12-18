@@ -237,7 +237,17 @@ describe('Profile Model', () => {
                 expect(success).to.equal(false)
                 expect(Profile._id).to.equal('')
             })
-            it('Should empty the model on a successful delete')
+            it('Should empty the model on a successful delete', async () => {
+                const Profile = new ProfileModel
+                await Profile.findOneByName(profileData.name)
+                expect(Profile._id).to.not.equal(null)
+                expect(Profile._id).to.not.equal('')
+                await Profile.deleteOneById(Profile._id)
+                expect(Profile._id).to.equal(null)
+                expect(Profile.name).to.equal(null)
+                expect(Profile.description).to.equal(null)
+                expect(Profile.image).to.equal(null)
+            })
             afterEach( async () => {
                 const Profile = new ProfileModel
                 await Profile.deleteOneByName(profileData.name)
