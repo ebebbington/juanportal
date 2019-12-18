@@ -25,7 +25,6 @@ const logger = require('./helpers/logger')
  * @fires     Server#instantiateDbConnection
  * 
  * @property  {express.Application}     app             - Express app object
- * @property  {string}                  viewEngine      - View engine to use
  * @property  {string}                  env             - The environment to run in
  * @property  {string}                  dbUrl           - URL of the database to connect to
  * 
