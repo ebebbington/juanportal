@@ -126,11 +126,11 @@ app.route('/')
     }
 
     // Create the JWT
-    const token = JWT.createToken({ name: Profile.name })
-    if (!token) {
-      return res.status(500).json({success: false, message: 'Tried creating a JWT but it couldnt be set', data: token})
-    }
-    logger.info('Created a token on POST /profile: ' + token)
+    // const token = JWT.createToken({ name: Profile.name })
+    // if (!token) {
+    //   return res.status(500).json({success: false, message: 'Tried creating a JWT but it couldnt be set', data: token})
+    // }
+    // logger.info('Created a token on POST /profile: ' + token)
 
     // Make sure the profile was added
     await Profile.findOneByName(req.body.name)
