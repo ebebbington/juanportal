@@ -11,7 +11,7 @@ const options: {
 }
 
 /**
- * @class Authentication
+ * @class JWT
  * 
  * @author Edward Bebbington
  * 
@@ -24,37 +24,66 @@ class JWT {
 
     /**
      * Check a JWT in the request header
+     *
+     * Must attach the following in the headers:
+     *      Authorisation: token
+     * and will continue if a success
+     *
+     * @example
+     *      const JWT = require('JWT')
+     *      // "Authorization" should be in the header, with the token attached to it
+     *      app.route('/').get(JWT.checkToken, () => { console.log('Token checked out :)') })
      * 
      * @param {*} req Request object 
      * @param {*} res Response object
      * @param {Function} next Run next method function
      * 
-     * @return {void|res} Void when accepted, or render error when not
+     * @return {void|res} Void when accepted by calling next(), or return response on error
      */
     public static checkToken (req: any, res: any, next: Function): void|Response {
-        const tokenHeader: string = req.headers['x-access-token'] || req.headers['authorisation'] || req.headers['authorization']
-        const bearer: string[] = tokenHeader.split(' ')
-        const token: string = bearer[1]
+        // const tokenHeader: string = req.headers.authorization
+        // const bearer: string[] = tokenHeader.split(' ')
+        // const token: string = bearer[1]
+        const token: string = req.headers.authorization
+        logger.debug('The JWT sent with the request: ' + token)
         // Will throw an error if it cannot verify the token
         try {
             jwt.verify(token, privateKey, options)
+            logger.debug('Verified JWT in request')
             next()
         } catch (err) {
             logger.error(err)
-            return res.status(403).render('error', {title: 403})
+            return res.status(403).json({success: false, message: err, data: token})
         }
     }
 
     /**
      * Create a JWT
+     *
+     * @example
+     *      const JWT = require('JWT')
+     *      const token = JWT.createToken({name: 'Edward'})
+     *      if (!token) console.log('Problem occured')
+     *      if (token) console.log('We have got a token :)')
      * 
      * @param {object} payload The data to sign the token with
      * 
-     * @return {boolean|string} false|token False when it couldnt create a token, or the token on success
+     * @return {boolean|string} false|token False when it couldn't create a token, or the token on success
      */
     public static createToken (payload: object): boolean|string {
         if (!privateKey) {
             logger.error('no private key was passed in')
+            return false
+        }
+        let hasUndefinedProp = false
+        Object.keys(payload).forEach((prop, val) => {
+            if (!val) {
+                hasUndefinedProp = true
+                return
+            }
+        })
+        if (hasUndefinedProp) {
+            logger.error('Not all values in the payload were set when trying to create a jwt')
             return false
         }
         try {
