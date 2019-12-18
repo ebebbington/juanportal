@@ -80,7 +80,8 @@ describe('Profile Route', () => {
       })
 
       it('Should respond with a 404 status on no profiles found', async () => {
-        await ProfileModel.deleteAll()
+        // Super long param to stop dodgey use of it
+        await ProfileModel.deleteAll('Somesuperlongparameterbecauseyouneedtopassoneintothefunctionforittoworkandifyoudontitfailswhichsecuresthefunctionsoifsomeonedidwanttocallthisfunctionthentheyaregoingtohavetocopythisparametertomakeitliterallyimpossibletowriteintoanactuallyapplication')
         chai.request(app)
           .get('/api/profile/count/6')
           .end((err, res) => {

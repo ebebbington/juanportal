@@ -251,7 +251,16 @@ class ProfileModel extends BaseModel implements BaseModelInterface {
     return true
   }
 
-  public static async deleteAll () {
+  /**
+   * DO NOT TOUCH THIS
+   *
+   * @return {your demise and an eternity in hell}
+   */
+  public static async deleteAll (key: string) {
+    const lock: string = 'Somesuperlongparameterbecauseyouneedtopassoneintothefunctionforittoworkandifyoudontitfailswhichsecuresthefunctionsoifsomeonedidwanttocallthisfunctionthentheyaregoingtohavetocopythisparametertomakeitliterallyimpossibletowriteintoanactuallyapplication'
+    if (lock !== key) {
+      return false
+    }
     await Document.deleteMany({})
   }
 
