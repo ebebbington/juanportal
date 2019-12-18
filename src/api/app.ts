@@ -151,6 +151,8 @@ class Server {
   private defineRoutes (): void {
     const profileRoute = require('./routes/profile.js')
     this.app.use('/api/profile', profileRoute)
+    const testRoute = require('./routes/test.js')
+    this.app.use('/api/test', testRoute)
   }
 
   /**
