@@ -10,3 +10,4 @@
 - base model: maybe implement fillabled property
 - IMAGE HELPER: decide whether to save images on api or main serevr, so the api creates the file names and stuff for the model, but the main servr saved the file? OR actually once the profile has saved, send a request to the original server (api kinda endpoint) then the ain server would handle the response there
                 or route anything on /image to the api container?
+- tests: middleware
