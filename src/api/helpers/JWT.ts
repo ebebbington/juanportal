@@ -20,7 +20,7 @@ const options: {
  * @method checkToken Creates a JWT
  * @method createToken Checks a JWT
  */
-class Authentication {
+class JWT {
 
     /**
      * Check a JWT in the request header
@@ -35,7 +35,7 @@ class Authentication {
         const tokenHeader: string = req.headers['x-access-token'] || req.headers['authorisation'] || req.headers['authorization']
         const bearer: string[] = tokenHeader.split(' ')
         const token: string = bearer[1]
-        // Will throw an error if it cannot vertify the token
+        // Will throw an error if it cannot verify the token
         try {
             jwt.verify(token, privateKey, options)
             next()
@@ -72,7 +72,7 @@ class Authentication {
  */
 function example () {
     // Create a token
-    const token = Authentication.createToken({
+    const token = JWT.createToken({
         name: 'ed',
         nickname: 'ted'
     })
@@ -85,3 +85,6 @@ function example () {
     // Check a valid token
     jwt.verify(token, privateKey, options) // no error thrown
 }
+example()
+
+module.exports = JWT
