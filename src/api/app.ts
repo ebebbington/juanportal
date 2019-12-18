@@ -16,9 +16,7 @@ const logger = require('./helpers/logger')
  * 
  * @author    Edward Bebbington
  * 
- * @example
- *            const server = Server.bootstrap()
- *            const app = server.app
+ * @example   const app = require('app') //express app object
  * 
  * @fires     Server#start
  * @fires     Server#initiateLogging
@@ -49,21 +47,21 @@ class Server {
   /**
    * Application object
    * 
-   * @var any     public
+   * @var {express.Application} public
    */
   public app: express.Application;
 
   /**
    * Environment to run e.g development, staging
    * 
-   * @var string  private
+   * @var {string} private
    */
   private readonly env: string
 
   /**
    * Url to use when connecting to the mongoose database
    * 
-   * @var string  private
+   * @var {string} private
    */
   private readonly dbUrl: string
 
