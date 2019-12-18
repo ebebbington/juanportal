@@ -194,15 +194,55 @@ describe('Profile Model', () => {
                     description: profileData.description,
                     image: 'TESTPROFILEIMAGE'
                 }
-                supportedExtensions.forEach( async (extension) => {
-                    data.image = 'TESTPROFILEIMAGE' + extension
-                    const errors = await Profile.create(data)
-                    expect(errors).to.not.exist
-                })
+                let errors
+
+                // .jpg
+                data.image = data.image + supportedExtensions[0]
+                errors = await Profile.create(data)
+                expect(errors).to.not.exist
+                await Profile.deleteOneByName(data.name)
+
+                // .png
+                data.image = data.image + supportedExtensions[1]
+                errors = await Profile.create(data)
+                expect(errors).to.not.exist
+                await Profile.deleteOneByName(data.name)
+
+                // .PNG
+                data.image = data.image + supportedExtensions[1]
+                errors = await Profile.create(data)
+                expect(errors).to.not.exist
+                await Profile.deleteOneByName(data.name)
+
+                // .JPG
+                data.image = data.image + supportedExtensions[2]
+                errors = await Profile.create(data)
+                expect(errors).to.not.exist
+                await Profile.deleteOneByName(data.name)
+
+                // .JPEG
+                data.image = data.image + supportedExtensions[3]
+                errors = await Profile.create(data)
+                expect(errors).to.not.exist
+                await Profile.deleteOneByName(data.name)
+
+                // .jpeg
+                data.image = data.image + supportedExtensions[4]
+                errors = await Profile.create(data)
+                expect(errors).to.not.exist
+                await Profile.deleteOneByName(data.name)
+
+                // supportedExtensions.forEach( async (extension) => {
+                //     data.image = 'TESTPROFILEIMAGE' + extension
+                //     const errors = await Profile.create(data)
+                //     expect(errors).to.not.exist
+                // })
             })
 
             afterEach( async () => {
-                ProfileModel.deleteAllByName(profileData.name)
+                const Profile = new ProfileModel
+                await Profile.deleteOneByName(profileData.name)
+                //await Profile.deleteOneById(profileData._id)
             })
 
         })
@@ -311,8 +351,13 @@ describe('Profile Model', () => {
                 await Profile.findOneByName(profileData.name)
                 expect(Profile.name).to.equal(profileData.name)
                 // Delete and make sure the model is empty
-                await Profile.deleteOneByName(profileData.name)
+                await Profile.deleteOneByName(Profile.name)
                 await Profile.findOneByName(profileData.name)
+
+                const profiles = await ProfileModel.findManyByCount(10)
+                console.log('All profiles')
+                console.log(profiles)
+
                 expect(Profile.name).to.equal(null)
             })
 
