@@ -353,11 +353,6 @@ describe('Profile Model', () => {
                 // Delete and make sure the model is empty
                 await Profile.deleteOneByName(Profile.name)
                 await Profile.findOneByName(profileData.name)
-
-                const profiles = await ProfileModel.findManyByCount(10)
-                console.log('All profiles')
-                console.log(profiles)
-
                 expect(Profile.name).to.equal(null)
             })
 
