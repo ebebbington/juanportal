@@ -22,9 +22,23 @@ class ImageHelper {
      * 
      * @param {string} filename The file name with the extension
      * 
-     * @return {string} the new file name with the extension from the original name
+     * @return {string|bool} the new file name with the extension from the original name
      */
-    public createNewFilename(filename: string): string {
+    public createNewFilename(filename: string): string|bool {
+        const supportedExtensions = [
+            'jpg',
+            'jpeg',
+            'JPG',
+            'JPEG',
+            'png',
+            'PNG'
+        ]
+        const splitFileName = filename.split('.')
+        const endSplit = splitFileName[splitFileName.length - 1]
+        const hasExtension = supportedExtensions.includes(endSplit)
+        if (!hasExtension) {
+            return false
+        }
         const randomString = this.generateRandomName()
         const extension = this.getExtension(filename)
         const newFilename = randomString + extension
@@ -38,11 +52,15 @@ class ImageHelper {
      * 
      * @return {string} The extension or if not present, default to .jpg
      */
-    private getExtension(filename: string): string {
+    private getExtension(filename: string): string|boolean {
         if (!filename) {
             return '.jpg'
         }
         const extArr = filename.split('.')
+        // when no extension was passed in, or just an invalid name
+        if (extArr.length === 1) {
+            return false
+        }
         const ext = _.last(extArr)
         return ext ? '.' + ext : '.jpg'
     }
