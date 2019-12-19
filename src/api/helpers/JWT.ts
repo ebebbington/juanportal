@@ -76,8 +76,8 @@ class JWT {
             return false
         }
         let hasUndefinedProp = false
-        Object.keys(payload).forEach((prop, val) => {
-            if (!val) {
+        Object.keys(payload).forEach((prop) => {
+            if (!payload[prop]) {
                 hasUndefinedProp = true
                 return
             }
