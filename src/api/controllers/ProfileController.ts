@@ -3,7 +3,7 @@ const _ = require('lodash')
 const fs = require('fs')
 const util = require('util')
 import express from 'express'
-import {BaseControllerInterface} from '../interfaces/controllers/BaseControllerInterface'
+
 import { endianness } from "os"
 const mongoose = require('mongoose')
 
@@ -13,6 +13,8 @@ const ProfileModel = require('../models/ProfileModel')
 const logger = require('../helpers/logger')
 const ImageHelper = require('../helpers/ImageHelper')
 const JWT = require('../helpers/JWT')
+const BaseControllerInterface = require('../interfaces/controllers/BaseControllerInterface')
+
 
 // For when an image is submited in the form when POSTing a profile
 const multer = require('multer')
@@ -33,8 +35,24 @@ const upload = multer({ storage: storage })
  *    const ProfileController = require('...ProfileController')
  *    ProfileController.get
  */
-class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC METODS IN AN INTERFACE
+class ProfileController implements BaseControllerInterface { // cant implement the interfCE UNTIL ts ALLOWS STATIC METODS IN AN INTERFACE
 
+    public static async Get(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response) {
+        
+    }
+
+    public static async Post(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response) {
+    
+    }
+
+    public static async Delete(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response) {
+    
+    }
+
+    public static async Update(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response) {
+    
+    }
+    
     /**
      * Get a single profile matching an id
      *
