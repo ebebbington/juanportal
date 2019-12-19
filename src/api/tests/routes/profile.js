@@ -196,7 +196,7 @@ describe('Profile Route', () => {
           .delete('/api/profile/id/4h89g58h9g589h89g589hg5h98g598g589h')
           .end((err, res) => {
             const json = JSON.parse(res.text)
-            expect(res.status).to.equal(500)
+            expect(res.status).to.equal(404)
             expect(json.success).to.equal(false)
             done()
           })
