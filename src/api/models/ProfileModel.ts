@@ -10,13 +10,14 @@ const mongoose = require('mongoose')
 const logger = require('../helpers/logger')
 const BaseModel = require('./BaseModel')
 const BaseModelInterface = require('../interfaces/models/BaseModelInterface')
+const Document = require('../schemas/ProfileSchema')
 
 /**
  * Profile Schema
  * 
  * Defines the baseline for the Profile model
  */
-const Schema = new mongoose.Schema({
+const OLDSchema = new mongoose.Schema({
   'name': {
     type: String,
     required: [true, 'Name has not been supplied'],
@@ -66,7 +67,7 @@ const Schema = new mongoose.Schema({
  * 
  * Creates a model instance of the table schema
  */
-const Document = mongoose.model('Profile', Schema)
+//const OLDDocument = mongoose.model('Profile', OLDSchema)
 
 /**
  * @class ProfileModel
