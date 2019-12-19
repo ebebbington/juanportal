@@ -1,4 +1,4 @@
-throw new Error('Think about how to implement the saving and deleting before developing this')
+//throw new Error('Think about how to implement the saving and deleting before developing this')
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
