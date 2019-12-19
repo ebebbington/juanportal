@@ -162,11 +162,26 @@ class ProfileController {
         }
 
         //
+        // Check if they exist
+        //
+        const Profile = new ProfileModel
+        await Profile.findOneById(req.params.id)
+        const exists = await ProfileModel.existsByName(Profile.name)
+        if (!exists) {
+          logger.error(`The profile you are trying to delete doesnt exist, with the id of ${req.params.id}`)
+          const data: IData = {
+            success: false,
+            message: 'Profile doesnt exist',
+            data: null
+          }
+          return res.status(404).json(data)
+        }
+
+        //
         // Delete the profile
         //
 
         const id: string = req.params.id
-        const Profile = new ProfileModel
         const success: boolean = await Profile.deleteOneById(id)
         if (success) {
           logger.info(`Deleted the profile with id ${id}`)
