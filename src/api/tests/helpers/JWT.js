@@ -67,7 +67,7 @@ describe('JWT', () => {
 
         })
 
-        describe.only('checkToken', () => {
+        describe('checkToken', () => {
 
             it('Should verify a valid token', () => {
                 const token = JWT.createToken(validPayload)
