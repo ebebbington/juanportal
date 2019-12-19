@@ -13,7 +13,6 @@ const ProfileModel = require('../models/ProfileModel')
 const logger = require('../helpers/logger')
 const ImageHelper = require('../helpers/ImageHelper')
 const JWT = require('../helpers/JWT')
-import {IBaseController} from '../interfaces/controllers/BaseControllerInterface'
 
 
 // For when an image is submited in the form when POSTing a profile
@@ -37,23 +36,7 @@ const upload = multer({ storage: storage })
  * 
  * Had to write this class this way so i can implement static methods
  */
-const ProfileController: IBaseController = class { // cant implement the interfCE UNTIL ts ALLOWS STATIC METODS IN AN INTERFACE, also this will error when requiring it, but it wont if we remove the import statement from the interface file, but even then TS throws errors when using const express = ...
-
-    public static async Get(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): Promise<any> {
-        return 'kj'
-    }
-
-    public static async Post(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): Promise<any> {
-        return res.render('vieq')
-    }
-
-    public static async Delete(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): Promise<any>{
-        return false
-    }
-
-    public static async Update(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): Promise<any> {
-        return false
-    }
+class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC METODS IN AN INTERFACE, also this will error when requiring it, but it wont if we remove the import statement from the interface file, but even then TS throws errors when using const express = ...
     
     /**
      * Get a single profile matching an id
@@ -63,7 +46,7 @@ const ProfileController: IBaseController = class { // cant implement the interfC
      * @param {*} next
      * @return response
      */
-    public static async GetProfilesByAmount(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response) {
+    public static async GetProfilesByAmount(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response, next: Function) {
         // Check a param is passed in AND we can parse it
       if (!req.params.count) {
         return res.status(400).json({success: false, message: 'No count was passed in'})
@@ -86,7 +69,8 @@ const ProfileController: IBaseController = class { // cant implement the interfC
       }
     }
 
-    public static async GetProfileById(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response) {
+    public static async GetProfileById(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response, next: Function) {
+      logger.debug('[Profile Controller - GetProfileById]')
         const parsedId = parseInt(req.params.id)
         if (isNaN(parsedId)) {
           return res.status(400).json({success: false, message: 'Failed to parse the id to a number'})
@@ -112,7 +96,7 @@ const ProfileController: IBaseController = class { // cant implement the interfC
         }
     }
 
-    public static async DeleteProfileById (req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response) {
+    public static async DeleteProfileById (req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response, next: Function) {
         const parsedId = parseInt(req.params.id)
         if (isNaN(parsedId)) {
             return res.status(400).json({success: false, message: 'Failed to parse the id to a number'})
@@ -128,7 +112,7 @@ const ProfileController: IBaseController = class { // cant implement the interfC
         }
     }
 
-    public static async PostProfile (req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response) {
+    public static async PostProfile (req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response, next: Function) {
         // Create the file name
         const Image = new ImageHelper;
         let imageFileName = 'sample.jpg'
