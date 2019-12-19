@@ -1,24 +1,15 @@
-import {promises, resolveSoa} from "dns"
-const _ = require('lodash')
-const fs = require('fs')
-const util = require('util')
 import express from 'express'
 
-import { endianness } from "os"
-const mongoose = require('mongoose')
-
-
-const app = express()
 const ProfileModel = require('../models/ProfileModel')
 const logger = require('../helpers/logger')
 const ImageHelper = require('../helpers/ImageHelper')
-const JWT = require('../helpers/JWT')
 
-
-// For when an image is submited in the form when POSTing a profile
-const multer = require('multer')
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage })
+// todo :: make this globally available for all controlelrs
+interface IData {
+  success: boolean,
+  message: string,
+  data: any
+}
 
 /**
  * @class ProfileController
@@ -32,54 +23,104 @@ const upload = multer({ storage: storage })
  *
  * @example
  *    const ProfileController = require('...ProfileController')
- *    ProfileController.get
- * 
- * Had to write this class this way so i can implement static methods
+ *    ProfileController.DoSomething
  */
-class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC METODS IN AN INTERFACE, also this will error when requiring it, but it wont if we remove the import statement from the interface file, but even then TS throws errors when using const express = ...
+class ProfileController {
     
     /**
-     * Get a single profile matching an id
+     * Retrieve a defined amount of  profiles in date order by req.params.count
      *
-     * @param {*} req
-     * @param {*} res
-     * @param {*} next
-     * @return response
+     * @param {express.Request}   req   Request object
+     * @param {express.Response}  res   Response object
+     * @param {Function}          next  Callback
+     * 
+     * @return {express.Response} res
      */
     public static async GetProfilesByAmount(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response, next: Function) {
-        // Check a param is passed in AND we can parse it
+      logger.info('[Profile Controller - GetProfilesByAmount]')
+
+
+      //
+      // Checks
+      //
+
       if (!req.params.count) {
+        logger.error('Count was not passed in')
         return res.status(400).json({success: false, message: 'No count was passed in'})
       }
-      const parsedCount = parseInt(req.params.count)
+
+      const parsedCount: any = parseInt(req.params.count)
       if (isNaN(parsedCount)) {
+        logger.error(`Cannot parse the count param of ${req.params.count} param to an int`)
         return res.status(400).json({success: false, message: 'Failed to parse the count to a number'})
       }
-      const count = parseInt(req.params.count)
+
+      const count: number = parseInt(req.params.count)
       if (count < 1) {
+        logger.error(`Count was less than 1, and is ${count}`)
         return res.status(400).json({success: false, message: 'Number of requested profiles did not meet the minimum of 1'}).end()
       }
-      const profiles = await ProfileModel.findManyByCount(count)
-      logger.debug(profiles)
+
+      //
+      // Get profiles by count
+      // 
+
+      const profiles: Promise<object|Array<object>> = await ProfileModel.findManyByCount(count)
+
       if (!profiles || !profiles.length) {
+        logger.error('No profiles were found')
         return res.status(404).json({success: false, message: 'No profiles were found'}).end()
       }
+
       if (profiles) {
+        logger.info(`Profiles with a length of ${profiles.length} were found`)
         return res.status(200).json({success: true, message: 'Grabbed profiles', data: profiles})
       }
+
     }
 
+    /**
+     * Get a Profile by an id (the _id field of the document)
+     * 
+     * @param {express.Request}   req   Request object
+     * @param {express.Response}  res   Response object
+     * @param {Function}          next  Callback
+     * 
+     * @return {express.Response} res
+     */
     public static async GetProfileById(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response, next: Function) {
-      logger.debug('[Profile Controller - GetProfileById]')
-        const parsedId = parseInt(req.params.id)
+      logger.info('[Profile Controller - GetProfileById]')
+
+      //
+      // Checks
+      //
+
+        const parsedId: any = parseInt(req.params.id)
         if (isNaN(parsedId)) {
+          logger.error(`The id of ${req.params.id} cannot be parsed to an int`)
           return res.status(400).json({success: false, message: 'Failed to parse the id to a number'})
         }
-        const id = req.params.id
+
+        //
+        // Get the profile
+        //
+
+        const id: string = req.params.id
         const Profile = new ProfileModel
-        const success = await Profile.findOneById(id)
+        const success: boolean = await Profile.findOneById(id)
+        // todo :: change to below to check success instead
         if (Profile._id) {
-          const result = {
+          logger.info('A profile was found')
+          const result: {
+            success: boolean,
+            message: string,
+            data: {
+              _id: string,
+              name: string,
+              description: string,
+              image: string
+            }
+          } = {
             success: true,
             message: 'Successfully got profile',
             data: {
@@ -91,116 +132,143 @@ class ProfileController { // cant implement the interfCE UNTIL ts ALLOWS STATIC 
           }
           return res.status(200).json(result).end()
         }
+        // todo :: change the below to check success instead
         if (!Profile._id) {
+          logger.error('No profile was found')
           return res.status(404).json({success: false, message: 'Couldnt find a profile'}).end()
         }
     }
 
+    /**
+     * Delete a profile by an id
+     * 
+     * @param {express.Request}   req   Request object
+     * @param {express.Response}  res   Response object
+     * @param {Function}          next  Callback
+     * 
+     * @return {express.Response} res
+     */
     public static async DeleteProfileById (req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response, next: Function) {
-        const parsedId = parseInt(req.params.id)
+      logger.info('[ProfileController - DeleteProfileById]')
+
+        //
+        // Checks
+        //
+
+        const parsedId: any = parseInt(req.params.id)
         if (isNaN(parsedId)) {
+          logger.error(`Couldnt parse ${req.params.id} into a number`)
             return res.status(400).json({success: false, message: 'Failed to parse the id to a number'})
         }
-        const id = req.params.id
+
+        //
+        // Delete the profile
+        //
+
+        const id: string = req.params.id
         const Profile = new ProfileModel
-        const success = await Profile.deleteOneById(id)
+        const success: boolean = await Profile.deleteOneById(id)
         if (success) {
+          logger.info(`Deleted the profile with id ${id}`)
             return res.status(200).json({success: true, message: 'Successfully deleted'}).end()
         }
         if (!success) {
+          logger.error(`Failed to delete the profile with id ${id}`)
             return res.status(500).json({success: false, message: 'Failed to delete'}).end()
         }
     }
 
+    /**
+     * Create a profile
+     * 
+     * @param {express.Request}   req   Request object
+     * @param {express.Response}  res   Response object
+     * @param {Function}          next  Callback
+     * 
+     * @return {express.Response} res
+     */
     public static async PostProfile (req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response, next: Function) {
-        // Create the file name
+      logger.info('[ProfileController - PostProfile]')
+
+      //
+      // Check, get and create the image filename
+      //
+
+      // todo :: i feel this section could be reworked
         const Image = new ImageHelper;
-        let imageFileName = 'sample.jpg'
-        // @ts-ignore: Unreachable code error
+        let imageFileName: string = 'sample.jpg'
         if (req.file) {
-            // @ts-ignore: Unreachable code error
+          logger.info('A file was passed in')
             imageFileName = req.file.originalname
+        } else {
+          logger.info('A file was not passed in')
         }
         imageFileName = Image.createNewFilename(imageFileName)
 
-        // Check they dont already exist
-        const exists = await ProfileModel.existsByName(req.body.name)
-        logger.debug(`exists: ${exists}`)
-        if (exists === true) {
-            const data = {
+        //
+        // Check profile doesnt already exist
+        //
+
+        // todo :: maybe this could end up being done as part of the model validation? is there a better way to implement this?
+        const exists: boolean = await ProfileModel.existsByName(req.body.name)
+        if (exists) {
+          logger.error(`Profile with the name ${req.body.name} already exists`)
+            const data: IData = {
                 success: false,
-                message: 'User already exists'
+                message: 'User already exists',
+                data: null
             }
             return res.status(400).json(data).end()
         }
+        logger.info(`Profile with the name ${req.body.name} doesnt already exist`)
 
-        // Create data
+        //
+        // Create and Validate the Profile
+        //
+
         const Profile = new ProfileModel
-        const validationError = await Profile.create({
+        const validationError: any = await Profile.create({
             name: req.body.name,
             description: req.body.description,
             image: '/public/images/' + imageFileName
         })
-
-        // Check any validation errors
         if (validationError) {
-        const fieldName = Object.keys(validationError.errors)[0]
-        const errorMessage = validationError.errors[fieldName].message
-        const data = {
-            success: false,
-            message: errorMessage,
-            data: fieldName
+          logger.error('There was a validation error')
+          const fieldName: string = Object.keys(validationError.errors)[0]
+          const errorMessage: string = validationError.errors[fieldName].message
+          const data: IData = {
+              success: false,
+              message: errorMessage,
+              data: fieldName
+          }
+          return res.status(400).json(data).end()
         }
-        return res.status(400).json(data).end()
-        }
+        logger.info(`Profile with the name ${req.body.name} passed validation`)
 
-        // Create the JWT
-        // const token = JWT.createToken({ name: Profile.name })
-        // if (!token) {
-        //   return res.status(500).json({success: false, message: 'Tried creating a JWT but it couldnt be set', data: token})
-        // }
-        // logger.info('Created a token on POST /profile: ' + token)
+        //
+        // Check the database was updated
+        //
 
-        // Make sure the profile was added
+        // todo :: maybe a better way to implement this?
         await Profile.findOneByName(req.body.name)
         if (Profile.name === req.body.name) {
-        logger.debug('User saved to database')
-        return res.status(200).json({success: true, message: 'Saved to the database', data: '/public/images/' + imageFileName})
+          logger.info('The profile did save to the database')
+          const data: IData = {
+            success: true,
+            message: 'Saved the profile',
+            data: '/public/images/' + imageFileName
+          }
+          return res.status(200).json(data)
         } else {
-        logger.error('didnt save a profile')
-        return res.status(500).json({succesS: false, message: 'Profile did not save correctly'}).end()
+          logger.error('The database wasnt updated with the new profile')
+          const data: IData = {
+            success: false,
+            message: 'Could not save the profile',
+            data: null
+          }
+          return res.status(500).json(data).end()
         }
-        // // Save the user
-        // const saved = Profile.insertOne(newProfile)
-        // if (!saved) {
-        //     logger.error('didnt save a profile')
-        //     return res.status(500).json({succesS: false, message: 'Profile did not save correctly'}).end()
-        // }
-        // if (saved) {
-        //     logger.debug('User saved to database')
-        //     return res.status(200).json({success: true, message: 'Saved to the database', data: newProfile.image})
-        //     // @ts-ignore: Unreachable code error
-        //     // const fileSaved = Image.saveToFS(imageFileName, req.file)
-        //     // logger.debug(['status of filesaved', fileSaved])
-        //     // if (fileSaved) {
-        //     //     logger.debug('FILE DIDSAVE')
-        //     //     const data = {
-        //     //         success: true,
-        //     //         message: 'Saved the profile'
-        //     //     }
-        //     //     res.status(200).json(data).end()
-        //     // } else {
-        //     //     logger.debug('FILE DID NOT SAVE')
-        //     //     const data = {
-        //     //         success: false,
-        //     //         message: 'File did not save'
-        //     //     }
-        //     //     return res.status(500).json(data).end()
-        //     // }
-        // }
     }
-
-
 }
 
 module.exports = ProfileController
