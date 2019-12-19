@@ -13,7 +13,7 @@ const ProfileModel = require('../models/ProfileModel')
 const logger = require('../helpers/logger')
 const ImageHelper = require('../helpers/ImageHelper')
 const JWT = require('../helpers/JWT')
-const BaseControllerInterface = require('../interfaces/controllers/BaseControllerInterface')
+import {IBaseController} from '../interfaces/controllers/BaseControllerInterface'
 
 
 // For when an image is submited in the form when POSTing a profile
@@ -34,23 +34,25 @@ const upload = multer({ storage: storage })
  * @example
  *    const ProfileController = require('...ProfileController')
  *    ProfileController.get
+ * 
+ * Had to write this class this way so i can implement static methods
  */
-class ProfileController implements BaseControllerInterface { // cant implement the interfCE UNTIL ts ALLOWS STATIC METODS IN AN INTERFACE
+const ProfileController: IBaseController = class { // cant implement the interfCE UNTIL ts ALLOWS STATIC METODS IN AN INTERFACE, also this will error when requiring it, but it wont if we remove the import statement from the interface file, but even then TS throws errors when using const express = ...
 
-    public static async Get(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response) {
-        
+    public static async Get(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): Promise<any> {
+        return 'kj'
     }
 
-    public static async Post(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response) {
-    
+    public static async Post(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): Promise<any> {
+        return res.render('vieq')
     }
 
-    public static async Delete(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response) {
-    
+    public static async Delete(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): Promise<any>{
+        return false
     }
 
-    public static async Update(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response) {
-    
+    public static async Update(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response): Promise<any> {
+        return false
     }
     
     /**
