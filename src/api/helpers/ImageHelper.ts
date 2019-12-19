@@ -1,3 +1,5 @@
+throw new Error('Think about how to implement the saving and deleting before developing this')
+
 import fs from 'fs'
 const _ = require('lodash')
 const logger = require('./logger')
@@ -24,7 +26,7 @@ class ImageHelper {
      * 
      * @return {string|bool} the new file name with the extension from the original name
      */
-    public createNewFilename(filename: string): string|bool {
+    public createNewFilename(filename: string): string|boolean {
         const supportedExtensions = [
             'jpg',
             'jpeg',

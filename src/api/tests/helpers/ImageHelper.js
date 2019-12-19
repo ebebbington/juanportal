@@ -1,3 +1,5 @@
+throw new Error('Think about how to implement the saving and deleting before developing this')
+
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
@@ -65,13 +67,13 @@ describe('ImageHelper', () => {
             })
 
             it('Should save a file', () => {
-                const image = fs.readFileSync('../../sample.jpg')
+                const image = fs.readFileSync('/var/www/api/sample.jpg')
                 const saved = Image.saveToFS('testname.jpg', image)
                 expect(saved).to.equal(true)
             })
 
             it('Should save a file even when no file is passed in', () => {
-                const image = fs.readFileSync('../../sample.jpg')
+                const image = fs.readFileSync('/var/www/api/sample.jpg')
                 const saved = Image.saveToFS('testname.jpg')
                 expect(saved).to.equal(true)
             })
