@@ -32,4 +32,23 @@ const ProfileSchema = new mongoose.Schema({
     }
   }, {timestamps: true})
 
+// ProfileSchema.pre('save', function (next: Function) {
+//   const self = this
+//   mongoose.model('Profile', ProfileSchema).find({name: self.name}, function (err, docs) {
+//     console.log('inside pre function')
+//     console.log(docs)
+//     if (docs) {
+//       console.log('already exists')
+//       const validationError = {
+//         errors: {
+//           profile: {
+//             message: 'Profile already exists'
+//           }
+//         }
+//       }
+//       return next(new Error('profile'))
+//     }
+//     next()
+//   })
+
 module.exports = mongoose.model('Profile', ProfileSchema)
