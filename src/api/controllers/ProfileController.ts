@@ -271,7 +271,7 @@ class ProfileController {
         logger.error(`Profile with the name ${req.body.name} already exists`)
         const data: IData = {
           success: false,
-          message: 'User already exists',
+          message: 'Profile already exists',
             data: null
         }
         return res.status(400).json(data).end()
