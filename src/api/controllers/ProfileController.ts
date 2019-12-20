@@ -3,13 +3,9 @@ import express from 'express'
 const ProfileModel = require('../models/ProfileModel')
 const logger = require('../helpers/logger')
 const ImageHelper = require('../helpers/ImageHelper')
+import {IData} from '../interfaces/controllers/DataInterface'
 
-// todo :: make this globally available for all controlelrs
-interface IData {
-  success: boolean,
-  message: string,
-  data: any
-}
+// todo :: How can i add an interface to res.json so it implements IData?
 
 /**
  * @class ProfileController
