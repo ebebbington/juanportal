@@ -1,5 +1,3 @@
-//throw new Error('Think about how to implement the saving and deleting before developing this')
-
 import fs from 'fs'
 const _ = require('lodash')
 const logger = require('./logger')
