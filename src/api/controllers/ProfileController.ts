@@ -5,7 +5,7 @@ const logger = require('../helpers/logger')
 const ImageHelper = require('../helpers/ImageHelper')
 import {IData} from '../interfaces/controllers/DataInterface'
 const util = require('util')
-import {IMulterRequest} from '../interfaces/controllers/MulterRequest'
+import {IMulterRequest} from '../interfaces/controllers/MulterRequestInterface'
 
 /**
  * @class ProfileController
