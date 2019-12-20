@@ -6,6 +6,18 @@ const ImageHelper = require('../helpers/ImageHelper')
 import {IData} from '../interfaces/controllers/DataInterface'
 
 // todo :: How can i add an interface to res.json so it implements IData?
+// app.use(function(req, res, next) {
+//   var json = res.json;
+//   res.json = function(obj) {
+//       function delete_null_properties(obj) {
+//           // ...
+//       }
+//       delete_null_properties(obj);
+
+//       json.call(this, obj);
+//   };
+//   next();
+// });
 
 /**
  * @class ProfileController
