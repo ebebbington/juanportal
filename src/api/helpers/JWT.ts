@@ -15,7 +15,10 @@ const options: {
  * 
  * @author Edward Bebbington
  * 
- * @description JWT is good for authentication but not for sessions e.g. good for APIS and registering for them
+ * @description Handles any JWT functionaility using the jsonwebtokens library
+ * 
+ * @example
+ * const JWT = require('JWT')
  * 
  * @method checkToken Creates a JWT
  * @method createToken Checks a JWT
@@ -30,9 +33,9 @@ class JWT {
      * and will continue if a success
      *
      * @example
-     *      const JWT = require('JWT')
-     *      // "Authorization" should be in the header, with the token attached to it
-     *      app.route('/').get(JWT.checkToken, () => { console.log('Token checked out :)') })
+     * const JWT = require('JWT')
+     * // "Authorization" should be in the header, with the token attached to it
+     * app.route('/').get(JWT.checkToken, () => { console.log('Token checked out :)') })
      * 
      * @param {*} req Request object 
      * @param {*} res Response object
@@ -41,19 +44,14 @@ class JWT {
      * @return {void|res} Void when accepted by calling next(), or return response on error
      */
     public static checkToken (req: any, res: any, next: Function): void|Response {
-        // const tokenHeader: string = req.headers.authorization
-        // const bearer: string[] = tokenHeader.split(' ')
-        // const token: string = bearer[1]
         const token: string = req.headers.authorization
-        logger.debug('The JWT sent with the request: ' + token)
-        // Will throw an error if it cannot verify the token
         try {
             jwt.verify(token, privateKey, options)
-            logger.debug('Verified JWT in request')
+            logger.info('Verified JWT in request')
             next()
         } catch (err) {
-            logger.error(err)
-            return res.status(403).json({success: false, message: err, data: token})
+            logger.error(`Failed to verify the token: ${err.message}`)
+            return res.status(403).json({success: false, message: err.message, data: token})
         }
     }
 
@@ -61,10 +59,10 @@ class JWT {
      * Create a JWT
      *
      * @example
-     *      const JWT = require('JWT')
-     *      const token = JWT.createToken({name: 'Edward'})
-     *      if (!token) console.log('Problem occured')
-     *      if (token) console.log('We have got a token :)')
+     * const JWT = require('JWT')
+     * const token = JWT.createToken({name: 'Edward'})
+     * if (!token) console.log('Problem occured')
+     * if (token) console.log('We have got a token :)')
      * 
      * @param {object} payload The data to sign the token with
      * 
@@ -90,7 +88,7 @@ class JWT {
             const token: string = jwt.sign(payload, privateKey, options)
             return token
         } catch (err) {
-            logger.error(err)
+            logger.error(`Failed to sign the token: ${err.message}`)
             return false
         }
     }
