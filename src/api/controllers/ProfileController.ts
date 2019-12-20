@@ -4,20 +4,8 @@ const ProfileModel = require('../models/ProfileModel')
 const logger = require('../helpers/logger')
 const ImageHelper = require('../helpers/ImageHelper')
 import {IData} from '../interfaces/controllers/DataInterface'
-
-// todo :: How can i add an interface to res.json so it implements IData?
-// app.use(function(req, res, next) {
-//   var json = res.json;
-//   res.json = function(obj) {
-//       function delete_null_properties(obj) {
-//           // ...
-//       }
-//       delete_null_properties(obj);
-
-//       json.call(this, obj);
-//   };
-//   next();
-// });
+const util = require('util')
+import {IMulterRequest} from '../interfaces/controllers/MulterRequest'
 
 /**
  * @class ProfileController
@@ -36,7 +24,7 @@ import {IData} from '../interfaces/controllers/DataInterface'
 class ProfileController {
     
     /**
-     * Retrieve a defined amount of  profiles in date order by req.params.count
+     * Retrieve a defined amount of profiles in date order by req.params.count
      *
      * @param {express.Request}   req   Request object
      * @param {express.Response}  res   Response object
@@ -112,7 +100,8 @@ class ProfileController {
     }
 
     /**
-     * Get a Profile by an id (the _id field of the document)
+     * Get a Profile by id, where the id is req.params.id. Doesn't
+     * have to be a mongoose object
      * 
      * @param {express.Request}   req   Request object
      * @param {express.Response}  res   Response object
@@ -144,9 +133,8 @@ class ProfileController {
 
       const id: string = req.params.id
       const Profile = new ProfileModel
-      const success: boolean = await Profile.findOneById(id)
-      // todo :: change to below to check success instead
-      if (Profile._id) {
+      const found: boolean = await Profile.findOneById(id)
+      if (found) {
         logger.info('A profile was found')
         const data: IData = {
           success: true,
@@ -160,8 +148,7 @@ class ProfileController {
         }
         return res.status(200).json(data).end()
       }
-      // todo :: change the below to check success instead
-      if (!Profile._id) {
+      if (!found) {
         logger.error('No profile was found')
         const data: IData = {
           success: false,
@@ -173,7 +160,9 @@ class ProfileController {
     }
 
     /**
-     * Delete a profile by an id
+     * Delete a profile by an id, where the id is in req.params.id,
+     * and doesn't have to be a mongoose object - it ends up getting
+     * converted
      * 
      * @param {express.Request}   req   Request object
      * @param {express.Response}  res   Response object
@@ -243,7 +232,7 @@ class ProfileController {
     }
 
     /**
-     * Create a profile
+     * Create a profile, using {name, description?, image?} in req.body
      * 
      * @param {express.Request}   req   Request object
      * @param {express.Response}  res   Response object
@@ -251,14 +240,13 @@ class ProfileController {
      * 
      * @return {express.Response} res
      */
-    public static async PostProfile (req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response, next: Function) {
+    public static async PostProfile (req: IMulterRequest&express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response, next: Function) {
       logger.info('[ProfileController - PostProfile]')
 
       //
       // Check, get and create the image filename
       //
 
-      // todo :: i feel this section could be reworked
       const Image = new ImageHelper;
       let imageFileName: string = 'sample.jpg'
       if (req.file) {
@@ -273,7 +261,6 @@ class ProfileController {
       // Check profile doesnt already exist
       //
 
-      // todo :: maybe this could end up being done as part of the model validation? is there a better way to implement this?
       const exists: boolean = await ProfileModel.existsByName(req.body.name)
       if (exists) {
         logger.error(`Profile with the name ${req.body.name} already exists`)
@@ -313,9 +300,8 @@ class ProfileController {
       // Check the database was updated
       //
 
-      // todo :: maybe a better way to implement this?
-      await Profile.findOneByName(req.body.name)
-      if (Profile.name === req.body.name) {
+      const found = await Profile.findOneByName(req.body.name)
+      if (found) {
         logger.info('The profile did save to the database')
         const data: IData = {
           success: true,
