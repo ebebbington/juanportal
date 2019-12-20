@@ -9,7 +9,7 @@ import e = require("express");
 const mongoose = require('mongoose')
 const logger = require('../helpers/logger')
 const BaseModel = require('./BaseModel')
-const BaseModelInterface = require('../interfaces/models/BaseModelInterface')
+import {IBaseModel} from '../interfaces/models/BaseModelInterface'
 const Document = require('../schemas/ProfileSchema')
 
 /**
@@ -96,7 +96,7 @@ const OLDSchema = new mongoose.Schema({
  * @method validateOutputFields Strip unneeded properties from a retrieved document
  * @method validateInputFields Validate data before saving it to the db                                  
  */
-class ProfileModel extends BaseModel implements BaseModelInterface {
+class ProfileModel extends BaseModel implements IBaseModel {
 
   /**
    * Id of the profile model
