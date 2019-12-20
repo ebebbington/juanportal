@@ -39,26 +39,40 @@ class ProfileController {
     public static async GetProfilesByAmount(req: express.Request<import("express-serve-static-core").ParamsDictionary>, res: express.Response, next: Function) {
       logger.info('[Profile Controller - GetProfilesByAmount]')
 
-
       //
       // Checks
       //
 
       if (!req.params.count) {
         logger.error('Count was not passed in')
-        return res.status(400).json({success: false, message: 'No count was passed in'})
+        const data: IData = {
+          success: false,
+          message: 'No count was passed in',
+          data: null
+        }
+        return res.status(400).json(data)
       }
 
       const parsedCount: any = parseInt(req.params.count)
       if (isNaN(parsedCount)) {
         logger.error(`Cannot parse the count param of ${req.params.count} param to an int`)
-        return res.status(400).json({success: false, message: 'Failed to parse the count to a number'})
+        const data: IData = {
+          success: false,
+          message: 'Failed to parse the count to a number',
+          data: null
+        }
+        return res.status(400).json(data)
       }
 
       const count: number = parseInt(req.params.count)
       if (count < 1) {
         logger.error(`Count was less than 1, and is ${count}`)
-        return res.status(400).json({success: false, message: 'Number of requested profiles did not meet the minimum of 1'}).end()
+        const data: IData = {
+          success: false,
+          message: 'Number of requested profiles did not meet the minimum of 1',
+          data: null
+        }
+        return res.status(400).json(data).end()
       }
 
       //
@@ -69,12 +83,22 @@ class ProfileController {
 
       if (!profiles || !profiles.length) {
         logger.error('No profiles were found')
-        return res.status(404).json({success: false, message: 'No profiles were found'}).end()
+        const data: IData = {
+          success: false,
+          message: 'No profiles were found',
+          data: null
+        }
+        return res.status(404).json(data).end()
       }
 
       if (profiles) {
         logger.info(`Profiles with a length of ${profiles.length} were found`)
-        return res.status(200).json({success: true, message: 'Grabbed profiles', data: profiles})
+        const data: IData = {
+          success: true,
+          message: 'Grabbed profiles',
+          data: profiles
+        }
+        return res.status(200).json(data)
       }
 
     }
@@ -98,7 +122,12 @@ class ProfileController {
         const parsedId: any = parseInt(req.params.id)
         if (isNaN(parsedId)) {
           logger.error(`The id of ${req.params.id} cannot be parsed to an int`)
-          return res.status(400).json({success: false, message: 'Failed to parse the id to a number'})
+          const data: IData = {
+            success: false,
+            message: 'Failed to parse the id to a number',
+            data: null
+          }
+          return res.status(400).json(data)
         }
 
         //
@@ -111,16 +140,7 @@ class ProfileController {
         // todo :: change to below to check success instead
         if (Profile._id) {
           logger.info('A profile was found')
-          const result: {
-            success: boolean,
-            message: string,
-            data: {
-              _id: string,
-              name: string,
-              description: string,
-              image: string
-            }
-          } = {
+          const data: IData = {
             success: true,
             message: 'Successfully got profile',
             data: {
@@ -130,12 +150,17 @@ class ProfileController {
               image: Profile.image
             }
           }
-          return res.status(200).json(result).end()
+          return res.status(200).json(data).end()
         }
         // todo :: change the below to check success instead
         if (!Profile._id) {
           logger.error('No profile was found')
-          return res.status(404).json({success: false, message: 'Couldnt find a profile'}).end()
+          const data: IData = {
+            success: false,
+            message: 'Couldnt find a profile',
+            data: null
+          }
+          return res.status(404).json(data).end()
         }
     }
 
@@ -158,15 +183,21 @@ class ProfileController {
         const parsedId: any = parseInt(req.params.id)
         if (isNaN(parsedId)) {
           logger.error(`Couldnt parse ${req.params.id} into a number`)
-            return res.status(400).json({success: false, message: 'Failed to parse the id to a number'})
+          const data: IData = {
+            success: false,
+            message: 'Failed to parse the id to a number',
+            data: null
+          }
+          return res.status(400).json(data)
         }
 
         //
         // Check if they exist
         //
+
         const Profile = new ProfileModel
         await Profile.findOneById(req.params.id)
-        const exists = await ProfileModel.existsByName(Profile.name)
+        const exists: boolean = await ProfileModel.existsByName(Profile.name)
         if (!exists) {
           logger.error(`The profile you are trying to delete doesnt exist, with the id of ${req.params.id}`)
           const data: IData = {
@@ -185,11 +216,21 @@ class ProfileController {
         const success: boolean = await Profile.deleteOneById(id)
         if (success) {
           logger.info(`Deleted the profile with id ${id}`)
-            return res.status(200).json({success: true, message: 'Successfully deleted'}).end()
+          const data: IData = {
+            success: true,
+            message: 'Successfully deleted',
+            data: null
+          }
+          return res.status(200).json(data).end()
         }
         if (!success) {
           logger.error(`Failed to delete the profile with id ${id}`)
-            return res.status(500).json({success: false, message: 'Failed to delete'}).end()
+          const data: IData = {
+            success: true,
+            message: 'Failed to delete',
+            data: null
+          }
+          return res.status(500).json(data).end()
         }
     }
 
