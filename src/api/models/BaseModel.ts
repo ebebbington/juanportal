@@ -1,5 +1,4 @@
-const mongoose = require('mongoose')
-const loggerr = require('../helpers/logger')
+import mongoose from 'mongoose'
 
 /**
  * @class BaseModel
@@ -8,8 +7,8 @@ const loggerr = require('../helpers/logger')
  * 
  * @property {string[]} fieldsToExpose To fill children fields
  * 
- * @method validateInputFields Validate a model
- * @method validateOutputFields Strips unrequired fields from a database document
+ * @method generateObjectId Generates a mongoose object id from the given param
+ * @method stripNonExposableProperties Strips properties not in the childs fieldsToExpose property
  * @method fill Fill the parents properties of a document defined in fieldstoexpose
  * @method empty Empty the childs properties defined in fieldstoexpose
  */
@@ -22,13 +21,27 @@ class BaseModel {
    */
   protected fieldsToExpose: string[] = []
 
-  protected generateObjectId (id: string) {
+  /**
+   * Create a mongoose object id from the passed in value
+   * 
+   * @method generateObjectId
+   * 
+   * @example
+   * const _id = this.generateObjectId(id)
+   * if (!_id) console.log('Failed to convert')
+   * if (_id) console.log('Converted')
+   * 
+   * @param {string} id Id of a document to convert
+   * 
+   * @return {mongoose.Types.ObjectId|boolean} The id, or false if cannot convert
+   */
+  protected generateObjectId (id: string): mongoose.Types.ObjectId|boolean {
     try {
       // if the id isnt already an object id, convert it
-      id = new mongoose.Types.ObjectId(id)
-      return id
+      const objectId = new mongoose.Types.ObjectId(id)
+      return objectId
     } catch (err) {
-      loggerr.error(`failed to convert ${id} to a mongoose object id`)
+      logger.error(`failed to convert ${id} to a mongoose object id`)
       return false
     }
   } 
@@ -36,14 +49,20 @@ class BaseModel {
   /**
    * Validate output fields
    * 
+   * @method stripNonExposableProperties
+   * 
    * Before returning a model extracted from the database,
    * strip out any properties that arent defined in the fieldsToExpose
    * array, as suggested. It looks through the object properties and then
    * checks every field to expose against that. Rinse and repeat
    * 
-   * @param {object} model The model object retrieved from the database 
+   * @example
+   * const document = this.stripNonExposableFields(document, this.fieldsToExpose)
    * 
-   * @return {object} The same passed in model but stripping the non-exposable fields
+   * @param {any}       document        The object holding the db data
+   * @param {string[]}  fieldsToExpose  this.fieldsToExpose, the childs property
+   * 
+   * @return {object} The same passed in document but stripping the non-exposable fields
    */
   private stripNonExposableProperties (document: any = {}, fieldsToExpose: string[] = []): object {
     // Loop through the fields to expose
@@ -61,45 +80,38 @@ class BaseModel {
   * 
   * @method fill 
   * 
-  * @example const Profile = new ProfileModel; const newProfile = Profile.create(...); Profile.insertOne(newProfile);
+  * @example
+  * // From a child class
+  * const Document = Model.find({}).limit(1)
+  * this.fill(Document)
   * 
-  * @example From a child function: this.fill(object)
-  * 
-  * @param {object} dbDocument The document retrieved from a database query. When looping through the keys, it turns out
+  * @param {object} dbDocument  The document retrieved from a database query. When looping through the keys, it turns out
   *                             the object has hidden properties, hence when we are type hinting so strictly and 
   *                             looking inside the '_doc' property
   * 
-  * @return void
+  * @return {void}
   */
   protected fill (dbDocument: {$__: any, isNew: any, errors: any, _doc: object, $locals: any}): void {
     const documentData: object = dbDocument._doc
     const strippedDocument: object = this.stripNonExposableProperties(documentData, this.fieldsToExpose)
     // Loops through the document properties
-    Object.keys(strippedDocument).forEach((propName, propValue) => {
+    Object.keys(strippedDocument).forEach((propName: string, propValue: any) => {
       // If the child class has the property
       if (this.hasOwnProperty(propName)) {
         // Assign it 
-        // @ts-ignore: Unreachable code error /* TS doesnt like "this[propName]" but it works so ignore it */
+        // @ts-ignore
         this[propName] = documentData[propName]
       }
     })
-
-    // Method 1 - this should be used when the fieldstoexpose prop is a string[]
-    // this.fieldsToExpose.forEach((field) => {
-    //   // first check this class has the fillable property
-    //   if (this.hasOwnProperty(field)) {
-    //     // Then assign the fillable property with the matching property in the parameter
-    //     this[field] = object[field]
-    //   }
-    // })
   }
 
   /**
-   * Empty the current object of profile fields
+   * Empty the current object by the fieldsToExpose property
    * 
    * @method empty
    * 
-   * @example From a child function: this.empty(this.fieldsToExpose);
+   * @example
+   * this.empty();
    * 
    * @param {string[]} childFieldsToExpose The string array property of the child class
    * 
@@ -108,7 +120,7 @@ class BaseModel {
   protected empty (): void {
     this.fieldsToExpose.forEach((value: string, index: number) => {
       if (this.hasOwnProperty(value)) {
-         // @ts-ignore: Unreachable code error
+         // @ts-ignore
         this[value] = null
       }
     })
