@@ -18,8 +18,8 @@ import {IMulterRequest} from '../interfaces/controllers/MulterRequest'
  * @method update
  *
  * @example
- *    const ProfileController = require('...ProfileController')
- *    ProfileController.DoSomething
+ * const ProfileController = require('...ProfileController')
+ * ProfileController.DoSomething
  */
 class ProfileController {
     
