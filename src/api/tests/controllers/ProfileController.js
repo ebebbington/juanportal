@@ -200,7 +200,13 @@ describe('ProfileController', () => {
                 expect(response.statusCode).to.equal(400)
                 expect(response.jsonMessage.success).to.equal(false)
                 expect(response.jsonMessage.data).to.equal('name')
-                // todo :: Image
+                req.body.name = 'I am edward!'
+                req.body.description = null
+                req.file = null
+                const response = await ProfileController.PostProfile(req, res, next)
+                expect(response.statusCode).to.equal(400)
+                expect(response.jsonMessage.success).to.equal(false)
+                expect(response.jsonMessage.data).to.equal('image')
             })
 
             it('Should save on a valid profile', async () => {
