@@ -38,14 +38,6 @@ class TestModel extends BaseModel {
     }
 }
 
-// const Test = new TestModel({
-//     forename: 'Edward',
-//     surname: 'Bebbington',
-//     age: 21,
-//     postcode: 'NG31 8FY'
-// })
-// console.log(Test)
-
 describe('BaseModel', () => {
 
     describe('Properties', () => {
