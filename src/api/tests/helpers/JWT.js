@@ -2,7 +2,6 @@ const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
 const JWT = require('../../helpers/JWT')
-const util = require('util')
 
 const logger = require('../../helpers/logger')
 logger.debug = function () {}
@@ -23,21 +22,19 @@ describe('JWT', () => {
             name: null,
             age: 21
         }
+        // chainable function
         const res = {
             statusCode: null,
             jsonMessage: null,
             status (statusCode) {
-                console.log('status was called')
                 this.statusCode = statusCode
                 return this
             },
             json: function (obj) {
-                console.log('json was called')
                 this.jsonMessage = obj
                 return this
             },
             end () {
-                console.log('end was called')
                 return this
             }
         }
