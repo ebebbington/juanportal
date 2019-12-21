@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+var logger = require('../helpers/logger')
 
 /**
  * @class BaseModel
