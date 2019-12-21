@@ -5,14 +5,15 @@ const app = require('../../app')
 const chaiHttp = require('chai-http')
 const ProfileModel = require('../../models/ProfileModel')
 const fs = require('fs')
+const util = require('util')
 
 const multer = require('multer')
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
 const logger = require('../../helpers/logger')
-logger.debug = function (){}
-logger.info = function (){}
+//logger.debug = function (){}
+//logger.info = function (){}
 
 chai.use(chaiAsPromised)
 chai.use(chaiHttp)
@@ -205,7 +206,6 @@ describe('Profile Route', () => {
 
     describe('POST /profile', function () {
 
-      this.timeout(5000)
       const sampleImagePath = '/var/www/api/sample.jpg'
 
       const newProfile = {
@@ -214,7 +214,8 @@ describe('Profile Route', () => {
         image: 'TESTPROFILEIMAGE.jpg'
       }
 
-      it('Should succeed with valid data, and update the database', () => {
+      it('Should succeed with valid data, and update the database', async () => {
+        await ProfileModel.deleteAllByName(newProfile.name)
         chai.request(app)
           .post('/api/profile', upload.single('image'))
           .field('name', newProfile.name)
@@ -224,63 +225,65 @@ describe('Profile Route', () => {
             expect(res.status).to.equal(200)
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(true)
-            // and as it passes back the immage name
             expect(json.data).to.exist
             expect(typeof json.data).to.equal('string')
             const Profile = new ProfileModel
             await Profile.findOneByName(newProfile.name)
             expect(Profile.name).to.equal(newProfile.name)
+            await ProfileModel.deleteAllByName(newProfile.name)
           });
       })
 
-      it('Should fail is the name fails validation', (done) => {
+      it('Should fail is the name fails validation', async () => {
+        await ProfileModel.deleteAllByName(newProfile.name)
         chai.request(app)
           .post('/api/profile', upload.single('image'))
           .field('name', '')
           .field('description', newProfile.description)
           .attach('image', fs.readFileSync(sampleImagePath), newProfile.image)
-          .end((err, res) => {
+          .end( async (err, res) => {
             expect(res.status).to.equal(400)
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(false)
             expect(json.data).to.equal('name')
-            done()
           });
       })
 
-      it('Should pass if no description is given', () => {
+      it('Should pass if no description is given', async () => {
+        await ProfileModel.deleteAllByName(newProfile.name)
         chai.request(app)
           .post('/api/profile', upload.single('image'))
           .field('name', newProfile.name)
           .field('description', '')
-          .attach('image', fs.readFileSync(sampleImagePath), newProfile.description)
+          .attach('image', fs.readFileSync(sampleImagePath), newProfile.image)
           .end( async (err, res) => {
             expect(res.status).to.equal(200)
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(true)
-            // and as it passes back the immage name
             expect(json.data).to.exist
             expect(typeof json.data).to.equal('string')
             const Profile = new ProfileModel
             await Profile.findOneByName(newProfile.name)
             expect(Profile.name).to.equal(newProfile.name)
-
+            const success = await Profile.deleteOneByName(newProfile.name)
+            expect(success).to.equal(true)
+            await ProfileModel.deleteAllByName(newProfile.name)
           });
       })
 
-      it('Should fail is image fails validation', (done) => {
+      // fixme :: some reason, a profile already exists when this block is executed
+      it('Should fail is image fails validation', async () => {
+        await ProfileModel.deleteAllByName(newProfile.name)
         chai.request(app)
           .post('/api/profile', upload.single('image'))
           .field('name', newProfile.name)
           .field('description', newProfile.description)
           .attach('image', fs.readFileSync(sampleImagePath), 'sample')
-          .end((err, res) => {
+          .end( async (err, res) => {
             expect(res.status).to.equal(400)
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(false)
-            // and as it passes back the immage name
             expect(json.data).to.equal('image')
-            done()
           });
       })
 
@@ -298,6 +301,9 @@ describe('Profile Route', () => {
             const Profile = new ProfileModel
             await Profile.findOneByName(newProfile.name)
             expect(Profile.name).to.equal(newProfile.name)
+            const success = await Profile.deleteOneByName(newProfile.name)
+            expect(success).to.equal(true)
+            await ProfileModel.deleteAllByName(newProfile.name)
           });
       })
 
@@ -314,13 +320,6 @@ describe('Profile Route', () => {
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(false)
           })
-      })
-
-      afterEach('Remove the test user', async () => {
-        const Profile = new ProfileModel
-        await Profile.findOneByName(newProfile.name)
-        const id = Profile._id
-        await Profile.deleteOneByName(Profile.name)
       })
 
     })
