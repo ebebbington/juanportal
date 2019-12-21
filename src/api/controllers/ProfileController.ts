@@ -267,7 +267,7 @@ class ProfileController {
         const data: IData = {
           success: false,
           message: 'Profile already exists',
-            data: null
+          data: null
         }
         return res.status(400).json(data).end()
       }
