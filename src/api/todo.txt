@@ -9,3 +9,8 @@
 - tests: middleware
 - tests: controllers when implemented
 - cleanup - cleanup all files except for tetsts as they are document
+- Models: possible to create one in the constructor?
+- Models: just think, before adding new models, if there a way to standard CRUD operations? e.g implement an update functionality like TT, or where a single find method can be called using params for the field name and values e.g.
+    Document.delete({passedInFieldName: passedInVal})
+    - Is there existing complex mongoose functionaility to do something similar?
+    - Like, for the update, we could create a new object(?), loop through all private props, and assign the values to matching prop names, then send an update, or how to to update fields that have changed?
