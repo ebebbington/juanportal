@@ -200,37 +200,43 @@ describe('Profile Model', () => {
                 data.image = data.image + supportedExtensions[0]
                 errors = await Profile.create(data)
                 expect(errors).to.not.exist
-                await Profile.deleteOneByName(data.name)
+                let success = await Profile.deleteOneByName(data.name)
+                expect(success).to.equal(true)
 
                 // .png
                 data.image = data.image + supportedExtensions[1]
                 errors = await Profile.create(data)
                 expect(errors).to.not.exist
-                await Profile.deleteOneByName(data.name)
+                success = await Profile.deleteOneByName(data.name)
+                expect(success).to.equal(true)
 
                 // .PNG
                 data.image = data.image + supportedExtensions[1]
                 errors = await Profile.create(data)
                 expect(errors).to.not.exist
-                await Profile.deleteOneByName(data.name)
+                success = await Profile.deleteOneByName(data.name)
+                expect(success).to.equal(true)
 
                 // .JPG
                 data.image = data.image + supportedExtensions[2]
                 errors = await Profile.create(data)
                 expect(errors).to.not.exist
-                await Profile.deleteOneByName(data.name)
+                success = await Profile.deleteOneByName(data.name)
+                expect(success).to.equal(true)
 
                 // .JPEG
                 data.image = data.image + supportedExtensions[3]
                 errors = await Profile.create(data)
                 expect(errors).to.not.exist
-                await Profile.deleteOneByName(data.name)
+                success = await Profile.deleteOneByName(data.name)
+                expect(success).to.equal(true)
 
                 // .jpeg
                 data.image = data.image + supportedExtensions[4]
                 errors = await Profile.create(data)
                 expect(errors).to.not.exist
-                await Profile.deleteOneByName(data.name)
+                success = await Profile.deleteOneByName(data.name)
+                expect(success).to.equal(true)
 
                 // supportedExtensions.forEach( async (extension) => {
                 //     data.image = 'TESTPROFILEIMAGE' + extension
@@ -241,7 +247,8 @@ describe('Profile Model', () => {
 
             afterEach( async () => {
                 const Profile = new ProfileModel
-                await Profile.deleteOneByName(profileData.name)
+                const success = await Profile.deleteOneByName(profileData.name)
+                expect(success).to.equal(true)
                 //await Profile.deleteOneById(profileData._id)
             })
 
@@ -299,7 +306,8 @@ describe('Profile Model', () => {
             
             it('Should delete a profile on valid id', async () => {
                 const Profile = new ProfileModel
-                await Profile.findOneByName(profileData.name)
+                const found = await Profile.findOneByName(profileData.name)
+                expect(found).to.equal(true)
                 const id = Profile._id
                 expect(Profile._id).to.not.equal('')
                 const success = await Profile.deleteOneById(Profile._id)
@@ -309,6 +317,7 @@ describe('Profile Model', () => {
                 expect(Profile.description).to.equal(null)
                 expect(Profile.image).to.equal(null)
                 const profile = await Profile.findOneById(id)
+                expect(profile).to.to.equal(false)
                 expect(Profile._id).to.equal(null)
                 expect(profile).to.equal(false)
             })
@@ -322,10 +331,12 @@ describe('Profile Model', () => {
 
             it('Should empty the model on a successful delete', async () => {
                 const Profile = new ProfileModel
-                await Profile.findOneByName(profileData.name)
+                let success = await Profile.findOneByName(profileData.name)
+                expect(success).to.equal(true)
                 expect(Profile._id).to.not.equal(null)
                 expect(Profile._id).to.not.equal('')
-                await Profile.deleteOneById(Profile._id)
+                success = await Profile.deleteOneById(Profile._id)
+                expect(success).to.equal(true)
                 expect(Profile._id).to.equal(null)
                 expect(Profile.name).to.equal(null)
                 expect(Profile.description).to.equal(null)
@@ -348,21 +359,26 @@ describe('Profile Model', () => {
 
             it('Should remove a single model with a valid name', async () => {
                 const Profile = new ProfileModel
-                await Profile.findOneByName(profileData.name)
+                let success = await Profile.findOneByName(profileData.name)
+                expect(success).to.equal(true)
                 expect(Profile.name).to.equal(profileData.name)
                 // Delete and make sure the model is empty
-                await Profile.deleteOneByName(Profile.name)
-                await Profile.findOneByName(profileData.name)
+                success = await Profile.deleteOneByName(profileData.name)
+                expect(success).to.equal(true)
+                success = await Profile.findOneByName(profileData.name)
+                expect(success).to.equal(false)
                 expect(Profile.name).to.equal(null)
             })
 
             it('Should empty the model on a successful delete', async () => {
                 const Profile = new ProfileModel
-                await Profile.findOneByName(profileData.name)
+                let success = await Profile.findOneByName(profileData.name)
+                expect(success).to.equal(true)
                 expect(Profile.name).to.equal(profileData.name)
                 expect(Profile.description).to.equal(profileData.description)
                 expect(Profile.image).to.equal(profileData.image)
-                await Profile.deleteOneByName(Profile.name)
+                success = await Profile.deleteOneByName(profileData.name)
+                expect(success).to.equal(true)
                 expect(Profile.name).to.equal(null)
                 expect(Profile.description).to.equal(null)
                 expect(Profile.image).to.equal(null)
@@ -393,10 +409,9 @@ describe('Profile Model', () => {
                 expect(profiles.length).to.equal(count)  
             })
 
-            it('Should return a empty array if no count is specified', async () => {
+            it('Should return false if no count is specified', async () => {
                 const profiles = await ProfileModel.findManyByCount(0)
-                expect(profiles.length).to.equal(0)
-                expect(Array.isArray(profiles)).to.equal(true)
+                expect(profiles).to.equal(false)
             })
 
             after('Remove all test profiles', async () => {
@@ -414,7 +429,8 @@ describe('Profile Model', () => {
 
             it('Should return true for existing', async () => {
                 const Profile = new ProfileModel
-                await Profile.create(profileData)
+                const errors = await Profile.create(profileData)
+                expect(errors).to.not.exist
                 const exists = await ProfileModel.existsByName(profileData.name)
                 expect(exists).to.equal(true)
             })
