@@ -247,7 +247,7 @@ class ProfileController {
       // Check, get and create the image filename
       //
 
-      const Image = new ImageHelper;
+      // still return a default name for the client to use
       let imageFileName: string = 'sample.jpg'
       if (req.file) {
         logger.info('A file was passed in')
@@ -255,7 +255,16 @@ class ProfileController {
       } else {
         logger.info('A file was not passed in')
       }
-      imageFileName = Image.createNewFilename(imageFileName)
+      imageFileName = ImageHelper.generateRandomName(imageFileName)
+      if (!imageFileName) {
+        const data: IData = {
+          success: false,
+          message: 'No extension was found' ,
+          data: null
+        }
+        return res.status(400).json(data)
+      }
+      // if (!imaefilena,e) then return error where no extension was found
 
       //
       // Check profile doesnt already exist
@@ -281,7 +290,7 @@ class ProfileController {
       const validationError: any = await Profile.create({
           name: req.body.name,
           description: req.body.description,
-          image: '/public/images/' + imageFileName
+          image: imageFileName
       })
       if (validationError) {
         logger.error('There was a validation error')
@@ -306,7 +315,7 @@ class ProfileController {
         const data: IData = {
           success: true,
           message: 'Saved the profile',
-          data: '/public/images/' + imageFileName
+          data: imageFileName
         }
         return res.status(200).json(data)
       } else {
