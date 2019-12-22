@@ -191,22 +191,24 @@ describe('ProfileController', () => {
                 await Profile.deleteOneById(Profile._id)
             })
 
+            it('Should fail when passed in file name has an invalid extension', async () => {
+                req.file = {originalname: 'sample'}
+                const response = await ProfileController.PostProfile(req, res, next)
+                expect(response.statusCode).to.equal(400)
+                expect(response.jsonMessage.success).to.equal(false)
+                expect(response.jsonMessage.message).to.equal('No extension was found')
+            })
+
             it('Should fail when validation fails', async () => {
                 // Name
                 req.body.name = null
                 req.body.description = null
                 req.file = null
-                const response = await ProfileController.PostProfile(req, res, next)
+                let response = await ProfileController.PostProfile(req, res, next)
                 expect(response.statusCode).to.equal(400)
                 expect(response.jsonMessage.success).to.equal(false)
                 expect(response.jsonMessage.data).to.equal('name')
-                req.body.name = 'I am edward!'
-                req.body.description = null
-                req.file = null
-                const response = await ProfileController.PostProfile(req, res, next)
-                expect(response.statusCode).to.equal(400)
-                expect(response.jsonMessage.success).to.equal(false)
-                expect(response.jsonMessage.data).to.equal('image')
+                // todo :: add testting for image file extensions
             })
 
             it('Should save on a valid profile', async () => {
@@ -217,7 +219,9 @@ describe('ProfileController', () => {
                 expect(response.statusCode).to.equal(200)
                 expect(response.jsonMessage.success).to.equal(true)
                 expect(response.jsonMessage.message).to.equal('Saved the profile')
-                expect(response.jsonMessage.data.indexOf('/public/images/')).to.be.greaterThan(-1)
+                const data = response.jsonMessage.data
+                const fileName = data.split('.')[0]
+                expect(fileName.length).to.equal(36)
             })
 
             // Skipped because i dont know how to replicate this, or if it could even ever be triggered
