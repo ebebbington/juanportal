@@ -234,7 +234,7 @@ describe('Profile Route', () => {
           });
       })
 
-      it('Should fail is the name fails validation', async () => {
+      it('Should fail if the name fails validation', async () => {
         await ProfileModel.deleteAllByName(newProfile.name)
         chai.request(app)
           .post('/api/profile', upload.single('image'))
@@ -271,8 +271,7 @@ describe('Profile Route', () => {
           });
       })
 
-      // fixme :: some reason, a profile already exists when this block is executed
-      it('Should fail is image fails validation', async () => {
+      it('Should fail if image fails validation', async () => {
         await ProfileModel.deleteAllByName(newProfile.name)
         chai.request(app)
           .post('/api/profile', upload.single('image'))
@@ -283,7 +282,8 @@ describe('Profile Route', () => {
             expect(res.status).to.equal(400)
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(false)
-            expect(json.data).to.equal('image')
+            expect(json.data).to.equal(null)
+            expect(json.message).to.equal('No extension was found')
           });
       })
 
