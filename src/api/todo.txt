@@ -1,16 +1,4 @@
-- tests: look into profile model deleteAll and deleteAllByName methods and their usage, also develop tests once i decide what to do with them
-- tests: race condition in ProfileModel, methods, findManyByName. Some reason there is a 7th profile - i asusme not being deleted from somewhere
-- base model: maybe call the validateoutputfields method inside the fill method? idea is,
-              fill fills the model with data from a passed in document. whereas vof strips out proeprties that we dont wanna expose
-              so, a model should have a property matching each in in the database, and fte should define the ones to fill
-- base model: maybe implement fillabled property
-- IMAGE HELPER: decide whether to save images on api or main serevr, so the api creates the file names and stuff for the model, but the main servr saved the file? OR actually once the profile has saved, send a request to the original server (api kinda endpoint) then the ain server would handle the response there
-                or route anything on /image to the api container?
-- tests: middleware
-- tests and development: route and image helper
-- tests: controllers when implemented
-- cleanup - cleanup all files except for tetsts as they are document
-- Models: possible to create one in the constructor?
+
 - Models: just think, before adding new models, if there a way to standard CRUD operations? e.g implement an update functionality like TT, or where a single find method can be called using params for the field name and values e.g.
     Document.delete({passedInFieldName: passedInVal})
     - Is there existing complex mongoose functionaility to do something similar?
