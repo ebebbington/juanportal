@@ -114,6 +114,15 @@ class ProfileModel extends BaseModel implements IBaseModel {
       'image'
   ]
 
+  // constructor (id: number) {
+  //   super(id)
+  //   //@ts-ignore
+  //   return (async () => {
+  //     await this.findOneById(id)
+  //     return this
+  //   })()
+  // }
+
   /**
    * Create a profile model object
    * 
