@@ -152,6 +152,7 @@ describe('ProfileController', () => {
 
             it('Should fail when no profiles were found',  async () => {
                 req.params.count = 5
+                // fixme :: How can I test an already populated database if its empty?
                 await ProfileModel.deleteAll('Somesuperlongparameterbecauseyouneedtopassoneintothefunctionforittoworkandifyoudontitfailswhichsecuresthefunctionsoifsomeonedidwanttocallthisfunctionthentheyaregoingtohavetocopythisparametertomakeitliterallyimpossibletowriteintoanactuallyapplication')
                 const response = await ProfileController.GetProfilesByAmount(req, res, next)
                 expect(response.statusCode).to.equal(404)

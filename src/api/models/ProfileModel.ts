@@ -208,6 +208,7 @@ class ProfileModel extends BaseModel implements IBaseModel {
    *
    * @return {your demise and an eternity in hell}
    */
+  // todo :: remove me once ive addressed the other fixme's regarding this method, mainly when ive found to test an already populated database if its empty by not actually remvoign data
   public static async deleteAll (key: string): Promise<boolean> {
     const lock: string = 'Somesuperlongparameterbecauseyouneedtopassoneintothefunctionforittoworkandifyoudontitfailswhichsecuresthefunctionsoifsomeonedidwanttocallthisfunctionthentheyaregoingtohavetocopythisparametertomakeitliterallyimpossibletowriteintoanactuallyapplication'
     if (lock !== key) {
