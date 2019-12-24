@@ -1,0 +1,61 @@
+# $ npm i --save artillery
+# Title: Rate Limiter
+
+# Example:
+#   npm i --save artillery
+#   artillery quick --count 10 -n 20 https://artillery.io/
+#   or
+#   artillery run this-script.yml
+
+# Todos:
+#   - Create a logger for logging every request (a countable number) we get every sec, day, week etc.
+#     then set the rate limiter in the nginx config to match the data gathered 
+
+# config section is where you specify the target
+config:
+    target: 'http://0.0.0.0:9002'
+    # define the phases to run
+    phases:
+      # phase one
+      - duration: 60 # how many seconds to spend on this phase
+        arrivalRate: 20 # how many virtual users a second
+        rampUp: 50 # ramp up from 20 to 50 in the duration provided
+    defaults:
+    # inline variables
+    variables:
+      id: "1234"
+      postcode:
+        - "NG31 8FY"
+        - "NG32 9TR"
+  # scenarios section is where the virtual users are defined
+  scenarios:
+    #define the first scenario - will each one be requested at the same time or is it one by one
+    - name: "GET /"
+      flow:
+        - get:
+            url: "/"
+    # define the second
+    - name: "POST /profile/add"
+      flow:
+        - post:
+            url: "/"
+    - name: "GET /profile/add"
+      flow:
+        - get:
+            url: "/profile/add"
+    - name: "Save variables!"
+      flow:
+        - get:
+            url: "/api/profile/count/1"
+            capture:
+              json: "$.results"
+              as: "id"
+            log: "Response is: {{ $id }}"
+        - get:
+            url: "/{{ $id }}"
+  
+    - name: "Use env var in URL"
+      flow:
+        - get:
+            url: "/{{ $environment }}"
+  
