@@ -32,16 +32,17 @@ const Document = require('../schemas/ProfileSchema')
  * @property {string}     updated_at      When the document was last updated
  * 
  * 
- * @method create           Create a profile object
- * @method findOneById      Find a profile by id
- * @method deleteOneById    Delete a profile by their id
+ * @method create                 Create a profile object
+ * @method findOneById            Find a profile by id
+ * @method deleteOneById          Delete a profile by their id
  * @method deleteAll
- * @method deleteAllByName  Delete all profiles by name
- * @method deleteOneByName  Delete one by name
- * @method findManyByCount  Find a defined number of profiles
- * @method existsByName     Check if profiles exists
- * @method findOneByName    Find one by name
- * @method findManyByName   Find many by name
+ * @method deleteAllByName        Delete all profiles by name
+ * @method deleteOneByName        Delete one by name
+ * @method findManyByCount        Find a defined number of profiles
+ * @method existsByName           Check if profiles exists
+ * @method findOneByName          Find one by name
+ * @method findManyByName         Find many by name
+ * @method getMongooseDocument    Retrieve the mongoose document
  * 
  * @method fill                   Fill this object with database data
  * @method empty                  Empty this object       
@@ -122,6 +123,15 @@ class ProfileModel extends BaseModel implements IBaseModel {
   //     return this
   //   })()
   // }
+
+  /**
+   * Get the mongoose document of this model
+   *
+   * @return {Document} The mongoose document from the schema
+   */
+  public getMongooseDocument (): Document {
+    return Document
+  }
 
   /**
    * Create a profile model object
