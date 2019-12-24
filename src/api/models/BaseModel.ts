@@ -12,6 +12,7 @@ var logger = require('../helpers/logger')
  * @method stripNonExposableProperties Strips properties not in the childs fieldsToExpose property
  * @method fill Fill the parents properties of a document defined in fieldstoexpose
  * @method empty Empty the childs properties defined in fieldstoexpose
+ * @method update Updates the childs model
  */
 class BaseModel {
 
@@ -21,6 +22,7 @@ class BaseModel {
    * @var {string[]} fieldsToExpose
    */
   protected fieldsToExpose: string[] = []
+  _id: any
 
   /**
    * Create a mongoose object id from the passed in value
@@ -125,6 +127,61 @@ class BaseModel {
         this[value] = null
       }
     })
+  }
+
+  /**
+   * Update a models properties inside the model itself and the database
+   * 
+   * @method update
+   * 
+   * @example
+   * const Profile = new ProfileModel(id)
+   * const dataToUpdate = {
+   *  name: 'new name'
+   *  ...
+   * }
+   * const oldProfile = await Profile.update(data, Profile.getMongooseDocument()) // fills the model on an update
+   * if (oldProfile) {
+   *  expect(oldProfile.name).to.not.equal(Profile.name)
+   * } else {
+   *  logger.error('No profile was found with the current id')
+   * }
+   * 
+   * @param {object} data Key value pairs of the property name and new value 
+   * @param {Document} Document mongoose document for the calling class
+   * 
+   * @return {Promise<Document|boolean>} The old document (before updating) or false based on the success
+   */
+  public async update (data: { [key: string]: any[] }, Document: Document): Promise<Document|boolean> {
+    let dataToUpdate: { [key: string]: any } = {} // to store fields to update
+    // Loop through the key values pairs provided
+    Object.keys(data).forEach((propName: string, propVal: any) => {
+      // Check the props passed in are in this class
+      if (this.hasOwnProperty(propName)) {
+        // Check if that prop passed in is different than
+        // the existing prop
+        if (this[propName] !== data[propName]) {
+          // Push the data to update!
+          //this[propName] = data[propName]
+          dataToUpdate[propName] = data[propName]
+        }
+      }
+    })
+    try {
+      const query = { _id: this._id }
+      console.log(query)
+      const options = { upsert: true }
+      const oldDocument = await Document.findOneAndUpdate(query, dataToUpdate, options)
+      if (Array.isArray(oldDocument) && !oldDocument.length || !oldDocument) {
+        return false
+      }
+      const updatedProfile = await Document.findById(this._id)
+      this.fill(updatedProfile)
+      return oldDocument
+    } catch (err) {
+      logger.error(err.message)
+      return false
+    }
   }
 }
 
