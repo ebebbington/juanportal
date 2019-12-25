@@ -126,10 +126,12 @@ class ProfileModel extends BaseModel implements IBaseModel {
 
   /**
    * Get the mongoose document of this model
+   * 
+   * This is here so in the BaseMode, it can call 'this' method to get the document
    *
    * @return {Document} The mongoose document from the schema
    */
-  public getMongooseDocument (): Document {
+  protected getMongooseDocument (): Document {
     return Document
   }
 
