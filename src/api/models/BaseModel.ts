@@ -170,7 +170,6 @@ class BaseModel {
     })
     try {
       const query = { _id: this._id }
-      console.log(query)
       const options = { upsert: true }
       const Model = this.getMongooseDocument()
       const oldDocument = await Model.findOneAndUpdate(query, dataToUpdate, options)
