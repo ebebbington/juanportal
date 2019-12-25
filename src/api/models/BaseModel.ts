@@ -6,13 +6,14 @@ var logger = require('../helpers/logger')
  * 
  * @description Every model should extend this as it provides core methods models should use
  * 
- * @property {string[]} fieldsToExpose To fill children fields
+ * @property {string[]} fieldsToExpose    To fill children fields
  * 
- * @method generateObjectId Generates a mongoose object id from the given param
- * @method stripNonExposableProperties Strips properties not in the childs fieldsToExpose property
- * @method fill Fill the parents properties of a document defined in fieldstoexpose
- * @method empty Empty the childs properties defined in fieldstoexpose
- * @method update Updates the childs model
+ * @method generateObjectId               Generates a mongoose object id from the given param
+ * @method stripNonExposableProperties    Strips properties not in the childs fieldsToExpose property
+ * @method fill                           Fill the parents properties of a document defined in fieldstoexpose
+ * @method empty                          Empty the childs properties defined in fieldstoexpose
+ * @method getMongooseDocument            Implementation is required in children, this is called within this class
+ * @method update                         Updates the childs model
  */
 class BaseModel {
 
@@ -129,7 +130,20 @@ class BaseModel {
     })
   }
 
-  protected getMongooseDocument (): any {}
+  /**
+   * Used by this specific class to get the calling childs document
+   * 
+   * @example IMPLEMENTATION
+   * class TestModel extends BaseModel {
+   *  protected getMongooseDocument (): Document {
+   *    return Document
+   *  }
+   * }
+   */
+  protected getMongooseDocument (): any {
+    throw new Error('Implementation inside child is required')
+  }
+
   /**
    * Update a models properties inside the model itself and the database
    * 

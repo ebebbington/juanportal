@@ -127,7 +127,7 @@ class ProfileModel extends BaseModel implements IBaseModel {
   /**
    * Get the mongoose document of this model
    * 
-   * This is here so in the BaseMode, it can call 'this' method to get the document
+   * This is here so in the BaseModel, it can call 'this' method to get the document
    *
    * @return {Document} The mongoose document from the schema
    */
@@ -137,6 +137,8 @@ class ProfileModel extends BaseModel implements IBaseModel {
 
   /**
    * Create a profile model object
+   * 
+   * @requires getMongooseDocument Children must add this method and return their Document
    * 
    * Used to create a model from data to then be saved into the database
    * 
