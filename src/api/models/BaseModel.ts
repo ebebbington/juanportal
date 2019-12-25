@@ -129,6 +129,7 @@ class BaseModel {
     })
   }
 
+  protected getMongooseDocument (): any {}
   /**
    * Update a models properties inside the model itself and the database
    * 
@@ -140,11 +141,11 @@ class BaseModel {
    *  name: 'new name'
    *  ...
    * }
-   * const oldProfile = await Profile.update(data, Profile.getMongooseDocument()) // fills the model on an update
-   * if (oldProfile) {
-   *  expect(oldProfile.name).to.not.equal(Profile.name)
+   * const oldProfile = await Profile.update(data) // fills the model on an update
+   * if (oldDocument) {
+   *  expect(oldDocument.name).to.not.equal(Profile.name)
    * } else {
-   *  logger.error('No profile was found with the current id')
+   *  logger.error('No document was found with the current id')
    * }
    * 
    * @param {object} data Key value pairs of the property name and new value 
@@ -152,7 +153,7 @@ class BaseModel {
    * 
    * @return {Promise<Document|boolean>} The old document (before updating) or false based on the success
    */
-  public async update (data: { [key: string]: any[] }, Document: Document): Promise<Document|boolean> {
+  public async update (data: { [key: string]: any[] }): Promise<Document|boolean> {
     let dataToUpdate: { [key: string]: any } = {} // to store fields to update
     // Loop through the key values pairs provided
     Object.keys(data).forEach((propName: string, propVal: any) => {
@@ -171,18 +172,20 @@ class BaseModel {
       const query = { _id: this._id }
       console.log(query)
       const options = { upsert: true }
-      const oldDocument = await Document.findOneAndUpdate(query, dataToUpdate, options)
+      const Model = this.getMongooseDocument()
+      const oldDocument = await Model.findOneAndUpdate(query, dataToUpdate, options)
       if (Array.isArray(oldDocument) && !oldDocument.length || !oldDocument) {
         return false
       }
-      const updatedProfile = await Document.findById(this._id)
-      this.fill(updatedProfile)
+      const updatedDocument = await Model.findById(this._id)
+      this.fill(updatedDocument)
       return oldDocument
     } catch (err) {
       logger.error(err.message)
       return false
     }
   }
+
 }
 
 module.exports = BaseModel
