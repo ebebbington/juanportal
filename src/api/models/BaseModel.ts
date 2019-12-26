@@ -138,6 +138,7 @@ export default abstract class BaseModel {
    * Used by this specific class to get the calling childs document
    * 
    * @example IMPLEMENTATION
+   * const Document = require('../schemas/yourschema')
    * class TestModel extends BaseModel {
    *  protected getMongooseDocument (): Document {
    *    return Document
