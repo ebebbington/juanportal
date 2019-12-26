@@ -8,8 +8,8 @@ import e = require("express");
 
 const mongoose = require('mongoose')
 const logger = require('../helpers/logger')
-const BaseModel = require('./BaseModel')
-import {IBaseModel} from '../interfaces/models/BaseModelInterface'
+import BaseModel from './BaseModel'
+import IBaseModel from '../interfaces/models/BaseModelInterface'
 import { promises } from "dns";
 const Document = require('../schemas/ProfileSchema')
 
@@ -183,12 +183,12 @@ class ProfileModel extends BaseModel implements IBaseModel {
    * 
    * @return {boolean} True if found a profile, else false for an empty response or unable to convert id
    */
-  public async findOneById(id: number): Promise<boolean>  {
-    id = this.generateObjectId(id)
-    if (!id) {
+  public async findOneById(id: string): Promise<boolean>  {
+    const objectId = this.generateObjectId(id)
+    if (!objectId) {
       return false
     }
-    const profile = await Document.findOne({ _id: id })
+    const profile = await Document.findOne({ _id: objectId })
     // check for an empty response
     if (Array.isArray(profile) && !profile.length || !profile) {
       // empty
@@ -212,12 +212,12 @@ class ProfileModel extends BaseModel implements IBaseModel {
    * 
    * @return {boolean} False or true, depending on the success
    */
-  public async deleteOneById (id: number): Promise<boolean> {
-    id = this.generateObjectId(id)
-    if (!id) {
+  public async deleteOneById (id: string): Promise<boolean> {
+    const objectId = this.generateObjectId(id)
+    if (!Object) {
       return false
     }
-    const res = await Document.deleteOne({ _id: id })
+    const res = await Document.deleteOne({ _id: objectId })
     if (res.ok === 1) {
       this.empty()
       return true
