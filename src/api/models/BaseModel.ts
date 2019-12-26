@@ -10,6 +10,8 @@ var logger = require('../helpers/logger')
  * import BaseModel from 'BaseModel'
  * class Model extends BaseModel { ... }
  * 
+ * @property {string|null} created_at     Database field
+ * @property {string|null} updated_at     Database field
  * @property {string[]} fieldsToExpose    To fill children fields
  * 
  * @method generateObjectId               Generates a mongoose object id from the given param
@@ -22,7 +24,19 @@ var logger = require('../helpers/logger')
  */
 export default abstract class BaseModel {
 
-  protected abstract getMongooseDocument (): Document
+  /**
+   * When the entry was created
+   * 
+   * @var {string|null} created_at
+   */
+  protected abstract created_at: string|null
+
+  /**
+   * When the entry was updated
+   * 
+   * @var {string|null} updated_at
+   */
+  protected abstract updated_at: string|null
 
   /**
    * Here to implement the fill method, represents an empty object with no children, or the childs matching property when extended
@@ -31,6 +45,15 @@ export default abstract class BaseModel {
    */
   protected fieldsToExpose: string[] = []
   _id: any
+
+  /**
+   * Get the mongoose document of this model
+   * 
+   * This is here so in the BaseModel, it can call 'this' method to get the document
+   *
+   * @return {Document} The mongoose document from the schema
+   */
+  protected abstract getMongooseDocument (): Document
 
   /**
    * Create a mongoose object id from the passed in value
