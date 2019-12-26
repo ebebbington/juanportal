@@ -1,8 +1,12 @@
+require('babel-register')({
+    ignore: false
+})
+
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
 
-const BaseModel = require('../../models/BaseModel')
+import BaseModel from '../../models/BaseModel'
 
 const mongoose = require('mongoose')
 require('dotenv').config()
@@ -66,6 +70,36 @@ describe('BaseModel', () => {
     })
 
     describe('Methods', () => {
+
+        describe('getMongooseDocument', () => {
+
+            it('Should exist')
+
+            it('Should not be implemented yet')
+
+        })
+
+        describe('update', () => {
+
+            it('Should return false if no document was found with the models id')
+
+            it('Should return the old document after updating')
+
+            it('Should fill the calling model on success')
+
+            it('Should fail when an error is thrown in the catch')
+
+        })
+
+        describe('`create`', function () {
+
+            it('Should fill the model on a successful creation')
+
+            it('Should fail when validation isnt met')
+
+            afterEach('Delete test entry')
+
+        })
 
         describe('generateObjectId', () => {
 
