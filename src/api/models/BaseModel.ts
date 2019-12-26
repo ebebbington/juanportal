@@ -18,6 +18,7 @@ var logger = require('../helpers/logger')
  * @method empty                          Empty the childs properties defined in fieldstoexpose
  * @abstract @method getMongooseDocument  Implementation is required in children, this is called within this class
  * @method update                         Updates the childs model
+ * @method create                         Create an entry in the database
  */
 export default abstract class BaseModel {
 
