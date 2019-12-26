@@ -16,10 +16,12 @@ var logger = require('../helpers/logger')
  * @method stripNonExposableProperties    Strips properties not in the childs fieldsToExpose property
  * @method fill                           Fill the parents properties of a document defined in fieldstoexpose
  * @method empty                          Empty the childs properties defined in fieldstoexpose
- * @abstract @method getMongooseDocument            Implementation is required in children, this is called within this class
+ * @abstract @method getMongooseDocument  Implementation is required in children, this is called within this class
  * @method update                         Updates the childs model
  */
 export default abstract class BaseModel {
+
+  protected abstract getMongooseDocument (): Document
 
   /**
    * Here to implement the fill method, represents an empty object with no children, or the childs matching property when extended
@@ -135,19 +137,6 @@ export default abstract class BaseModel {
   }
 
   /**
-   * Used by this specific class to get the calling childs document
-   * 
-   * @example IMPLEMENTATION
-   * const Document = require('../schemas/yourschema')
-   * class TestModel extends BaseModel {
-   *  protected getMongooseDocument (): Document {
-   *    return Document
-   *  }
-   * }
-   */
-  protected abstract getMongooseDocument(): Document
-
-  /**
    * Update a models properties inside the model itself and the database
    * 
    * @method update
@@ -200,6 +189,41 @@ export default abstract class BaseModel {
     } catch (err) {
       logger.error(err.message)
       return false
+    }
+  }
+
+  /**
+   * Insert a document into the database
+   * 
+   * @requires getMongooseDocument Children must add this method and return their Document
+   * 
+   * Used to create a model from data to then be saved into the database
+   * 
+   * @method create
+   * 
+   * @example
+   * const Profile = new ProfileModel;
+   * const data = {name: 'hello', ....}
+   * const newProfile = await Profile.create(data)
+   * 
+   * @param {{ [key: string]: any[] }} data Key value pairs e.g. {name: '', image: ''}
+   * 
+   * @return {void|object} Return value is set if validation errors are returned
+   */
+  public async create (data: { [key: string]: any[] }): Promise<any> {
+    const Document = this.getMongooseDocument()
+    //@ts-ignore
+    const document = new Document(data)
+    try {
+      await document.save()
+      this.empty()
+      this.fill(document)
+      logger.info(`[BaseModel - create: filled the model]`)
+    } catch (validationError) {
+      const fieldName: string = Object.keys(validationError.errors)[0]
+      const errorMessage: string = validationError.errors[fieldName].message
+      logger.error(`Validation error: ${errorMessage}`)
+      return validationError
     }
   }
 
