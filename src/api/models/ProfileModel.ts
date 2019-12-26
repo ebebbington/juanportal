@@ -31,8 +31,6 @@ const Document = require('../schemas/ProfileSchema')
  * @property {string}     created_at      When the document was created
  * @property {string}     updated_at      When the document was last updated
  * 
- * 
- * @method create                 Create a profile object
  * @method findOneById            Find a profile by id
  * @method deleteOneById          Delete a profile by their id
  * @method deleteAll
@@ -133,42 +131,6 @@ class ProfileModel extends BaseModel implements IBaseModel {
    */
   protected getMongooseDocument (): Document {
     return Document
-  }
-
-  /**
-   * Create a profile model object
-   * 
-   * @requires getMongooseDocument Children must add this method and return their Document
-   * 
-   * Used to create a model from data to then be saved into the database
-   * 
-   * @method create
-   * 
-   * @example
-   * const Profile = new ProfileModel;
-   * const newProfile = Profile.create(...)
-   * 
-   * @param {name: string, description?: string, image: string} data
-   * 
-   * @return {void|object} Return value is set if validation errors are returned
-   */
-  public async create (data: {name: string, description?: string, image: string}): Promise<any> {
-    const newProfile = new Document({
-      name: data.name,
-      description: data.description,
-      image: data.image
-    })
-    try {
-      await newProfile.save()
-      this.empty()
-      this.fill(newProfile)
-      logger.info(`[ProfileModel - create: filled the model]`)
-    } catch (validationError) {
-      const fieldName: string = Object.keys(validationError.errors)[0]
-      const errorMessage: string = validationError.errors[fieldName].message
-      logger.error(`Validation error: ${errorMessage}`)
-      return validationError
-    }
   }
 
   /**
