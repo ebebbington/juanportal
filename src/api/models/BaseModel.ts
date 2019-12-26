@@ -6,16 +6,20 @@ var logger = require('../helpers/logger')
  * 
  * @description Every model should extend this as it provides core methods models should use
  * 
+ * @example
+ * import BaseModel from 'BaseModel'
+ * class Model extends BaseModel { ... }
+ * 
  * @property {string[]} fieldsToExpose    To fill children fields
  * 
  * @method generateObjectId               Generates a mongoose object id from the given param
  * @method stripNonExposableProperties    Strips properties not in the childs fieldsToExpose property
  * @method fill                           Fill the parents properties of a document defined in fieldstoexpose
  * @method empty                          Empty the childs properties defined in fieldstoexpose
- * @method getMongooseDocument            Implementation is required in children, this is called within this class
+ * @abstract @method getMongooseDocument            Implementation is required in children, this is called within this class
  * @method update                         Updates the childs model
  */
-class BaseModel {
+export default abstract class BaseModel {
 
   /**
    * Here to implement the fill method, represents an empty object with no children, or the childs matching property when extended
@@ -140,9 +144,7 @@ class BaseModel {
    *  }
    * }
    */
-  protected getMongooseDocument (): any {
-    throw new Error('Implementation inside child is required')
-  }
+  protected abstract getMongooseDocument(): Document
 
   /**
    * Update a models properties inside the model itself and the database
@@ -175,6 +177,7 @@ class BaseModel {
       if (this.hasOwnProperty(propName)) {
         // Check if that prop passed in is different than
         // the existing prop
+        //@ts-ignore
         if (this[propName] !== data[propName]) {
           // Push the data to update!
           //this[propName] = data[propName]
@@ -200,5 +203,3 @@ class BaseModel {
   }
 
 }
-
-module.exports = BaseModel
