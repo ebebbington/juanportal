@@ -125,134 +125,135 @@ describe('Profile Model', () => {
             image: 'TESTPROFILEIMAGE.jpeg'
         }
 
-        describe('`create`', function () {
+        /* Commented out after i moved this method into the BaseModel on 26/12/2019 and want to retain the expectations */
+        // describe('`create`', function () {
 
-            it('Should fill the model on a successful creation', async () => {
-                const Profile = new ProfileModel
-                const errors = await Profile.create(profileData)
-                expect(errors).to.not.exist
-                expect(Profile.name).to.equal(profileData.name)
-                expect(Profile.description).to.equal(profileData.description)
-                expect(Profile.image).to.equal(profileData.image)
-            })
+        //     it('Should fill the model on a successful creation', async () => {
+        //         const Profile = new ProfileModel
+        //         const errors = await Profile.create(profileData)
+        //         expect(errors).to.not.exist
+        //         expect(Profile.name).to.equal(profileData.name)
+        //         expect(Profile.description).to.equal(profileData.description)
+        //         expect(Profile.image).to.equal(profileData.image)
+        //     })
 
-            it('Should create a profile with valid params', async () => {
-                const Profile = new ProfileModel
-                const errors = await Profile.create(profileData)
-                expect(errors).to.not.exist
-                await Profile.findOneByName(profileData.name)
-                expect(Profile.name).to.equal(profileData.name)
-            })
+        //     it('Should create a profile with valid params', async () => {
+        //         const Profile = new ProfileModel
+        //         const errors = await Profile.create(profileData)
+        //         expect(errors).to.not.exist
+        //         await Profile.findOneByName(profileData.name)
+        //         expect(Profile.name).to.equal(profileData.name)
+        //     })
 
-            it('Should fail validation when a name isnt passed in', async () => {
-                const Profile = new ProfileModel
-                const data = {
-                    description: profileData.description,
-                    image: profileData.image
-                }
-                const errors = await Profile.create(data)
-                expect(errors).to.exist
-                expect(errors.errors).to.haveOwnProperty('name')  
-            })
+        //     it('Should fail validation when a name isnt passed in', async () => {
+        //         const Profile = new ProfileModel
+        //         const data = {
+        //             description: profileData.description,
+        //             image: profileData.image
+        //         }
+        //         const errors = await Profile.create(data)
+        //         expect(errors).to.exist
+        //         expect(errors.errors).to.haveOwnProperty('name')  
+        //     })
 
-            it('Should pass validation when description isnt passed in', async () => {
-                const Profile = new ProfileModel
-                const data = {
-                    name: profileData.name,
-                    image: profileData.image
-                }
-                const errors = await Profile.create(data)
-                expect(errors).to.not.exist
-                expect(Profile.name).to.equal(data.name)
-                expect(Profile.description).to.equal(data.description)
-                expect(Profile.image).to.equal(data.image)
-            })
+        //     it('Should pass validation when description isnt passed in', async () => {
+        //         const Profile = new ProfileModel
+        //         const data = {
+        //             name: profileData.name,
+        //             image: profileData.image
+        //         }
+        //         const errors = await Profile.create(data)
+        //         expect(errors).to.not.exist
+        //         expect(Profile.name).to.equal(data.name)
+        //         expect(Profile.description).to.equal(data.description)
+        //         expect(Profile.image).to.equal(data.image)
+        //     })
 
-            it('Should fail validation when no image is passed in', async () => {
-                const Profile = new ProfileModel
-                const data = {
-                    name: profileData.name,
-                    description: profileData.description
-                }
-                const errors = await Profile.create(data)
-                expect(errors).to.exist
-                expect(errors.errors).to.haveOwnProperty('image')  
-            })
+        //     it('Should fail validation when no image is passed in', async () => {
+        //         const Profile = new ProfileModel
+        //         const data = {
+        //             name: profileData.name,
+        //             description: profileData.description
+        //         }
+        //         const errors = await Profile.create(data)
+        //         expect(errors).to.exist
+        //         expect(errors.errors).to.haveOwnProperty('image')  
+        //     })
 
-            it('Should pass validation with the correct file extensions', async () => {
-                const Profile = new ProfileModel
-                const supportedExtensions = [
-                    '.jpg',
-                    '.png',
-                    '.PNG',
-                    '.JPG',
-                    '.JPEG',
-                    '.jpeg'
-                ]
-                const data = {
-                    name: profileData.name,
-                    description: profileData.description,
-                    image: 'TESTPROFILEIMAGE'
-                }
-                let errors
+        //     it('Should pass validation with the correct file extensions', async () => {
+        //         const Profile = new ProfileModel
+        //         const supportedExtensions = [
+        //             '.jpg',
+        //             '.png',
+        //             '.PNG',
+        //             '.JPG',
+        //             '.JPEG',
+        //             '.jpeg'
+        //         ]
+        //         const data = {
+        //             name: profileData.name,
+        //             description: profileData.description,
+        //             image: 'TESTPROFILEIMAGE'
+        //         }
+        //         let errors
 
-                // .jpg
-                data.image = data.image + supportedExtensions[0]
-                errors = await Profile.create(data)
-                expect(errors).to.not.exist
-                let success = await Profile.deleteOneByName(data.name)
-                expect(success).to.equal(true)
+        //         // .jpg
+        //         data.image = data.image + supportedExtensions[0]
+        //         errors = await Profile.create(data)
+        //         expect(errors).to.not.exist
+        //         let success = await Profile.deleteOneByName(data.name)
+        //         expect(success).to.equal(true)
 
-                // .png
-                data.image = data.image + supportedExtensions[1]
-                errors = await Profile.create(data)
-                expect(errors).to.not.exist
-                success = await Profile.deleteOneByName(data.name)
-                expect(success).to.equal(true)
+        //         // .png
+        //         data.image = data.image + supportedExtensions[1]
+        //         errors = await Profile.create(data)
+        //         expect(errors).to.not.exist
+        //         success = await Profile.deleteOneByName(data.name)
+        //         expect(success).to.equal(true)
 
-                // .PNG
-                data.image = data.image + supportedExtensions[1]
-                errors = await Profile.create(data)
-                expect(errors).to.not.exist
-                success = await Profile.deleteOneByName(data.name)
-                expect(success).to.equal(true)
+        //         // .PNG
+        //         data.image = data.image + supportedExtensions[1]
+        //         errors = await Profile.create(data)
+        //         expect(errors).to.not.exist
+        //         success = await Profile.deleteOneByName(data.name)
+        //         expect(success).to.equal(true)
 
-                // .JPG
-                data.image = data.image + supportedExtensions[2]
-                errors = await Profile.create(data)
-                expect(errors).to.not.exist
-                success = await Profile.deleteOneByName(data.name)
-                expect(success).to.equal(true)
+        //         // .JPG
+        //         data.image = data.image + supportedExtensions[2]
+        //         errors = await Profile.create(data)
+        //         expect(errors).to.not.exist
+        //         success = await Profile.deleteOneByName(data.name)
+        //         expect(success).to.equal(true)
 
-                // .JPEG
-                data.image = data.image + supportedExtensions[3]
-                errors = await Profile.create(data)
-                expect(errors).to.not.exist
-                success = await Profile.deleteOneByName(data.name)
-                expect(success).to.equal(true)
+        //         // .JPEG
+        //         data.image = data.image + supportedExtensions[3]
+        //         errors = await Profile.create(data)
+        //         expect(errors).to.not.exist
+        //         success = await Profile.deleteOneByName(data.name)
+        //         expect(success).to.equal(true)
 
-                // .jpeg
-                data.image = data.image + supportedExtensions[4]
-                errors = await Profile.create(data)
-                expect(errors).to.not.exist
-                success = await Profile.deleteOneByName(data.name)
-                expect(success).to.equal(true)
+        //         // .jpeg
+        //         data.image = data.image + supportedExtensions[4]
+        //         errors = await Profile.create(data)
+        //         expect(errors).to.not.exist
+        //         success = await Profile.deleteOneByName(data.name)
+        //         expect(success).to.equal(true)
 
-                // supportedExtensions.forEach( async (extension) => {
-                //     data.image = 'TESTPROFILEIMAGE' + extension
-                //     const errors = await Profile.create(data)
-                //     expect(errors).to.not.exist
-                // })
-            })
+        //         // supportedExtensions.forEach( async (extension) => {
+        //         //     data.image = 'TESTPROFILEIMAGE' + extension
+        //         //     const errors = await Profile.create(data)
+        //         //     expect(errors).to.not.exist
+        //         // })
+        //     })
 
-            afterEach( async () => {
-                const Profile = new ProfileModel
-                const success = await Profile.deleteOneByName(profileData.name)
-                expect(success).to.equal(true)
-                //await Profile.deleteOneById(profileData._id)
-            })
+        //     afterEach( async () => {
+        //         const Profile = new ProfileModel
+        //         const success = await Profile.deleteOneByName(profileData.name)
+        //         expect(success).to.equal(true)
+        //         //await Profile.deleteOneById(profileData._id)
+        //     })
 
-        })
+        // })
 
         describe('`findOneById`', function () {
 
