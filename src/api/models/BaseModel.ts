@@ -44,6 +44,14 @@ export default abstract class BaseModel {
    * @var {string[]} fieldsToExpose
    */
   protected abstract fieldsToExpose: string[]
+
+   /**
+   * The name of the table associated with this model
+   * 
+   * @var {string} tablename
+   */
+  protected abstract tablename: string
+
   _id: any
 
   /**

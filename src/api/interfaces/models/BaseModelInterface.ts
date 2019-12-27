@@ -8,6 +8,5 @@
  * class MyModel implements IBaseModel {}
  */
 export default interface IBaseModel {
-    readonly fieldsToExpose: string[],
-    readonly tablename: string
+    
 }
