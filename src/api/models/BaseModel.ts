@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 var logger = require('../helpers/logger')
+const _ = require('lodash')
 
 /**
  * @class BaseModel
@@ -21,6 +22,8 @@ var logger = require('../helpers/logger')
  * @abstract @method getMongooseDocument  Implementation is required in children, this is called within this class
  * @method update                         Updates the childs model
  * @method create                         Create an entry in the database
+ * @method find                           Used for any SELECT queries
+ * @method delete                         Used for any DELETE queries
  */
 export default abstract class BaseModel {
 
@@ -314,6 +317,70 @@ export default abstract class BaseModel {
     }
     // should never reach here
     logger.error('[BaseModel - find: Unreachable code is reachable. Data to check is:' + result)
+    return false
+  }
+
+  /**
+   * @method delete
+   * 
+   * @description Handles DELETE queries to the database. Converts a passed in _id also.
+   * 
+   * @example
+   * class TestModel extends BaseModel {
+   *  ...
+   * }
+   * const query = {}|null|undefined|{name: ...}
+   * const deleteMany = true|false
+   * const allowWipe = true|false // true + empty query will wipe everything
+   * const Test = new TestModel
+   * const success = await Test.delete(query, deleteMany, allowWipe)
+   * if (success) {
+   *  // do what you need to do
+   * }
+   * 
+   * @param {object} query Key value pair of data to use in the query, e.g delete on by name = 'edward': query = {name: 'edward'}. Defaults to {} if not passed in
+   * @param {boolean} deleteMany Do you want to delete many? Defaults to false to deleteOne
+   * @param {boolean} allowWipe Define true if you wish to delete all. Used in conjunction with an empty query param
+   * 
+   * @returns {boolean} Success of the method call
+   */
+  public async delete (query: { [key: string]: any } = {}, deleteMany: boolean = false, allowWipe = false): Promise<boolean> {
+    // warn
+    if (_.isEmpty(query)) logger.warn(`[BaseModel: delete - query param isnt defined. If deleteMany is defined (${deleteMany}) its going to delete all`)
+    // convert _id if passed in
+    if (query && query._id) {
+      query._id = this.generateObjectId(query._id)
+      if (!query._id) {
+        return false
+      }
+    }
+    const Document = this.getMongooseDocument()
+    // delete a single doucment
+    if (!deleteMany) {
+      const result = await Document.deleteOne(query)
+      console.log(result)
+      if (result.ok === 1 && result.deletedCount === 1) {
+        this.empty()
+        return true
+      } else {
+        return false
+      }
+    }
+    // delete many documents
+    if (deleteMany) {
+      // and if the query is empty and wipe isnt allowed, don't let them delete EVERYTHING
+      if (_.isEmpty(query) && allowWipe !== true) {
+        return false
+      }
+      const result = await Document.deleteMany(query)
+      console.log(result)
+      if (result.ok === 1 && result.deletedCount >= 1) {
+        this.empty()
+        return true
+      } else {
+        return false
+      }
+    }
     return false
   }
 
