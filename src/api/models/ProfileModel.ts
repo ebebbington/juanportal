@@ -156,7 +156,7 @@ class ProfileModel extends BaseModel implements IBaseModel {
       // empty
       return false
     } else {
-      this.empty()
+      
       this.fill(profile)
       return true
     }
@@ -312,7 +312,7 @@ class ProfileModel extends BaseModel implements IBaseModel {
         // empty
         return false
       } else {
-        this.empty()
+        
         this.fill(profile)
         return true
       }

@@ -137,6 +137,7 @@ export default abstract class BaseModel {
   * @return {void}
   */
   protected fill (dbDocument: {$__: any, isNew: any, errors: any, _doc: object, $locals: any}): void {
+    this.empty()
     const documentData: object = dbDocument._doc
     const strippedDocument: object = this.stripNonExposableProperties(documentData, this.fieldsToExpose)
     // Loops through the document properties
@@ -162,7 +163,7 @@ export default abstract class BaseModel {
    * 
    * @return void
    */
-  protected empty (): void {
+  private empty (): void {
     this.fieldsToExpose.forEach((value: string, index: number) => {
       if (this.hasOwnProperty(value)) {
          // @ts-ignore
@@ -251,7 +252,6 @@ export default abstract class BaseModel {
     const document = new Document(data)
     try {
       await document.save()
-      this.empty()
       this.fill(document)
       logger.info(`[BaseModel - create: filled the model]`)
     } catch (validationError) {
