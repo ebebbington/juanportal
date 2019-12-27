@@ -259,4 +259,62 @@ export default abstract class BaseModel {
     }
   }
 
+  /**
+   * @method find
+   * 
+   * @description The entry point method for finding db results
+   * 
+   * @example
+   * class MyOtherClass extends BaseModel {
+   *  ...
+   * }
+   * const query?
+   *    = {}|null|undefined // defaults to empty object to find all
+   *    = {name: 'edward'} // uses this data in the query to find by
+   *    = {_id: req.params.id} // auto converts _id to a mongoose object id
+   * const limiter? = 100 // number of results to limit, defaults to 1
+   * const sortables? = {date: -1} // -1 & desc & descending = desc, 1 & asc, ascending = asc
+   * const result = MyOtherClass.find(query?, limiter?, sortables?)
+   * if (result) {
+   *  // do what you need
+   * }
+   * 
+   * @todo REMEMBER, this won't return all arrays
+   * 
+   * @param {object} query Key value pair of data to use in the query, e.g find a name by 'edward': query = {name: 'edward'}. Defaults to {} (find all) if not passed in
+   * @param {number} limiter Number to limit results by, defaults to 1 if not passed in
+   * @param {object} sortable Key value pair(s) to sort data e.g. const sorter = {date: -1}. Defaults to empty (don't sort) if not passed in 
+   * 
+   * @returns {[object]|boolean} False if an error, array if the db query returned more than 1 result, true if single object (and fills)
+   */
+  public async find (query: { [key: string]: any } = {}, limiter: number = 1, sortable: object = {}): Promise<boolean|Array<object>> {
+    // Convert the _id to an object id if passed in
+    if (query && query._id) {
+      query._id = this.generateObjectId(query._id)
+      if (!query._id) {
+        return false
+      }
+    }
+    const Document = this.getMongooseDocument()
+    // Find using the query is there is one, limit the results if present, and sort if present as well
+    const result = await Document.find(query).limit(limiter).sort(sortable)
+    // check for an empty response
+    if (Array.isArray(result) && !result.length || !result) {
+      // empty
+      return false
+    }
+    // If it's a single object then fill (check strongly as we are supposed to be returning a document)
+    if (result && !result.length && !Array.isArray(result) && typeof result === 'object') {
+      this.fill(result)
+      return true
+    }
+    // If it's an array of documents return them as we can't fill
+    if (result.length && Array.isArray(result)) {
+      return result
+    }
+    // should never reach here
+    logger.error('[BaseModel - find: Unreachable code is reachable. Data to check is:' + result)
+    return false
+  }
+
 }

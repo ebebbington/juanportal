@@ -68,6 +68,30 @@ describe('BaseModel', () => {
 
     describe('Methods', () => {
 
+        describe('find', () => {
+
+            it('Should return false if a query _id was passed in and failed parsing')
+
+            it('Should correctly query when limit isnt defined')
+
+            it('Should correctly query when limit is defined')
+
+            it('Should correctly query when query isnt defined')
+
+            it('Should correctly query when query is defined')
+
+            it('Should correctly query when sortables isnt defined')
+
+            it('Should correctly query when sortables is defined')
+
+            it('Should return false when no results were found')
+
+            it('Should return true and fill if a single result was found')
+
+            it('Should return an array of results when query resulted in more than 1 document')
+
+        })
+
         describe('getMongooseDocument', () => {
 
             it('Should exist')
