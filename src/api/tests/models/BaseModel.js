@@ -46,24 +46,21 @@ describe('BaseModel', () => {
 
     describe('Properties', () => {
 
+        describe('updated_at', () => {
+
+            it('Should be an abstract property')
+
+        })
+
+        describe('created_at', () => {
+
+            it('Should be an abstract property')
+
+        })
+
         describe('fieldsToExpose', () => {
 
-            // Check children can access it
-            class Test extends BaseModel {
-                constructor() {
-                    super()
-                }
-            }
-            const T = new Test
-
-            it('Should be protected', () => {
-                expect(T).to.haveOwnProperty('fieldsToExpose')
-            })
-
-            it('Should be an empty array', () => {
-                expect(T.fieldsToExpose.length).to.equal(0)
-                expect(Array.isArray(T.fieldsToExpose)).to.equal(true)
-            })
+            it('Should be an abstract property')
 
         })
 

@@ -43,7 +43,7 @@ export default abstract class BaseModel {
    * 
    * @var {string[]} fieldsToExpose
    */
-  protected fieldsToExpose: string[] = []
+  protected abstract fieldsToExpose: string[]
   _id: any
 
   /**
