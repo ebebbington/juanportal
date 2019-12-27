@@ -92,6 +92,24 @@ describe('BaseModel', () => {
 
         })
 
+        describe('delete', () => {
+
+            it('Should return false if an query _id is passed in but cannot be parsed')
+
+            it('Should return true if successful deleteOne')
+
+            it('Should return false on unsuccessful deleteOne')
+
+            it('Should return true on successful deleteMany')
+
+            it('Should return false on unsuccessful deleteMany')
+
+            it('Should return false is query is empty and allowWipe is false')
+
+            it('Should empty the models on a successful deletetion')
+            
+        })
+
         describe('getMongooseDocument', () => {
 
             it('Should exist')
