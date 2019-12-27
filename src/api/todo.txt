@@ -1,15 +1,1 @@
-
-- Models: just think, before adding new models, if there a way to standard CRUD operations? e.g implement an update functionality like TT, or where a single find method can be called using params for the field name and values e.g.
-    Document.delete({passedInFieldName: passedInVal})
-    - Is there existing complex mongoose functionaility to do something similar?
-    - Like, for the update, we could create a new object(?), loop through all private props, and assign the values to matching prop names, then send an update, or how to to update fields that have changed?
-
-- Migrate data from ibasemodel into basemodel as abstract props or methods. move create method into base model
-- remove this.empty form methods not in basemodel class
-- create dynamic query method for each CRUD, like so maybe?:
-    function FindQuery (query: {fieldname, fieldValue}) {
-        const res = await Document.find(query)
-    }
-    function UpdateQuery () {
-        etc
-    }
+- models: move all CRUD operations to basemodel e.g. in controllers, calls to 'findonebyname' must be refactored
