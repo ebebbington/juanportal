@@ -21,12 +21,21 @@ class MailHelper {
   /**
    * Send an email
    * 
-   * Gets the servers email data, along with the params to construct
+   * @method send
+   * 
+   * @example
+   * MailHelper.send(data).catch((err) => {
+   *   logger.error('Failed to send an email. Most likely because the password isnt set in the config')
+   * })
+   * 
+   * @description Gets the servers email data, along with the params to construct
    * and email and send it
    * 
    * @param {{to: string, subject: string, text: string, html?: string}} data Required data to send the email
+   * 
+   * @returns {void|object} Void, but if an error is thrown, its passed into the catch
    */
-  public static async send (data: {to: string, subject: string, text: string, html?: string}) { 
+  public static async send (data: {to: string, subject: string, text: string, html?: string}): Promise<void|object> { 
       // Create a transporter
       const transporterOptions = {
         host: "smtp.gmail.com",
