@@ -37,7 +37,7 @@ class ImageHelper {
     public saveToFS(filename: string, file: any): boolean {
         logger.info('[ImageHelper - saveToFS]')
         if (!filename) {
-            logger.debug('No filename was passed in to save to fs')
+            logger.error('No filename was passed in to save to fs')
             return false
         }
         if (file) {
@@ -47,13 +47,22 @@ class ImageHelper {
                 return this.existsOnFS(filename)
             } catch (e) {
                 logger.error(e)
-                return false
+                // this is for when we need to only specify file and not file.buffer
+                try {
+                    fs.createWriteStream(imagesDir + filename).write(file)
+                    return this.existsOnFS(filename)
+                } catch (e) {
+                    logger.error(e)
+                    return false
+                }
             }
         }
         // Else just copy the default image
         if (!file) {
             logger.info('No file was passed in')
-            fs.createReadStream(imagesDir + 'sample.jpg').pipe(fs.createWriteStream(imagesDir + filename))
+            const sampleImage: any = fs.readFileSync(imagesDir + 'sample.jpg')
+            fs.createWriteStream(imagesDir + filename).write(sampleImage)
+            //fs.createReadStream(imagesDir + 'sample.jpg').pipe(fs.createWriteStream(imagesDir + filename))
             return this.existsOnFS(filename)
         }
         return false
@@ -65,17 +74,15 @@ class ImageHelper {
      * @method existsOnFS
      * 
      * @example 
-     * const exists: boolean = this.existsOnFS() 
+     * const exists: boolean = this.existsOnFS('sample.jpg') 
      * 
      * @param {string} name The name of the file
      * 
      * @return {boolean} if it exists 
      */
     private existsOnFS(name: string): boolean {
-        logger.debug(['file name to check if exists',name])
+        logger.info('[ImageHelper - existsOnFS]')
         const fullPath: string = imagesDir + name
-        logger.debug(fullPath)
-        logger.debug(fs.existsSync(fullPath))
         return fs.existsSync(fullPath) ? true : false
     }
 
@@ -92,8 +99,8 @@ class ImageHelper {
      * @return {boolean} If it still exists
      */
     public deleteFromFS(imageName: string): boolean {
-        const pathToImage = rootDir + imageName // image path is: /public/images/...
-        logger.debug(pathToImage)
+        const pathToImage = imagesDir + imageName
+        logger.info(pathToImage)
         // delete image
         try {
             fs.unlinkSync(pathToImage)
@@ -101,7 +108,7 @@ class ImageHelper {
             // but disregard as there isnt anything to delete
             logger.error(err)
         }
-        logger.debug('going to check if ' + imageName + ' exists')
+        logger.info('going to check if ' + imageName + ' exists')
         return this.existsOnFS(imageName)
     }
 
