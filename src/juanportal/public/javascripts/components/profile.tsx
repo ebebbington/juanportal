@@ -222,7 +222,7 @@ class Profile extends React.Component {
                     {profiles.map((profile: any) => 
                         <div className="well profile" key={profile._id}>
                             <div className="col-xs-4">
-                                <img alt="Image of user" src={profile.image}></img>
+                                <img alt="Image of user" src={`/public/images/${profile.image}`}></img>
                             </div>
                             <div className="col-xs-8">
                                 <h3>{profile.name}</h3>
