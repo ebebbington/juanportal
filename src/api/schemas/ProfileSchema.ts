@@ -21,7 +21,6 @@ const ProfileSchema = new mongoose.Schema({
     'image': {
       type: String,
       required: true,
-      lowerCase: true,
       validate: {
         validator: function (v: string) {
           return /\.(jpg|jpeg|JPG|JPEG|png|PNG)$/.test(v)
