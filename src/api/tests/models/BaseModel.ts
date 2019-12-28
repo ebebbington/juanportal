@@ -299,9 +299,9 @@ describe('BaseModel', () => {
                 expect(result).to.equal(false)
             })
 
-            it('Should return false is query is empty and allowWipe is false', async () => {
+            it('Should return false is query is empty and deleteMany is true', async () => {
                 const Test = new TestModel
-                const result = await Test.delete({}, true, false)
+                const result = await Test.delete({}, true)
                 expect(result).to.equal(false)
             })
 

@@ -343,22 +343,20 @@ export default abstract class BaseModel {
    * class TestModel extends BaseModel {
    *  ...
    * }
-   * const query = {}|null|undefined|{name: ...}
+   * const query = {}|null|undefined|{name: ...} 
    * const deleteMany = true|false
-   * const allowWipe = true|false // true + empty query will wipe everything
    * const Test = new TestModel
-   * const success = await Test.delete(query, deleteMany, allowWipe)
+   * const success = await Test.delete(query, deleteMany) // returns false mis query is empty and deletemany is true to stop a purge
    * if (success) {
    *  // do what you need to do
    * }
    * 
    * @param {object} query Key value pair of data to use in the query, e.g delete on by name = 'edward': query = {name: 'edward'}. Defaults to {} if not passed in
    * @param {boolean} deleteMany Do you want to delete many? Defaults to false to deleteOne
-   * @param {boolean} allowWipe Define true if you wish to delete all. Used in conjunction with an empty query param
    * 
    * @returns {boolean} Success of the method call
    */
-  public async delete (query: { [key: string]: any } = {}, deleteMany: boolean = false, allowWipe = false): Promise<boolean> {
+  public async delete (query: { [key: string]: any } = {}, deleteMany: boolean = false): Promise<boolean> {
     // warn
     if (_.isEmpty(query)) logger.warn(`[BaseModel: delete - query param isnt defined. If deleteMany is defined (${deleteMany}) its going to delete all`)
     // convert _id if passed in
@@ -382,7 +380,7 @@ export default abstract class BaseModel {
     // delete many documents
     if (deleteMany) {
       // and if the query is empty and wipe isnt allowed, don't let them delete EVERYTHING
-      if (_.isEmpty(query) && allowWipe !== true) {
+      if (_.isEmpty(query)) {
         return false
       }
       const result = await MongooseModel.deleteMany(query)
