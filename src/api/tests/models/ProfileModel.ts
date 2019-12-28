@@ -27,21 +27,6 @@ describe('Profile Model', () => {
         expect(doesExtendBaseModel).to.equal(true)
     })
 
-    describe('Schema', () => {
-        
-        describe('name', () => {
-
-        })
-
-        describe('description', () => {
-
-        })
-
-        describe('image', () => {
-
-        })
-    })
-
     describe('Properties', () => {
 
         describe('_id', () => {
