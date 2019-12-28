@@ -88,6 +88,7 @@ class RegisterForm extends React.Component<IThePassedInProps> {
      */
     constructor(props: object) {
         super(props);
+        console.log('[constructor]')
         this.exampleProp1 = this.props.exampleProp1 || ''
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -101,6 +102,7 @@ class RegisterForm extends React.Component<IThePassedInProps> {
      * @return {void}
      */
     handleNameChange(event: any): void {
+        console.log('[handleNameChange]')
         // Check the name
         console.log('The name was changed. Setting it now')
         this.setState({name: event.target.value})
@@ -114,6 +116,7 @@ class RegisterForm extends React.Component<IThePassedInProps> {
      * @return {void}
      */
     handleSubmit(event: any): void {
+        console.log('[handleSubmit]')
         event.preventDefault()
         console.log('Clicked submit!')
         console.log('Sending you to the register function!')
@@ -130,27 +133,23 @@ class RegisterForm extends React.Component<IThePassedInProps> {
      * @return {void}
      */
     componentDidUpdate(prevProps: Readonly<IThePassedInProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        console.log('[componentDidUpdate]')
         console.log('Component updated!')
         console.log(this.state)
     }
 
     uploadImage (filename: string) {
         console.log('[uploadImage]')
-        $.ajax({
-            url: '/profile/image',
-            method: 'POST',
-            data: {
-                filename: filename
-            },
+        const input: any = document.getElementById('file-upload')
+        const file = input.files[0]
+        const form: any = $('form')[0]
+        return $.ajax({
+            url: '/profile/image?filename=' + filename,
+            method: 'post',
+            processData: false,
+            contentType: false,
             dataType: 'json',
-            success: function (res) {
-                console.log('In success of ajax call in upload image, heres the result:')
-                console.log(res)
-            },
-            error: function (err) {
-                console.log('error in uploadImage ajax call:')
-                console.log(err)
-            }
+            data: new FormData(form)
         })
     }
 
@@ -158,6 +157,7 @@ class RegisterForm extends React.Component<IThePassedInProps> {
      * Register a profile from the input
      */
     registerProfile () {
+        console.log('[registerProfile]')
         console.log('Going to register the profile')
         // Validate name
         if (this.state.name.length < 2) {
@@ -183,8 +183,11 @@ class RegisterForm extends React.Component<IThePassedInProps> {
             // now save the image to the main server
             const imageFilename = data.data
             this.notify(data.success, data.message)
-            this.uploadImage(imageFilename)
-            return true
+            this.uploadImage(imageFilename).done((response: any) => {
+                console.log('the response')
+                console.log(response)
+            })
+            //return true
         })
         // On failure
         .fail((err, res, msg) => {
@@ -217,6 +220,7 @@ class RegisterForm extends React.Component<IThePassedInProps> {
      * @return {void}
      */
     notify(success: boolean, message: string): void {
+        console.log('[notify]')
         const status = success ? 'success' : 'error'
         this.setState({notifyMessage: message, notifyWith: status})
     }
@@ -227,6 +231,7 @@ class RegisterForm extends React.Component<IThePassedInProps> {
      * @return {void}
      */
     componentDidMount(): void {
+        console.log('[componentDidMount]')
         console.log('I have been mounted!')
     }
 
@@ -236,6 +241,7 @@ class RegisterForm extends React.Component<IThePassedInProps> {
      * Re-renders when component state changes
      */
     render() {
+        console.log('[render]')
         return (
             <form>
                 <legend>Register a Profile</legend>
