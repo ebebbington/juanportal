@@ -29,6 +29,7 @@ mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
 
 import BaseModel from '../../models/BaseModel'
 import { DH_CHECK_P_NOT_PRIME } from 'constants'
+import { Model } from 'mongoose'
 const Schema = mongoose.Schema
 const schema = new Schema({
     forename: {
@@ -92,7 +93,7 @@ class TestModel extends BaseModel {
     // Abstract methods
     //
 
-    protected getMongooseModel (): Document {
+    protected getMongooseModel (): Model<any> {
         return MongooseModel
     }
 }

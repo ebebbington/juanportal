@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 var logger = require('../helpers/logger')
 const _ = require('lodash')
+import {Document, Schema, Model, model } from 'mongoose'
 
 /**
  * @class BaseModel
@@ -63,7 +64,7 @@ export default abstract class BaseModel {
    *
    * @return {Document} The mongoose model from the schema
    */
-  protected abstract getMongooseModel (): Document
+  protected abstract getMongooseModel (): Model<any>
 
   /**
    * Create a mongoose object id from the passed in value
@@ -384,7 +385,7 @@ export default abstract class BaseModel {
         return false
       }
       const result = await MongooseModel.deleteMany(query)
-      if (result.ok === 1 && result.deletedCount >= 1) {
+      if (result.ok === 1 && result.deletedCount && result.deletedCount >= 1) {
         this.empty()
         return true
       } else {

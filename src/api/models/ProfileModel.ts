@@ -8,6 +8,7 @@ import e = require("express");
 
 import BaseModel from './BaseModel'
 import { promises } from "dns";
+import { Model } from "mongoose";
 const MongooseModel = require('../schemas/ProfileSchema')
 
 /**
@@ -112,7 +113,7 @@ class ProfileModel extends BaseModel {
    *
    * @return {Document} The mongoose model from the schema
    */
-  protected getMongooseModel (): Document {
+  protected getMongooseModel (): Model<any> {
     return MongooseModel
   }
 
