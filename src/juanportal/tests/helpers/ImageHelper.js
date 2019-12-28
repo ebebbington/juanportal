@@ -2,14 +2,12 @@ const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
 
-const _ = require('lodash')
-const BaseModel = require('../../models/BaseModel')
 const rewire = require('rewire')
 const fs = require('fs')
 
-// const logger = require('../../helpers/logger')
-// logger.debug = function () {}
-// logger.info = function () {}
+const logger = require('../../helpers/logger')
+logger.debug = function () {}
+logger.info = function () {}
 
 chai.use(chaiAsPromised)
 chai.should()
