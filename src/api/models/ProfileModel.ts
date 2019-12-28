@@ -8,7 +8,7 @@ import e = require("express");
 
 const mongoose = require('mongoose')
 const logger = require('../helpers/logger')
-import BaseModel from './BaseModel'
+import {BaseModel} from './BaseModel'
 import IBaseModel from '../interfaces/models/BaseModelInterface'
 import { promises } from "dns";
 const Document = require('../schemas/ProfileSchema')
