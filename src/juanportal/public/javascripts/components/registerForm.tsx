@@ -134,6 +134,26 @@ class RegisterForm extends React.Component<IThePassedInProps> {
         console.log(this.state)
     }
 
+    uploadImage (filename: string) {
+        console.log('[uploadImage]')
+        $.ajax({
+            url: '/profile/image',
+            method: 'POST',
+            data: {
+                filename: filename
+            },
+            dataType: 'json',
+            success: function (res) {
+                console.log('In success of ajax call in upload image, heres the result:')
+                console.log(res)
+            },
+            error: function (err) {
+                console.log('error in uploadImage ajax call:')
+                console.log(err)
+            }
+        })
+    }
+
     /**
      * Register a profile from the input
      */
@@ -153,14 +173,17 @@ class RegisterForm extends React.Component<IThePassedInProps> {
             method: 'post',
             processData: false,
             contentType: false,
-            url: '/profile',
+            url: '/api/profile',
             data: new FormData(form),
             dataType: 'json'
         })
         // On success
         .done((data ) => {
             console.log('Registering a profiile resulted in a success!')
+            // now save the image to the main server
+            const imageFilename = data.data
             this.notify(data.success, data.message)
+            this.uploadImage(imageFilename)
             return true
         })
         // On failure
