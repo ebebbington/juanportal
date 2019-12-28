@@ -21,7 +21,20 @@ app.route('/add')
   .get((req, res) => { res.status(200).render('profile/add', {title: 'Add a profile'})})
 
 app.route('/image')
+  /**
+   * @example
+   * const form = $('form')[0]
+   * $.ajax({
+      url: '/profile/image?filename=' + filename,
+      method: 'post',
+      processData: false,
+      contentType: false,
+      dataType: 'json',
+      data: new FormData(form)
+    })
+   */
   .post(upload.single('image'), (req, res) => {
+    // todo add checks so people just cant willy nilly send requests e.g. JWT 
     logger.info('[POST /profile/image]')
     const filename = req.query.filename
     const Image = new ImageHelper
@@ -32,13 +45,10 @@ app.route('/image')
     if (saved) {
       return res.status(200).json({success: true, message: 'Saved the file'})
     }
-    console.log(req.body)
-    console.log(req.file)
-    res.status(200).json({success: true}).end()
   })
 
   .delete(upload.single('image'), (req, res) => {
-    // todo add checks so people just cant willy nilly send requests
+    // todo add checks so people just cant willy nilly send requests e.g. JWT
     const filename = req.query.filename
     const Image = new ImageHelper
     const success = Image.deleteFromFS(filename)
