@@ -4,6 +4,7 @@ const expect = chai.expect
 
 const rewire = require('rewire')
 const ProfileModel = rewire('../../models/ProfileModel')
+const MongooseModel = require('../../schemas/ProfileSchema')
 const ProfileController = require('../../controllers/ProfileController')
 
 const mongoose = require('mongoose')
@@ -58,6 +59,18 @@ describe('ProfileController', () => {
             image: 'TESTPROFILEIMAGE.jpg'
         }
 
+        async function saveProfileAndFindAndReturnModel () {
+            const Profile = new ProfileModel
+            const document = new MongooseModel(profileData)
+            await document.save()
+            await Profile.find({name: profileData.name})
+            return Profile
+        }
+
+        async function deleteProfile () {
+            await MongooseModel.deleteMany({name: profileData.name})
+        }
+
         describe('GetProfileById', () => {
 
             it('Should fail when it cannot parse the id to a number', async () => {
@@ -69,8 +82,7 @@ describe('ProfileController', () => {
             })
 
             it('Should succeed on a valid id', async () => {
-                const Profile = new ProfileModel
-                await Profile.create(profileData)
+                const Profile = await saveProfileAndFindAndReturnModel()
                 req.params.id = Profile._id
                 const response = await ProfileController.GetProfileById(req, res, next)
                 expect(response.statusCode).to.equal(200)
@@ -79,7 +91,7 @@ describe('ProfileController', () => {
                 expect(response.jsonMessage.data.name).to.equal(Profile.name)
                 expect(response.jsonMessage.data.description).to.equal(Profile.description)
                 expect(response.jsonMessage.data.image).to.equal(Profile.image)
-                await Profile.deleteOneById(Profile._id)
+                await deleteProfile()
             })
 
             it('Should fail when no profile was found', async () => {
@@ -112,14 +124,13 @@ describe('ProfileController', () => {
             })
 
             it('Should delete a profile on valid id', async () => {
-                const Profile = new ProfileModel
-                await Profile.create(profileData)
+                const Profile = await saveProfileAndFindAndReturnModel()
                 req.params.id = Profile._id
                 const response = await ProfileController.DeleteProfileById(req, res, next)
                 expect(response.statusCode).to.equal(200)
                 expect(response.jsonMessage.success).to.equal(true)
                 expect(response.jsonMessage.message).to.equal('Successfully deleted')
-                await Profile.deleteOneById(Profile._id)
+                await deleteProfile()
             })
 
         })
@@ -150,10 +161,10 @@ describe('ProfileController', () => {
                 expect(response.jsonMessage.message).to.equal('Number of requested profiles did not meet the minimum of 1')
             })
 
-            it('Should fail when no profiles were found',  async () => {
+            // skipped because i need to find a tes to test an already populated database if its empty
+            it.skip('Should fail when no profiles were found',  async () => {
                 req.params.count = 5
                 // fixme :: How can I test an already populated database if its empty?
-                await ProfileModel.deleteAll('Somesuperlongparameterbecauseyouneedtopassoneintothefunctionforittoworkandifyoudontitfailswhichsecuresthefunctionsoifsomeonedidwanttocallthisfunctionthentheyaregoingtohavetocopythisparametertomakeitliterallyimpossibletowriteintoanactuallyapplication')
                 const response = await ProfileController.GetProfilesByAmount(req, res, next)
                 expect(response.statusCode).to.equal(404)
                 expect(response.jsonMessage.success).to.equal(false)
@@ -162,17 +173,16 @@ describe('ProfileController', () => {
 
             it('Should succeed when profiles are found', async () => {
                 req.params.count = 5
-                const Profile = new ProfileModel
-                await Profile.create(profileData)
-                await Profile.create(profileData)
-                await Profile.create(profileData)
-                await Profile.create(profileData)
-                await Profile.create(profileData)
+                await saveProfileAndFindAndReturnModel()
+                await saveProfileAndFindAndReturnModel()
+                await saveProfileAndFindAndReturnModel()
+                await saveProfileAndFindAndReturnModel()
+                await saveProfileAndFindAndReturnModel()
                 const response = await ProfileController.GetProfilesByAmount(req, res, next)
                 expect(response.statusCode).to.equal(200)
                 expect(response.jsonMessage.success).to.equal(true)
                 expect(response.jsonMessage.message).to.equal('Grabbed profiles')
-                await ProfileModel.deleteAllByName(profileData.name) 
+                await deleteProfile()
             })
 
         })
@@ -180,8 +190,7 @@ describe('ProfileController', () => {
         describe('PostProfile', () => {
 
             it('Should fail when the profile already exists', async () => {
-                const Profile = new ProfileModel
-                await Profile.create(profileData)
+                await saveProfileAndFindAndReturnModel()
                 req.body.name = profileData.name
                 req.body.description = null
                 req.file = null
@@ -189,7 +198,7 @@ describe('ProfileController', () => {
                 expect(response.statusCode).to.equal(400)
                 expect(response.jsonMessage.success).to.equal(false)
                 expect(response.jsonMessage.message).to.equal('Profile already exists')
-                await Profile.deleteOneById(Profile._id)
+                await deleteProfile()
             })
 
             it('Should fail when passed in file name has an invalid extension', async () => {
@@ -224,9 +233,6 @@ describe('ProfileController', () => {
                 const fileName = data.split('.')[0]
                 expect(fileName.length).to.equal(36)
             })
-
-            // Skipped because i dont know how to replicate this, or if it could even ever be triggered
-            it('Should fail when the database couldnt be updated')
 
         })
 
