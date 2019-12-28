@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "pm2 restart all && node_modules/.bin/mocha tests/*",
-    "initl": "node_modules/.bin/tsc && pm2 restart all"
+    "test": "node_modules/.bin/tsc; pm2 restart all; node_modules/.bin/mocha",
+    "build": "node_modules/.bin/tsc; pm2 restart all"
   },
   "author": "",
   "license": "ISC",
@@ -35,6 +35,7 @@
     "pug": "^2.0.4",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "rewire": "^4.0.1",
     "types": "^0.1.1",
     "typescript": "^3.7.2",
     "winston": "^3.2.1"
