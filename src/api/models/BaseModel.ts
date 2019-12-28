@@ -14,6 +14,7 @@ const _ = require('lodash')
  * @property {string|null} created_at     Database field
  * @property {string|null} updated_at     Database field
  * @property {string[]} fieldsToExpose    To fill children fields
+ * @property {string}     tablename       Name of the mongoose table for the model
  * 
  * @method generateObjectId               Generates a mongoose object id from the given param
  * @method stripNonExposableProperties    Strips properties not in the childs fieldsToExpose property
@@ -55,8 +56,6 @@ export default abstract class BaseModel {
    */
   protected abstract tablename: string
 
-  _id: any
-
   /**
    * Get the mongoose model of this model
    * 
@@ -96,16 +95,17 @@ export default abstract class BaseModel {
    * 
    * @method stripNonExposableProperties
    * 
-   * Before returning a model extracted from the database,
-   * strip out any properties that arent defined in the fieldsToExpose
-   * array, as suggested. It looks through the object properties and then
-   * checks every field to expose against that. Rinse and repeat
+   * @description Before returning a model extracted from the database,
+   *              strip out any properties that arent defined in the fieldsToExpose
+   *              array, as suggested. It looks through the object properties and then
+   *              checks every field to expose against that. Rinse and repeat
    * 
    * @example
-   * const document = this.stripNonExposableFields(document, this.fieldsToExpose)
+   * // this.fieldsToExpose = ['_id', 'name']
+   * // document = {_id: ..., name: ..., title: ...}
+   * const document = this.stripNonExposableFields(document) // {_id: ..., name: ...}
    * 
-   * @param {any}       document        The object holding the db data
-   * @param {string[]}  fieldsToExpose  this.fieldsToExpose, the childs property
+   * @param {any} document The object holding the db data
    * 
    * @return {object} The same passed in document but stripping the non-exposable fields
    */
@@ -126,7 +126,6 @@ export default abstract class BaseModel {
   * @method fill 
   * 
   * @example
-  * // From a child class
   * const Document = Model.find({}).limit(1)
   * this.fill(Document)
   * 
