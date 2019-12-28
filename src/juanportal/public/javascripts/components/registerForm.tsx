@@ -140,8 +140,6 @@ class RegisterForm extends React.Component<IThePassedInProps> {
 
     uploadImage (filename: string) {
         console.log('[uploadImage]')
-        const input: any = document.getElementById('file-upload')
-        const file = input.files[0]
         const form: any = $('form')[0]
         return $.ajax({
             url: '/profile/image?filename=' + filename,
@@ -183,10 +181,13 @@ class RegisterForm extends React.Component<IThePassedInProps> {
             // now save the image to the main server
             const imageFilename = data.data
             this.notify(data.success, data.message)
-            this.uploadImage(imageFilename).done((response: any) => {
-                console.log('the response')
-                console.log(response)
-            })
+            this.uploadImage(imageFilename)
+                .done((response: any) => {
+                    this.notify(response.success, response.message)
+                })
+                .fail((err) => {
+                    this.notify(false, 'Failed to save the image to the filesystem')
+                })
             //return true
         })
         // On failure
