@@ -35,15 +35,19 @@
     overflow: hidden;
 }
 
-#profile-container .profile > .actions {
+#profile-container .profile .actions {
     text-align: center;
     margin-top: 0.5em;
     display: block;
 }
 
-#profile-container > .profile > h3 {
+#profile-container .profile h3 {
     word-wrap: break-word;
     text-align: center;
+}
+#profile-container .profile img {
+    width: 100%;
+    height: 100px;
 }
 
 #form-container > form {
