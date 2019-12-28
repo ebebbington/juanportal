@@ -118,11 +118,11 @@ class Server {
    * @return {void}
    */
   private initiateLogging (): void {
-    if (process.env.NODE_ENV === 'production') {
+    if (this.env === 'production') {
       this.app.use(morgan('combined'))
     }
     // Everything else use development logging
-    if (process.env.NODE_ENV !== 'production') {
+    if (this.env !== 'production') {
       this.app.use(morgan('dev', {
         skip: function (req: any, res: any) {
             return res.statusCode < 400
