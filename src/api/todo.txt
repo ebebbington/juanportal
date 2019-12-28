@@ -1,1 +1,0 @@
-- models: move all CRUD operations to basemodel e.g. in controllers, calls to 'findonebyname' must be refactored
