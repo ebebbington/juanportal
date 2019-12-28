@@ -80,7 +80,7 @@ export default abstract class BaseModel {
    * 
    * @return {mongoose.Types.ObjectId|boolean} The id, or false if cannot convert
    */
-  protected generateObjectId (id: string): mongoose.Types.ObjectId|boolean {
+  private generateObjectId (id: string): mongoose.Types.ObjectId|boolean {
     try {
       // if the id isnt already an object id, convert it
       const objectId = new mongoose.Types.ObjectId(id)
@@ -109,10 +109,10 @@ export default abstract class BaseModel {
    * 
    * @return {object} The same passed in document but stripping the non-exposable fields
    */
-  private stripNonExposableProperties (document: any = {}, fieldsToExpose: string[] = []): object {
+  private stripNonExposableProperties (document: any = {}): object {
     // Loop through the fields to expose
     Object.keys(document).forEach((property: string, value: any) => {
-      const allowedToExpose: boolean = fieldsToExpose.includes(property)
+      const allowedToExpose: boolean = this.fieldsToExpose.includes(property)
       if (!allowedToExpose) {
         delete document[property]
       }
@@ -136,10 +136,10 @@ export default abstract class BaseModel {
   * 
   * @return {void}
   */
-  protected fill (dbDocument: {$__: any, isNew: any, errors: any, _doc: object, $locals: any}): void {
+  private fill (dbDocument: {$__: any, isNew: any, errors: any, _doc: object, $locals: any}): void {
     this.empty()
     const documentData: object = dbDocument._doc
-    const strippedDocument: object = this.stripNonExposableProperties(documentData, this.fieldsToExpose)
+    const strippedDocument: object = this.stripNonExposableProperties(documentData)
     // Loops through the document properties
     Object.keys(strippedDocument).forEach((propName: string, propValue: any) => {
       // If the child class has the property
@@ -177,25 +177,29 @@ export default abstract class BaseModel {
    * 
    * @method update
    * 
+   * @requires _id A populated model with _id defined
+   * 
    * @example
    * const Profile = new ProfileModel(id)
+   * const query = {name: 'current name'}
    * const dataToUpdate = {
    *  name: 'new name'
    *  ...
    * }
-   * const oldProfile = await Profile.update(data) // fills the model on an update
+   * const oldDocument = await Profile.update(data) // fills the model on an update
    * if (oldDocument) {
    *  expect(oldDocument.name).to.not.equal(Profile.name)
    * } else {
    *  logger.error('No document was found with the current id')
    * }
    * 
+   * @param {object} query The query to find the document to update e.g. where name = edward: {name: 'edward'}
    * @param {object} data Key value pairs of the property name and new value 
    * @param {Document} Document mongoose document for the calling class
    * 
    * @return {Promise<Document|boolean>} The old document (before updating) or false based on the success
    */
-  public async update (data: { [key: string]: any[] }): Promise<Document|boolean> {
+  public async update (query: { [key: string]: any } = {}, data: { [key: string]: any }): Promise<Document|boolean> {
     let dataToUpdate: { [key: string]: any } = {} // to store fields to update
     // Loop through the key values pairs provided
     Object.keys(data).forEach((propName: string, propVal: any) => {
@@ -211,15 +215,21 @@ export default abstract class BaseModel {
         }
       }
     })
+    // Convert the _id to an object id if passed in
+    if (query && query._id) {
+      query._id = this.generateObjectId(query._id)
+      if (!query._id) {
+        return false
+      }
+    }
     try {
-      const query = { _id: this._id }
       const options = { upsert: true }
-      const Model = this.getMongooseDocument()
-      const oldDocument = await Model.findOneAndUpdate(query, dataToUpdate, options)
+      const Document = this.getMongooseDocument()
+      const oldDocument = await Document.findOneAndUpdate(query, dataToUpdate, options)
       if (Array.isArray(oldDocument) && !oldDocument.length || !oldDocument) {
         return false
       }
-      const updatedDocument = await Model.findById(this._id)
+      const updatedDocument = await Document.findOne(data)
       this.fill(updatedDocument)
       return oldDocument
     } catch (err) {
@@ -240,13 +250,13 @@ export default abstract class BaseModel {
    * @example
    * const Profile = new ProfileModel;
    * const data = {name: 'hello', ....}
-   * const newProfile = await Profile.create(data)
+   * const errs = await Profile.create(data) // fills the model
    * 
    * @param {{ [key: string]: any[] }} data Key value pairs e.g. {name: '', image: ''}
    * 
    * @return {void|object} Return value is set if validation errors are returned
    */
-  public async create (data: { [key: string]: any[] }): Promise<any> {
+  public async create (data: { [key: string]: any }): Promise<any> {
     const Document = this.getMongooseDocument()
     //@ts-ignore
     const document = new Document(data)
@@ -265,7 +275,8 @@ export default abstract class BaseModel {
   /**
    * @method find
    * 
-   * @description The entry point method for finding db results
+   * @description The entry point method for finding db results.
+   *              Fills the calling model when finding or found a single document
    * 
    * @example
    * class MyOtherClass extends BaseModel {
@@ -282,21 +293,23 @@ export default abstract class BaseModel {
    *  // do what you need
    * }
    * 
-   * @todo REMEMBER, this won't return all arrays
-   * 
    * @param {object} query Key value pair of data to use in the query, e.g find a name by 'edward': query = {name: 'edward'}. Defaults to {} (find all) if not passed in
    * @param {number} limiter Number to limit results by, defaults to 1 if not passed in
    * @param {object} sortable Key value pair(s) to sort data e.g. const sorter = {date: -1}. Defaults to empty (don't sort) if not passed in 
    * 
-   * @returns {[object]|boolean} False if an error, array if the db query returned more than 1 result, true if single object (and fills)
+   * @returns {[object]|boolean} False if an error, array if the db query returned data
    */
-  public async find (query: { [key: string]: any } = {}, limiter: number = 1, sortable: object = {}): Promise<boolean|Array<object>> {
+  public async find (query?: { [key: string]: any }, limiter: number = 1, sortable: object = {}): Promise<boolean|Array<object>> {
     // Convert the _id to an object id if passed in
     if (query && query._id) {
       query._id = this.generateObjectId(query._id)
       if (!query._id) {
         return false
       }
+    }
+    // If query is empty, set it to an empty object
+    if (!query) {
+      query = {}
     }
     const Document = this.getMongooseDocument()
     // Find using the query is there is one, limit the results if present, and sort if present as well
@@ -307,12 +320,14 @@ export default abstract class BaseModel {
       return false
     }
     // If it's a single object then fill (check strongly as we are supposed to be returning a document)
-    if (result && !result.length && !Array.isArray(result) && typeof result === 'object') {
-      this.fill(result)
-      return true
+    // and if limit isnt defined or equals 1
+    //if (result && !result.length && !Array.isArray(result) && typeof result === 'object') {
+    if (result && result.length === 1) {  
+      this.fill(result[0])
+      return result
     }
     // If it's an array of documents return them as we can't fill
-    if (result.length && Array.isArray(result)) {
+    if (result.length > 1 && Array.isArray(result)) {
       return result
     }
     // should never reach here
@@ -358,7 +373,6 @@ export default abstract class BaseModel {
     // delete a single doucment
     if (!deleteMany) {
       const result = await Document.deleteOne(query)
-      console.log(result)
       if (result.ok === 1 && result.deletedCount === 1) {
         this.empty()
         return true
@@ -373,7 +387,6 @@ export default abstract class BaseModel {
         return false
       }
       const result = await Document.deleteMany(query)
-      console.log(result)
       if (result.ok === 1 && result.deletedCount >= 1) {
         this.empty()
         return true
