@@ -75,7 +75,8 @@ class ProfileController {
       // Get profiles by count
       // 
 
-      const profiles: Promise<object|Array<object>> = await ProfileModel.findManyByCount(count)
+      const Profile = new ProfileModel
+      const profiles = await Profile.find({}, count)
 
       if (!profiles || !profiles.length) {
         logger.error('No profiles were found')
@@ -133,8 +134,8 @@ class ProfileController {
 
       const id: string = req.params.id
       const Profile = new ProfileModel
-      const found: boolean = await Profile.findOneById(id)
-      if (found) {
+      const profile = await Profile.find({_id: id})
+      if (profile) {
         logger.info('A profile was found')
         const data: IData = {
           success: true,
@@ -148,7 +149,7 @@ class ProfileController {
         }
         return res.status(200).json(data).end()
       }
-      if (!found) {
+      if (!profile) {
         logger.error('No profile was found')
         const data: IData = {
           success: false,
@@ -193,9 +194,8 @@ class ProfileController {
       //
 
       const Profile = new ProfileModel
-      await Profile.findOneById(req.params.id)
-      const exists: boolean = await ProfileModel.existsByName(Profile.name)
-      if (!exists) {
+      const profile = await Profile.find({_id: req.params.id})
+      if (!profile) {
         logger.error(`The profile you are trying to delete doesnt exist, with the id of ${req.params.id}`)
         const data: IData = {
           success: false,
@@ -210,7 +210,7 @@ class ProfileController {
       //
 
       const id: string = req.params.id
-      const success: boolean = await Profile.deleteOneById(id)
+      const success: boolean = await Profile.delete({_id: id})
       if (success) {
         logger.info(`Deleted the profile with id ${id}`)
         const data: IData = {
@@ -270,8 +270,9 @@ class ProfileController {
       // Check profile doesnt already exist
       //
 
-      const exists: boolean = await ProfileModel.existsByName(req.body.name)
-      if (exists) {
+      const Profile = new ProfileModel
+      const existingProfile = await Profile.find({name: req.body.name})
+      if (existingProfile) {
         logger.error(`Profile with the name ${req.body.name} already exists`)
         const data: IData = {
           success: false,
@@ -286,7 +287,6 @@ class ProfileController {
       // Create and Validate the Profile
       //
 
-      const Profile = new ProfileModel
       const validationError: any = await Profile.create({
           name: req.body.name,
           description: req.body.description,
@@ -309,8 +309,8 @@ class ProfileController {
       // Check the database was updated
       //
 
-      const found = await Profile.findOneByName(req.body.name)
-      if (found) {
+      const profile = await Profile.find({name: req.body.name})
+      if (profile) {
         logger.info('The profile did save to the database')
         const data: IData = {
           success: true,
