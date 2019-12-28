@@ -11,6 +11,8 @@ const multer = require('multer')
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
+const MongooseModel = require('../../schemas/ProfileSchema')
+
 const logger = require('../../helpers/logger')
 //logger.debug = function (){}
 //logger.info = function (){}
@@ -40,12 +42,15 @@ describe('Profile Route', () => {
           name: 'TESTPROFILENAME',
           image: 'TESTPROFILEIMAGE.jpg'
         }
-        const Profile = new ProfileModel
-        await Profile.create(newProfile)
+        const document = new MongooseModel(newProfile)
+        await document.save()
         chai.request(app)
           .get('/api/profile/count/5')
-          .end((err, res) => {
+          .end( async (err, res) => {
             expect(res.status).to.equal(200)
+            const json = JSON.parse(res.text)
+            expect(json.success).to.equal(true)
+            await MongooseModel.deleteOne({name: newProfile.name})
           })
       })
 
@@ -61,13 +66,19 @@ describe('Profile Route', () => {
       })
 
       it('Should respond with the specified number of profiles if they exist', async () => {
-        console.warn('This test assumes there is only 1 profile')
-        const Profile = new ProfileModel
-        await Profile.create({name: 'TESTPROFILENAME', image: 'TESTPROFILEIMAGE.jpg'})
+        logger.warn('This test assumes there is only 1 profile')
+        // add a profile
+        const newProfile = {
+          name: 'TESTPROFILENAME',
+          image: 'TESTPROFILEIMAGE.jpg'
+        }
+        const document = new MongooseModel(newProfile)
+        await document.save()
         const numberOfProfilesToFind = 400
-        const profiles = await ProfileModel.findManyByCount(numberOfProfilesToFind)
+        const Profile = new ProfileModel
+        const profiles = await Profile.find({}, numberOfProfilesToFind)
         // Check if we got many profiles, else a single profile will be retirved, and as we cant check a length on that, we check the props to determine if even a single result came back
-        const actualNumberOfProfiles = profiles.length || profiles._id ? 1 : 0 || 0
+        const actualNumberOfProfiles = profiles ? profiles.length : 0
         const hasProfiles = actualNumberOfProfiles ? true : false
         expect(hasProfiles).to.equal(true) // some profiles should already exist when running this
         // then we are going to compare that number with the real result
@@ -76,14 +87,13 @@ describe('Profile Route', () => {
           .end((err, res) => {
             const json = JSON.parse(res.text)
             // So here it's a fix to get the amount of profiles whether an array or single object (one profile) was given back
-            expect(json.data.length || json.data._id ? 1 : 0).to.equal(actualNumberOfProfiles)
+            expect(json.data.length).to.equal(actualNumberOfProfiles)
           })
       })
 
-      it('Should respond with a 404 status on no profiles found', async () => {
-        // Super long param to stop dodgey use of it
+      // skipped because i dont have a way to test an already populated db if its empty
+      it.skip('Should respond with a 404 status on no profiles found', async () => {
         // fixme :: How can I test an already populated database if its empty?
-        await ProfileModel.deleteAll('Somesuperlongparameterbecauseyouneedtopassoneintothefunctionforittoworkandifyoudontitfailswhichsecuresthefunctionsoifsomeonedidwanttocallthisfunctionthentheyaregoingtohavetocopythisparametertomakeitliterallyimpossibletowriteintoanactuallyapplication')
         chai.request(app)
           .get('/api/profile/count/6')
           .end((err, res) => {
@@ -104,8 +114,8 @@ describe('Profile Route', () => {
       }
 
       before('Create test profile', async () => {
-        const Profile = new ProfileModel
-        await Profile.create(newProfile)
+        const document = new MongooseModel(newProfile)
+        await document.save()
       })
 
       it('Should fail when the id cannot be parsed', (done) => {
@@ -121,8 +131,7 @@ describe('Profile Route', () => {
 
       it('Should have valid values for the profile', async () => {
         const Profile = new ProfileModel
-        await Profile.create(newProfile)
-        await Profile.findOneByName(newProfile.name)
+        await Profile.find({name: newProfile.name})
         chai.request(app)
         .get('/api/profile/id/' + Profile._id)
         .end(async (err, res) => {
@@ -134,7 +143,7 @@ describe('Profile Route', () => {
 
       it('Should respond with 200 on a valid profile', async () => {
         const Profile = new ProfileModel
-        await Profile.findOneByName(newProfile.name)
+        await Profile.find({name: newProfile.name})
         chai.request(app)
         .get('/api/profile/id/' + Profile._id)
         .end((err, res) => {
@@ -154,8 +163,7 @@ describe('Profile Route', () => {
 
       after('Remove test profile', async function () {
         this.timeout(5000)
-        const Profile = new ProfileModel
-        await Profile.deleteOneByName(newProfile.name)
+        await MongooseModel.deleteMany({name: newProfile.name})
       })
 
     })
@@ -182,8 +190,9 @@ describe('Profile Route', () => {
           description: 'TESTPROFILEDESCRIPTION',
           image: 'TESTPROFILEIMAGE.jpg'
         }
-        await Profile.create(newProfile)
-        await Profile.findOneByName(newProfile.name)
+        const document = new MongooseModel(newProfile)
+        await document.save()
+        await Profile.find({name: newProfile.name})
         chai.request(app)
         .delete('/api/profile/id/' + Profile._id)
         .end((err, res) => {
@@ -216,7 +225,6 @@ describe('Profile Route', () => {
       }
 
       it('Should succeed with valid data, and update the database', async () => {
-        await ProfileModel.deleteAllByName(newProfile.name)
         chai.request(app)
           .post('/api/profile', upload.single('image'))
           .field('name', newProfile.name)
@@ -229,14 +237,13 @@ describe('Profile Route', () => {
             expect(json.data).to.exist
             expect(typeof json.data).to.equal('string')
             const Profile = new ProfileModel
-            await Profile.findOneByName(newProfile.name)
+            await Profile.find({name: newProfile.name})
             expect(Profile.name).to.equal(newProfile.name)
-            await ProfileModel.deleteAllByName(newProfile.name)
+            await MongooseModel.deleteMany({name: newProfile.name})
           });
       })
 
       it('Should fail if the name fails validation', async () => {
-        await ProfileModel.deleteAllByName(newProfile.name)
         chai.request(app)
           .post('/api/profile', upload.single('image'))
           .field('name', '')
@@ -251,7 +258,6 @@ describe('Profile Route', () => {
       })
 
       it('Should pass if no description is given', async () => {
-        await ProfileModel.deleteAllByName(newProfile.name)
         chai.request(app)
           .post('/api/profile', upload.single('image'))
           .field('name', newProfile.name)
@@ -264,16 +270,13 @@ describe('Profile Route', () => {
             expect(json.data).to.exist
             expect(typeof json.data).to.equal('string')
             const Profile = new ProfileModel
-            await Profile.findOneByName(newProfile.name)
+            await Profile.find({name: newProfile.name})
             expect(Profile.name).to.equal(newProfile.name)
-            const success = await Profile.deleteOneByName(newProfile.name)
-            expect(success).to.equal(true)
-            await ProfileModel.deleteAllByName(newProfile.name)
+            await MongooseModel.deleteMany({name: newProfile.name})
           });
       })
 
       it('Should fail if image fails validation', async () => {
-        await ProfileModel.deleteAllByName(newProfile.name)
         chai.request(app)
           .post('/api/profile', upload.single('image'))
           .field('name', newProfile.name)
@@ -300,26 +303,25 @@ describe('Profile Route', () => {
             expect(json.data).to.exist
             expect(typeof json.data).to.equal('string')
             const Profile = new ProfileModel
-            await Profile.findOneByName(newProfile.name)
+            await Profile.find({name: newProfile.name})
             expect(Profile.name).to.equal(newProfile.name)
-            const success = await Profile.deleteOneByName(newProfile.name)
-            expect(success).to.equal(true)
-            await ProfileModel.deleteAllByName(newProfile.name)
+            await MongooseModel.deleteMany({name: newProfile.name})
           });
       })
 
       it('Should fail if the user already exists', async () => {
-        const Profile = new ProfileModel
-        await Profile.create(newProfile)
+        const document = new MongooseModel(newProfile)
+        await document.save()
         chai.request(app)
           .post('/api/profile', upload.single('image'))
           .field('name', newProfile.name)
           .field('description', newProfile.description)
           .attach('image', fs.readFileSync(sampleImagePath), newProfile.image)
-          .end((err, res) => {
+          .end( async (err, res) => {
             expect(res.status).to.equal(400)
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(false)
+            await MongooseModel.deleteMany({name: newProfile.name})
           })
       })
 
