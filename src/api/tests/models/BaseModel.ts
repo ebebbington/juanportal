@@ -29,9 +29,8 @@ mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
 
 import BaseModel from '../../models/BaseModel'
 import { DH_CHECK_P_NOT_PRIME } from 'constants'
-const rewire = require('rewire')
-var Schema = mongoose.Schema
-var schema = new Schema({
+const Schema = mongoose.Schema
+const schema = new Schema({
     forename: {
         required: true,
         type: String
@@ -40,7 +39,7 @@ var schema = new Schema({
     postcode: String,
     age: Number
 });
-var Document = mongoose.model('Test', schema);
+const MongooseModel = mongoose.model('Test', schema);
 
 class TestModel extends BaseModel {
 
@@ -93,8 +92,8 @@ class TestModel extends BaseModel {
     // Abstract methods
     //
 
-    protected getMongooseDocument (): Document {
-        return Document
+    protected getMongooseModel (): Document {
+        return MongooseModel
     }
 }
 
@@ -156,60 +155,60 @@ describe('BaseModel', () => {
 
             it('Should correctly query when limit isnt defined', async () => {
                 // insert one
-                const document = new Document({
+                const document = new MongooseModel({
                     forename: 'Hello'
                 })
                 await document.save()
                 const Test = new TestModel
                 const result: any = await Test.find()
                 expect(result[0].forename).to.equal('Hello')
-                await Document.deleteMany({})
+                await MongooseModel.deleteMany({})
             })
 
             it('Should correctly query when limit is defined', async () => {
                 // insert 4
-                let document = new Document({forename: 'Hello'})
+                let document = new MongooseModel({forename: 'Hello'})
                 await document.save()
-                document = new Document({forename: 'Hello2'})
+                document = new MongooseModel({forename: 'Hello2'})
                 await document.save()
-                document = new Document({forename: 'Hello3'})
+                document = new MongooseModel({forename: 'Hello3'})
                 await document.save()
-                document = new Document({forename: 'Hello4'})
+                document = new MongooseModel({forename: 'Hello4'})
                 await document.save()
                 const Test = new TestModel
                 const result: any = await Test.find(undefined, 4)
                 expect(result.length).to.equal(4)
-                await Document.deleteMany({})
+                await MongooseModel.deleteMany({})
             })
 
             it('Should correctly query when query isnt defined', async () => {
-                const document = new Document({
+                const document = new MongooseModel({
                     forename: 'Hello'
                 })
                 await document.save()
                 const Test = new TestModel
                 const result: any = await Test.find(undefined)
                 expect(result[0].forename).to.equal('Hello')
-                await Document.deleteMany({})
+                await MongooseModel.deleteMany({})
             })
 
             it('Should correctly query when query is defined', async () => {
-                const document = new Document({
+                const document = new MongooseModel({
                     forename: 'Edwuardo'
                 })
                 await document.save()
                 const Test = new TestModel
                 const result: any = await Test.find({forename: 'Edwuardo'})
                 expect(result[0].forename).to.equal('Edwuardo')
-                await Document.deleteMany({})
+                await MongooseModel.deleteMany({})
             })
 
             it('Should correctly query when sortables is defined', async () => {
-                let document = new Document({forename: 'Edwuardo'})
+                let document = new MongooseModel({forename: 'Edwuardo'})
                 await document.save()
-                document = new Document({forename: 'Kenny'})
+                document = new MongooseModel({forename: 'Kenny'})
                 await document.save()
-                document = new Document({forename: 'Zelda'})
+                document = new MongooseModel({forename: 'Zelda'})
                 await document.save()
                 const Test = new TestModel
                 const sortables = {forename: 'desc'}
@@ -217,7 +216,7 @@ describe('BaseModel', () => {
                 expect(result[0].forename).to.equal('Zelda')
                 expect(result[1].forename).to.equal('Kenny')
                 expect(result[2].forename).to.equal('Edwuardo')
-                await Document.deleteMany({})
+                await MongooseModel.deleteMany({})
             })
 
             it('Should return false when no results were found', async () => {
@@ -227,7 +226,7 @@ describe('BaseModel', () => {
             })
 
             it('Should return a document and fill if a single result was found', async () => {
-                const document = new Document({
+                const document = new MongooseModel({
                     forename: 'Edwuardo',
                     surname: 'Bebbingtano',
                     postcode: 'NG31 88Y',
@@ -245,15 +244,15 @@ describe('BaseModel', () => {
                 expect(Test.surname).to.equal('Bebbingtano')
                 expect(Test.postcode).to.equal(null)
                 expect(Test.age).to.equal(21)
-                await Document.deleteMany({})
+                await MongooseModel.deleteMany({})
             })
 
             it('Should return an array of results when query resulted in more than 1 document', async () => {
-                let document = new Document({forename: 'Edwuardo'})
+                let document = new MongooseModel({forename: 'Edwuardo'})
                 await document.save()
-                document = new Document({forename: 'Kenny'})
+                document = new MongooseModel({forename: 'Kenny'})
                 await document.save()
-                document = new Document({forename: 'Zelda'})
+                document = new MongooseModel({forename: 'Zelda'})
                 await document.save()
                 const Test = new TestModel
                 const result: any = await Test.find({}, 2)
@@ -271,12 +270,12 @@ describe('BaseModel', () => {
             })
 
             it('Should return true if successful deleteOne', async () => {
-                const document = new Document({forename: 'Edward'})
+                const document = new MongooseModel({forename: 'Edward'})
                 await document.save()
                 const Test = new TestModel
                 const result = await Test.delete({forename: 'Edward'})
                 expect(result).to.equal(true)
-                await Document.deleteMany({})
+                await MongooseModel.deleteMany({})
             })
 
             it('Should return false on unsuccessful deleteOne', async () => {
@@ -286,12 +285,12 @@ describe('BaseModel', () => {
             })
 
             it('Should return true on successful deleteMany', async () => {
-                const document = new Document({forename: 'Edward'})
+                const document = new MongooseModel({forename: 'Edward'})
                 await document.save()
                 const Test = new TestModel
                 const result = await Test.delete({forename: 'Edward'}, true)
                 expect(result).to.equal(true)
-                await Document.deleteMany({})
+                await MongooseModel.deleteMany({})
             })
 
             it('Should return false on unsuccessful deleteMany', async () => {
@@ -307,7 +306,7 @@ describe('BaseModel', () => {
             })
 
             it('Should empty the models on a successful deletion', async () => {
-                const document = new Document({forename: 'Edward'})
+                const document = new MongooseModel({forename: 'Edward'})
                 await document.save()
                 const Test = new TestModel
                 await Test.find({forename: 'Edward'})
@@ -318,12 +317,12 @@ describe('BaseModel', () => {
             
         })
 
-        describe('getMongooseDocument', () => {
+        describe('getMongooseModel', () => {
 
             it('Should exist and only return the Document', () => {
                 const Test = new TestModel
                 //@ts-ignore - required because we can still access private methods before compile time, yet TS obviously throws an error about this
-                const doc = Test.getMongooseDocument()
+                const doc = Test.getMongooseModel()
                 expect(doc).to.exist
             })
 
@@ -334,16 +333,16 @@ describe('BaseModel', () => {
             it('Should return false if no document was found with the models id')
 
             it('Should return the old document after updating', async () => {
-                const document = new Document({forename: 'Edwuardo'})
+                const document = new MongooseModel({forename: 'Edwuardo'})
                 await document.save()
                 const Test = new TestModel
                 const oldDocument: any = await Test.update({forename: 'Edwuardo'}, {forename: 'Harry Potter'})
                 expect(oldDocument.forename).to.equal('Edwuardo')
-                await Document.deleteMany({})
+                await MongooseModel.deleteMany({})
             })
 
             it('Should fill the calling model on success', async () => {
-                const document = new Document({
+                const document = new MongooseModel({
                     forename: 'Edwuardo',
                     age: 102
                 })
@@ -353,7 +352,7 @@ describe('BaseModel', () => {
                 expect(oldDocument.forename).to.equal('Edwuardo')
                 expect(Test.forename).to.equal('Harry Potter')
                 expect(Test.age).to.equal(102)
-                await Document.deleteMany({})
+                await MongooseModel.deleteMany({})
             })
 
         })
@@ -367,7 +366,7 @@ describe('BaseModel', () => {
                 expect(err).to.not.exist
                 expect(Test.forename).to.equal('Edward')
                 expect(Test.surname).to.equal('Bebbingtano')
-                await Document.deleteMany({})
+                await MongooseModel.deleteMany({})
             })
 
             it('Should fail when validation isnt met', async () => {

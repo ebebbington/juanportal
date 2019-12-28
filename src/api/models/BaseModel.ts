@@ -19,7 +19,7 @@ const _ = require('lodash')
  * @method stripNonExposableProperties    Strips properties not in the childs fieldsToExpose property
  * @method fill                           Fill the parents properties of a document defined in fieldstoexpose
  * @method empty                          Empty the childs properties defined in fieldstoexpose
- * @abstract @method getMongooseDocument  Implementation is required in children, this is called within this class
+ * @abstract @method getMongooseModel     Implementation is required in children, this is called within this class
  * @method update                         Updates the childs model
  * @method create                         Create an entry in the database
  * @method find                           Used for any SELECT queries
@@ -58,13 +58,13 @@ export default abstract class BaseModel {
   _id: any
 
   /**
-   * Get the mongoose document of this model
+   * Get the mongoose model of this model
    * 
    * This is here so in the BaseModel, it can call 'this' method to get the document
    *
-   * @return {Document} The mongoose document from the schema
+   * @return {Document} The mongoose model from the schema
    */
-  protected abstract getMongooseDocument (): Document
+  protected abstract getMongooseModel (): Document
 
   /**
    * Create a mongoose object id from the passed in value
@@ -224,12 +224,12 @@ export default abstract class BaseModel {
     }
     try {
       const options = { upsert: true }
-      const Document = this.getMongooseDocument()
-      const oldDocument = await Document.findOneAndUpdate(query, dataToUpdate, options)
+      const MongooseModel = this.getMongooseModel()
+      const oldDocument = await MongooseModel.findOneAndUpdate(query, dataToUpdate, options)
       if (Array.isArray(oldDocument) && !oldDocument.length || !oldDocument) {
         return false
       }
-      const updatedDocument = await Document.findOne(data)
+      const updatedDocument = await MongooseModel.findOne(data)
       this.fill(updatedDocument)
       return oldDocument
     } catch (err) {
@@ -257,9 +257,9 @@ export default abstract class BaseModel {
    * @return {void|object} Return value is set if validation errors are returned
    */
   public async create (data: { [key: string]: any }): Promise<any> {
-    const Document = this.getMongooseDocument()
+    const MongooseModel = this.getMongooseModel()
     //@ts-ignore
-    const document = new Document(data)
+    const document = new MongooseModel(data)
     try {
       await document.save()
       this.fill(document)
@@ -311,9 +311,9 @@ export default abstract class BaseModel {
     if (!query) {
       query = {}
     }
-    const Document = this.getMongooseDocument()
+    const MongooseModel = this.getMongooseModel()
     // Find using the query is there is one, limit the results if present, and sort if present as well
-    const result = await Document.find(query).limit(limiter).sort(sortable)
+    const result = await MongooseModel.find(query).limit(limiter).sort(sortable)
     // check for an empty response
     if (Array.isArray(result) && !result.length || !result) {
       // empty
@@ -369,10 +369,10 @@ export default abstract class BaseModel {
         return false
       }
     }
-    const Document = this.getMongooseDocument()
+    const MongooseModel = this.getMongooseModel()
     // delete a single doucment
     if (!deleteMany) {
-      const result = await Document.deleteOne(query)
+      const result = await MongooseModel.deleteOne(query)
       if (result.ok === 1 && result.deletedCount === 1) {
         this.empty()
         return true
@@ -386,7 +386,7 @@ export default abstract class BaseModel {
       if (_.isEmpty(query) && allowWipe !== true) {
         return false
       }
-      const result = await Document.deleteMany(query)
+      const result = await MongooseModel.deleteMany(query)
       if (result.ok === 1 && result.deletedCount >= 1) {
         this.empty()
         return true
