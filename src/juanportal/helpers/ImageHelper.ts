@@ -23,6 +23,12 @@ class ImageHelper {
     /**
      * Save an image to the servers filesystem and check it exists
      * 
+     * @method saveToFS
+     * 
+     * @example
+     * const saved = Image.saveToFS(filename, file)
+     * if (!saved) throw new Error()
+     * 
      * @param {string} filename The randomised filename and extension
      * @param {object} file The file object passed in with the request
      * 
@@ -56,6 +62,11 @@ class ImageHelper {
     /**
      * Check if a image exists by the filename
      * 
+     * @method existsOnFS
+     * 
+     * @example 
+     * const exists: boolean = this.existsOnFS() 
+     * 
      * @param {string} name The name of the file
      * 
      * @return {boolean} if it exists 
@@ -70,6 +81,11 @@ class ImageHelper {
 
     /**
      * Delete a file from the filesystem
+     * 
+     * @method deleteFromFS
+     * 
+     * @example
+     * const success = Image.deleteFromFS(filename)
      * 
      * @param {string} imageName The image name to find
      * 
