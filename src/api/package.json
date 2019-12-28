@@ -7,9 +7,9 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "node_modules/.bin/tsc & pm2 restart all",
-    "test": "node_modules/.bin/tsc & pm2 restart all & node_modules/.bin/mocha",
-    "placeholder": "echo 'to test a TS file, add -r ts-node/register as an option to the mocha command'"
+    "build": "node_modules/.bin/tsc; pm2 restart all",
+    "test": "node_modules/.bin/tsc; pm2 restart all; node_modules/.bin/mocha",
+    "test2": "node_modules/.bin/tsc; pm2 restart all; node_modules/.bin/mocha -r ts-node/register"
   },
   "author": "",
   "license": "ISC",
