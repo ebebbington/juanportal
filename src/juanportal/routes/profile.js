@@ -37,6 +37,9 @@ app.route('/image')
     // todo add checks so people just cant willy nilly send requests e.g. JWT 
     logger.info('[POST /profile/image]')
     const filename = req.query.filename
+    if (!filename) {
+      return res.status(400).json({success: false, message: 'No filename was passed in'})
+    }
     const Image = new ImageHelper
     const saved = Image.saveToFS(filename, req.file)
     if (!saved) {
@@ -60,6 +63,11 @@ app.route('/image')
     // todo add checks so people just cant willy nilly send requests e.g. JWT
     const filename = req.query.filename
     const Image = new ImageHelper
+    // check it exists first
+    const exists = Image.existsOnFS(filename)
+    if (!exists) {
+      return res.status(404).json({success: false, message: 'File was not found on the server'})
+    }
     const stillExists = Image.deleteFromFS(filename)
     if (stillExists) {
       return res.status(500).json({success: false, message: 'Failed to delete the file'})
