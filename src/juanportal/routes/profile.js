@@ -47,15 +47,24 @@ app.route('/image')
     }
   })
 
+  /**
+   * @example
+   * cobst filename: string = 'get the filename here without the path'
+   * $.ajax({
+      url: '/profile/image?filename=' + filename,
+      method: 'delete',
+      dataType: 'json',
+    })
+   */
   .delete(upload.single('image'), (req, res) => {
     // todo add checks so people just cant willy nilly send requests e.g. JWT
     const filename = req.query.filename
     const Image = new ImageHelper
-    const success = Image.deleteFromFS(filename)
-    if (!success) {
+    const stillExists = Image.deleteFromFS(filename)
+    if (stillExists) {
       return res.status(500).json({success: false, message: 'Failed to delete the file'})
     }
-    if (success) {
+    if (!stillExists) {
       return res.status(200).json({success: true, message: 'Deleted the file'})
     }
   })
