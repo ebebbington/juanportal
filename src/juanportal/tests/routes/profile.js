@@ -1,10 +1,10 @@
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
-const app = require('.././app')
+const app = require('../../app')
 const chaiHttp = require('chai-http')
 
-const logger = require('../helpers/logger')
+const logger = require('../../helpers/logger')
 logger.info = function (a) {}
 logger.debug = function (a) {}
 
@@ -18,20 +18,10 @@ describe('Route *', () => {
     })
 })
 
-describe('Route /', () => {
-    describe('GET', () => {
-        it('Should respond with a 200 status', (done) => {
-            chai.request(app)
-                .get('/')
-                .end((err, res) => {
-                    expect(res.status).to.equal(200)
-                    done();
-                });
-        })
-    })
-})
 describe('Route /profile/add', () => {
+
     describe('GET', () => {
+
         it('Should respond with a 200 status', (done) => {
             chai.request(app)
                 .get('/profile/add')
@@ -40,10 +30,15 @@ describe('Route /profile/add', () => {
                     done();
                 });
         })
+
     })
+    
 })
+
 describe('Route /profile/id/:id', () => {
+
     describe('GET', () => {
+
         it('Should respond with a 200 status', (done) => {
             chai.request(app)
                 .get('/profile/id/4439034')
@@ -52,6 +47,7 @@ describe('Route /profile/id/:id', () => {
                     done();
                 });
         })
+
         it('Should have the id as a data attribute in the view', (done) => {
             const profileId = 44466765
             chai.request(app)
@@ -62,5 +58,18 @@ describe('Route /profile/id/:id', () => {
                 done();
             });
         })
+
+    })
+
+})
+
+describe('Route /profile/image', () => {
+
+    describe('POST', () => {
+
+    })
+
+    describe('DELETE', () => {
+
     })
 })
