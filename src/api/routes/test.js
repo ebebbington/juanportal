@@ -108,4 +108,11 @@ app.route('/class')
 
 })
 
+app.route('/doc')
+  .get( async (req, res, next) => {
+    const ProfileModel = require('../models/ProfileModel')
+    const Profile = new ProfileModel
+    const profiles = await Profile.find({})
+  })
+
 module.exports = app
