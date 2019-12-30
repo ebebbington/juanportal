@@ -145,6 +145,14 @@ class Profile extends React.Component {
         console.log(this.state)
     }
 
+    removeImage (filename: string) {
+        return $.ajax({
+            url: '/profile/image?filename=' + filename,
+            method: 'delete',
+            dataType: 'json',
+        })
+    }
+
     /**
      * Hamdle the deletion of a profile
      * 
