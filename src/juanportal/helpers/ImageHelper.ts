@@ -80,10 +80,14 @@ class ImageHelper {
      * 
      * @return {boolean} if it exists 
      */
-    private existsOnFS(name: string): boolean {
+    public existsOnFS(name: string): boolean {
         logger.info('[ImageHelper - existsOnFS]')
         const fullPath: string = imagesDir + name
-        return fs.existsSync(fullPath) ? true : false
+        try {
+            return fs.existsSync(fullPath) ? true : false
+        } catch (e) {
+            return false
+        }
     }
 
     /**
