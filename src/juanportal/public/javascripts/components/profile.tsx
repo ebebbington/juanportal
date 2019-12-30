@@ -152,8 +152,13 @@ class Profile extends React.Component {
      * 
      * @return {void}
      */
-    handleDelete (event: any): void {
+    handleDelete (event: any) {
         const id: string = event.target.dataset.id || ''
+        // get image filename from the current profiles list
+        let imageFilename: string = ''
+        this.state.profiles.forEach((item, index) => {
+            if (item._id === id) imageFilename = item.image
+        })
         $.ajax({
             method: 'DELETE',
             url: '/api/profile/id/' + id,
@@ -162,31 +167,39 @@ class Profile extends React.Component {
         .done((res) => {
             // remove the profile from this component
             if (res.success) {
-                this.state.profiles.forEach((obj, i) => {
-                    if (obj._id === id) {
-                        this.state.profiles.splice(i, 1)
+                // send request to remove image
+                this.removeImage(imageFilename)
+                .done((res) => {
+                    console.log(res)
+                    this.state.profiles.forEach((obj, i) => {
+                        if (obj._id === id) {
+                            this.state.profiles.splice(i, 1)
+                        }
+                    })
+                    // Re declare the state
+                    console.log('checking if any profiles exist')
+                    const hasProfiles = this.state.profiles.length > 0 ? true : false
+                    console.log(hasProfiles)
+                    this.setState({profiles: this.state.profiles, hasProfiles: hasProfiles})
+                    // Check if we are viewing a single profile, to then redirect
+                    if (this.state.viewSingle) {
+                        console.log('redirecting')
+                        window.location.href = '/'
+                    }
+                    // If we aren't, remove this profile from the DOM
+                    if (!this.state.viewSingle) {
+                        console.log('removing a profile from the dom')
+                        const deleteButton = document.querySelector(`button.delete[data-id="${id}"`)
+                        // @ts-ignore
+                        const topParent = deleteButton.closest('.well.profile')
+                        // @ts-ignore
+                        topParent.remove()
+                        return true
                     }
                 })
-                // Re declare the state
-                console.log('checking if any profiles exist')
-                const hasProfiles = this.state.profiles.length > 0 ? true : false
-                console.log(hasProfiles)
-                this.setState({profiles: this.state.profiles, hasProfiles: hasProfiles})
-                // Check if we are viewing a single profile, to then redirect
-                if (this.state.viewSingle) {
-                    console.log('redirecting')
-                    window.location.href = '/'
-                }
-                // If we aren't, remove this profile from the DOM
-                if (!this.state.viewSingle) {
-                    console.log('removing a profile from the dom')
-                    const deleteButton = document.querySelector(`button.delete[data-id="${id}"`)
-                    // @ts-ignore
-                    const topParent = deleteButton.closest('.well.profile')
-                    // @ts-ignore
-                    topParent.remove()
-                    return true
-                }
+                .fail((err) => {
+                    console.error(err)
+                })
             } else {
                 console.log('Something isnt right...')
                 console.log(res)
