@@ -242,17 +242,19 @@ class Profile extends React.Component {
                 <div>
                     {profiles.map((profile: any) => 
                         <div className="well profile" key={profile._id}>
-                            <div className="col-xs-4">
+                            <div className="col-xs-12 col-sm-3 col-md-4">
                                 <img alt="Image of user" src={`/public/images/${profile.image}`}></img>
                             </div>
-                            <div className="col-xs-8">
-                                <h3>{profile.name}</h3>
-                                <p>{profile.description}</p>
+                            <div className="col-xs-12 col-sm-9 col-md-8">
+                                <h3 className="name">{profile.name}</h3>
+                                {this.state.viewSingle === true &&
+                                    <p className="description">{profile.description}</p>
+                                }
                                 <div className="actions">
                                     {this.state.viewSingle === false &&
-                                        <a className="view" href={`/profile/id/${profile._id}`}>View Profile</a>
+                                        <a className="view action" href={`/profile/id/${profile._id}`}>View Profile</a>
                                     }
-                                    <button className="delete" data-id={profile._id} onClick={this.handleDelete}>Delete Profile</button>
+                                    <button className="delete action" data-id={profile._id} onClick={this.handleDelete}>Delete Profile</button>
                                 </div>
                             </div>
                         </div>
