@@ -5,6 +5,7 @@ module.exports =
         {
           name: 'JuanPortal',
           script: 'bin/www',
+          ignore_watch: 'public/images',
           //watch: true,
           //output: 'logs/out.log', // Console logs
           //error: 'logs/err.log', // Errors

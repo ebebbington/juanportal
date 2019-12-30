@@ -6,3 +6,16 @@
     - Better implement js file for adding a profile and delete handler
     - see how to loop trough data form express to displayt the profile component
     - Profile component: when no profiles are left and count is active, find more
+
+jwt flow
+                   
+post a profile
+v
+get a token in return
+v
+pass that token when deleting a profile
+
+- tests: add tests for profile route when adding and deleting an image
+- image helper - check the example in save to fs is correct
+- fix problem of server restarting on change to images dir
+
