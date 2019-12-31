@@ -7,19 +7,21 @@ head, body {
     margin-top: 3em;
     margin-bottom: 3em;
 }
-.sidebar-items, .no-profiles {
+
+#sidebar .sidebar-item {
+    display: inline-block;
     font-size: 1.2em;
     text-align: center;
     display: block;
     margin-top: 0.5em;
 }
 
-#sidebar {
-    display: inline-block;
-}
-
 .no-profiles {
     text-align: center;
+    font-size: 1.2em;
+    text-align: center;
+    display: block;
+    margin-top: 0.5em;
 }
 
 #profile-container .profile {
