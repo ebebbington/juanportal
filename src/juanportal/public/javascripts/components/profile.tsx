@@ -228,7 +228,7 @@ class Profile extends React.Component {
         // If the component has no profiles e.g on index view, display a different message
         if (this.state.hasProfiles === false) {
             return (
-                <div className="well profile">
+                <div className="well no-profiles">
                     <h3>Oh no! No profiles were found! Why not
                         <a href="/profile/add"> add one?</a>
                     </h3>
