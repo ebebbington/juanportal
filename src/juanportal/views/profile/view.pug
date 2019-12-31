@@ -1,30 +1,28 @@
 extends ../layout
 block append head
-    
+block append sidebar
+    a.sidebar-item(href="/") Home
 block append content
-    div#profile-id(data-id=`${id}`)
-    div.col-xs-12
-        div.col-xs-3
-            a(href="/") Home
-        div.col-xs-9#profile-container
-        
+    #profile-id(data-id=`${id}`)
+    #profile-container
 
-        script(data-plugins="transform-es2015-modules-umd" type="text/babel" src="/public/javascripts/components/Profile.js")
-            //- // When no profiles exist
-            //- if (!people.length)
-            //-     .well.no-profiles
-            //-         h3 Oh no, there aren't any profiles!
-            //-         a.add-profile(href="/profile/add") Why not be the first and add a new profile?
-            //- // When profiles do exist
-            //- each person in people
-            //-     .well
-            //-         img(src=`${person.image}`)
-            //-         h1 #{person.name}
-        script(data-plugins="transform-es2015-modules-umd" type="text/babel").
-            import Profile from '../public/javascripts/components/Profile.js'
-            const id = $('#profile-id').data('id')
-            console.log(id)
-            ReactDOM.render(
-              <Profile id={id} />,
-              document.getElementById('profile-container')
-            )
+    script(data-plugins="transform-es2015-modules-umd" type="text/babel" src="/public/javascripts/components/Profile.js")
+        //- // When no profiles exist
+        //- if (!people.length)
+        //-     .well.no-profiles
+        //-         h3 Oh no, there aren't any profiles!
+        //-         a.add-profile(href="/profile/add") Why not be the first and add a new profile?
+        //- // When profiles do exist
+        //- each person in people
+        //-     .well
+        //-         img(src=`${person.image}`)
+        //-         h1 #{person.name}
+
+    script(data-plugins="transform-es2015-modules-umd" type="text/babel").
+        import Profile from '../public/javascripts/components/Profile.js'
+        const id = $('#profile-id').data('id')
+        console.log(id)
+        ReactDOM.render(
+            <Profile id={id} />,
+            document.getElementById('profile-container')
+        )

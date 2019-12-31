@@ -29,5 +29,10 @@ html
             h1
                 strong.well #{title}
                 br
-        .container        
-        block content
+        .container
+            .col-xs-3 
+                #sidebar 
+                    block sidebar 
+
+            .col-xs-9
+                block content
