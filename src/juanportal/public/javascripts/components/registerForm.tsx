@@ -92,6 +92,7 @@ class RegisterForm extends React.Component<IThePassedInProps> {
         this.exampleProp1 = this.props.exampleProp1 || ''
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleFileChange = this.handleFileChange.bind(this)
     }
 
     /**
@@ -212,6 +213,39 @@ class RegisterForm extends React.Component<IThePassedInProps> {
         })
     }
 
+    handleFileChange (event: any) {
+        console.log('[handleFileChange]')
+        // So it doesn't throw an error in the case where no file is selected e.g. closes the prompt
+        let filename: string = ''
+        try {
+            filename = event.target.files[0].name
+            console.log(filename)
+        } catch (e) {
+            console.log('no filename')
+            // As the file (if been selected) is now gone due to a cancellation,
+            // remove the text  to represent 'No file chosen'
+            const filenameElem = document.getElementById('filename')
+            if (filenameElem) filenameElem.innerHTML = ''
+            return
+        }
+        const filenameElem = document.getElementById('filename')
+        if (filenameElem) {
+            console.log('going to change the filename, heres some data')
+            // check if the filename has a correct extension
+            const exts: string[] = ['.jpg', '.jpeg', '.png']
+            const fileExt = filename.substr(-4).toLowerCase()
+            if (exts.includes(fileExt)) {
+                // display a tick
+                const tickHtml = '<i class="fas fa-check-circle fa-lg"></i>'
+                filenameElem.innerHTML = filename + tickHtml
+            } else {
+                // display a cross
+                const crossHtml = '<i class="fas fa-times fa-lg"></i>'
+                filenameElem.innerHTML = filename + crossHtml
+            }
+        }
+    }
+
     /**
      * Display a notify message
      *
@@ -245,21 +279,20 @@ class RegisterForm extends React.Component<IThePassedInProps> {
         console.log('[render]')
         return (
             <form>
-                <legend>Register a Profile</legend>
+                <h1>Register a Profile</h1>
                 <fieldset>
                     <div className={`notify ${this.state.notifyWith}`}>{this.state.notifyMessage}</div>
                     <label className="field-container">
-                        Name<label className="required-field"> *</label>
-                        <input id="name" className="form-control" name="name" placeholder="Jane Doe" type="text"
+                        <input id="name" className="form-control" name="name" placeholder="Your Name *" type="text"
                                onChange={this.handleNameChange} required/>
                     </label>
                     <label className="field-container">
-                        Description
-                        <input className="form-control" name="description" placeholder="My name is Jane Doe, hello!" type="text"/>
+                        <input className="form-control" name="description" placeholder="Your Description" type="text"/>
                     </label>
-                    <label htmlFor="file-upload" className="field-container">
-                        Image
-                        <input id="file-upload" name="image" type="file"/>
+                    <label className="field-container file-upload-container">
+                        <p className="btn btn-info">Upload Profile Image</p>
+                        <i id="filename"></i>
+                        <input id="file-upload" name="image" type="file" onChange={this.handleFileChange}/>
                     </label>
                     <input type="submit" className="btn btn-primary" onClick={this.handleSubmit} value="Submit"/>
                 </fieldset>
