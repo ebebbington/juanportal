@@ -1,11 +1,8 @@
-- complete tests
-- Client side
-    - Redesign views
-    - Create components in react
-    - Restyle using current stylesheets
-    - Better implement js file for adding a profile and delete handler
-    - see how to loop trough data form express to displayt the profile component
-    - Profile component: when no profiles are left and count is active, find more
+- Develop tests for reacto components
+- Refactor existing react components
+- Better style the client side header and sidebar
+- For profile component, when no more are left but count was defined, find more.
+- Develop stylings for css objects from home page and develop components out of them
 
 jwt flow
                    
