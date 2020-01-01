@@ -1,5 +1,9 @@
 'use strict';
 
+import React from 'react'
+import ReactDom from 'react-dom'
+import PropTypes from 'prop-types'
+
 const buttonStyle = {
     color: 'white',
     backgroundColor: 'red'
@@ -23,6 +27,18 @@ function Button ({text, lightType, child}) {
         </button>
     )
 }
+// or
+// const Button = ({text, lightType, child}) => {
+//   <div>
+//     <p>
+//       just add elements here
+//     </p>
+//   </div>
+// }
+// Button.PropTypes = {
+//   text: PropTypes.string.isRequired,
+//   lightType: PropTypes.string.isRequired,
+// }
 
 
 class LikeButton extends React.Component {
@@ -44,6 +60,6 @@ class LikeButton extends React.Component {
   }
 }
 
-//export default Button
-const domContainer = document.querySelector('#button-container')
-ReactDOM.render(<Button text="I am a button!" lightType="red" child="<p>hello</p>"></Button>, domContainer)
+export default Button
+//const domContainer = document.querySelector('#button-container')
+//ReactDOM.render(<Button text="I am a button!" lightType="red" child="<p>hello</p>"></Button>, domContainer)
