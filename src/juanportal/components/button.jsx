@@ -1,65 +1,67 @@
-'use strict';
-
-import React from 'react'
+import { useState } from 'react'
+import * as React from 'react'
 import ReactDom from 'react-dom'
+import classes from './button.module.css'
 import PropTypes from 'prop-types'
-
-const buttonStyle = {
-    color: 'white',
-    backgroundColor: 'red'
-}
 
 /**
  * @example
- * // Make sure you are using the react libraries (such as the ones in the lib folder)
- * script(type="text/babel" src="/path/to/this/file")
+ * // Make sure you are using the react libraries (such as the ones in the lib folder) and webpack has bundled the file
+ * script(src="/path/to/this/file")
  * 
  * @param {*} param0 
  */
-function Button ({text, lightType, child}) {
-
+// Cant use this because i get an error #321 when using hooks
+const Button = props => {
+  //const [hover, setHover] = useState(0)
     return (
         <button
-        style={buttonStyle}
-        className={`traffic-light ${lightType}-light`}>
-            {text}
-            {child}
+        //onMouseEnter={() => setHover(1)} onMouseLeave={() => setHover(0)}
+        className={`${classes.Content}`}>
+          hello
         </button>
     )
 }
-// or
-// const Button = ({text, lightType, child}) => {
-//   <div>
-//     <p>
-//       just add elements here
-//     </p>
-//   </div>
-// }
-// Button.PropTypes = {
-//   text: PropTypes.string.isRequired,
-//   lightType: PropTypes.string.isRequired,
-// }
 
-
-class LikeButton extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { liked: false };
-  }
-
-  render() {
-    if (this.state.liked) {
-      console.log('you alreayd liked this')
-    }
-
-    return (
-        <button onClick={() => this.setState({liked: true})}>
-            Like
-        </button>
-    );
-  }
+Button.PropTypes = {
+  text: PropTypes.string.isRequired,
+  lightType: PropTypes.string.isRequired,
 }
 
-export default Button
-//const domContainer = document.querySelector('#button-container')
-//ReactDOM.render(<Button text="I am a button!" lightType="red" child="<p>hello</p>"></Button>, domContainer)
+
+// class LikeButton extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = { liked: false };
+//   }
+
+//   render() {
+//     if (this.state.liked) {
+//       console.log('you alreayd liked this')
+//     }
+
+//     return (
+//         <button onClick={() => this.setState({liked: true})}>
+//             Like
+//         </button>
+//     );
+//   }
+// }
+
+/**
+ * @example
+ * // When exported (meaning a component needs this)
+ * import Button from './button.jsx'
+ * ...
+ *   return (
+        <Button text="hello" lightType="red" />
+    )
+//export default Button
+
+/**
+ * @example
+ * // When just rendered on a page
+ * script(src="/path/to/this/file/when/its/bundled")
+ */
+const domContainer = document.querySelector('#button-container')
+ReactDOM.render(<Button />, domContainer)

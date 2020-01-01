@@ -1,0 +1,23 @@
+/**
+ * Description
+ *
+ * This file demonstrates the use of a CSS module when used inside a react component
+ * when wanting to deal with a pure css file
+ *
+ * Example Usage
+ *
+ * // mycomponent.js
+ * import styles from 'this/file.css'
+ * ...
+ *   <button className={styles.button} // jumbles up the class name in the browser
+ *   // OR if modules is set to false in the css loader block in the webpakc config
+     <button className="button"
+ */
+
+.Content {
+    background-color: green;
+    color: yellow;
+}
+.button {
+    width: 200px;
+}

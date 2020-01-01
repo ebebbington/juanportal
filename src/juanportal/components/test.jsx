@@ -6,7 +6,7 @@ import Button from './button.jsx'
  * ...
  * script(src="/path/to/this/file/but/when/its/bundled")
  */
-function Test () {
+const Test = () => {
     return (
         <Button text="hello" lightType="red" />
     )
