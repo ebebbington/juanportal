@@ -121,7 +121,38 @@ class RegisterForm extends React.Component<IThePassedInProps> {
         event.preventDefault()
         console.log('Clicked submit!')
         console.log('Sending you to the register function!')
+        let filename = null
+        const filenameElem = document.getElementById('filname')
+        if (filenameElem) filename = filenameElem.innerText
+        let name = null
+        const nameElem: any = document.getElementById('name')
+        if (nameElem) name = nameElem.value
+        let description = null
+        const descriptionElem: any = document.getElementById('description')
+        if (descriptionElem) description = descriptionElem.value
+        this.validateForm(name, description, filename)
         this.registerProfile()
+    }
+
+    validateForm (name: string, description: string|null, filename: string|null) {
+        if (!name || name.length < 2) {
+            this.notify(false, 'Name must be set and longer than 2 characters')
+            return false
+        }
+        if (name.length > 150) {
+            this.notify(false, 'Name must not be longer than 150 characters')
+            return false
+        }
+        if (description && description.length > 400) {
+            this.notify(false, 'Description must be less than 400 characters')
+            return false
+        }
+        const exts = ['.jpg', '.jpeg', '.png']
+        if (filename && !exts.includes(filename.substr(-5).toLowerCase())) {
+            this.notify(false, 'File must be of type .jpg, .png or .jpeg')
+            return false
+        }
+        
     }
 
     /**
