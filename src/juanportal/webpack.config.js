@@ -3,7 +3,8 @@ const path = require('path')
 module.exports = {
     entry: {
         button: './components/button.jsx',
-        profile: './components/Profile.tsx'
+        profile: './components/Profile.tsx',
+        registerForm: './components/RegisterForm.tsx'
     },
     devtool: 'inline-source-map',
     output: {
@@ -50,6 +51,6 @@ module.exports = {
         alias: {
             react: path.resolve('./node_modules/react')
         },
-        extensions: ['*', '.js', '.jsx', '.css', '.tsx']
+        extensions: ['.js', '.jsx', '.css', '.tsx']
     }
 }
