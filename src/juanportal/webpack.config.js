@@ -2,7 +2,6 @@ const path = require('path')
 
 module.exports = {
     entry: {
-        test: './components/test.jsx',
         button: './components/button.jsx',
     },
     output: {
