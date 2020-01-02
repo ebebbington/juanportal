@@ -12,15 +12,32 @@ import PropTypes from 'prop-types'
  * @param {*} param0 
  */
 // Cant use this because i get an error #321 when using hooks
-const Button = props => {
+const Button = ({text, lightColour, childClassName}) => {
+  if (!text) throw new Error('Text must be defined when calling the Button component')
+  if (!lightColour) throw new Error('lightColour must be defined when calling the Button component')
   //const [hover, setHover] = useState(0)
+  lightColour =
+    lightColour === 'green' ?
+      classes.greenLight :
+    lightColour === 'amber' ?
+      classes.amberLight :
+    lightColour === 'red' ?
+      classes.redLight : null
+  if (childClassName) {
     return (
-        <button
-        //onMouseEnter={() => setHover(1)} onMouseLeave={() => setHover(0)}
-        className={`${classes.Content}`}>
-          hello
-        </button>
+      <button className={`${classes.trafficLight} ${lightColour} btn ${classes.round}`}>
+        <i className={childClassName}></i>
+        <p>{text}</p>
+      </button>
     )
+  }
+  if (!childClassName) {
+    return (
+      <button className={`${classes.trafficLight} ${lightColour} btn`}>
+        {text}
+      </button>
+    )
+  }
 }
 
 Button.PropTypes = {
@@ -64,4 +81,5 @@ Button.PropTypes = {
  * script(src="/path/to/this/file/when/its/bundled")
  */
 const domContainer = document.querySelector('#button-container')
-ReactDOM.render(<Button />, domContainer)
+ReactDOM.render(<Button text="hello" lightColour="green" childClassName="fas fa-cross" />, domContainer)
+ReactDOM.render(<Button text="helljhjho" lightColour="red" />, domContainer)

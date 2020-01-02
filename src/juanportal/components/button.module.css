@@ -14,10 +14,67 @@
      <button className="button"
  */
 
-.Content {
-    background-color: green;
-    color: yellow;
+/*******************************
+ * Traffic Light object
+ *******************************/
+/* Traffic light buttons */
+/* Swap out the white text and give each button a bit of an effect */
+.trafficLight {
+    color: #ffffff;
+    width: auto;
+    padding: 0.3em 0.4em;
+    margin: 0.1em 0.1em;
+    transition-duration: 0.3s;
 }
-.button {
-    width: 200px;
+.trafficLight:hover {
+    background-color: #ffffff;
+    transform: scale(1.1);
+    box-shadow: 0 0 2px #0c1f26;
+}
+.trafficLight:active {
+    transform: scale(0.95);
+}
+.trafficLight:focus {
+    color: white;
+}
+
+.greenLight {
+    background-color: #1cb354;
+}
+.greenLight i {
+    color: #ffffff;
+}
+.greenLight p {
+    color: #ffffff;
+}
+.greenLight:hover {
+    color: #1cb354;
+}
+.redLight {
+    background-color: #ff0000;
+}
+.redLight:hover {
+    color: #ff0000;
+}
+.amberLight {
+    background-color: #ff9966;
+}
+.amberLight:hover {
+    color: #ff9966;
+}
+/* When there is an icon and text as the content within */
+.greenLight:hover i,
+.greenLight:hover p {
+    color: green;
+}
+/* When there is an icon and text as the content within */
+.redLight:hover i,
+.redLight:hover p {
+    color: red;
+}
+/* For rounded elements */
+.round {
+    border-radius: 50%;
+    width: 57px;
+    height: 57px;
 }
