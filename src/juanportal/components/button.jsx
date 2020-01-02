@@ -37,7 +37,7 @@ import PropTypes from 'prop-types'
    const domContainer = document.querySelector('#button-container')
    ReactDOM.render(<Button text="helljhjho" lightColour="red|green|amber" childClassName="fas fa-cross" />, domContainer)
    // pug view
-   script(src="/path/to/this/file/when/bundled")
+   script(src="/public/javascripts/button.js")
  * 
  * @param {{text, lightColour, childClassName}} props Used to display the component correctly
  * 

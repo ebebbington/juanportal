@@ -15,3 +15,4 @@ src/*/helpers/MailHelper.js
 src/*/helpers/JWT.js
 src/juanportal/public/javascripts/components/*.js
 src/*/schemas/*.js
+src/juanportal/public/javascripts/*.js

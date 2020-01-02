@@ -6,7 +6,7 @@ block append content
     #button-container
     #profile-container
    
-    script(data-plugins="transform-es2015-modules-umd" type="text/babel" src="/public/javascripts/components/Profile.js")
+    script(src="/public/javascripts/components/profile.js" data-plugins="transform-es2015-modules-umd" type="text/babel")
         //- // When no profiles exist
         //- if (!people.length)
         //-     .well.no-profiles
@@ -19,12 +19,8 @@ block append content
         //-         h1 #{person.name}
 
     script(data-plugins="transform-es2015-modules-umd" type="text/babel").
-        import Profile from '../public/javascripts/components/Profile.js'
+        import Profile from '../public/javascripts/profile.js'
         ReactDOM.render(
-            <Profile count="5" />,
+            <Profile count={5} />,
             document.getElementById('profile-container')
-        )                             
-
-    script(src="/public/javascripts/components/button.js")
-
-            
+        )  

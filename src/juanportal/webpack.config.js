@@ -3,10 +3,12 @@ const path = require('path')
 module.exports = {
     entry: {
         button: './components/button.jsx',
+        profile: './components/Profile.tsx'
     },
+    devtool: 'inline-source-map',
     output: {
-
-        path: __dirname + '/public/javascripts/components'
+        filename: "[name].js",
+        path: __dirname + '/public/javascripts/'
     },
     module: {
         rules: [
@@ -34,20 +36,13 @@ module.exports = {
                         }
                     }
                 ]
-                //or
-                // loader: 'css-loader',
-                // options: {
-                //     minimize: true,
-                //     modules: true,
-                //     localIdentName:'[name]__[local]__[hash:base64:5]',
-                // }
-                //or
-                // query: {
-                //     importLoaders: 1,
-                //     modules: true,
-                //     //localIdentName:'[name]__[local]__[hash:base64:5]',
-                // } 
                    
+            },
+            // tsx
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/
             }
         ]
     },
@@ -55,6 +50,6 @@ module.exports = {
         alias: {
             react: path.resolve('./node_modules/react')
         },
-        extensions: ['*', '.js', '.jsx', '.css']
+        extensions: ['*', '.js', '.jsx', '.css', '.tsx']
     }
 }
