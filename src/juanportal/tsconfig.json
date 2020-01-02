@@ -72,6 +72,5 @@
     "app.ts",
     "helpers/*.ts",
     "middleware/*.ts",
-    //"public/javascripts/"
   ]
 }
