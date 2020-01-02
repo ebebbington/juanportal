@@ -1,85 +1,111 @@
-import { useState } from 'react'
-import * as React from 'react'
-import ReactDom from 'react-dom'
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
 import classes from './button.module.css'
 import PropTypes from 'prop-types'
 
 /**
- * @example
- * // Make sure you are using the react libraries (such as the ones in the lib folder) and webpack has bundled the file
- * script(src="/path/to/this/file")
+ * @name Button
  * 
- * @param {*} param0 
+ * @description Overview
+   This component is responsible for any button 
+ * 
+ * @description Errors throw when trying to use hooks
+   - For my problem, i had imported "ReactDom" instead of "ReactDOM" - using "DOM" fixed it
+ * 
+ * @description Another way to use CSS classes
+ * - Set "modules" to false or comment it out in the webpack config
+ * - Import the "button.css.js" file
+ * - Then set classnames like such: ...className="button"
+ * 
+ * @requires
+   Div element with the id of "button-container"
+ * 
+ * @example When including inside another component
+   // thisfile.jsx
+   export default Button
+   // anotherComponent.jsx
+   import Button from './button.jsx'
+   const Test = () => {
+    return (
+      <Button text="hello" lightColour="red|amber|green" [childClassName="fas fa-cross"] />
+    )
+   }
+   ReactDOM.render(<Text />, document.getElementById('yourId'))
+ *
+ * @example When displaying directly to the dom
+   // thisfile.jsx
+   const domContainer = document.querySelector('#button-container')
+   ReactDOM.render(<Button text="helljhjho" lightColour="red|green|amber" childClassName="fas fa-cross" />, domContainer)
+   // pug view
+   script(src="/path/to/this/file/when/bundled")
+ * 
+ * @param {{text, lightColour, childClassName}} props Used to display the component correctly
+ * 
+ * @return {HTMLButtonElement}
  */
-// Cant use this because i get an error #321 when using hooks
-const Button = ({text, lightColour, childClassName}) => {
+const Button = props => {
+
+  const { text, lightColour, childClassName } = props
+  const [hover, setHover] = useState(0)
+  
+  //
+  // Check required props are passed in
+  //
+
   if (!text) throw new Error('Text must be defined when calling the Button component')
   if (!lightColour) throw new Error('lightColour must be defined when calling the Button component')
-  //const [hover, setHover] = useState(0)
-  lightColour =
+
+  //
+  // Here so we can use a class in the .css file based on a conditional
+  //
+
+  const lightStyling =
     lightColour === 'green' ?
       classes.greenLight :
     lightColour === 'amber' ?
       classes.amberLight :
     lightColour === 'red' ?
       classes.redLight : null
+
+  //
+  // If we have a child, then display the button different
+  //
+
   if (childClassName) {
     return (
-      <button className={`${classes.trafficLight} ${lightColour} btn ${classes.round}`}>
+      <button className={`${classes.trafficLight} ${lightStyling} btn ${classes.round}`}>
         <i className={childClassName}></i>
         <p>{text}</p>
       </button>
     )
   }
+
+  //
+  // When no child class is passed in, display the button with just some text
+  //
+
   if (!childClassName) {
     return (
-      <button className={`${classes.trafficLight} ${lightColour} btn`}>
-        {text}
+      <button className={`${classes.trafficLight} ${lightStyling} btn`} onMouseEnter={() => setHover('hhh')} onMouseLeave={() => setHover('jjhjhjh')}>
+        {text} and you are hovering over this {hover}
       </button>
     )
   }
 }
 
+//
+// Catch bugs by type checking props
+//
+
 Button.PropTypes = {
   text: PropTypes.string.isRequired,
-  lightType: PropTypes.string.isRequired,
+  lightColour: PropTypes.string.isRequired,
+  childClassName: PropTypes.string
 }
 
+//
+// Display or export the component
+//
 
-// class LikeButton extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = { liked: false };
-//   }
-
-//   render() {
-//     if (this.state.liked) {
-//       console.log('you alreayd liked this')
-//     }
-
-//     return (
-//         <button onClick={() => this.setState({liked: true})}>
-//             Like
-//         </button>
-//     );
-//   }
-// }
-
-/**
- * @example
- * // When exported (meaning a component needs this)
- * import Button from './button.jsx'
- * ...
- *   return (
-        <Button text="hello" lightType="red" />
-    )
-//export default Button
-
-/**
- * @example
- * // When just rendered on a page
- * script(src="/path/to/this/file/when/its/bundled")
- */
 const domContainer = document.querySelector('#button-container')
-ReactDOM.render(<Button text="hello" lightColour="green" childClassName="fas fa-cross" />, domContainer)
 ReactDOM.render(<Button text="helljhjho" lightColour="red" />, domContainer)
