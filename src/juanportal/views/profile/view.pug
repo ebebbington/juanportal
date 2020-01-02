@@ -6,7 +6,7 @@ block append content
     #profile-id(data-id=`${id}`)
     #profile-container
 
-    script(data-plugins="transform-es2015-modules-umd" type="text/babel" src="/public/javascripts/components/Profile.js")
+    
         //- // When no profiles exist
         //- if (!people.length)
         //-     .well.no-profiles
@@ -18,11 +18,11 @@ block append content
         //-         img(src=`${person.image}`)
         //-         h1 #{person.name}
 
+    script(src="/public/javascripts/profile.js")
     script(data-plugins="transform-es2015-modules-umd" type="text/babel").
-        import Profile from '../public/javascripts/components/Profile.js'
-        const id = $('#profile-id').data('id')
-        console.log(id)
+        const idElem = document.getElementById('profile-id')
+        const id = idElem.getAttribute('data-id')
         ReactDOM.render(
             <Profile id={id} />,
             document.getElementById('profile-container')
-        )
+        )  

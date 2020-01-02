@@ -1,3 +1,10 @@
+import React from 'react'
+
+interface IProps {
+    readonly count?: number,
+    readonly id?: number
+}
+
 /**
  * @class Profile
  * 
@@ -42,11 +49,7 @@
  * @method handleDelete Handles the deletion of a profile
  * @method render Renders the profiles, or if none exist then a different display
  */
-interface ITest {
-        readonly count?: number,
-        readonly id?: number
-}
-class Profile extends React.Component<ITest> {
+class Profile extends React.Component<IProps> {
 
     /**
      * Holds properties required by the componenty
@@ -268,5 +271,8 @@ class Profile extends React.Component<ITest> {
         }
     }
 }
+
+//@ts-ignore
+window.Profile = Profile
 
 module.exports = Profile
