@@ -1,3 +1,7 @@
+- Find a way to make the new components TSX and to transpile them then bundle them
+- Kinda clean up my mess
+- Move all client facing components into the standard JS dir
+- Move all real components into ~/components
 - Develop tests for reacto components
 - Refactor existing react components
 - Better style the client side header and sidebar
