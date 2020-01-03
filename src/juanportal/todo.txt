@@ -1,12 +1,11 @@
-- Find a way to make the new components TSX and to transpile them then bundle them
-- Kinda clean up my mess
-- Move all client facing components into the standard JS dir
-- Move all real components into ~/components
+- Refactor button component if required
+- Sort out stylings (css modules) for profile component
+- Sort out stylings (css modules) for register form component
 - Develop tests for reacto components
-- Refactor existing react components
 - Better style the client side header and sidebar
 - For profile component, when no more are left but count was defined, find more.
 - Develop stylings for css objects from home page and develop components out of them
+- implement JWT?
 
 jwt flow
                    
@@ -15,6 +14,3 @@ v
 get a token in return
 v
 pass that token when deleting a profile
-
-
-
