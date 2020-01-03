@@ -1,10 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-interface IThePassedInProps {
-    exampleProp1?: string,
-}
-
 /**
  * @class RegisterForm
  *
@@ -45,18 +41,21 @@ interface IThePassedInProps {
  * 8. .............
  *
  * @property {object} state         Holds data related to the component
- * @property {string} exampleProp1  Demonstrates use of passing params to components
  *
  * @method handleNameChange         Handles the changed state of the input fields
- * @method handleClick              Handles click of submit button
- * @method render                   Automatically called, renders the form in the DOM
- * @method componentDidUpdate       Called when a state property changes
+ * @method handleSubmit             Handles the click of the submit button
+ * @method validateForm             Validates all fields
+ * @method uploadImage              Sends a request to upload the posted image
  * @method registerProfile          Registers a profile
+ * @method validateFilename         Checks the extension of the selected filename to show whether it's supported dynamically
+ * @method handleFileChange
  * @method notify                   Changes the states for the notify element
  * @method componentDidMount
+ * @method componentDidUpdate       Called when a state property changes
+ * @method render                   Automatically called, renders the form in the DOM
  */
 // todo :: find out a way to hide the notify message on focus or something
-class RegisterForm extends React.Component<IThePassedInProps> {
+class RegisterForm extends React.Component {
 
     /**
      * Holds data related to the component
@@ -77,14 +76,9 @@ class RegisterForm extends React.Component<IThePassedInProps> {
     }
 
     /**
-     * Demonstrates the use of passing params to a component
-     *
-     * @var {string}
-     */
-    exampleProp1: string
-
-    /**
-     * Constructor
+     * @method constructor
+     * 
+     * @description
      * Always call super(props) right away
      *
      * @param {object} props The properties pass in
@@ -92,34 +86,44 @@ class RegisterForm extends React.Component<IThePassedInProps> {
     constructor(props: object) {
         super(props);
         console.log('[constructor]')
-        this.exampleProp1 = this.props.exampleProp1 || ''
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this)
     }
 
     /**
-     * Handles the change of the name input
+     * @method handleNameChange
+     * 
+     * @description
+     * Handles the change of the name input with each key press.
+     * Mainly to define the name in the state
      *
-     * @param event
+     * @param {any} event The event object
      *
      * @return {void}
      */
-    handleNameChange(event: any): void {
+    private handleNameChange(event: any): void {
         console.log('[handleNameChange]')
         // Check the name
         console.log('The name was changed. Setting it now')
+        // todo :: we really should do this for all fields
         this.setState({name: event.target.value})
     }
 
     /**
+     * @method handleSubmit
+     * 
+     * @description
      * Handles click of the submit button
      * 
-     * @param event
+     * @example
+     * <button onClick={() => this.handleSubmit}
+     * 
+     * @param {Event} event The event object
      *
      * @return {void}
      */
-    handleSubmit(event: any): void {
+    private handleSubmit(event: any): void {
         console.log('[handleSubmit]')
         event.preventDefault()
         console.log('Clicked submit!')
@@ -133,11 +137,28 @@ class RegisterForm extends React.Component<IThePassedInProps> {
         let description = null
         const descriptionElem: any = document.getElementById('description')
         if (descriptionElem) description = descriptionElem.value
-        this.validateForm(name, description, filename)
-        this.registerProfile()
+        const validated: boolean = this.validateForm(name, description, filename)
+        if (validated) this.registerProfile()
     }
 
-    validateForm (name: string, description: string|null, filename: string|null) {
+    /**
+     * @method validateForm
+     * 
+     * @description
+     * Validates all fields in the form
+     * 
+     * @example
+     * const success = this.validateForm(name, description, filename)
+     * if (success) // do what you need to do
+     * 
+     * @param {string} name Value of the name field 
+     * @param {string} description Value of the description field
+     * @param {string} filename Name of the file chosen (if chosen)
+     * 
+     * @return {boolean} Success of the validation
+     */
+    private validateForm (name: string, description: string|null, filename: string|null): boolean {
+        console.log('[validateForm]')
         if (!name || name.length < 2) {
             this.notify(false, 'Name must be set and longer than 2 characters')
             return false
@@ -155,43 +176,43 @@ class RegisterForm extends React.Component<IThePassedInProps> {
             this.notify(false, 'File must be of type .jpg, .png or .jpeg')
             return false
         }
+        return true
         
     }
 
     /**
-     * Triggered when the component updates e.g. from a `setState({})`
-     *
-     * @param prevProps
-     * @param prevState
-     * @param snapshot
-     *
-     * @return {void}
+     * @method uploadImage
+     * 
+     * @description
+     * Sends a request to upload the file and returns the response
+     * 
+     * @param {string} filename Filename of the image thats saved with the profile
+     * 
+     * @return {Promise}
      */
-    componentDidUpdate(prevProps: Readonly<IThePassedInProps>, prevState: Readonly<{}>, snapshot?: any): void {
-        console.log('[componentDidUpdate]')
-        console.log('Component updated!')
-        console.log(this.state)
-    }
-
-    uploadImage (filename: string) {
+    private uploadImage (filename: string): Promise<any> {
         console.log('[uploadImage]')
-        const form: any = $('form')[0]
-        return $.ajax({
-            url: '/profile/image?filename=' + filename,
-            method: 'post',
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            data: new FormData(form)
-        })
+        const form: any = document.querySelector('form')[0]
+        const data: any = new URLSearchParams()
+        for (const pair of new FormData(form)) {
+            data.append(pair[0], pair[1])
+        }
+        return fetch('/profile/image?filename=' + filename, { method: 'POST', body: data})
     }
 
     /**
-     * Register a profile from the input
+     * @method registerProfile
+     * 
+     * @description
+     * Sends the request to post the new profile, after validating the data,
+     * then uploads the file to the main server
+     * 
+     * @example
+     * this.registerProfile()
+     * 
      */
-    registerProfile () {
+    private registerProfile () {
         console.log('[registerProfile]')
-        console.log('Going to register the profile')
         // Validate name
         if (this.state.name.length < 2) {
             console.log('The name failed validation, setting success to false')
@@ -200,79 +221,106 @@ class RegisterForm extends React.Component<IThePassedInProps> {
             return false
         }
         console.log('The name meets validation! Yay!')
-        const form: any = $('form')[0]
-        // Send ajax request
-        $.ajax({
-            method: 'post',
-            processData: false,
-            contentType: false,
-            url: '/api/profile',
-            data: new FormData(form),
-            dataType: 'json'
-        })
-        // On success
-        .done((data ) => {
-            console.log('Registering a profiile resulted in a success!')
-            // now save the image to the main server
-            const imageFilename = data.data
-            this.notify(data.success, data.message)
-            this.uploadImage(imageFilename)
-                .done((response: any) => {
-                    this.notify(response.success, response.message)
-                })
-                .fail((err) => {
-                    this.notify(false, 'Failed to save the image to the filesystem')
-                })
-            //return true
-        })
-        // On failure
-        .fail((err, res, msg) => {
-            console.log('Registering a profile resulted in an error :(')
-            // For the real response from our controllers
-            try {
-                const data = err.responseJSON
-                this.notify(data.success, data.message)
-            } 
-            // But when a different error occurs and it doesnt return json e.g. entity file too large
-            catch {
-                console.log('failed')
-                this.notify(false, 'A problem occurred whilst processing this request')
-            }
-            return false
-        })
-        // Finally
-        .then(() => {
-            console.log('Ajax request has been processed')
-            return false
-        })
+        const form: any = document.querySelector('form')[0]
+        const data: any = new URLSearchParams()
+        for (const pair of new FormData(form)) {
+            data.append(pair[0], pair[1])
+        }
+        fetch('/api/profile', { method: 'POST', body: data})
+            .then((response) => {
+                return response.json()
+            })
+            .then((json: {success: boolean, message: string, data: any}) => {
+                console.log('Registering a profiile resulted in a success!')
+                this.notify(json.success, json.message)
+                const filename: string = json.data
+                this.uploadImage(filename)
+                    .then((response) => {
+                        return response.json()
+                    })
+                    .then((json) => {
+                        this.notify(json.success, json.message)
+                    })
+                    .catch((err) => {
+                        // todo :: implement notifier
+                        console.error('Error caught when uploading the file')
+                        console.error(err)
+                        this.notify(false, 'Failed to save the image to the filesystem')
+                    })
+            })
+            .catch((err) => {
+                // todo :: implement notifier
+                console.error('Error thrown when posting a profile')
+                console.error(err)
+                this.notify(false, 'Failed to upload the profile')
+            })
     }
 
-    handleFileChange (event: any) {
+    /**
+     * @method validateFilename
+     * 
+     * @description
+     * Validates a chosen filename against our valid extensions.
+     * This method checks the last 4 characters of a string.
+     * 
+     * @example
+     * // get the filename
+     * const success: boolean = this.validateFilename(filename)
+     * if (success) console.log('Passed!')
+     * if (!success) console.error('Failed!')
+     * 
+     * @param {string} filename Filename to check (including the extension)
+     * 
+     * @return {boolean} Success of whether it passed validation or not
+     */
+    private validateFilename (filename: string): boolean {
+        console.log('[validateFilename]')
+        const exts: string[] = ['.jpg', '.jpeg', '.png']
+        const fileExt = filename.substr(-4).toLowerCase()
+        if (exts.includes(fileExt)) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    /**
+     * @method handleFileChange
+     * 
+     * @description
+     * Handles the event of when a user selects a file (or cancels) in the
+     * prompt after a click of the file input
+     * 
+     * @example
+     * <button onChange={() => this.handleFileChange}
+     * 
+     * @param {Event} event The event object
+     * 
+     * @return {void}
+     */
+    private handleFileChange (event: any): void {
         console.log('[handleFileChange]')
-        // So it doesn't throw an error in the case where no file is selected e.g. closes the prompt
         let filename: string = ''
+         // So it doesn't throw an error in the case where no file is selected e.g. closes the prompt
         try {
             filename = event.target.files[0].name
-            console.log(filename)
         } catch (e) {
-            console.log('no filename')
             // As the file (if been selected) is now gone due to a cancellation,
-            // remove the text  to represent 'No file chosen'
+            // remove the text to represent 'No file chosen'
             const filenameElem = document.getElementById('filename')
             if (filenameElem) filenameElem.innerHTML = ''
             return
         }
         const filenameElem = document.getElementById('filename')
         if (filenameElem) {
-            console.log('going to change the filename, heres some data')
             // check if the filename has a correct extension
-            const exts: string[] = ['.jpg', '.jpeg', '.png']
-            const fileExt = filename.substr(-4).toLowerCase()
-            if (exts.includes(fileExt)) {
+            const success = this.validateFilename(filename)
+            if (success) {
                 // display a tick
                 const tickHtml = '<i class="fas fa-check-circle fa-lg"></i>'
                 filenameElem.innerHTML = filename + tickHtml
-            } else {
+            }
+            if (!success) {
                 // display a cross
                 const crossHtml = '<i class="fas fa-times fa-lg"></i>'
                 filenameElem.innerHTML = filename + crossHtml
@@ -281,39 +329,72 @@ class RegisterForm extends React.Component<IThePassedInProps> {
     }
 
     /**
-     * Display a notify message
+     * @method notify
+     * 
+     * @description
+     * Display a notification message inside the form
+     * 
+     * @example
+     * const success: boolean = false
+     * const message: string = 'You cannot perform that action!'
+     * this.notify(success, message)
      *
      * @param {boolean} success Whether the result succeeded for failed
-     * @param {boolean} message The message to accompany with the notify
+     * @param {string} message The message to accompany with the notify
      *
      * @return {void}
      */
-    notify(success: boolean, message: string): void {
+    private notify(success: boolean, message: string): void {
         console.log('[notify]')
         const status = success ? 'success' : 'error'
         this.setState({notifyMessage: message, notifyWith: status})
     }
 
     /**
-     * This is called when the component is first rendered
+     * @method componentDidMount
+     * 
+     * @description
+     * Called when the component is first rendered
      *
      * @return {void}
      */
-    componentDidMount(): void {
+    public componentDidMount(): void {
         console.log('[componentDidMount]')
-        console.log('I have been mounted!')
     }
 
     /**
-     * Generate the HTML
+     * @method componentDidUpdate
+     * 
+     * @description Is called when the component updated e.g. from a `setSate({})`
+     * 
+     * @example
+     * this.setState({property: value})
      *
-     * Re-renders when component state changes
+     * @param prevProps
+     * @param prevState
+     * @param snapshot
+     *
+     * @return {void}
      */
-    render() {
+    public componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<{}>, snapshot?: any): void {
+        console.log('[componentDidUpdate]')
+        console.log('Showing the new state:')
+        console.log(this.state)
+    }
+
+
+    /**
+     * @method render
+     * 
+     * @description
+     * This method is called when before the component mounts and after the constructor.
+     * Handles the display of the HTML.
+     * Re-renders when component state changes
+     * 
+     * @return
+     */
+    public render() {
         console.log('[render]')
-        const props = {
-            text: 'heyyyyy'
-        }
         return (
             <form>
                 <h1>Register a Profile</h1>
@@ -341,10 +422,4 @@ class RegisterForm extends React.Component<IThePassedInProps> {
 /**
  * Render the element
  */
-ReactDOM.render(
-    // Passing in a property here isn't accessible(?) inside the component
-    <RegisterForm
-        exampleProp1="I am a valid prop val man"
-    />,
-    document.getElementById('form-container')
-)
+ReactDOM.render(<RegisterForm />, document.getElementById('form-container'))
