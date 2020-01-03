@@ -32,7 +32,7 @@ interface IProps {
  * @extends React.Component
  * 
  * @param {number?} id Id of the profile to find
- * @param {number} count Number of profiles to get
+ * @param {number?} count Number of profiles to get
  * 
  * @requires React
  * 
@@ -44,9 +44,12 @@ interface IProps {
  * @property {number} numberOfProfilesToGet The amount of profiles to retrieve
  * 
  * @method constructor Assigns properties
- * @method componentDidMount Checks the purpose of the component
- * @method componentDidUpdate None
+ * @method findProfile Finds a profile with a given id
+ * @method findManyProfiles Finds many profiles given a number
+ * @method deleteProfile Deletes a profile from the API and the image file from this server
  * @method handleDelete Handles the deletion of a profile
+ * @method componentDidMount Checks the purpose of the component
+ * @method componentDidUpdate Current implementation doesnt do anything, but its called when a state changes
  * @method render Renders the profiles, or if none exist then a different display
  */
 class Profile extends React.Component<IProps> {
@@ -81,87 +84,175 @@ class Profile extends React.Component<IProps> {
     numberOfProfilesToGet: number = 0
 
     /**
-     * Constructor
-     *
+     * @method Constructor
+     * 
+     * @description
+     * Sets the states for the passed in props, and binds event handlers that are
+     * called inside the render method
      * 
      * @param {id?: number, count?: number} props Where to find a specific profile or many
      */
     constructor(props: {id?: number, count?: number}) {
         super(props);
+        console.log('[constructor]')
         this.idOfProfileToFind = props.id || 0
         this.numberOfProfilesToGet = props.count || 0
         this.handleDelete = this.handleDelete.bind(this)
+        // todo :: maybe add an 'if id is set, this.purpose.id = true', then further down the line, 'if this.purpose.id = true
     }
 
     /**
-     * On first mount, checks the purpose of the component e.g. where to get a single profile or many
-     * using the passed in props
+     * @method findProfile
+     * 
+     * @description
+     * Find a single profile by the id in the props (that would have been passed in) and
+     * redeclare the state with the profile - defining we are only viewing a single one
+     * to support viewing one profile
+     * 
+     * @example
+     * // ensure this.idOfProfileToFind is defined e.g. When one is passed in to the component
+     * this.findProfile()
      * 
      * @return {void}
      */
-    componentDidMount (): void {
-        // check if any profiles are present to correctly display the UI
-        if (this.state.profiles.length < 1) {
-            this.setState({hasProfiles: false})
-        }
-        // Render a single profile by id if requested
-        if (this.idOfProfileToFind) {
-            $.ajax({
-                method: 'GET',
-                url: '/api/profile/id/' + this.idOfProfileToFind ,
-                dataType: 'json'
-            })
-            .done((res) => {
-                // this.state.profiles must be an array
-                if (res.success && res.data._id) {
-                    const arr = [res.data]
-                    this.setState({profiles: arr, hasProfiles: true, viewSingle: true})
-                    return true
-                } else {
-                    console.log('Something isnt right...')
-                    console.log(res)
-                }
-            })
-            .catch((err) => {
-                console.error(err)
-                return false
-            })
-        }
-        // Render number of profiles to find if requested
-        if (this.numberOfProfilesToGet) {
-            $.ajax({
-                method: 'GET',
-                url: '/api/profile/count/' + this.numberOfProfilesToGet,
-                dataType: 'json'
-            })
-            .done((res) => {
-                if (res.success === true && res.data.length > 0) {
-                    console.log('res is true and daa is pesent')
-                    this.setState({profiles: res.data, hasProfiles: true, viewSingle: false})
-                    return true
-                }
-            })
-            .catch((err) => {
-                console.error(err)
-                return false
-            })
-        }
-    }
-
-    componentDidUpdate () {
-        console.log(this.state)
-    }
-
-    removeImage (filename: string) {
-        return $.ajax({
-            url: '/profile/image?filename=' + filename,
-            method: 'delete',
-            dataType: 'json',
+    findProfile (): void {
+      console.log('[findProfile]')
+      fetch('/api/profile/id/' + this.idOfProfileToFind)
+        // Return the json response
+        .then((response) => {
+            return response.json()
+        })
+        // Handle the json data
+        .then((json: {success: boolean, message: string, data: any}) => {
+            // We expect an object (the profile) in the data property
+            if (json.success && json.data._id) {
+                const arr = [json.data]
+                this.setState({profiles: arr, hasProfiles: true, viewSingle: true})
+            } else {
+                // todo :: implement a 'notifier' here
+                console.log('Something isnt right...')
+                console.log(json)
+            }
+        })
+        .catch((err) => {
+            // todo :: implement a 'notifier' here
+            console.error(err)
         })
     }
 
     /**
-     * Hamdle the deletion of a profile
+     * @method findManyProfiles
+     * 
+     * @description
+     * GET many profiles defined by the `count` property when passed in
+     * 
+     * @example
+     * this.findManyProfiles()
+     * 
+     * @return {void}
+     */
+    findManyProfiles () {
+        console.log('[findManyProfiles]')
+        fetch('/api/profile/count/' + this.numberOfProfilesToGet)
+            .then((response) => {
+                return response.json()
+            })
+            .then((json: {success: boolean, message: string, data: any}) => {
+                if (json.success && json.data.length > 0) {
+                    // todo :: implement notifier
+                    console.log('Response is true and data is present')
+                    this.setState({profiles: json.data, hasProfiles: true, viewSingle: false})
+                } else {
+                    // todo :: implement notifier here
+                    console.error('Response wasnt as expected:')
+                    console.error(json)
+                }
+            })
+            .catch((err) => {
+                // todo :: implement notifier
+                console.error('Error caught when trying to find many profiles')
+                console.error(err)
+            })
+    }
+
+    /**
+     * @method deleteProfile
+     * 
+     * @description
+     * Send a request to THIS server to delete an image from the file system and the API to delete the profile
+     * Called when a profile is getting deleted
+     * 
+     * @example
+     * // get the filename to delete e.g. 'fkkjjk44r5kjf4jk.jpg'
+     * this.removeImage(filename)
+     * 
+     * @param filename 
+     */
+    deleteProfile (id: string, filename: string) {
+        console.log('[removeImage]')
+        fetch('/api/profile/id/' + id, { method: 'DELETE'})
+            .then((response) => {
+                return response.json()
+            })
+            .then((json: {success: boolean, message: string, data: any}) => {
+                if (!json.success) {
+                    // todo :: implement notifier
+                    console.error('Failed request:')
+                    console.error(json)
+                }
+                // If a profile was delete, then remove the image too
+                fetch('/profile/image?filename=' + filename, { method: 'DELETE' })
+                    .then((response) => {
+                        return response.json()
+                    })
+                    .then((json: {success: boolean, message: string, data: any}) => {
+                        // remove the profile from the state
+                        this.state.profiles.forEach((obj, i) => {
+                            if (obj._id === id) {
+                                this.state.profiles.splice(i, 1)
+                            }
+                        })
+                        // Re declare the state
+                        console.log('checking if any profiles exist')
+                        const hasProfiles = this.state.profiles.length > 0 ? true : false
+                        console.log(hasProfiles)
+                        this.setState({profiles: this.state.profiles, hasProfiles: hasProfiles})
+                        // Check if we are viewing a single profile, to then redirect
+                        if (this.state.viewSingle) {
+                            console.log('redirecting')
+                            window.location.href = '/'
+                        }
+                        // If we aren't, remove this profile from the DOM
+                        if (!this.state.viewSingle) {
+                            console.log('removing a profile from the dom')
+                            const deleteButton = document.querySelector(`button.delete[data-id="${id}"`)
+                            // @ts-ignore
+                            const topParent = deleteButton.closest('.well.profile')
+                            // @ts-ignore
+                            topParent.remove()
+                        }
+                    })
+                    .catch((err) => {
+                        // todo :: implement notifier
+                        console.error('Error caught when trying to delete an image:')
+                        console.error(err)
+                    })
+            })
+            .catch((err) => {
+                // todo :: implement notifier
+                console.error('Error caught when trying to delete a profile:')
+                console.error(err)
+            })
+    }
+
+    /**
+     * @method handleDelete
+     * 
+     * @description
+     * Hamdle the deletion of a profile on click of the button
+     * 
+     * @example
+     * <button onClick={() => this.handleDelete()}
      * 
      * @param {Event} event The clicked element
      * 
@@ -174,74 +265,56 @@ class Profile extends React.Component<IProps> {
         this.state.profiles.forEach((item, index) => {
             if (item._id === id) imageFilename = item.image
         })
-        $.ajax({
-            method: 'DELETE',
-            url: '/api/profile/id/' + id,
-            dataType: 'json'
-        })
-        .done((res) => {
-            // remove the profile from this component
-            if (res.success) {
-                // send request to remove image
-                this.removeImage(imageFilename)
-                .done((res) => {
-                    console.log(res)
-                    this.state.profiles.forEach((obj, i) => {
-                        if (obj._id === id) {
-                            this.state.profiles.splice(i, 1)
-                        }
-                    })
-                    // Re declare the state
-                    console.log('checking if any profiles exist')
-                    const hasProfiles = this.state.profiles.length > 0 ? true : false
-                    console.log(hasProfiles)
-                    this.setState({profiles: this.state.profiles, hasProfiles: hasProfiles})
-                    // Check if we are viewing a single profile, to then redirect
-                    if (this.state.viewSingle) {
-                        console.log('redirecting')
-                        window.location.href = '/'
-                    }
-                    // If we aren't, remove this profile from the DOM
-                    if (!this.state.viewSingle) {
-                        console.log('removing a profile from the dom')
-                        const deleteButton = document.querySelector(`button.delete[data-id="${id}"`)
-                        // @ts-ignore
-                        const topParent = deleteButton.closest('.well.profile')
-                        // @ts-ignore
-                        topParent.remove()
-                        return true
-                    }
-                })
-                .fail((err) => {
-                    console.error(err)
-                })
-            } else {
-                console.log('Something isnt right...')
-                console.log(res)
-            }
-        })
-        // 
-        .catch((err) => {
-            return false
-        })
+        this.deleteProfile(id, imageFilename)
     }
 
     /**
-     * Generate the HTML
+     * @method componentDidMount
+     * 
+     * @description
+     * On first mount (render), checks the purpose of the component e.g. whether to get a single profile or
+     * many using the passed in props
+     * 
+     * @return {void}
+     */
+    componentDidMount (): void {
+        console.log('[componentDidMount]')
+        // check if any profiles are present to correctly display the UI
+        if (this.state.profiles.length < 1)
+            this.setState({hasProfiles: false})
+        // Render a single profile by id if requested
+        if (this.idOfProfileToFind)
+            this.findProfile()
+        // Render number of profiles to find if requested
+        if (this.numberOfProfilesToGet)
+            this.findManyProfiles()
+    }
+
+    /**
+     * @method componentDidUpdate
+     * 
+     * @description Is called when the component updated e.g. from a `setSate({})`
+     * 
+     * @example
+     * this.setState({property: value})
+     * 
+     * @return {void}
+     */
+    componentDidUpdate () {
+        console.log('[componentDidUpdate]')
+        console.log('Showing the new state:')
+        console.log(this.state)
+    }
+
+    /**
+     * @method render
+     * 
+     * @description
+     * Renders the markup for the component
      * 
      * @return {HTMLCollection} The HTML collection for the component
      */
     render() {
-        // If the component has no profiles e.g on index view, display a different message
-        if (this.state.hasProfiles === false) {
-            return (
-                <div className="well no-profiles">
-                    <h3>Oh no! No profiles were found! Why not
-                        <a href="/profile/add"> add one?</a>
-                    </h3>
-                </div>
-            )
-        }
         // Display Profiles in the state
         if (this.state.hasProfiles === true) {
             const profiles = this.state.profiles
@@ -266,6 +339,17 @@ class Profile extends React.Component<IProps> {
                             </div>
                         </div>
                     )}
+                </div>
+            )
+        }
+        // If the component has no profiles e.g on index view, display a different message,
+        // display this at the end so it doesn't 'flash'
+        if (this.state.hasProfiles === false) {
+            return (
+                <div className="well no-profiles">
+                    <h3>Oh no! No profiles were found! Why not
+                        <a href="/profile/add"> add one?</a>
+                    </h3>
                 </div>
             )
         }
