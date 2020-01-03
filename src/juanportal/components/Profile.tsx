@@ -115,7 +115,7 @@ class Profile extends React.Component<IProps> {
      * 
      * @return {void}
      */
-    findProfile (): void {
+    private findProfile (): void {
       console.log('[findProfile]')
       fetch('/api/profile/id/' + this.idOfProfileToFind)
         // Return the json response
@@ -151,7 +151,7 @@ class Profile extends React.Component<IProps> {
      * 
      * @return {void}
      */
-    findManyProfiles () {
+    private findManyProfiles () {
         console.log('[findManyProfiles]')
         fetch('/api/profile/count/' + this.numberOfProfilesToGet)
             .then((response) => {
@@ -188,7 +188,7 @@ class Profile extends React.Component<IProps> {
      * 
      * @param filename 
      */
-    deleteProfile (id: string, filename: string) {
+    private deleteProfile (id: string, filename: string) {
         console.log('[removeImage]')
         fetch('/api/profile/id/' + id, { method: 'DELETE'})
             .then((response) => {
@@ -258,7 +258,7 @@ class Profile extends React.Component<IProps> {
      * 
      * @return {void}
      */
-    handleDelete (event: any) {
+    private handleDelete (event: any) {
         const id: string = event.target.dataset.id || ''
         // get image filename from the current profiles list
         let imageFilename: string = ''
@@ -277,7 +277,7 @@ class Profile extends React.Component<IProps> {
      * 
      * @return {void}
      */
-    componentDidMount (): void {
+    public componentDidMount (): void {
         console.log('[componentDidMount]')
         // check if any profiles are present to correctly display the UI
         if (this.state.profiles.length < 1)
@@ -298,9 +298,13 @@ class Profile extends React.Component<IProps> {
      * @example
      * this.setState({property: value})
      * 
+     * @param prevProps
+     * @param prevState
+     * @param snapshot
+     * 
      * @return {void}
      */
-    componentDidUpdate () {
+    public componentDidUpdate (prevProps: Readonly<IProps>, prevState: Readonly<{}>, snapshot?: any) {
         console.log('[componentDidUpdate]')
         console.log('Showing the new state:')
         console.log(this.state)
@@ -314,7 +318,7 @@ class Profile extends React.Component<IProps> {
      * 
      * @return {HTMLCollection} The HTML collection for the component
      */
-    render() {
+    public render() {
         // Display Profiles in the state
         if (this.state.hasProfiles === true) {
             const profiles = this.state.profiles
