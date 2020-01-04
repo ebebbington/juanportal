@@ -1,7 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, ReactNode, ReactElement } from 'react'
 import ReactDOM from 'react-dom'
+//@ts-ignore
 import classes from './button.module.css'
 import PropTypes from 'prop-types'
+
+interface IParams {
+  text: string
+  lightColour: string
+  childClassName?: string
+}
 
 /**
  * @name Button
@@ -12,6 +19,14 @@ import PropTypes from 'prop-types'
  * @description Errors throw when trying to use hooks
    - For my problem, i had imported "ReactDom" instead of "ReactDOM" - using "DOM" fixed it
  * 
+ * @description When compiling using webpack, get the following error:
+ * "JSX element type 'Element | undefined' is not a constructor function for JSX element.
+ * Type 'undefined' is not assignable to type 'Element | null'."
+ * 
+ * Solved by following this guide: https://stackoverflow.com/questions/54905376/type-error-jsx-element-type-null-undefined-is-not-a-constructor-functi
+ * I made Button use React.FC, and had that implement the interface for the props.
+ * I then realsied the param/prop "children" is required by the React.RC, so i had to include that inside the params
+ *  
  * @description Another way to use CSS classes
  * - Set "modules" to false or comment it out in the webpack config
  * - Import the "button.css.js" file
@@ -30,23 +45,15 @@ import PropTypes from 'prop-types'
       <Button text="hello" lightColour="red|amber|green" [childClassName="fas fa-cross"] />
     )
    }
-   ReactDOM.render(<Text />, document.getElementById('yourId'))
+   ReactDOM.render(<Test />, document.getElementById('yourId'))
  *
- * @example When displaying directly to the dom
-   // thisfile.jsx
-   const domContainer = document.querySelector('#button-container')
-   ReactDOM.render(<Button text="helljhjho" lightColour="red|green|amber" childClassName="fas fa-cross" />, domContainer)
-   // pug view
-   script(src="/public/javascripts/button.js")
+ * @param {{text, lightColour, childClassName?}} props Used to display the component correctly
  * 
- * @param {{text, lightColour, childClassName}} props Used to display the component correctly
- * 
- * @return {HTMLButtonElement}
+ * @return {HTMLCollection}
  */
-const Button = props => {
+const Button: React.FC<IParams> = ({text, lightColour, childClassName, children}) => {
 
-  const { text, lightColour, childClassName } = props
-  const [hover, setHover] = useState(0)
+  const [hover, setHover] = useState('')
   
   //
   // Check required props are passed in
@@ -91,21 +98,13 @@ const Button = props => {
       </button>
     )
   }
-}
 
-//
-// Catch bugs by type checking props
-//
-
-Button.PropTypes = {
-  text: PropTypes.string.isRequired,
-  lightColour: PropTypes.string.isRequired,
-  childClassName: PropTypes.string
+  // Safety measure - mainly here because of the guide from stackover in one of the above descriptions
+  return children as ReactElement<any>
 }
 
 //
 // Display or export the component
 //
 
-const domContainer = document.querySelector('#button-container')
-ReactDOM.render(<Button text="helljhjho" lightColour="red" />, domContainer)
+export default Button

@@ -2,7 +2,6 @@ const path = require('path')
 
 module.exports = {
     entry: {
-        button: './components/button.jsx',
         profile: './components/Profile.tsx',
         registerForm: './components/RegisterForm.tsx'
     },
