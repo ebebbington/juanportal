@@ -1,8 +1,6 @@
-import React, { useState, ReactNode, ReactElement } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useState, ReactElement } from 'react'
 //@ts-ignore
 import classes from './button.module.css'
-import PropTypes from 'prop-types'
 
 interface IParams {
   text: string
@@ -36,8 +34,6 @@ interface IParams {
    Div element with the id of "button-container"
  * 
  * @example When including inside another component
-   // thisfile.jsx
-   export default Button
    // anotherComponent.jsx
    import Button from './button.jsx'
    const Test = () => {
