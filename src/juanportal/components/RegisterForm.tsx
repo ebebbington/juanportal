@@ -1,5 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import BaseComponent from './BaseComponent'
+
+
 
 /**
  * @class RegisterForm
@@ -49,13 +52,12 @@ import ReactDOM from 'react-dom'
  * @method registerProfile          Registers a profile
  * @method validateFilename         Checks the extension of the selected filename to show whether it's supported dynamically
  * @method handleFileChange
- * @method notify                   Changes the states for the notify element
  * @method componentDidMount
  * @method componentDidUpdate       Called when a state property changes
  * @method render                   Automatically called, renders the form in the DOM
  */
 // todo :: find out a way to hide the notify message on focus or something
-class RegisterForm extends React.Component {
+class RegisterForm extends BaseComponent {
 
     /**
      * Holds data related to the component
@@ -65,15 +67,7 @@ class RegisterForm extends React.Component {
      *
      * @var {object}
      */
-    state: {
-        name: string,
-        notifyMessage?: string,
-        notifyWith: string
-    } = {
-        name: '',
-        notifyMessage: '',
-        notifyWith:''
-    }
+    state: { name: string } = { name: '' }
 
     /**
      * @method constructor
@@ -160,20 +154,20 @@ class RegisterForm extends React.Component {
     private validateForm (name: string, description: string|null, filename: string|null): boolean {
         console.log('[validateForm]')
         if (!name || name.length < 2) {
-            this.notify(false, 'Name must be set and longer than 2 characters')
+            this.notify('Name', 'Must be set and longer than 2 characters', 'error')
             return false
         }
         if (name.length > 150) {
-            this.notify(false, 'Name must not be longer than 150 characters')
+            this.notify('Name', 'Must not be longer than 150 characters', 'error')
             return false
         }
         if (description && description.length > 400) {
-            this.notify(false, 'Description must be less than 400 characters')
+            this.notify('Description', 'Must be less than 400 characters', 'error')
             return false
         }
         const exts = ['.jpg', '.jpeg', '.png']
         if (filename && !exts.includes(filename.substr(-5).toLowerCase())) {
-            this.notify(false, 'File must be of type .jpg, .png or .jpeg')
+            this.notify('Image', 'File must be of type .jpg, .png or .jpeg', 'error')
             return false
         }
         return true
@@ -192,7 +186,8 @@ class RegisterForm extends React.Component {
      */
     private uploadImage (filename: string): Promise<any> {
         console.log('[uploadImage]')
-        const form: any = document.querySelector('form')[0]
+        //@ts-ignore 
+        const form: any = document.querySelector('form')
         const data: any = new URLSearchParams()
         for (const pair of new FormData(form)) {
             data.append(pair[0], pair[1])
@@ -213,15 +208,9 @@ class RegisterForm extends React.Component {
      */
     private registerProfile () {
         console.log('[registerProfile]')
-        // Validate name
-        if (this.state.name.length < 2) {
-            console.log('The name failed validation, setting success to false')
-            this.notify(false, 'Name must be greater than 2 characters')
-            this.setState({success: false}) 
-            return false
-        }
-        console.log('The name meets validation! Yay!')
-        const form: any = document.querySelector('form')[0]
+        console.log('The data passed validation!')
+        //@ts-ignore
+        const form: any = document.querySelector('form')
         const data: any = new URLSearchParams()
         for (const pair of new FormData(form)) {
             data.append(pair[0], pair[1])
@@ -231,28 +220,32 @@ class RegisterForm extends React.Component {
                 return response.json()
             })
             .then((json: {success: boolean, message: string, data: any}) => {
-                console.log('Registering a profiile resulted in a success!')
-                this.notify(json.success, json.message)
+                if (!json.success) {
+                    console.error('Bad request:')
+                    console.error(json)
+                    this.notify('Profile Upload', json.message, json.success ? 'success' : 'error')
+                    return false
+                }
+                this.notify('Profile Upload', json.message, json.success ? 'success' : 'error')
                 const filename: string = json.data
                 this.uploadImage(filename)
                     .then((response) => {
                         return response.json()
                     })
                     .then((json) => {
-                        this.notify(json.success, json.message)
+                        // todo :: implement notifer
+                        this.notify('Image Upload', json.message, json.success ? 'success' : 'error')
                     })
                     .catch((err) => {
-                        // todo :: implement notifier
                         console.error('Error caught when uploading the file')
                         console.error(err)
-                        this.notify(false, 'Failed to save the image to the filesystem')
+                        this.notify('Image Upload', 'Failed to save the image to the filesystem', 'error')
                     })
             })
             .catch((err) => {
-                // todo :: implement notifier
                 console.error('Error thrown when posting a profile')
                 console.error(err)
-                this.notify(false, 'Failed to upload the profile')
+                this.notify('Profile', 'Failed to upload the profile', 'error')
             })
     }
 
@@ -329,28 +322,6 @@ class RegisterForm extends React.Component {
     }
 
     /**
-     * @method notify
-     * 
-     * @description
-     * Display a notification message inside the form
-     * 
-     * @example
-     * const success: boolean = false
-     * const message: string = 'You cannot perform that action!'
-     * this.notify(success, message)
-     *
-     * @param {boolean} success Whether the result succeeded for failed
-     * @param {string} message The message to accompany with the notify
-     *
-     * @return {void}
-     */
-    private notify(success: boolean, message: string): void {
-        console.log('[notify]')
-        const status = success ? 'success' : 'error'
-        this.setState({notifyMessage: message, notifyWith: status})
-    }
-
-    /**
      * @method componentDidMount
      * 
      * @description
@@ -399,9 +370,8 @@ class RegisterForm extends React.Component {
             <form>
                 <h1>Register a Profile</h1>
                 <fieldset>
-                    <div className={`notify ${this.state.notifyWith}`}>{this.state.notifyMessage}</div>
                     <label className="field-container">
-                        <input id="name" className="form-control" name="name" placeholder="HEYYYOU GUYS" type="text"
+                        <input id="name" className="form-control" name="name" placeholder="Your Name *" type="text"
                                onChange={this.handleNameChange} required/>
                     </label>
                     <label className="field-container">
