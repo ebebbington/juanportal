@@ -53,7 +53,7 @@ interface IParams {
  */
 const Button: React.FC<IParams> = ({text, lightColour, childClassName, children}) => {
 
-  const [hover, setHover] = useState('')
+  const [hover, setHover] = useState('not hovering')
   
   //
   // Check required props are passed in
@@ -80,7 +80,7 @@ const Button: React.FC<IParams> = ({text, lightColour, childClassName, children}
 
   if (childClassName) {
     return (
-      <button className={`${classes.trafficLight} ${lightStyling} btn ${classes.round}`}>
+      <button className={`${classes.trafficLight} ${lightStyling} btn ${classes.round}`} onMouseEnter={() => setHover('hovering')} onMouseLeave={() => setHover('not hovering')}>
         <i className={childClassName}></i>
         <p>{text}</p>
       </button>
@@ -93,8 +93,8 @@ const Button: React.FC<IParams> = ({text, lightColour, childClassName, children}
 
   if (!childClassName) {
     return (
-      <button className={`${classes.trafficLight} ${lightStyling} btn`} onMouseEnter={() => setHover('hhh')} onMouseLeave={() => setHover('jjhjhjh')}>
-        {text} and you are hovering over this {hover}
+      <button className={`${classes.trafficLight} ${lightStyling} btn`} onMouseEnter={() => setHover('hovering')} onMouseLeave={() => setHover('not hovering')}>
+        {text} and you are hovering over this
       </button>
     )
   }
