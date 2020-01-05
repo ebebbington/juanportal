@@ -72,5 +72,6 @@
     "app.ts",
     "helpers/*.ts",
     "middleware/*.ts",
+    "components/*.ts"
   ]
 }
