@@ -16,3 +16,4 @@ src/*/helpers/JWT.js
 src/juanportal/public/javascripts/components/*.js
 src/*/schemas/*.js
 src/juanportal/public/javascripts/*.js
+src/juanportal/components/util.js

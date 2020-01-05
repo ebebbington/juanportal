@@ -253,8 +253,9 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
      * 
      * @return {void}
      */
-    function handleDelete (event: any) {
-        const id: string = event.target.dataset.id || ''
+    function handleDelete (id: string) {
+        console.log('[handleDelete]')
+        console.log(id)
         // get image filename from the current profiles list
         let imageFilename: string = ''
         profiles.forEach((item: any, index: number) => {
@@ -304,7 +305,7 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
                                         <Button text="View Profile" lightColour="green" setAnchor={true} anchorHref={`/profile/id/${profile._id}`} />
                                     </div>
                                 }
-                                <div className="delete action" onClick={handleDelete} data-id={profile._id}>
+                                <div className="delete action" onClick={() => handleDelete(profile._id)}>
                                     <Button text="Delete Profile" lightColour="amber" />
                                 </div>
                             </div>
