@@ -1,6 +1,7 @@
 import React, { useState, ReactElement, useEffect, useCallback } from 'react'
 import ReactDOM from 'react-dom'
 import Button from './button'
+import { notify } from './util'
 
 interface IProps {
     count?: number,
@@ -111,18 +112,19 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
         .then((json: {success: boolean, message: string, data: any}) => {
             // We expect an object (the profile) in the data property
             if (json.success && json.data._id) {
+                notify('Find Profile', json.message, 'success')
                 const arr: any = [json.data]
                 setProfiles(arr)
                 setHasProfiles(true)
                 setViewSingle(true)
             } else {
-                // todo :: implement a 'notifier' here
+                notify('Find Profile', json.message, 'error')
                 console.log('Something isnt right...')
                 console.log(json)
             }
         })
         .catch((err) => {
-            // todo :: implement a 'notifier' here
+            notify('Find Profile', `Error occured, see console`, 'error')
             console.error(err)
         })
     }
@@ -146,20 +148,18 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
             })
             .then((json: {success: boolean, message: string, data: any}) => {
                 if (json.success && json.data.length > 0) {
-                    // todo :: implement notifier
-                    console.log('Response is true and data is present')
+                    notify('Find Many Profiles', json.message, 'success')
                     setProfiles(json.data)
                     setHasProfiles(json.data.length ? true : false)
                     setViewSingle(false)
-                    //this.setState({profiles: json.data, hasProfiles: true, viewSingle: false})
                 } else {
-                    // todo :: implement notifier here
+                    notify('Find Many Profiles', json.message, 'error')
                     console.error('Response wasnt as expected:')
                     console.error(json)
                 }
             })
             .catch((err) => {
-                // todo :: implement notifier
+                notify('Find Many Profiles', 'Failed', 'error')
                 console.error('Error caught when trying to find many profiles')
                 console.error(err)
             })
@@ -186,11 +186,12 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
             })
             .then((json: {success: boolean, message: string, data: any}) => {
                 if (!json.success) {
-                    // todo :: implement notifier
+                    notify('Delete Profile', json.message, 'error')
                     console.error('Failed request:')
                     console.error(json)
                     return false
                 }
+                notify('Delete Profile', json.message, 'success')
                 // If a profile was delete, then remove the image too
                 fetch('/profile/image?filename=' + filename, { method: 'DELETE' })
                     .then((response) => {
@@ -198,6 +199,11 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
                     })
                     .then((json: {success: boolean, message: string, data: any}) => {
                         // remove the profile from the state
+                        if (!json.success) {
+                            notify('Delete Profile', json.message, 'error')
+                            return false
+                        }
+                        notify('Delete Profile', json.message, 'success')
                         const updatedProfiles = profiles.filter((obj: any) => {
                             return obj._id !== id
                         })
@@ -206,7 +212,6 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
                         const hasProfiles = profiles.length > 0 ? true : false
                         console.log(hasProfiles)
                         setHasProfiles(hasProfiles)
-                        //this.setState({profiles: this.state.profiles, hasProfiles: hasProfiles})
                         // Check if we are viewing a single profile, to then redirect
                         if (viewSingle) {
                             console.log('redirecting')
@@ -223,13 +228,13 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
                         }
                     })
                     .catch((err) => {
-                        // todo :: implement notifier
+                        notify('Delete Profile', err.message, 'error')
                         console.error('Error caught when trying to delete an image:')
                         console.error(err)
                     })
             })
             .catch((err) => {
-                // todo :: implement notifier
+                notify('Delete Profile', err.message, 'error')
                 console.error('Error caught when trying to delete a profile:')
                 console.error(err)
             })
