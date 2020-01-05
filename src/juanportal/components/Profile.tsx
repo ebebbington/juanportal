@@ -71,7 +71,7 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
      * 
      * @var {object[]}
      */
-    const [profiles, setProfiles] = useState([{}])
+    const [profiles, setProfiles] = useState([])
 
     /**
      * Id of a profile to find if passed in
@@ -150,6 +150,7 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
                 if (json.success && json.data.length > 0) {
                     notify('Find Many Profiles', json.message, 'success')
                     setProfiles(json.data)
+                    console.log(profiles)
                     setHasProfiles(json.data.length ? true : false)
                     setViewSingle(false)
                 } else {
@@ -179,7 +180,7 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
      * @param filename 
      */
     function deleteProfile (id: string, filename: string) {
-        console.log('[removeImage]')
+        console.log('[deleteProfile]')
         fetch('/api/profile/id/' + id, { method: 'DELETE'})
             .then((response) => {
                 return response.json()
@@ -207,6 +208,8 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
                         const updatedProfiles = profiles.filter((obj: any) => {
                             return obj._id !== id
                         })
+                        console.log('updated profiles:')
+                        console.log(updatedProfiles)
                         setProfiles(updatedProfiles)
                         console.log('checking if any profiles exist')
                         const hasProfiles = profiles.length > 0 ? true : false
@@ -273,15 +276,17 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
      */
     useEffect (() => {
         console.log('[useEffect]')
-        if (profiles.length < 1)
-            setHasProfiles(false)
-            //this.setState({hasProfiles: false})
         // Render a single profile by id if requested
         if (idOfProfileToFind)
             findProfile()
         // Render number of profiles to find if requested
         if (numberOfProfilesToGet)
             findManyProfiles()
+
+        if (profiles.length < 1) {
+            console.log('profiles.length is less than 1')
+            setHasProfiles(false)
+        }
     }, [])
 
     // Display Profiles in the state
