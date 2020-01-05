@@ -4,7 +4,9 @@ import classes from './button.module.css'
 
 interface IParams {
   text: string
-  lightColour: string
+  lightColour: string,
+  setAnchor?: boolean,
+  anchorHref?: string,
   childClassName?: string
 }
 
@@ -38,18 +40,16 @@ interface IParams {
    import Button from './button.jsx'
    const Test = () => {
     return (
-      <Button text="hello" lightColour="red|amber|green" [childClassName="fas fa-cross"] />
+      <Button text="hello" lightColour="red|amber|green" [setAnchor={true}] [anchorHref="/profile/id/theId"] [childClassName="fas fa-cross"] />
     )
    }
    ReactDOM.render(<Test />, document.getElementById('yourId'))
  *
- * @param {{text, lightColour, childClassName?}} props Used to display the component correctly
+ * @param {{text, lightColour, setAnchor?, childClassName?}} props Used to display the component correctly
  * 
  * @return {HTMLCollection}
  */
-const Button: React.FC<IParams> = ({text, lightColour, childClassName, children}) => {
-
-  const [hover, setHover] = useState('not hovering')
+const Button: React.FC<IParams> = ({text, lightColour, setAnchor, anchorHref, childClassName, children}) => {
   
   //
   // Check required props are passed in
@@ -57,6 +57,7 @@ const Button: React.FC<IParams> = ({text, lightColour, childClassName, children}
 
   if (!text) throw new Error('Text must be defined when calling the Button component')
   if (!lightColour) throw new Error('lightColour must be defined when calling the Button component')
+  if (setAnchor && !anchorHref) throw new Error('Setting element to an anchor tag without a href is forbidden')
 
   //
   // Here so we can use a class in the .css file based on a conditional
@@ -71,16 +72,37 @@ const Button: React.FC<IParams> = ({text, lightColour, childClassName, children}
       classes.redLight : null
 
   //
-  // If we have a child, then display the button different
+  // If we have a child, then display the button differently
   //
 
   if (childClassName) {
-    return (
-      <button className={`${classes.trafficLight} ${lightStyling} btn ${classes.round}`} onMouseEnter={() => setHover('hovering')} onMouseLeave={() => setHover('not hovering')}>
-        <i className={childClassName}></i>
-        <p>{text}</p>
-      </button>
-    )
+
+    //
+    // Render an anchor tag instead if required
+    //
+
+    if (setAnchor) {
+      return (
+        <a className={`${classes.trafficLight} ${lightStyling} btn ${classes.round}`} href={anchorHref}>
+          <i className={childClassName}></i>
+          <p>{text}</p>
+        </a>
+      )
+    }
+
+    //
+    // Else display a button tag
+    //
+
+    if (!setAnchor) {
+      return (
+        <button className={`${classes.trafficLight} ${lightStyling} btn ${classes.round}`}>
+          <i className={childClassName}></i>
+          <p>{text}</p>
+        </button>
+      )
+    }
+
   }
 
   //
@@ -88,11 +110,26 @@ const Button: React.FC<IParams> = ({text, lightColour, childClassName, children}
   //
 
   if (!childClassName) {
-    return (
-      <button className={`${classes.trafficLight} ${lightStyling} btn`} onMouseEnter={() => setHover('hovering')} onMouseLeave={() => setHover('not hovering')}>
-        {text} and you are hovering over this
-      </button>
-    )
+
+    //
+    // When required, display the component with an anchor tag OR button tag
+    //
+
+    if (setAnchor) {
+      return (
+        <a className={`${classes.trafficLight} ${lightStyling} btn`} href={anchorHref}>
+        {text}
+        </a>
+      )
+    }
+
+    if (!setAnchor) {
+      return (
+        <button className={`${classes.trafficLight} ${lightStyling} btn`}>
+          {text}
+        </button>
+      )
+    }
   }
 
   // Safety measure - mainly here because of the guide from stackover in one of the above descriptions
