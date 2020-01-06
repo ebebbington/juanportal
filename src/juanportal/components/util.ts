@@ -58,8 +58,6 @@ export const notify = ((title: string, text: string, type: string) => {
     newNotiyScript.id = 'notify'
     newNotiyScript.async = true;
     newNotiyScript.onload = (a: any) => {
-        console.log('script loaded')
-        console.log(a)
         if (type === 'success')
             //@ts-ignore
             vNotify.success({text: text, title: title})
