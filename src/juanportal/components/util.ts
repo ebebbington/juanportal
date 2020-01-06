@@ -46,10 +46,18 @@
  * @return {void}
  */
 export const notify = ((title: string, text: string, type: string) => {
-    const script = document.createElement("script");
-    script.src = "/public/libs/vanilla-notify.min.js";
-    script.async = true;
-    script.onload = (a: any) => {
+    // Checking for an old script and removing it because prior to this, the body would just fill up
+    // with script tags, so here it's just a cleanup job
+    const oldNotifyScript = document.querySelector('script#notify')
+    if (oldNotifyScript) {
+        // remove
+        oldNotifyScript.parentNode?.removeChild(oldNotifyScript)
+    }
+    const newNotiyScript = document.createElement("script");
+    newNotiyScript.src = "/public/libs/vanilla-notify.min.js";
+    newNotiyScript.id = 'notify'
+    newNotiyScript.async = true;
+    newNotiyScript.onload = (a: any) => {
         console.log('script loaded')
         console.log(a)
         if (type === 'success')
@@ -70,5 +78,5 @@ export const notify = ((title: string, text: string, type: string) => {
         // or
         // window.vNotify.[...]
     }
-    document.body.appendChild(script);
+    document.body.appendChild(newNotiyScript);
 })
