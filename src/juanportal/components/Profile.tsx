@@ -8,6 +8,19 @@ interface IProps {
     id?: string
 }
 
+interface IProfile {
+    _id: string,
+    name: string,
+    description: string,
+    image: string
+}
+
+interface IJsonResponse {
+    success: boolean,
+    message: string,
+    data: any
+}
+
 /**
  * @class Profile
  * 
@@ -40,11 +53,11 @@ interface IProps {
  * @requires React
  * 
  * @property {object} profiles Holds profiles to display
- * @property {boolean} hasProfiles Determines where the component holds any profiles
  * @property {boolean} viewSingle Tells the component whether it is viewing a specific profile
  * @property {number} idOfProfileToFind Pass in the id of a profile to find
  * @property {number} numberOfProfilesToGet The amount of profiles to retrieve
  * 
+ * @method fetchToApiAsJson A reusable promise method to make HTTP requests to this server and the API (as it checks specific data returned)
  * @method findProfile Finds a profile with a given id
  * @method findManyProfiles Finds many profiles given a number
  * @method deleteProfile Deletes a profile from the API and the image file from this server
@@ -60,13 +73,6 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
     const [viewSingle, setViewSingle] = useState(false)
 
     /**
-     * Check if this profile has profiles
-     * 
-     * @var {boolean}
-     */
-    const [hasProfiles, setHasProfiles] = useState(false)
-
-    /**
      * Holds the profiles to display
      * 
      * @var {object[]}
@@ -76,16 +82,59 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
     /**
      * Id of a profile to find if passed in
      * 
-     * @var {number}
+     * @var {number|null}
      */
     const idOfProfileToFind: string|null = id || null
 
     /**
      * Amount of profiles to retrieve
      * 
-     * @var {number}
+     * @var {number|null}
      */
     const numberOfProfilesToGet: number|null = count || null
+
+    /**
+     * @method fetchToApiAsJson
+     * 
+     * @description
+     * Sends a HTTP request to the given url with the options if passed in,
+     * converts the response to json and checks if the property success is true.
+     * Resolves when the success is true and rejects when it isn't or if an error occured
+     * 
+     * @example
+     * const url: '/some/url'
+     * [const options: any = { method: 'DELETE' }]
+     * fetchToApiAsJson(url, options).then((res) => {
+     *  // res = the response from the API, and success is true
+     * }).catch((err) => {
+     *  // err is either the json response or error object.
+     * })
+     * 
+     * @param {string} url Url to make the reuqest to
+     * @param {object} options The key value pair of HTTP options 
+     * 
+     * @return {Promise<any>}
+     */
+    const fetchToApiAsJson = (url: string, options?: { [key: string]: any }): Promise<any> => {
+        console.log('[fetchToApiAsJson')
+        console.log('URL: ' + url)
+        console.log('Options: ' + options)
+        return new Promise((resolve, reject) => {
+            fetch(url, options).then((response) => {
+                return response.json()
+            }).then((json: IJsonResponse) => {
+                console.log(json)
+                if (json.success) {
+                    resolve(json)
+                }
+                if (!json.success) {
+                    reject(json)
+                }
+            }).catch((err) => {
+                reject(err)
+            })
+        })
+    }
 
     /**
      * @method findProfile
@@ -101,29 +150,14 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
      * 
      * @return {void}
      */
-    function findProfile (): void {
-    console.log('[findProfile]')
-      fetch('/api/profile/id/' + idOfProfileToFind)
-        // Return the json response
-        .then((response) => {
-            return response.json()
-        })
-        // Handle the json data
-        .then((json: {success: boolean, message: string, data: any}) => {
-            // We expect an object (the profile) in the data property
-            if (json.success && json.data._id) {
-                notify('Find Profile', json.message, 'success')
-                const arr: any = [json.data]
-                setProfiles(arr)
-                setHasProfiles(true)
-                setViewSingle(true)
-            } else {
-                notify('Find Profile', json.message, 'error')
-                console.log('Something isnt right...')
-                console.log(json)
-            }
-        })
-        .catch((err) => {
+    const findProfile = (): void => {
+        console.log('[findProfile]')
+        const url: string = '/api/profile/id/' + idOfProfileToFind
+        fetchToApiAsJson(url).then((res: any) => {
+            notify('Find Profile', res.message, 'success')
+            const arr: any = [res.data]
+            setProfiles(arr)
+        }).catch((err) => {
             notify('Find Profile', `Error occured, see console`, 'error')
             console.error(err)
         })
@@ -140,107 +174,58 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
      * 
      * @return {void}
      */
-    function findManyProfiles () {
+    const findManyProfiles = (): void => {
         console.log('[findManyProfiles]')
-        fetch('/api/profile/count/' + numberOfProfilesToGet)
-            .then((response) => {
-                return response.json()
-            })
-            .then((json: {success: boolean, message: string, data: any}) => {
-                if (json.success && json.data.length > 0) {
-                    notify('Find Many Profiles', json.message, 'success')
-                    setProfiles(json.data)
-                    console.log(profiles)
-                    setHasProfiles(json.data.length ? true : false)
-                    setViewSingle(false)
-                } else {
-                    notify('Find Many Profiles', json.message, 'error')
-                    console.error('Response wasnt as expected:')
-                    console.error(json)
-                }
-            })
-            .catch((err) => {
-                notify('Find Many Profiles', 'Failed', 'error')
-                console.error('Error caught when trying to find many profiles')
-                console.error(err)
-            })
+        const url: string = '/api/profile/count/' + numberOfProfilesToGet
+        fetchToApiAsJson(url).then((res: any) => {
+            notify('Find Many Profiles', res.message, 'success')
+            setProfiles(res.data)
+        }).catch((err) => {
+            notify('Find Many Profiles', 'Failed', 'error')
+            console.error('Error caught when trying to find many profiles')
+            console.error(err)
+        })
     }
 
     /**
      * @method deleteProfile
      * 
      * @description
-     * Send a request to THIS server to delete an image from the file system and the API to delete the profile
-     * Called when a profile is getting deleted
+     * Send a request to the API and this server to delete a profile
      * 
      * @example
-     * // get the filename to delete e.g. 'fkkjjk44r5kjf4jk.jpg'
-     * this.removeImage(filename)
+     * // get the filename to delete e.g. 'fkkjjk44r5kjf4jk.jpg' and the id
+     * this.deleteProfile(id, filename)
      * 
-     * @param filename 
+     * @param {string} id ID of the profile to delete
+     * @param {string} filename Filename of the profiles image to delete
      */
-    function deleteProfile (id: string, filename: string) {
+    const deleteProfile = (id: string, filename: string) => {
         console.log('[deleteProfile]')
-        fetch('/api/profile/id/' + id, { method: 'DELETE'})
-            .then((response) => {
-                return response.json()
+        const profileUrl: string = '/api/profile/id/' + id
+        const profileOptions = { method: 'DELETE' }
+        const imageUrl: string = '/profile/image?filename=' + filename
+        const imageOptions = { method: 'DELETE' } 
+        fetchToApiAsJson(profileUrl, profileOptions).then(() => fetchToApiAsJson(imageUrl, imageOptions)).then((res: any) => {
+            notify('Delete Profile', res.message, 'success')
+            const updatedProfiles = profiles.filter((obj: any) => {
+                return obj._id !== id
             })
-            .then((json: {success: boolean, message: string, data: any}) => {
-                if (!json.success) {
-                    notify('Delete Profile', json.message, 'error')
-                    console.error('Failed request:')
-                    console.error(json)
-                    return false
+            setProfiles(updatedProfiles)
+            // Remove the HTML block from the DOM
+            const deleteButton: any = document.querySelector(`button.delete[data-id="${id}"`)
+            // Below if statements are here to stop errors of 'object is possibly null'
+            if (deleteButton)  {
+                const topParent: any = deleteButton.closest('.well.profile')
+                if (topParent) {
+                    topParent.remove()
                 }
-                notify('Delete Profile', json.message, 'success')
-                // If a profile was delete, then remove the image too
-                fetch('/profile/image?filename=' + filename, { method: 'DELETE' })
-                    .then((response) => {
-                        return response.json()
-                    })
-                    .then((json: {success: boolean, message: string, data: any}) => {
-                        // remove the profile from the state
-                        if (!json.success) {
-                            notify('Delete Profile', json.message, 'error')
-                            return false
-                        }
-                        notify('Delete Profile', json.message, 'success')
-                        const updatedProfiles = profiles.filter((obj: any) => {
-                            return obj._id !== id
-                        })
-                        console.log('updated profiles:')
-                        console.log(updatedProfiles)
-                        setProfiles(updatedProfiles)
-                        console.log('checking if any profiles exist')
-                        const hasProfiles = profiles.length > 0 ? true : false
-                        console.log(hasProfiles)
-                        setHasProfiles(hasProfiles)
-                        // Check if we are viewing a single profile, to then redirect
-                        if (viewSingle) {
-                            console.log('redirecting')
-                            window.location.href = '/'
-                        }
-                        // If we aren't, remove this profile from the DOM
-                        if (!viewSingle) {
-                            console.log('removing a profile from the dom')
-                            const deleteButton = document.querySelector(`button.delete[data-id="${id}"`)
-                            // @ts-ignore
-                            const topParent = deleteButton.closest('.well.profile')
-                            // @ts-ignore
-                            topParent.remove()
-                        }
-                    })
-                    .catch((err) => {
-                        notify('Delete Profile', err.message, 'error')
-                        console.error('Error caught when trying to delete an image:')
-                        console.error(err)
-                    })
-            })
-            .catch((err) => {
-                notify('Delete Profile', err.message, 'error')
-                console.error('Error caught when trying to delete a profile:')
-                console.error(err)
-            })
+            }
+        }).catch((err) => {
+            notify('Delete Profile', err.message, 'error')
+            console.error('Error caught when trying to delete a profile:')
+            console.error(err)
+        })
     }
 
     /**
@@ -256,15 +241,16 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
      * 
      * @return {void}
      */
-    function handleDelete (id: string) {
+    const handleDelete = (id: string) => {
         console.log('[handleDelete]')
-        console.log(id)
         // get image filename from the current profiles list
         let imageFilename: string = ''
         profiles.forEach((item: any, index: number) => {
             if (item._id === id) imageFilename = item.image
         })
         deleteProfile(id, imageFilename)
+        // Check if we are viewing a single profile, to then redirect as no profile will be left on that page
+        if (viewSingle) window.location.href = '/'
     }
 
     /**
@@ -272,37 +258,47 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
      * 
      * @description
      * Acts as both component did mount and component did update,
-     * so this is called before rendering and when hooks are used
+     * so this is called before rendering
      */
     useEffect (() => {
         console.log('[useEffect]')
         // Render a single profile by id if requested
-        if (idOfProfileToFind)
+        if (idOfProfileToFind) {
+            console.log('Going to find a profile as an id was passed in')
+            setViewSingle(true)
             findProfile()
+        }
         // Render number of profiles to find if requested
-        if (numberOfProfilesToGet)
+        if (numberOfProfilesToGet) {
+            console.log('Going to find many profiles as count was passed in')
+            setViewSingle(false)
             findManyProfiles()
-
-        if (profiles.length < 1) {
-            console.log('profiles.length is less than 1')
-            setHasProfiles(false)
         }
     }, [])
 
+    /**
+     * Here to 'act' as a component did update, so we can keep track of the state
+     */
+    function componentDidUpdate () {
+        console.log('[componentDidUpdate]')
+        console.log('Profiles: ', profiles)
+        console.log('View single: ', viewSingle)
+    }
+    componentDidUpdate()
+    
     // Display Profiles in the state
-    if (hasProfiles) {
-        //const profiles = this.state.profiles
+    if (profiles.length > 0) {
         return (
-            <div>
-                {profiles.map((profile: any) => 
+            <div className="row">
+                {profiles.map((profile: IProfile) => 
                     <div className="well profile" key={profile._id}>
-                        <div className="col-xs-12 col-sm-3 col-md-4">
+                        <div className="col-xs-12 col-sm-4 col-md-5">
                             <img alt="Image of user" src={`/public/images/${profile.image}`}></img>
                         </div>
-                        <div className="col-xs-12 col-sm-9 col-md-8">
+                        <div className="col-xs-12 col-sm-8 col-md-7">
                             <h3 className="name">{profile.name}</h3>
                             {viewSingle &&
-                                <p className="description">{profile.description}</p>
+                                <p className="description">{profile.description || <i>No description</i>}</p>
                             }
                             <div className="actions">
                                 {viewSingle === false &&
@@ -322,7 +318,7 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
     }
 
     // display this at the end so it doesn't 'flash'
-    if (!hasProfiles) {
+    if (profiles.length < 1) {
         return (
             <div className="well no-profiles">
                 <h3>Oh no! No profiles were found! Why not
