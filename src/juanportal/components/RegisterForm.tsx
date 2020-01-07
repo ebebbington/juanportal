@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
-import BaseComponent from './BaseComponent'
+import { notify, fetchToApiAsJson } from './util'
 
 
 
@@ -46,6 +46,7 @@ import BaseComponent from './BaseComponent'
  * @property {object} state         Holds data related to the component
  *
  * @method handleNameChange         Handles the changed state of the input fields
+ * @method handleDescriptionChange  Handles the setting of the description
  * @method handleSubmit             Handles the click of the submit button
  * @method validateForm             Validates all fields
  * @method uploadImage              Sends a request to upload the posted image
@@ -57,7 +58,7 @@ import BaseComponent from './BaseComponent'
  * @method render                   Automatically called, renders the form in the DOM
  */
 // todo :: find out a way to hide the notify message on focus or something
-class RegisterForm extends BaseComponent {
+const RegisterForm = () => {
 
     /**
      * Holds data related to the component
@@ -65,43 +66,52 @@ class RegisterForm extends BaseComponent {
      * The state property should be where you assign component-specific data, which is why
      * i have expanded upon it
      *
-     * @var {object}
+     * @var {string}
      */
-    state: { name: string } = { name: '' }
+    const [name, setName] = useState('')
 
     /**
-     * @method constructor
+     * Holds the value in the description field
      * 
-     * @description
-     * Always call super(props) right away
-     *
-     * @param {object} props The properties pass in
+     * @var {string}
      */
-    constructor(props: object) {
-        super(props);
-        console.log('[constructor]')
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleFileChange = this.handleFileChange.bind(this)
-    }
+    const [description, setDescription] = useState('')
+
+    /**
+     * Holds the filename
+     * 
+     * @var {string}
+     */
+    const [filename, setFilename] = useState('')
 
     /**
      * @method handleNameChange
      * 
-     * @description
-     * Handles the change of the name input with each key press.
-     * Mainly to define the name in the state
+     * @example
+     * <button onChange={event => handleNameChange(event.target.value)}>
      *
-     * @param {any} event The event object
+     * @param {string} name The value from the name input field
      *
      * @return {void}
      */
-    private handleNameChange(event: any): void {
+    const handleNameChange = (name: string): void => {
         console.log('[handleNameChange]')
-        // Check the name
-        console.log('The name was changed. Setting it now')
-        // todo :: we really should do this for all fields
-        this.setState({name: event.target.value})
+        setName(name)
+    }
+
+    /**
+     * @method handleDescriptionChange
+     * 
+     * @example
+     * <button onChange={event => handleDescriptionChange(event.target.value)}>
+     * 
+     * @param {string} description  The value from the description input field
+     * 
+     * @return {void}
+     */
+    const handleDescriptionChange = (description: string): void => {
+        console.log('[handleDescriptionChange]')
+        setDescription(description)
     }
 
     /**
@@ -117,61 +127,53 @@ class RegisterForm extends BaseComponent {
      *
      * @return {void}
      */
-    private handleSubmit(event: any): void {
+    const handleSubmit = (event: any): void => {
         console.log('[handleSubmit]')
         event.preventDefault()
-        console.log('Clicked submit!')
-        console.log('Sending you to the register function!')
-        let filename = null
-        const filenameElem = document.getElementById('filname')
-        if (filenameElem) filename = filenameElem.innerText
-        let name = null
-        const nameElem: any = document.getElementById('name')
-        if (nameElem) name = nameElem.value
-        let description = null
-        const descriptionElem: any = document.getElementById('description')
-        if (descriptionElem) description = descriptionElem.value
-        const validated: boolean = this.validateForm(name, description, filename)
-        if (validated) this.registerProfile()
+        const validated: boolean = validateForm()
+        if (validated) {
+            registerProfile()
+        } else {
+            notify('Submit', 'Your data failed validation', 'error')
+        }
     }
 
     /**
      * @method validateForm
      * 
      * @description
-     * Validates all fields in the form
+     * Validates all fields in the form, by checking the properties inside this component
+     * (after setting their state)
      * 
      * @example
-     * const success = this.validateForm(name, description, filename)
+     * // set the input fields using hooks here ...
+     * const success = this.validateForm()
      * if (success) // do what you need to do
-     * 
-     * @param {string} name Value of the name field 
-     * @param {string} description Value of the description field
-     * @param {string} filename Name of the file chosen (if chosen)
      * 
      * @return {boolean} Success of the validation
      */
-    private validateForm (name: string, description: string|null, filename: string|null): boolean {
+    const validateForm = (): boolean => {
         console.log('[validateForm]')
         if (!name || name.length < 2) {
-            this.notify('Name', 'Must be set and longer than 2 characters', 'error')
+            notify('Name', 'Must be set and longer than 2 characters', 'error')
             return false
         }
         if (name.length > 150) {
-            this.notify('Name', 'Must not be longer than 150 characters', 'error')
+            notify('Name', 'Must not be longer than 150 characters', 'error')
             return false
         }
-        if (description && description.length > 400) {
-            this.notify('Description', 'Must be less than 400 characters', 'error')
+        if (description.length > 400) {
+            notify('Description', 'Must be less than 400 characters', 'error')
             return false
         }
-        const exts = ['.jpg', '.jpeg', '.png']
-        if (filename && !exts.includes(filename.substr(-5).toLowerCase())) {
-            this.notify('Image', 'File must be of type .jpg, .png or .jpeg', 'error')
+        const exts = ['jpg', 'jpeg', 'png']
+        const arr = filename.split('.')
+        const fileExt = arr[arr.length -1].toLowerCase()
+        if (filename && !exts.includes(fileExt)) {
+            notify('Image', 'File must be of type .jpg, .png or .jpeg', 'error')
             return false
         }
         return true
-        
     }
 
     /**
@@ -180,19 +182,18 @@ class RegisterForm extends BaseComponent {
      * @description
      * Sends a request to upload the file and returns the response
      * 
-     * @param {string} filename Filename of the image thats saved with the profile
+     * @param {string} newFilename Filename of the image thats saved with the profile
      * 
      * @return {Promise}
      */
-    private uploadImage (filename: string): Promise<any> {
+    const uploadImage = (newFilename: string): Promise<any> => {
         console.log('[uploadImage]')
-        //@ts-ignore 
         const form: any = document.querySelector('form')
         const data: any = new URLSearchParams()
         for (const pair of new FormData(form)) {
             data.append(pair[0], pair[1])
         }
-        return fetch('/profile/image?filename=' + filename, { method: 'POST', body: data})
+        return fetch('/profile/image?filename=' + newFilename, { method: 'POST', body: data})
     }
 
     /**
@@ -204,49 +205,31 @@ class RegisterForm extends BaseComponent {
      * 
      * @example
      * this.registerProfile()
-     * 
      */
-    private registerProfile () {
+    const registerProfile = () => {
         console.log('[registerProfile]')
-        console.log('The data passed validation!')
-        //@ts-ignore
         const form: any = document.querySelector('form')
         const data: any = new URLSearchParams()
         for (const pair of new FormData(form)) {
             data.append(pair[0], pair[1])
         }
-        fetch('/api/profile', { method: 'POST', body: data})
-            .then((response) => {
-                return response.json()
-            })
-            .then((json: {success: boolean, message: string, data: any}) => {
-                if (!json.success) {
-                    console.error('Bad request:')
-                    console.error(json)
-                    this.notify('Profile Upload', json.message, json.success ? 'success' : 'error')
-                    return false
-                }
-                this.notify('Profile Upload', json.message, json.success ? 'success' : 'error')
-                const filename: string = json.data
-                this.uploadImage(filename)
-                    .then((response) => {
-                        return response.json()
-                    })
-                    .then((json) => {
-                        // todo :: implement notifer
-                        this.notify('Image Upload', json.message, json.success ? 'success' : 'error')
-                    })
-                    .catch((err) => {
-                        console.error('Error caught when uploading the file')
-                        console.error(err)
-                        this.notify('Image Upload', 'Failed to save the image to the filesystem', 'error')
-                    })
-            })
-            .catch((err) => {
-                console.error('Error thrown when posting a profile')
-                console.error(err)
-                this.notify('Profile', 'Failed to upload the profile', 'error')
-            })
+        const profileUrl: string = '/api/profile'
+        const profileOptions: any = { method: 'POST', body: data}
+        const imageUrl = '/profile/image?filename='
+        const imageOptions = { method: 'POST', body: data}
+        fetchToApiAsJson(profileUrl, profileOptions).then(response => fetchToApiAsJson(imageUrl + response.data, imageOptions)).then((res) => {
+            if (!res.success) {
+                console.error('Bad request:')
+                console.error(res)
+                notify('Profile Upload', res.message, res.success ? 'success' : 'error')
+                return false
+            }
+            notify('Profile Upload', res.message, res.success ? 'success' : 'error')
+        }).catch((err) => {
+            console.error('Error thrown when posting a profile')
+            console.error(err)
+            notify('Profile', 'Failed to upload the profile', 'error')
+        })
     }
 
     /**
@@ -266,13 +249,16 @@ class RegisterForm extends BaseComponent {
      * 
      * @return {boolean} Success of whether it passed validation or not
      */
-    private validateFilename (filename: string): boolean {
+    const validateFilename = (): boolean => {
         console.log('[validateFilename]')
-        const exts: string[] = ['.jpg', '.jpeg', '.png']
-        const fileExt = filename.substr(-4).toLowerCase()
+        const exts: string[] = ['jpg', 'jpeg', 'png']
+        const arr = filename.split('.')
+        const fileExt = arr[arr.length -1].toLowerCase()
         if (exts.includes(fileExt)) {
+            console.log('Filename passed')
             return true
         } else {
+            console.log('Filename failed')
             return false
         }
     }
@@ -291,102 +277,72 @@ class RegisterForm extends BaseComponent {
      * 
      * @return {void}
      */
-    private handleFileChange (event: any): void {
+    const handleFileChange = (event: any): void => {
         console.log('[handleFileChange]')
-        let filename: string = ''
-         // So it doesn't throw an error in the case where no file is selected e.g. closes the prompt
+        //
+        // Filename
+        //
+        // So it doesn't throw an error in the case where no file is selected e.g. closes the prompt
         try {
-            filename = event.target.files[0].name
+            setFilename(event.target.files[0].name)
         } catch (e) {
+            setFilename('')
+            console.error('Caught when trying to set the filename')
             // As the file (if been selected) is now gone due to a cancellation,
             // remove the text to represent 'No file chosen'
             const filenameElem = document.getElementById('filename')
             if (filenameElem) filenameElem.innerHTML = ''
             return
         }
+        //
+        // Validate name to show the tick or cross icon
+        //
         const filenameElem = document.getElementById('filename')
         if (filenameElem) {
             // check if the filename has a correct extension
-            const success = this.validateFilename(filename)
+            const success = validateFilename()
             if (success) {
                 // display a tick
                 const tickHtml = '<i class="fas fa-check-circle fa-lg"></i>'
-                filenameElem.innerHTML = filename + tickHtml
+                filenameElem.innerHTML = event.target.files[0].name + tickHtml
             }
             if (!success) {
                 // display a cross
                 const crossHtml = '<i class="fas fa-times fa-lg"></i>'
-                filenameElem.innerHTML = filename + crossHtml
+                filenameElem.innerHTML = event.target.files[0].name + crossHtml
             }
         }
     }
 
-    /**
-     * @method componentDidMount
-     * 
-     * @description
-     * Called when the component is first rendered
-     *
-     * @return {void}
-     */
-    public componentDidMount(): void {
-        console.log('[componentDidMount]')
-    }
-
-    /**
-     * @method componentDidUpdate
-     * 
-     * @description Is called when the component updated e.g. from a `setSate({})`
-     * 
-     * @example
-     * this.setState({property: value})
-     *
-     * @param prevProps
-     * @param prevState
-     * @param snapshot
-     *
-     * @return {void}
-     */
-    public componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<{}>, snapshot?: any): void {
+    const componentDidUpdate = () => {
         console.log('[componentDidUpdate]')
-        console.log('Showing the new state:')
-        console.log(this.state)
+        console.log('Name: ' + name)
+        console.log('Description: ' + description)
+        console.log('Filename: ' + filename)
     }
+    componentDidUpdate()
 
-
-    /**
-     * @method render
-     * 
-     * @description
-     * This method is called when before the component mounts and after the constructor.
-     * Handles the display of the HTML.
-     * Re-renders when component state changes
-     * 
-     * @return
-     */
-    public render() {
-        console.log('[render]')
-        return (
-            <form>
-                <h1>Register a Profile</h1>
-                <fieldset>
-                    <label className="field-container">
-                        <input id="name" className="form-control" name="name" placeholder="Your Name *" type="text"
-                               onChange={this.handleNameChange} required/>
-                    </label>
-                    <label className="field-container">
-                        <input className="form-control" name="description" placeholder="Your Description" type="text"/>
-                    </label>
-                    <label className="field-container file-upload-container">
-                        <p className="btn btn-info">Upload Profile Image</p>
-                        <i id="filename"></i>
-                        <input id="file-upload" name="image" type="file" onChange={this.handleFileChange}/>
-                    </label>
-                    <input type="submit" className="btn btn-primary" onClick={this.handleSubmit} value="Submit"/>
-                </fieldset>
-            </form>
-        )
-    }
+    return (
+        <form>
+            <h1>Register a Profile</h1>
+            <fieldset>
+                <label className="field-container">
+                    <input id="name" className="form-control" name="name" placeholder="Your Name *" type="text"
+                        onChange={event => handleNameChange(event.target.value)} required/>
+                </label>
+                <label className="field-container">
+                    <input className="form-control" name="description" placeholder="Your Description" type="text"
+                        onChange={event => handleDescriptionChange(event.target.value)}/>
+                </label>
+                <label className="field-container file-upload-container">
+                    <p className="btn btn-info">Upload Profile Image</p>
+                    <i id="filename"></i>
+                    <input id="file-upload" name="image" type="file" onChange={event => handleFileChange(event)}/>
+                </label>
+                <input type="submit" className="btn btn-primary" onClick={handleSubmit} value="Submit"/>
+            </fieldset>
+        </form>
+    )
 }
 
 /**
