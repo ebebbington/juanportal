@@ -23,45 +23,6 @@ head, body {
     opacity: 1;
 }
 
-.no-profiles {
-    text-align: center;
-    font-size: 1.2em;
-    text-align: center;
-    display: block;
-    margin-top: 0.5em;
-}
-
-#profile-container .profile {
-    overflow: hidden;
-    margin: 1em;
-}
-#profile-container .profile img {
-    max-width: 100%;
-    max-height: 100%;
-    width: 100%;
-    overflow: hidden;
-    display: block;
-
-}
-#profile-container .profile .actions {
-    text-align: center;
-}
-#profile-container .profile .actions .action {
-    display: block;
-    margin: 0.5em auto 0.5em auto;
-}
-#profile-container .profile h3.name {
-    text-align: center;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-#profile-container .profile p.description {
-    word-break: break-word;
-    text-align: center;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
 /**
  * Whole form
  */

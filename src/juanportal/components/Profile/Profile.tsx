@@ -2,6 +2,8 @@ import React, { useState, ReactElement, useEffect, useCallback } from 'react'
 import ReactDOM from 'react-dom'
 import Button from '../button/button'
 import { notify, fetchToApiAsJson } from '../util'
+//@ts-ignore
+import styles from './Profile.module.css'
 
 interface IProps {
     count?: number,
@@ -242,22 +244,22 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
         return (
             <div className="row">
                 {profiles.map((profile: IProfile) => 
-                    <div className="well profile" key={profile._id}>
+                    <div className={`well ${styles.profile}`} key={profile._id}>
                         <div className="col-xs-12 col-sm-4 col-md-5">
-                            <img alt="Image of user" src={`/public/images/${profile.image}`}></img>
+                            <img className={styles.img} alt="Image of user" src={`/public/images/${profile.image}`}></img>
                         </div>
                         <div className="col-xs-12 col-sm-8 col-md-7">
-                            <h3 className="name">{profile.name}</h3>
+                            <h3 className={styles.name}>{profile.name}</h3>
                             {viewSingle &&
-                                <p className="description">{profile.description || <i>No description</i>}</p>
+                                <p className={styles.description}>{profile.description || <i>No description</i>}</p>
                             }
-                            <div className="actions">
+                            <div className={styles.actions}>
                                 {viewSingle === false &&
-                                    <div className="view action">
+                                    <div className={styles.action}>
                                         <Button text="View Profile" lightColour="green" setAnchor={true} anchorHref={`/profile/id/${profile._id}`} />
                                     </div>
                                 }
-                                <div className="delete action" onClick={() => handleDelete(profile._id)}>
+                                <div className={styles.action} onClick={() => handleDelete(profile._id)}>
                                     <Button text="Delete Profile" lightColour="amber" />
                                 </div>
                             </div>
@@ -271,7 +273,7 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
     // display this at the end so it doesn't 'flash'
     if (profiles.length < 1) {
         return (
-            <div className="well no-profiles">
+            <div className={`well ${styles.noProfiles}`}>
                 <h3>Oh no! No profiles were found! Why not
                     <a href="/profile/add"> add one?</a>
                 </h3>

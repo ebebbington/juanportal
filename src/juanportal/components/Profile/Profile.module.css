@@ -1,0 +1,44 @@
+/* Displayed when no profile was fond */
+.noProfiles {
+    text-align: center;
+    font-size: 1.2em;
+    text-align: center;
+    display: block;
+    margin-top: 0.5em;
+}
+/* Container for all content */
+.profile {
+    overflow: hidden;
+    margin: 1em;
+}
+/* Image of the profile */
+img {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    overflow: hidden;
+    display: block;
+
+}
+/* Container for the actions */
+.actions {
+    text-align: center;
+}
+/* Each action inside the above container */
+.action {
+    display: block;
+    margin: 0.5em auto 0.5em auto;
+}
+/* Name associated with the profile */
+.name {
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+/* Description of the profile */
+.description {
+    word-break: break-word;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
