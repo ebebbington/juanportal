@@ -1,8 +1,3 @@
-- Cleanup and refactor new profile func comp, also find a way to inherit so we can use the notify method of basecomponent
-- fix problem of profile comp not showing empty profiles markup
-- move functions outside of the components and above the comp declaration as functions within a component are discouraged
-- Probably gnnna have to convert class comps to func comps if i wish to uuse hooks inside a component that another one will use e.g. Profile cannot use button because Profile is a class and button uses hooks
-- Sort out stylings (css modules) for profile component
 - Sort out stylings (css modules) for register form component
 - Develop tests for reacto components
 - Better style the client side header and sidebar
