@@ -78,3 +78,51 @@ export const notify = ((title: string, text: string, type: string) => {
     }
     document.body.appendChild(newNotiyScript);
 })
+
+interface IJsonResponse {
+    success: boolean,
+    message: string,
+    data: any
+}
+/**
+ * @method fetchToApiAsJson
+ * 
+ * @description
+ * Sends a HTTP request to the given url with the options if passed in,
+ * converts the response to json and checks if the property success is true.
+ * Resolves when the success is true and rejects when it isn't or if an error occured
+ * 
+ * @example
+ * const url: '/some/url'
+ * [const options: any = { method: 'DELETE' }]
+ * fetchToApiAsJson(url, options).then((res) => {
+ *  // res = the response from the API, and success is true
+ * }).catch((err) => {
+ *  // err is either the json response or error object.
+ * })
+ * 
+ * @param {string} url Url to make the reuqest to
+ * @param {object} options The key value pair of HTTP options 
+ * 
+ * @return {Promise<any>}
+ */
+ export const fetchToApiAsJson = (url: string, options: { [key: string]: any } = {}): Promise<any> => {
+    console.log('[fetchToApiAsJson')
+    console.log('URL: ' + url)
+    console.log('Options: ' + options)
+    return new Promise((resolve, reject) => {
+        fetch(url, options).then((response) => {
+            return response.json()
+        }).then((json: IJsonResponse) => {
+            console.log(json)
+            if (json.success) {
+                resolve(json)
+            }
+            if (!json.success) {
+                reject(json)
+            }
+        }).catch((err) => {
+            reject(err)
+        })
+    })
+}
