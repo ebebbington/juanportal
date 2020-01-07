@@ -1,7 +1,7 @@
 import React, { useState, ReactElement, useEffect, useCallback } from 'react'
 import ReactDOM from 'react-dom'
-import Button from './button'
-import { notify, fetchToApiAsJson } from './util'
+import Button from '../button/button'
+import { notify, fetchToApiAsJson } from '../util'
 
 interface IProps {
     count?: number,
