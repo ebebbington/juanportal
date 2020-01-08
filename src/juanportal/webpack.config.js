@@ -3,7 +3,8 @@ const path = require('path')
 module.exports = {
     entry: {
         profile: './components/Profile/Profile.tsx',
-        registerForm: './components/RegisterForm/RegisterForm.tsx'
+        registerForm: './components/RegisterForm/RegisterForm.tsx',
+        header: './components/header/header.tsx'
     },
     devtool: 'inline-source-map',
     output: {
