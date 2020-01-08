@@ -2,6 +2,8 @@ import React, { useState, ReactElement, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 //@ts-ignore
 import headerStyles from './header.module.css'
+//@ts-ignore
+import { useMediaQuery } from 'react-responsive'
 
 const Header = () => {
 
@@ -32,10 +34,12 @@ const Header = () => {
     }
     componentDidMount()
 
-    const hidden: string = !menuExpanded ? 'hidden' : ''
+    const maxScreenWidthToDisplayOn = '640px'
+    const canDisplay = useMediaQuery({query: `(max-width: ${maxScreenWidthToDisplayOn})`})
 
     return (
         <div className={headerStyles.header}>
+            {canDisplay && 
             <div className={headerStyles.navMenuTrigger}>
                 <button className="btn" onClick={handleMenuClick}>
                     <i className={`fa fa-2x ${menuExpanded ? 'fa-times' : 'fa-bars'}`}></i>
@@ -47,6 +51,7 @@ const Header = () => {
                     </ul>
                 </div>
             </div>
+            }
             <div className={headerStyles.titleHolder}>
                 <h1>
                     <strong>
