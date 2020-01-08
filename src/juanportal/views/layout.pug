@@ -11,8 +11,6 @@ html
         script(src="/public/libs/bootstrap.min.js", crossorigin="anonymous")
         // bootstrap css
         link(rel="stylesheet", href="/public/libs/bootstrap.min.css", crossorigin="anonymous")
-        // Font awesome cdn
-        script(src="https://kit.fontawesome.com/49dfc91613.js" crossorigin="anonymous")
         // Logo
         link(rel="shortcut icon", href="/public/images/juanportal-logo.png")
         // Babel
@@ -29,11 +27,17 @@ html
         // Notification library - see https://github.com/MLaritz/Vanilla-Notify
         link(rel="stylesheet", href="/public/libs/vanilla-notify.css")
         script(src="/public/libs/vanilla-notify.min.js")
+        // IDK
+        link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous")
     body
         header#header
-            h1
-                strong.well #{title}
-                br
+            div.menu-holder
+                button.btn
+                    i.fa.fa-bars.fa-3x
+            div.title-holder
+                h1
+                    strong
+                        i #{title}
         .container
             .col-xs-3 
                 #sidebar 
