@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { notify, fetchToApiAsJson } from '../util'
 //@ts-ignore
-import styles from './RegisterForm.module.css'
+import formStyles from './RegisterForm.module.css'
 import Button from '../button/button'
 
 
@@ -85,8 +85,6 @@ const RegisterForm = () => {
      * @var {string}
      */
     const [filename, setFilename] = useState('')
-
-    const [file, setFile] = useState(null)
 
     /**
      * @method handleNameChange
@@ -261,12 +259,10 @@ const RegisterForm = () => {
         const filenameElem = document.getElementById('filename')
         try {
             setFilename(event.target.files[0].name)
-            setFile(event.target.files[0])
             if (filenameElem) filenameElem.innerHTML = event.target.files[0].name
         } catch (e) {
             // As the file (if been selected) is now gone due to a cancellation, remove the text to represent 'No file chosen'
             setFilename('')
-            setFile(null)
             if (filenameElem) filenameElem.innerHTML = ''
             console.error('Caught when trying to set the filename')
         }
@@ -278,28 +274,27 @@ const RegisterForm = () => {
         console.log('Description: ' + description)
         console.log('Filename: ' + filename)
         console.log('File: ')
-        console.log(file)
     }
     componentDidUpdate()
 
     return (
-        <form className={styles.form}>
+        <form className={formStyles.form}>
             <h1>Register a Profile</h1>
             <fieldset>
-                <label className={styles.fieldContainer}>
+                <label className={formStyles.fieldContainer}>
                     <input id="name" className="form-control" name="name" placeholder="Your Name *" type="text"
                         onChange={event => handleNameChange(event.target.value)} required/>
                 </label>
-                <label className={styles.fieldContainer}>
+                <label className={formStyles.fieldContainer}>
                     <input className="form-control" name="description" placeholder="Your Description" type="text"
                         onChange={event => handleDescriptionChange(event.target.value)}/>
                 </label>
-                <label className={styles.fileUploadContainer}>
+                <label className={formStyles.fileUploadContainer}>
                     <p className="btn btn-info">Upload Profile Image</p>
-                    <i id="filename" className={styles.filename}></i>
+                    <i id="filename" className={formStyles.filename}></i>
                     <input name="image" type="file" onChange={event => handleFileChange(event)}/>
                 </label>
-                <div className={styles.submitContainer} onClick={handleSubmit}>
+                <div className={formStyles.submitContainer} onClick={handleSubmit}>
                     <Button text="Submit" lightColour="green" />
                 </div>
             </fieldset>
