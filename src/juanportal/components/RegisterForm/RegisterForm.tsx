@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { notify, fetchToApiAsJson } from '../util'
+//@ts-ignore
+import styles from './RegisterForm.module.css'
+import Button from '../button/button'
 
 
 
@@ -51,7 +54,6 @@ import { notify, fetchToApiAsJson } from '../util'
  * @method validateForm             Validates all fields
  * @method uploadImage              Sends a request to upload the posted image
  * @method registerProfile          Registers a profile
- * @method validateFilename         Checks the extension of the selected filename to show whether it's supported dynamically
  * @method handleFileChange
  * @method componentDidMount
  * @method componentDidUpdate       Called when a state property changes
@@ -83,6 +85,8 @@ const RegisterForm = () => {
      * @var {string}
      */
     const [filename, setFilename] = useState('')
+
+    const [file, setFile] = useState(null)
 
     /**
      * @method handleNameChange
@@ -193,6 +197,9 @@ const RegisterForm = () => {
         for (const pair of new FormData(form)) {
             data.append(pair[0], pair[1])
         }
+        console.log('new filenamee: ' + newFilename)
+        console.log('data:')
+        console.log(data)
         return fetch('/profile/image?filename=' + newFilename, { method: 'POST', body: data})
     }
 
@@ -216,7 +223,7 @@ const RegisterForm = () => {
         const profileUrl: string = '/api/profile'
         const profileOptions: any = { method: 'POST', body: data}
         const imageUrl = '/profile/image?filename='
-        const imageOptions = { method: 'POST', body: data}
+        const imageOptions = { method: 'POST', body: new FormData(form)}
         fetchToApiAsJson(profileUrl, profileOptions).then(response => fetchToApiAsJson(imageUrl + response.data, imageOptions)).then((res) => {
             if (!res.success) {
                 console.error('Bad request:')
@@ -228,39 +235,8 @@ const RegisterForm = () => {
         }).catch((err) => {
             console.error('Error thrown when posting a profile')
             console.error(err)
-            notify('Profile', 'Failed to upload the profile', 'error')
+            notify('Profile', err.message, 'error')
         })
-    }
-
-    /**
-     * @method validateFilename
-     * 
-     * @description
-     * Validates a chosen filename against our valid extensions.
-     * This method checks the last 4 characters of a string.
-     * 
-     * @example
-     * // get the filename
-     * const success: boolean = this.validateFilename(filename)
-     * if (success) console.log('Passed!')
-     * if (!success) console.error('Failed!')
-     * 
-     * @param {string} filename Filename to check (including the extension)
-     * 
-     * @return {boolean} Success of whether it passed validation or not
-     */
-    const validateFilename = (): boolean => {
-        console.log('[validateFilename]')
-        const exts: string[] = ['jpg', 'jpeg', 'png']
-        const arr = filename.split('.')
-        const fileExt = arr[arr.length -1].toLowerCase()
-        if (exts.includes(fileExt)) {
-            console.log('Filename passed')
-            return true
-        } else {
-            console.log('Filename failed')
-            return false
-        }
     }
 
     /**
@@ -280,37 +256,19 @@ const RegisterForm = () => {
     const handleFileChange = (event: any): void => {
         console.log('[handleFileChange]')
         //
-        // Filename
-        //
-        // So it doesn't throw an error in the case where no file is selected e.g. closes the prompt
-        try {
-            setFilename(event.target.files[0].name)
-        } catch (e) {
-            setFilename('')
-            console.error('Caught when trying to set the filename')
-            // As the file (if been selected) is now gone due to a cancellation,
-            // remove the text to represent 'No file chosen'
-            const filenameElem = document.getElementById('filename')
-            if (filenameElem) filenameElem.innerHTML = ''
-            return
-        }
-        //
-        // Validate name to show the tick or cross icon
+        // Filename - try/catch so it doesn't throw an error in the case where no file is selected e.g. closes the prompt
         //
         const filenameElem = document.getElementById('filename')
-        if (filenameElem) {
-            // check if the filename has a correct extension
-            const success = validateFilename()
-            if (success) {
-                // display a tick
-                const tickHtml = '<i class="fas fa-check-circle fa-lg"></i>'
-                filenameElem.innerHTML = event.target.files[0].name + tickHtml
-            }
-            if (!success) {
-                // display a cross
-                const crossHtml = '<i class="fas fa-times fa-lg"></i>'
-                filenameElem.innerHTML = event.target.files[0].name + crossHtml
-            }
+        try {
+            setFilename(event.target.files[0].name)
+            setFile(event.target.files[0])
+            if (filenameElem) filenameElem.innerHTML = event.target.files[0].name
+        } catch (e) {
+            // As the file (if been selected) is now gone due to a cancellation, remove the text to represent 'No file chosen'
+            setFilename('')
+            setFile(null)
+            if (filenameElem) filenameElem.innerHTML = ''
+            console.error('Caught when trying to set the filename')
         }
     }
 
@@ -319,27 +277,31 @@ const RegisterForm = () => {
         console.log('Name: ' + name)
         console.log('Description: ' + description)
         console.log('Filename: ' + filename)
+        console.log('File: ')
+        console.log(file)
     }
     componentDidUpdate()
 
     return (
-        <form>
+        <form className={styles.form}>
             <h1>Register a Profile</h1>
             <fieldset>
-                <label className="field-container">
+                <label className={styles.fieldContainer}>
                     <input id="name" className="form-control" name="name" placeholder="Your Name *" type="text"
                         onChange={event => handleNameChange(event.target.value)} required/>
                 </label>
-                <label className="field-container">
+                <label className={styles.fieldContainer}>
                     <input className="form-control" name="description" placeholder="Your Description" type="text"
                         onChange={event => handleDescriptionChange(event.target.value)}/>
                 </label>
-                <label className="field-container file-upload-container">
+                <label className={styles.fileUploadContainer}>
                     <p className="btn btn-info">Upload Profile Image</p>
-                    <i id="filename"></i>
-                    <input id="file-upload" name="image" type="file" onChange={event => handleFileChange(event)}/>
+                    <i id="filename" className={styles.filename}></i>
+                    <input name="image" type="file" onChange={event => handleFileChange(event)}/>
                 </label>
-                <input type="submit" className="btn btn-primary" onClick={handleSubmit} value="Submit"/>
+                <div className={styles.submitContainer} onClick={handleSubmit}>
+                    <Button text="Submit" lightColour="green" />
+                </div>
             </fieldset>
         </form>
     )
