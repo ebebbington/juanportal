@@ -109,7 +109,8 @@ interface IJsonResponse {
  export const fetchToApiAsJson = (url: string, options: { [key: string]: any } = {}): Promise<any> => {
     console.log('[fetchToApiAsJson')
     console.log('URL: ' + url)
-    console.log('Options: ' + options)
+    console.log('Options: ')
+    console.log(options)
     return new Promise((resolve, reject) => {
         fetch(url, options).then((response) => {
             return response.json()
