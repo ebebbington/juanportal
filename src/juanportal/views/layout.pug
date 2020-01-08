@@ -9,8 +9,11 @@ html
         script(src="/public/libs/jquery-3.3.1.min.js")
         // bootstrap js
         script(src="/public/libs/bootstrap.min.js", crossorigin="anonymous")
+        script(src="/public/libs/bootstrap.bundle.min.js", crossorigin="anonymous")
         // bootstrap css
         link(rel="stylesheet", href="/public/libs/bootstrap.min.css", crossorigin="anonymous")
+        link(rel="stylesheet" href="/public/libs/bootstrap-grid.min.css" crossorigin="anonymous")
+        link(rel="stylesheet" href="/public/libs/bootstrap-reboot.min.css" crossorigin="anonymous")
         // Logo
         link(rel="shortcut icon", href="/public/images/juanportal-logo.png")
         // Babel
@@ -39,9 +42,10 @@ html
                     strong
                         i #{title}
         .container
-            .col-xs-3 
-                #sidebar 
-                    block sidebar 
+            .row
+                .col-3 
+                    #sidebar 
+                        block sidebar 
 
-            .col-xs-9
-                block content
+                .col-9
+                    block content

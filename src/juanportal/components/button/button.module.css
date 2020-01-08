@@ -29,7 +29,7 @@
 .trafficLight:hover {
     background-color: #ffffff;
     transform: scale(1.1);
-    box-shadow: 0 0 2px #0c1f26;
+    box-shadow: 0 1px 0px #0c1f26;
 }
 .trafficLight:active {
     transform: scale(0.95);

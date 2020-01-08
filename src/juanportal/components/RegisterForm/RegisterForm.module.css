@@ -38,6 +38,10 @@ fieldset {
     width: fit-content;
     margin: 0.3em auto 0.3em auto;
 }
+/* filename */
+.fileUploadContainer > p {
+    margin: auto;
+}
 /**
  * File input element
  */

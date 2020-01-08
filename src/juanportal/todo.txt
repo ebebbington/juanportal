@@ -1,4 +1,4 @@
-- Sort out stylings (css modules) for register form component
+
 - Develop tests for reacto components
 - Better style the client side header and sidebar
 - For profile component, when no more are left but count was defined, find more.

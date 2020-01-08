@@ -18,7 +18,7 @@ app.route('/id/:id')
   })
 
 app.route('/add')
-  .get((req, res) => { res.status(200).render('profile/add', {title: 'Add a profile'})})
+  .get((req, res) => { res.status(200).render('profile/add', {title: 'Add Profile'})})
 
 app.route('/image')
   /**

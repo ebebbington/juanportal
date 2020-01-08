@@ -10,6 +10,13 @@
 .profile {
     overflow: hidden;
     margin: 1em;
+    border: 1px solid #eaeaea;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+    padding: 1em;
+    margin: 0.5em 0.5em 0.5em 0.5em; /* Push it away from the top and bottom */
+    display: flex;
+    width: 97%;
 }
 /* Image of the profile */
 img {

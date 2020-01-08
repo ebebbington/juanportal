@@ -242,7 +242,7 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
     // Display Profiles in the state
     if (profiles.length > 0) {
         return (
-            <div className="row">
+            <div>
                 {profiles.map((profile: IProfile) => 
                     <div className={`well ${styles.profile}`} key={profile._id}>
                         <div className="col-xs-12 col-sm-4 col-md-5">
