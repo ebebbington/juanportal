@@ -34,18 +34,10 @@ html
         link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous")
     body
         header#header
-            div.menu-holder
-                button.btn
-                    i.fa.fa-bars.fa-3x
-            div.title-holder
-                h1
-                    strong
-                        i #{title}
+        
+        script(src="/public/javascripts/header.js")
+
         .container
             .row
-                .col-3 
-                    #sidebar 
-                        block sidebar 
-
-                .col-9
+                .col-12
                     block content

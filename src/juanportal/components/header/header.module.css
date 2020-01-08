@@ -1,0 +1,66 @@
+.header{
+    text-align: center;
+    border-bottom: var(--custom-purple) 1px solid;
+    margin-bottom: .5em;
+    display: flex;
+    background-color: var(--custom-white);
+    height: 65px;
+}
+.navMenuTrigger:focus + .navMenu {
+    height: fit-content;
+}
+.navMenuTrigger {
+    margin-left: 1px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.navMenuTrigger > button {
+    color: var(--custom-purple);
+    background-color: var(--custom-white);
+    box-shadow: 0;
+    border-radius: 2px;
+    width: 55px;
+}
+.navMenuTrigger button:hover {
+    background-color: var(--custom-grey);
+}
+.navMenu {
+    position: absolute;
+    background-color: var(--custom-grey);
+    margin-top: 7px;
+    width: 325px;
+    z-index: 1;
+    border-radius: 0 0 3px 0;
+    border-right: 1px var(--custom-purple) solid;
+    border-bottom: 1px var(--custom-purple) solid;
+    margin-left: -1px;
+    box-shadow: 0 2px 2px rgba(12,13,14,0.2);
+}
+.navMenuList {
+    padding: 0;
+    margin: 0;
+
+}
+.navMenuListItem {
+
+}
+.navMenuListItem > a:hover {
+    text-decoration: none;
+}
+.navMenuListItem h4 {
+    margin: auto;
+    padding: 0.2em;
+}
+.navMenuListItem h4:hover {
+    color: black;
+}
+.titleHolder {
+    margin: auto;
+}
+.title {
+    color: var(--custom-purple);
+    text-align: center;
+}
+.hide {
+    display: none;
+}
