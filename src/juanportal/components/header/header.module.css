@@ -26,7 +26,7 @@
 .navMenu {
     position: absolute;
     background-color: var(--custom-grey);
-    margin-top: 7px;
+    margin-top: 8px;
     width: 325px;
     z-index: 1;
     border-radius: 0 0 3px 0;

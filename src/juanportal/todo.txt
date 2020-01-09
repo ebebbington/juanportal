@@ -1,11 +1,8 @@
 
-- Develop tests for reacto components
-- Better style the client side header and sidebar
+- Develop tests for reacto components (reat-testing-library)
 - For profile component, when no more are left but count was defined, find more.
 - Develop stylings for css objects from home page and develop components out of them
 - implement JWT?
-- Make all other components extend the base component and use the notify method for everything thats required
-- inside basecomponent notify method, remove the old script FROM THE BODY before adding a new one
 - address webpack warnings in the console when compiling
 - address console errors of why it throws an error for removing a `closest()` yet it still works?
 - address the problem of my having to ignore ts error on vNotify in base component
