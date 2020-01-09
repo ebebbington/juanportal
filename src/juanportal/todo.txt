@@ -2,7 +2,6 @@
 - For profile component, when no more are left but count was defined, find more.
 - Develop stylings for css objects from home page and develop components out of them
 - implement JWT?
-- address webpack warnings in the console when compiling
 - address console errors of why it throws an error for removing a `closest()` yet it still works?
 - address the problem of my having to ignore ts error on vNotify in base component
 - regarding logging, maybe i could implement something that displays the CALLING calsses name? e.g. we have class B that extends onto A, and inside that A class each method is logged with: console.log()
