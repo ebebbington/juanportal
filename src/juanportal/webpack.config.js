@@ -1,6 +1,11 @@
 const path = require('path')
+require('dotenv').config()
+
+const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
+    /* Set the mode to run in - obviously it is dynamic now to match the environment */
+    mode: process.env.NODE_ENV,
     /* Defined the entry point for the configuration */
     entry: {
         /* Specify what files I wish webpack to compile, and the name associated with them */
@@ -9,8 +14,8 @@ module.exports = {
         header: './components/header/header.tsx',
         sidebar: './components/sidebar/sidebar.tsx'
     },
-    /* Cannot remember what this does */
-    devtool: 'inline-source-map',
+    /* Cannot remember what this does but i know you turn it off for prod */
+    //devtool: isProd ? false : 'inline-source-map',
     /* Defines where to place the bundles file(s) */
     output: {
         /* The [name] will be the property name of whatever file is being processed, e.g. see the above entry,
