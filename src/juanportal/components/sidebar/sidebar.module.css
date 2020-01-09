@@ -1,0 +1,33 @@
+.sidebar {
+    background-color: var(--custom-grey);
+    border-radius: 0 0 3px 0;
+    border-right: 1px var(--custom-purple) dotted;
+    margin-left: -1px;
+    box-shadow: 0 2px 2px rgba(12,13,14,0.2);
+}
+.list {
+    padding: 0;
+    margin: 0;
+}
+.list li {
+    list-style: none;
+    padding: 0.5em;
+}
+.list a:hover {
+    text-decoration: none;
+}
+.list h4 {
+    margin: auto;
+    padding: 0.2em;
+}
+.list h4:hover {
+    color: black;
+}
+.selected {
+    border-right: 2px var(--custom-green) solid;
+}
+.overflowHidden {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

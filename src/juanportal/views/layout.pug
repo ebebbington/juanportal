@@ -39,5 +39,11 @@ html
 
         .container
             .row
-                .col-12
+                .col-xs-4
+                    #sidebar-container
+                        block sidebar
+
+                    script(src="/public/javascripts/sidebar.js")
+
+                .col
                     block content

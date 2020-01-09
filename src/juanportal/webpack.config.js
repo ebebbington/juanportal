@@ -4,7 +4,8 @@ module.exports = {
     entry: {
         profile: './components/Profile/Profile.tsx',
         registerForm: './components/RegisterForm/RegisterForm.tsx',
-        header: './components/header/header.tsx'
+        header: './components/header/header.tsx',
+        sidebar: './components/sidebar/sidebar.tsx'
     },
     devtool: 'inline-source-map',
     output: {
