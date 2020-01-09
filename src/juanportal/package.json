@@ -4,8 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "node_modules/.bin/tsc && pm2 restart all && node_modules/.bin/mocha",
-    "build": "node_modules/.bin/tsc && npx webpack --config webpack.config.js && pm2 restart all"
+    "test": "node_modules/.bin/mocha",
+    "buildTS": "node_modules/.bin/tsc && pm2 restart all",
+    "buildTSX": "npx webpack --config webpack.config.js"
   },
   "author": "",
   "license": "ISC",

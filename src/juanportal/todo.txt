@@ -1,5 +1,4 @@
-
-- Develop tests for reacto components (reat-testing-library)
+- Develop tests for react components (reat-testing-library)
 - For profile component, when no more are left but count was defined, find more.
 - Develop stylings for css objects from home page and develop components out of them
 - implement JWT?
