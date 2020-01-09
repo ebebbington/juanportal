@@ -10,9 +10,8 @@
     height: fit-content;
 }
 .navMenuTrigger {
-    margin-left: 1px;
-    margin-top: auto;
-    margin-bottom: auto;
+    position: absolute;
+    top: 7px;
 }
 .navMenuTrigger > button {
     color: var(--custom-purple);
@@ -42,7 +41,7 @@
 
 }
 .navMenuListItem {
-
+    padding: 0.5em;
 }
 .navMenuListItem > a:hover {
     text-decoration: none;
