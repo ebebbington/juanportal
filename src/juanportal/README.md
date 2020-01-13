@@ -245,7 +245,34 @@ All tests are written using YAML (`.yml|.yaml`)
 
 `node_modules/.bin/artillery run artillery/dir/file.yml`
 
-## Help with Errors
+## Using TypeScript
+
+Setting up TS was tough given i had 0 experience, but it all boils down to understanding the flow: 
+
+* Create a simple TS file e.g. `test.ts` with the contents of:
+
+```
+const obj: { success: boolean } = {success: false }
+console.log(!!obj.success)
+```
+
+* Then set up the TS compil;er configurations to find this file and convert it, for me I place the compiled copies into the same directory as their counterpart. So then i want to require or import a file (`import Something from './mytsfile'`), it will look for the compiled JS file.
+
+* See `tsconfig.json` for the configurations
+
+* Use `tsc;` to compile (using that config)
+
+* See the `.ts` files to understand a bit more
+
+## Using React
+
+For React, i use Webpack to bundle the code on the server, and into a public directory.
+
+* I use the `webpack.config.js` file to setup the configurations, such as allowing the files to pass through loaders.
+
+* The command to do this in just inside of `package.json`
+
+## Help
 
 ### React (JSX & TSX)
 
@@ -256,3 +283,19 @@ All tests are written using YAML (`.yml|.yaml`)
     `class ... extends React.Component<IProps>`
     `// or`
     `class ... { constructor (props: IProps) {...}`
+
+* Errors thrown when trying to use hooks
+
+    * Could be you are rendering a hook component inside of a class component?
+    * Also check `ReactDOM` is correctly typed
+
+* `JSX element type 'x | x' is not a constructor function for JSX element`
+
+    * Solved by following the guide here: https://stackoverflow.com/questions/54905376/type-error-jsx-element-type-null-undefined-is-not-a-constructor-functi
+    * I made the component implement `React.FC` (`... MyComp: React.FC ...`) and I then had that implement the interface for the props
+    * I then realised the param/prop "children" is required by the React.FC, so you have to include that inside the parameters (but not in the interface)
+
+* Using CSS Styling - Another Way
+
+    * You can set `modules` to `false` or comment it out inside `webpack.config.js`, then import the CSS file (`import someComp.css.js`), then set classnames like such: `...className="button"
+    * Where the style file is: `export default { button { color: 'blue' }}

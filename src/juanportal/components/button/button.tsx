@@ -14,23 +14,7 @@ interface IParams {
  * @name Button
  * 
  * @description Overview
-   This component is responsible for any button 
- * 
- * @description Errors throw when trying to use hooks
-   - For my problem, i had imported "ReactDom" instead of "ReactDOM" - using "DOM" fixed it
- * 
- * @description When compiling using webpack, get the following error:
- * "JSX element type 'Element | undefined' is not a constructor function for JSX element.
- * Type 'undefined' is not assignable to type 'Element | null'."
- * 
- * Solved by following this guide: https://stackoverflow.com/questions/54905376/type-error-jsx-element-type-null-undefined-is-not-a-constructor-functi
- * I made Button use React.FC, and had that implement the interface for the props.
- * I then realsied the param/prop "children" is required by the React.RC, so i had to include that inside the params
- *  
- * @description Another way to use CSS classes
- * - Set "modules" to false or comment it out in the webpack config
- * - Import the "button.css.js" file
- * - Then set classnames like such: ...className="button"
+ * This component is responsible for any button 
  * 
  * @requires
    Div element with the id of "button-container"

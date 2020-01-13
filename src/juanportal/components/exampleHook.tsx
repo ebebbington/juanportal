@@ -32,7 +32,7 @@ interface IParams {
  * 
  * @return {HTMLCollection}
  */
-const SomeComponent = (IParams) => {
+const SomeComponent: React.FC<IParams> = (IParams, children) => {
 
     const [myHook, setMyHook] = useState(0)
 
@@ -44,3 +44,5 @@ const SomeComponent = (IParams) => {
         </div>
     )
 }
+
+export default SomeComponent
