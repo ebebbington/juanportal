@@ -37,7 +37,7 @@ This side of JuanPortal also uses TypeScript where it can, as well as the class 
 
 ## Directory Structure / Description
 
-***Please See the example file in each directory if it exists to understand how this project is architected***
+***Please see the example file in each directory if it exists to understand how this project is architectured***
 
 * `bin`
 
@@ -176,9 +176,7 @@ This is the list of all tools used here, which also act as the tools learnt, or 
 
 ## Building
 
-The command to do this does reside inside of `package.json` so all you need to do is run:
-
-`npm run build`
+The command to do this does reside inside of `package.json`.
 
 This will 're-build' the server to correct changes made, such as re-compiling TS files, re-bundling all React components using Webpack, and restarting the server
 
