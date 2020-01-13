@@ -47,7 +47,7 @@ This section provides the data layer for this project, such as:
 
     * DB Schemas are defined here, and should export a model
 
-* `test`
+* `tests`
 
     * Holds all tests related to this side of the application (*see more below*)
 
@@ -96,7 +96,7 @@ This section provides the data layer for this project, such as:
     * Contains configurations for the TypeScript compiler (when compiling `.ts` files)
 
 ## Tools Used
-This is the lsit of all tools used here, which also act as the tools learnt, or tools implemented to learn:
+This is the list of all tools used here, which also act as the tools learnt, or tools implemented to learn:
 
 * Object Orientated Approach
 
