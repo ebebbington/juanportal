@@ -25,11 +25,13 @@ To avoid confusion, we write commits specifically to each application. The gener
 
 Where:
 
-* `FT` = Feature, for features
-* `Fix` = Fixed a bug
-* `Docs` = Added information regarding documentation, such as in the `README.md` or comments
-* `Tests` = Developments of tests
-* `Cleanup` = Cleanup of files or code, e.g. removal of comments or unused file
+* `FT` (priority 3) = Feature, for features
+* `Fix` (priority 5)  = Fixed a bug
+* `Docs` (priority 2) = Added information regarding documentation, such as in the `README.md` or comments
+* `Tests` (priority 4) = Developments of tests
+* `Cleanup` (priority 1) = Cleanup of files or code, e.g. removal of comments or unused file
+
+For example, in the situation where documentation was removed from a test, `Cleanup` would take presedence
 
 ### Root Commits
 Say I update the README
