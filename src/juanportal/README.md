@@ -104,6 +104,7 @@ This is the lsit of all tools used here, which also act as the tools learnt, or 
     * General mark-up
     * JSX mark-up / XML-style
     * PUG template engine
+    * Bootstrap
 
 * CSS
 
