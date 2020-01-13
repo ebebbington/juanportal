@@ -1,5 +1,19 @@
 # JuanPortal
 
+Juanportal is split into 2 projects:
+
+## API
+
+This is the Data layer for JuanPortal (any database related actions or relations reside here).
+
+See the documentation for the API [here](http://www.nodejs.com)
+
+## Main App (Juanportal)
+
+This is the main server which communicates with the API, displays views and utilises React components. Essentially, this server serves as the client-side area of the whole project.
+
+See the documentation for the Main App here
+
 JuanPortal is supposed to replicate (in some sense) a website that holds profiles of people, in which they can add and delete profiles. This utilises saving to a mongoose database, using a templating engine and limiting results. This project was created to help myself understand and learn the following:
 * HTML
 * CSS
