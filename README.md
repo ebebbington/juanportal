@@ -1,60 +1,42 @@
-# JuanPortal
+# JuanPortal (Project)
 
-Juanportal is split into 2 projects:
+JuanPortal is a personal learning application that allows users to create and save Profiles, view and delete those Profiles. It provides a training or learning ground to improve my own knowledge and ability regarding a NodeJS application.
 
-## API
+This project contains:
 
-This is the Data layer for JuanPortal (any database related actions or relations reside here).
+* The docker environment required to build the sever(s)
+* The main application
+* The API (data layer)
 
-See the documentation for the API [here](http://www.nodejs.com)
+## Tools used
 
-## Main App (Juanportal)
+* Docker
 
-This is the main server which communicates with the API, displays views and utilises React components. Essentially, this server serves as the client-side area of the whole project.
+    * Containers
+    * Networking
+    * General use
 
-See the documentation for the Main App here
+## Flow
 
-JuanPortal is supposed to replicate (in some sense) a website that holds profiles of people, in which they can add and delete profiles. This utilises saving to a mongoose database, using a templating engine and limiting results. This project was created to help myself understand and learn the following:
-* HTML
-* CSS
-* JavaScript/jQuery
-* Pug
-* NodeJS
-  * ExpressJS
-* Mongoose
-  * Schemas
-  * Models
-  * Documents
-  * Seeding
-* NPM
-* PM2
-* React
-* TypeScript
-* RESTful API
+* The root directory builds both express servers
+* Juanportal acts as the client for endpoints, views etc. Which will communicate with the API when it needs to
+* Both servers use the same Nginx configuration
 
-## Project Overview
+## Components
 
-This project is split into 2 sections:
-
-### Juanportal
-
-This is the main server, that handles the requests to endpoints, renders views and holds the client side data (e.g. React components)
-
-* ExpressJS Server
-* TypeScript
-* React Components
-* Pug
-* Client Side Focus
+JuanPortal is split into 2 applications:
 
 ### API
 
-This RESTful API provides the front-end with it's data (the profiles)
+This is the Data layer for JuanPortal (any database related actions or relations reside here, server-side focus).
 
-* ExpressJS Server
-* TypeScript
-* MongoDB
-* Server Side Focus
-* MVC Architecture 9request -> route -> controller -> model -> controller -> response)
+See the documentation for the API [here](https://github.com/ebebbington/juanportal/blob/develop/src/api/README.md)
+
+### Main App (Juanportal)
+
+This is the main server (client-side focus) which communicates with the API, displays views and utilises React components. Essentially, this server serves as the client-side area of the whole project.
+
+See the documentation for the Main App [here](https://github.com/ebebbington/juanportal/blob/develop/src/juanportal/README.md)
 
 ## Prerequisites
 
@@ -94,41 +76,6 @@ Finally, go to the website
 * Windows
      `127.0.0.1:9002`
 
-## Running the tests
-
-* Simply use mocha to test the whole `tests` directory in either `juanportal` or `api`
-
-`node_modules/.bin/mocha tests`
-
-* Alternatively you can limit the tests
-
-`node_modules/.bin/mocha tests/app.js`
-
-### Break down into end to end tests
-
-Currently both `juanportal` and `api` support tests for all routes.
-
-These tests will test every possibility to each endpoint with the expected results e.g
-
-```
-it('Should respond with a 200 status code', (done) => {
-  chai.use(app)
-    .get('/')
-    .end((err, res) => {
-      expect(res.status).to.equal(200)
-      done()
-    })
-})
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
 ## Built With
 
 * [NodeJS](http://www.nodejs.com) - Server Side Language
@@ -154,9 +101,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Adam Jeffery - Docker environment support, and support for learning all these technologies
 
 ## Notes
 
@@ -180,17 +125,6 @@ Windows Environment
 - Web Address: 127.0.0.1:9002
 - Db Address: 127.0.0.1:27017
 
-Nginx runs on port 9002, and will proxy pass to the Node container running the app on port 3005.
+Nginx runs on port 9002, and will proxy pass to the Node container (Main App) running the app on port 3005.
 
 Mongoseeder will seed the database with the dump from .docker/data/mongo-db-dump
-
-### Including React
-
-* Create a `.tsx` file
-
-* Add in the required code
-
-* Call this file in a script tag inside the body
-
-* Call the react and react-dom files/CDN's inside a script tag inside the header
-
