@@ -8,6 +8,27 @@ This section provides the data layer for this project, such as:
 * RESTful capabilities
 * Routing
 
+Every file where possible uses TypeScript.
+
+## Endpoints
+
+* `GET /api/profile/count/:count`
+
+    * Get many profiles defined by a number in the query
+    * Returns the profiles in the data property e.g. `const profiles = response.data`
+
+* `GET /api/profile/id/:id`
+
+    * Get a profile by their ID
+
+* `DELETE /api/profile/id/:id`
+
+    * Delete a profile by their ID
+
+* `POST /api/profile`
+
+    * Post a profile that has the data inside of a form
+
 ## Directory Structure / Description
 
 * `artillery`

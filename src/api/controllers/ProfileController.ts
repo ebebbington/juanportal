@@ -4,7 +4,6 @@ const ProfileModel = require('../models/ProfileModel')
 const logger = require('../helpers/logger')
 const ImageHelper = require('../helpers/ImageHelper')
 import {IData} from '../interfaces/controllers/DataInterface'
-const util = require('util')
 import {IMulterRequest} from '../interfaces/controllers/MulterRequestInterface'
 
 /**
@@ -12,10 +11,10 @@ import {IMulterRequest} from '../interfaces/controllers/MulterRequestInterface'
  *
  * @author Edward Bebbington
  *
- * @method get
- * @method post
- * @method delete
- * @method update
+ * @method GetProfilesByAmount Get many profiles by a specified number
+ * @method GetProfileById Get a profile by their ID
+ * @method DeleteProfileById Delete a profile by their ID
+ * @method PostProfile Add a profile
  *
  * @example
  * const ProfileController = require('...ProfileController')
