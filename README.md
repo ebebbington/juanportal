@@ -15,12 +15,36 @@ This project contains:
     * Containers
     * Networking
     * General use
+    * Nginx
 
-## Flow
+## Commit Naming Standards
 
-* The root directory builds both express servers
-* Juanportal acts as the client for endpoints, views etc. Which will communicate with the API when it needs to
-* Both servers use the same Nginx configuration
+To avoid confusion, we write commits specifically to each application. The general format is:
+
+`<application>: FT|Fix|Docs|Tests|Cleanup - <Commit title>`
+
+Where:
+
+* `FT` = Feature, for features
+* `Fix` = Fixed a bug
+* `Docs` = Added information regarding documentation, such as in the `README.md` or comments
+* `Tests` = Developments of tests
+* `Cleanup` = Cleanup of files or code, e.g. removal of comments or unused file
+
+### Root Commits
+Say I update the README
+
+`git commit -m "Root: Docs - Updated README"`
+
+### API Commits
+Say I create a new model
+
+`git commit -m "API: FT - Create a new model"`
+
+### JuanPortal (Source Code) Commits
+Say I fix a bug
+
+`git commit -m "JP: Fix - Corrected path to some file"`
 
 ## Components
 
