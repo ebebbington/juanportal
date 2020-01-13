@@ -5,13 +5,14 @@ This section provides the main server for this project, such as:
 * Express Server
 * Display views
 * All client side functionality:
-
     * HTML, CSS, JS
 * Routing
 
-This side of JuanPortal also uses TypeScript where it can, as well as possible the class approach instead of a module export type style
+This side of JuanPortal also uses TypeScript where it can, as well as the class approach instead of a module export type style
 
 ## Directory Structure / Description
+
+***Please See the example file in each directory if it exists to understand how this project is architected***
 
 * `bin`
 
@@ -97,7 +98,7 @@ This side of JuanPortal also uses TypeScript where it can, as well as possible t
     * Configurations for bundling using webpack. Only used for bundling TSX|JSX files and their CSS modules
 
 ## Tools Used
-This is the lsit of all tools used here, which also act as the tools learnt, or tools implemented to learn:
+This is the list of all tools used here, which also act as the tools learnt, or tools implemented to learn:
 
 * HTML
 
@@ -243,3 +244,15 @@ All tests are written using YAML (`.yml|.yaml`)
 ### Running the Tests
 
 `node_modules/.bin/artillery run artillery/dir/file.yml`
+
+## Help with Errors
+
+### React (JSX & TSX)
+
+* `Property x does not exist on type readonly`
+
+    * You must add an interface to define the passed in properties
+    `interface IProps { exampleProp: string }`
+    `class ... extends React.Component<IProps>`
+    `// or`
+    `class ... { constructor (props: IProps) {...}`
