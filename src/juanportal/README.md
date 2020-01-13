@@ -10,6 +10,31 @@ This section provides the main server for this project, such as:
 
 This side of JuanPortal also uses TypeScript where it can, as well as the class approach instead of a module export type style
 
+## Endpoints
+
+* `GET /`
+
+    * Renders the index view
+
+* `GET /profile/id/:id`
+
+    * Where `:id` is the id of the profile
+    * Displays that profile specifically
+
+* `GET /profile/add`
+
+    * Displays the form to register a profile
+
+* `POST /profile/image`
+
+    * Pass in the image to save to the filesystem in the body
+    * API-style call, which returns a JSON response
+
+* `DELETE /profile/image?filenane=[filename]`
+
+    * Where [filename] is the name of the file
+    * API-style call, returns a JSON response
+
 ## Directory Structure / Description
 
 ***Please See the example file in each directory if it exists to understand how this project is architected***

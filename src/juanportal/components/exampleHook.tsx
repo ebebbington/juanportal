@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, ReactElement, useEffect } from 'react'
 //@ts-ignore
 import styles from './thisfile.module.css'
 
@@ -34,7 +34,23 @@ interface IParams {
  */
 const SomeComponent: React.FC<IParams> = (IParams, children) => {
 
+    /**
+     * some description
+     * 
+     * @var {data type}
+     */
     const [myHook, setMyHook] = useState(0)
+
+    /**
+     * @method useEffect
+     * 
+     * @description
+     * Acts as both component did mount and component did update,
+     * so this is called before rendering
+     */
+    useEffect(() => {
+        if (!myHook) setMyHook(1)
+    }, [])
 
     return (
         <div>
@@ -43,6 +59,8 @@ const SomeComponent: React.FC<IParams> = (IParams, children) => {
             </button>
         </div>
     )
+
+    return children as ReactElement<any>
 }
 
 export default SomeComponent

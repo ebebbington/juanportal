@@ -5,14 +5,56 @@ import headerStyles from './header.module.css'
 //@ts-ignore
 import { useMediaQuery } from 'react-responsive'
 
+/**
+ * @name Header
+ * 
+ * @description
+ * Responsible for the header UI
+ * 
+ * @requires
+ * Element with the ID of 'header'
+ * 
+ * @example
+ * N/A
+ * 
+ * @property {string} title Title of the page
+ * @property {string} url The current URL of the page
+ * @property {boolean} menuExpanded Is the menu expanded?
+ * 
+ * @method handleMenuClick handles the click of when the menu bar is clicked when it's displayed (mobile view)
+ * 
+ * @return {HTMLCollection}
+ */
 const Header = () => {
 
+    /**
+     * Title of the current page
+     * 
+     * @var {string}
+     */
     const [title, setTitle] = useState('')
 
+    /**
+     * If the menu is expanded, to show certain UI elements
+     * 
+     * @var {boolean}
+     */
     const [menuExpanded, setMenuExpanded] = useState(false)
 
+    /**
+     * URL of the current page
+     * 
+     * @var {string}
+     */
     const url: string = window.location.pathname
 
+    /**
+     * @method useEffect
+     * 
+     * @description
+     * Acts as both component did mount and component did update,
+     * so this is called before rendering
+     */
     useEffect(() => {
         /* / */
         if (url === '/')                        setTitle('Home')
@@ -22,17 +64,21 @@ const Header = () => {
         if (url === '/profile/add')             setTitle('Add Profile')
     })
 
+    /**
+     * @method handleMenuClick
+     * 
+     * @description
+     * Handles the click of the menu to tell the component it is expanded
+     * 
+     * @example
+     * <button onClick={() => handleMenyClick}/>
+     */
     const handleMenuClick = () => {
         // Opposite of what the value already is
         setMenuExpanded(!menuExpanded)
         // Because `menuExpanded` wont show us the changes yet, we need to define it ourselves
         const isExpanded: boolean = !menuExpanded
     }
-
-    const componentDidMount = () => {
-        console.log('Menu Expanded: ' + menuExpanded)
-    }
-    componentDidMount()
 
     const maxScreenWidthToDisplayOn = '640px'
     const canDisplay = useMediaQuery({query: `(max-width: ${maxScreenWidthToDisplayOn})`})

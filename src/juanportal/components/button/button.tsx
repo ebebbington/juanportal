@@ -16,9 +16,6 @@ interface IParams {
  * @description Overview
  * This component is responsible for any button 
  * 
- * @requires
-   Div element with the id of "button-container"
- * 
  * @example When including inside another component
    // anotherComponent.jsx
    import Button from './button.jsx'
