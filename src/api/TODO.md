@@ -18,6 +18,6 @@
 
 # TODO
 
-* FT: Artillery Script - Create artillery script inside `package.json` to run tests
-
 # Completed
+
+(*[af97055](https://github.com/ebebbington/juanportal/commit/af97055da1258f091c2948a666bea22830af6e22)*) - FT - Artillery Script inside package.json - 14/01/2020
