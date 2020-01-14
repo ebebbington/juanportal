@@ -21,10 +21,6 @@
 * FT: Script for Testing `.ts` files - Create a new `package.json` script to test `.ts` files
     * Name this `test2`
 
-* FT: Image Helper Test - Convert to TypeScript
-    * Convert the test to a typescript file and create a new test command if required
-    * Append the `README.md` if required
-
 * FT: Jest Testing for React - Implement tests for the Profile component
     * Once implemented, append the `Jest` section inside the `Tools Used` in `README.md`
 
