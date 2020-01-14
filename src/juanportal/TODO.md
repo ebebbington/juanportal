@@ -18,15 +18,6 @@
 
 # TODO
 
-* FT: Implement Artillery
-
-    * Add script to run artillery tests into the package.json file
-    * Use the script from the API to support, and correct the README section is required
-    * Run the tests and ensure they work
-
-* FT: Artillery Tests - Create stress tests for the application
-    * Expand `Artillery Tests` section inside the `README.md`
-
 * FT: Script for Testing `.ts` files - Create a new `package.json` script to test `.ts` files
     * Name this `test2`
 
@@ -58,3 +49,5 @@
     * Maybe implement the usage of JWT's using the current JWT helper class?
 
 # Completed
+
+(*[2b594e8](https://github.com/ebebbington/juanportal/commit/2b594e8067a66a058217a598b18e433ec09b6b83)*) - FT - Implement Artillery - 14/01/2020
