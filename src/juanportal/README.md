@@ -258,7 +258,9 @@ Should you be using a TS test, you need to run the second test command:
 
 ## Artillery Tests
 
-All tests are written using YAML (`.yml|.yaml`)
+All tests are written using YAML (`.yml|.yaml`).
+
+Note you might need to adjust the URL in the tests, e.g. `127.0.0.1` for windows from the standard `0.0.0.0` for Mac
 
 ### Writing the Tests
 
@@ -266,7 +268,7 @@ All tests are written using YAML (`.yml|.yaml`)
 
 ### Running the Tests
 
-`node_modules/.bin/artillery run artillery/dir/file.yml`
+`npm run stress artillery/dir/file.yml`
 
 ## Using TypeScript
 

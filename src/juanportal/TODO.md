@@ -18,7 +18,9 @@
 
 # TODO
 
-* FT: Artillery Script (`package.json`) - Add script to run artillery tests into the package.json file
+* FT: Implement Artillery
+
+    * Add script to run artillery tests into the package.json file
     * Use the script from the API to support, and correct the README section is required
     * Run the tests and ensure they work
 
