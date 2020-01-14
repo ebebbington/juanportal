@@ -256,4 +256,4 @@ All tests are written using YAML (`.yml|.yaml`)
 
 ### Running the Tests
 
-`node_modules/.bin/artillery run artillery/dir/file.yml`
+`npm run stress <your-file>`

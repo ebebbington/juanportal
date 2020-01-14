@@ -9,7 +9,8 @@
   "scripts": {
     "build": "node_modules/.bin/tsc; pm2 restart all",
     "test": "node_modules/.bin/tsc; pm2 restart all; node_modules/.bin/mocha",
-    "test2": "node_modules/.bin/tsc; pm2 restart all; node_modules/.bin/mocha -r ts-node/register"
+    "test2": "node_modules/.bin/tsc; pm2 restart all; node_modules/.bin/mocha -r ts-node/register",
+    "stress": "node_modules/.bin/artillery run"
   },
   "author": "",
   "license": "ISC",
