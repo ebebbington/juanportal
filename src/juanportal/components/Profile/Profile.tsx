@@ -232,10 +232,14 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
     /**
      * Here to 'act' as a component did update, so we can keep track of the state
      */
-    function componentDidUpdate () {
+    const componentDidUpdate = () => {
         console.log('[componentDidUpdate]')
         console.log('Profiles: ', profiles)
         console.log('View single: ', viewSingle)
+        console.log('id: ' + id)
+        console.log('count: ' + count)
+        console.log('idOfProfileToFind: ' + idOfProfileToFind)
+        console.log('numberOfProfilesToGet: ' + numberOfProfilesToGet)
     }
     componentDidUpdate()
     

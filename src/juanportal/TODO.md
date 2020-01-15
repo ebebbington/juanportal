@@ -18,9 +18,6 @@
 
 # TODO
 
-* FT: Script for Testing `.ts` files - Create a new `package.json` script to test `.ts` files
-    * Name this `test2`
-
 * FT: Jest Testing for React - Implement tests for the Profile component
     * Once implemented, append the `Jest` section inside the `Tools Used` in `README.md`
 
@@ -37,9 +34,6 @@
 
 * Fix: Adress usage of `//@ts-ignore`
     * These should really be needed but in some cases they are required. Discover ways to remove these but keep the app working
-
-* FT: Log Method Names
-    * Maybe log each method name, by adding in a `logger.info(arguments.callee.name)` to the start of each method? This would help if those methods changed, as i wouldnt need to edit the logger string
 
 * FT: Implement JWT
     * Maybe implement the usage of JWT's using the current JWT helper class?
