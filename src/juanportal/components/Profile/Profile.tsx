@@ -80,14 +80,14 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
      * 
      * @var {number|null}
      */
-    const idOfProfileToFind: string|null = id || null
+    const [idOfProfileToFind, setId] = useState(id)
 
     /**
      * Amount of profiles to retrieve
      * 
      * @var {number|null}
      */
-    const numberOfProfilesToGet: number|null = count || null
+    const [numberOfProfilesToGet, setCount] = useState(count)
 
     /**
      * @method findProfile
@@ -277,9 +277,11 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
     // display this at the end so it doesn't 'flash'
     if (profiles.length < 1) {
         return (
-            <div className={`well ${styles.noProfiles}`}>
-                <h3>Oh no! No profiles were found! Why not
-                    <a href="/profile/add"> add one?</a>
+            <div className={`well ${styles.profile}`}>
+                <h3>No profiles are left! Why not
+                    <a href="/profile/add"> add one </a>
+                    or
+                    <a href="#" onClick={() => findManyProfiles()}> find more?</a>
                 </h3>
             </div>
         )

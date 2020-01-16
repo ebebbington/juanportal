@@ -1,11 +1,3 @@
-/* Displayed when no profile was fond */
-.noProfiles {
-    text-align: center;
-    font-size: 1.2em;
-    text-align: center;
-    display: block;
-    margin-top: 0.5em;
-}
 /* Container for all content */
 .profile {
     overflow: hidden;
