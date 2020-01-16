@@ -17,7 +17,7 @@
  */
 
 module.exports = {
-    verbose: true,
+    //verbose: true,
     collectCoverage: true,
     "moduleNameMapper": {
         "\\.(css|less)$": "identity-obj-proxy"

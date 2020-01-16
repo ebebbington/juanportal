@@ -60,3 +60,50 @@ test('It renders a child', () => {
     expect(pTag.nodeName).toBe('P')
     expect(pTag.textContent).toBe('I am a button')
 })
+
+test('It fails when no text is passed in', () => {
+    try {
+        render(<Button />)
+        // if it succeeded then the test failed
+        expect(false).toBe(true)
+    } catch (e) {
+        // this is what we want
+    }
+})
+
+test('It fails when no style colour is passed in', () => {
+    try {
+        render(<Button text="hello" />)
+        // if it succeeded then the test failed
+        expect(false).toBe(true)
+    } catch (e) {
+        // this is what we want
+    }
+})
+
+test('It should fail when setAnchor is true but no anchorHref is passed in', () => {
+    try {
+        render(<Button text="hello" lightColour="red" setAnchor={true} />)
+        // if it succeeded then the test failed
+        expect(false).toBe(true)
+    } catch (e) {
+        // this is what we want
+    }
+})
+
+test('It returns an anchor tag even if a child is passed in', () => {
+    render(<Button text="Hello" lightColour="red" setAnchor="true" anchorHref="/test/url" childClassName="fa fa-group" />)
+    const elem = document.querySelector('a')
+    const exists = elem ? true : false
+    expect(exists).toBe(true)
+})
+
+it('Should fail when a wrong value is passed in as a light colour', () => {
+    try {
+        render(<Button text="hello" lightColour="something else" />)
+        // if it succeeded then the test failed
+        expect(false).toBe(true)
+    } catch (e) {
+        // this is what we want
+    }
+})

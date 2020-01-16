@@ -51,6 +51,7 @@ const Button: React.FC<IParams> = ({text, lightColour, setAnchor, anchorHref, ch
       classes.amberLight :
     lightColour === 'red' ?
       classes.redLight : null
+  if (!lightStyling) throw new Error('Use red, amber or green as a light colour')
 
   //
   // If we have a child, then display the button differently
@@ -113,7 +114,8 @@ const Button: React.FC<IParams> = ({text, lightColour, setAnchor, anchorHref, ch
     }
   }
 
-  // Safety measure - mainly here because of the guide from stackover in one of the above descriptions
+  // Below is ignored by Jest because we need to implement it here, but theres no way to test it as this component doesnt use children
+  /* istanbul ignore next */
   return children as ReactElement<any>
 }
 
