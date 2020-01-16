@@ -21,9 +21,6 @@
 * FT: Jest Testing for React - Implement tests for the Profile component
     * Once implemented, append the `Jest` section inside the `Tools Used` in `README.md`
 
-* FT: Jest Testing for React - Implement tests for the button component
-    * Once implemented, append the `Jest` section inside the `Tools Used` in `README.md`
-
 * FT: Jest Testing for React - Implement tests for the RegisterForm component
     * Once implemented, append the `Jest` section inside the `Tools Used` in `README.md`
 
@@ -39,5 +36,7 @@
     * Maybe implement the usage of JWT's using the current JWT helper class?
 
 # Completed
+
+(*[17f8462](https://github.com/ebebbington/juanportal/commit/17f8462c1e8ec0f36bb0815079b774a6f1861a6b)*) - FT - React Testing: button
 
 (*[2b594e8](https://github.com/ebebbington/juanportal/commit/2b594e8067a66a058217a598b18e433ec09b6b83)*) - FT - Implement Artillery - 14/01/2020
