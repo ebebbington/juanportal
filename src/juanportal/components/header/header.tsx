@@ -1,7 +1,7 @@
 import React, { useState, ReactElement, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 //@ts-ignore
-import headerStyles from './header.module.css'
+import headerStyles from './Header.module.css'
 //@ts-ignore
 import { useMediaQuery } from 'react-responsive'
 
@@ -109,4 +109,4 @@ const Header = () => {
     )
 }
 
-ReactDOM.render(<Header />, document.getElementById('header'))
+export default Header

@@ -48,6 +48,7 @@ interface IProfile {
  * @param {number?} count Number of profiles to get
  * 
  * @requires React
+ * @requires profile-container DOM element with that container
  * 
  * @property {object} profiles Holds profiles to display
  * @property {boolean} viewSingle Tells the component whether it is viewing a specific profile
@@ -60,7 +61,7 @@ interface IProfile {
  * @method deleteProfile Deletes a profile from the API and the image file from this server
  * @method handleDelete Handles the deletion of a profile
  */
-const Profile: React.FC<IProps> = ({id, count, children}) => {
+const Profile = ({id, count}: IProps) => {
 
     /**
      * If the purpose of this component is to view a single profile
@@ -244,38 +245,10 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
     }
     componentDidUpdate()
     
-    // Display Profiles in the state
-    if (profiles.length > 0) {
-        return (
-            <div>
-                {profiles.map((profile: IProfile) => 
-                    <div className={`well ${styles.profile}`} key={profile._id}>
-                        <div className="col-xs-12 col-sm-4 col-md-5">
-                            <img className={styles.img} alt="Image of user" src={`/public/images/${profile.image}`}></img>
-                        </div>
-                        <div className="col-xs-12 col-sm-8 col-md-7">
-                            <h3 className={styles.name}>{profile.name}</h3>
-                            {viewSingle &&
-                                <p className={styles.description}>{profile.description || <i>No description</i>}</p>
-                            }
-                            <div className={styles.actions}>
-                                {viewSingle === false &&
-                                    <div className={styles.action}>
-                                        <LinkButton text="View Profile" lightColour="green" href={`/profile/id/${profile._id}`} />
-                                    </div>
-                                }
-                                <div className={styles.action} onClick={() => handleDelete(profile._id)}>
-                                    <Button text="Delete Profile" lightColour="amber" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </div>
-        )
-    }
+    //
+    // Render
+    //
 
-    // display this at the end so it doesn't 'flash'
     if (profiles.length < 1) {
         return (
             <div className={`well ${styles.profile}`}>
@@ -288,19 +261,31 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
         )
     }
 
-    return children as ReactElement<any>
+    return (
+        <> {profiles.map((profile: IProfile) => 
+            <div className={styles.profile} key={profile._id}>
+                <div className="col-xs-12 col-sm-4 col-md-5">
+                    <img className={styles.img} alt="Image of user" src={`/public/images/${profile.image}`}></img>
+                </div>
+                <div className="col-xs-12 col-sm-8 col-md-7">
+                    <h3 className={styles.name}>{profile.name}</h3>
+                    {viewSingle &&
+                    <p className={styles.description}>{profile.description || <i>No description</i>}</p>
+                    }
+                    <div className={styles.actions}>
+                    {viewSingle === false &&
+                        <div className={styles.action}>
+                            <LinkButton text="View Profile" lightColour="green" href={`/profile/id/${profile._id}`} />
+                        </div>
+                    }
+                        <div className={styles.action} onClick={() => handleDelete(profile._id)}>
+                            <Button text="Delete Profile" lightColour="amber" />
+                        </div>
+                    </div>
+                </div>
+             </div>
+        )} </>
+    )
 }
 
-//@ts-ignore
-window.Profile = Profile
-
-if (document.location.pathname === '/') {
-    ReactDOM.render(<Profile count={5} />, document.getElementById('profile-container'))
-}
-
-const arrOfPaths: string[] = window.location.pathname.split('/')
-if (arrOfPaths.indexOf('id')) {
-    const pos: number = arrOfPaths.indexOf('id')
-    const id: string = arrOfPaths[pos + 1]
-    ReactDOM.render(<Profile id={id} />, document.getElementById('profile-container'))
-}
+export default Profile

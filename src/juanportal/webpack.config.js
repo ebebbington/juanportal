@@ -10,10 +10,11 @@ module.exports = {
     entry: {
         /* Specify what files I wish webpack to compile, and the name associated with them */
         /* You don't need to specify components that are only imported, such as the Button component */
-        profile: './components/Profile/Profile.tsx',
-        registerForm: './components/RegisterForm/RegisterForm.tsx',
-        header: './components/header/header.tsx',
-        sidebar: './components/sidebar/sidebar.tsx'
+        //profile: './components/Profile/Profile.tsx',
+        //registerForm: './components/RegisterForm/RegisterForm.tsx',
+        //header: './components/header/header.tsx',
+        //sidebar: './components/sidebar/sidebar.tsx'
+        app: './components/App/App.tsx'
     },
     /* Cannot remember what this does but i know you turn it off for prod */
     //devtool: isProd ? false : 'inline-source-map',

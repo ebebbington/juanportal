@@ -16,14 +16,14 @@ interface IParams {
  * This component is responsible for buttons that act as links, or anythingthing that required an anchor tags should use this 
  * 
  * @example When including inside another component
-   // anotherComponent.jsx
-   import LinkButton from '../button/linkButton.jsx'
-   const Test = () => {
-    return (
-      <Button text="hello" lightColour="red|amber|green"/>
-    )
-   }
-   ReactDOM.render(<Test />, document.getElementById('yourId'))
+ * // anotherComponent.jsx
+ * import LinkButton from '../button/linkButton.jsx'
+ * const Test = () => {
+ *  return (
+ *     <Button text="hello" lightColour="red|amber|green"/>
+ *  )
+ * }
+ * ReactDOM.render(<Test />, document.getElementById('yourId'))
  *
  * @param {string} href Text to display inside the button
  * @param {string} text Text to display inside the 'button'

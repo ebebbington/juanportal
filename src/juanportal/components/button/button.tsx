@@ -14,15 +14,15 @@ interface IParams {
  * @description Overview
  * This component is responsible for any button 
  * 
- * @example When including inside another component
-   // anotherComponent.jsx
-   import Button from '../button/button.jsx'
-   const Test = () => {
-    return (
-      <Button text="hello" lightColour="red|amber|green"/>
-    )
-   }
-   ReactDOM.render(<Test />, document.getElementById('yourId'))
+ * @example
+ * // anotherComponent.jsx
+ * import Button from '../button/button'
+ * const Test = () => {
+ *   return (
+ *     <Button text="hello" lightColour="red|amber|green"/>
+ *   )
+ * }
+ * ReactDOM.render(<Test />, document.getElementById('yourId'))
  *
  * @param {string} text Text to display inside the button
  * @param {string} lightColour Determines whether the button is a red, amber or green traffic light

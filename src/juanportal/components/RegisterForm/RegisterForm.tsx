@@ -11,6 +11,8 @@ import Button from '../button/button'
  * @class RegisterForm
  *
  * @type {HTMLElement}
+ * 
+ * @requires form-container DOM element with that id
  *
  * @description What is this Component?
  * This is the baseline for a form any implemented form should use. This would be utilised in scenarios like
@@ -59,7 +61,6 @@ import Button from '../button/button'
  * @method componentDidUpdate       Called when a state property changes
  * @method render                   Automatically called, renders the form in the DOM
  */
-// todo :: find out a way to hide the notify message on focus or something
 const RegisterForm = () => {
 
     /**
@@ -302,7 +303,4 @@ const RegisterForm = () => {
     )
 }
 
-/**
- * Render the element
- */
-ReactDOM.render(<RegisterForm />, document.getElementById('form-container'))
+export default RegisterForm

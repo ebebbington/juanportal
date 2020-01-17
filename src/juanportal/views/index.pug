@@ -1,7 +1,6 @@
 extends layout
 block append head
 block append content
-    #button-container
     #profile-container
    
     //-script(src="/public/javascripts/components/profile.js" data-plugins="transform-es2015-modules-umd" type="text/babel")
@@ -16,7 +15,7 @@ block append content
         //-         img(src=`${person.image}`)
         //-         h1 #{person.name}
 
-    script(src="/public/javascripts/profile.js")
+    script(src="/public/javascripts/app.js")
     //- script(data-plugins="transform-es2015-modules-umd" type="text/babel").
     //-     ReactDOM.render(
     //-         <Profile count="5" />,

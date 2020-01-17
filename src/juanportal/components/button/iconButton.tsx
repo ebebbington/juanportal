@@ -16,14 +16,14 @@ interface IParams {
  * This component is responsible for buttons that contain an icon with text below
  * 
  * @example When including inside another component
-   // anotherComponent.jsx
-   import LinkButton from '../button/iconButton.jsx'
-   const Test = () => {
-    return (
-      <Button iconClass="fa fa-group" text="hello" lightColour="red|amber|green"/>
-    )
-   }
-   ReactDOM.render(<Test />, document.getElementById('yourId'))
+ * // anotherComponent.jsx
+ * import IconButton from '../button/iconButton'
+ * const Test = () => {
+ *   return (
+ *     <Button iconClass="fa fa-group" text="hello" lightColour="red|amber|green"/>
+ *   )
+ * }
+ * ReactDOM.render(<Test />, document.getElementById('yourId'))
  *
  * @param {string} iconClass Font awesome class of the icon to display
  * @param {string} text Text to display inside the 'button'
