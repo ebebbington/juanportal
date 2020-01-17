@@ -8,7 +8,7 @@
     "buildTS": "node_modules/.bin/tsc && pm2 restart all",
     "buildTSX": "npx webpack --config webpack.config.js",
     "stress": "node_modules/.bin/artillery run",
-    "testReact": "node_modules/.bin/jest ./tests/components"
+    "testReact": "node_modules/.bin/jest"
   },
   "author": "",
   "license": "ISC",
