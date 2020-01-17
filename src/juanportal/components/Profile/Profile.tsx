@@ -251,7 +251,7 @@ const Profile = ({id, count}: IProps) => {
 
     if (profiles.length < 1) {
         return (
-            <div className={`well ${styles.profile}`}>
+            <div className={styles.profile}>
                 <h3>No profiles are left! Why not
                     <a href="/profile/add"> add one </a>
                     or
