@@ -1,5 +1,6 @@
 import React, { useState, ReactElement, useEffect, useCallback } from 'react'
 import ReactDOM from 'react-dom'
+import LinkButton from '../button/linkButton'
 import Button from '../button/button'
 import { notify, fetchToApiAsJson } from '../util'
 //@ts-ignore
@@ -260,7 +261,7 @@ const Profile: React.FC<IProps> = ({id, count, children}) => {
                             <div className={styles.actions}>
                                 {viewSingle === false &&
                                     <div className={styles.action}>
-                                        <Button text="View Profile" lightColour="green" setAnchor={true} anchorHref={`/profile/id/${profile._id}`} />
+                                        <LinkButton text="View Profile" lightColour="green" href={`/profile/id/${profile._id}`} />
                                     </div>
                                 }
                                 <div className={styles.action} onClick={() => handleDelete(profile._id)}>
