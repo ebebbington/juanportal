@@ -331,6 +331,8 @@ For React, i use Webpack to bundle the code on the server, and into a public dir
     * Solved by following the guide here: https://stackoverflow.com/questions/54905376/type-error-jsx-element-type-null-undefined-is-not-a-constructor-functi
     * I made the component implement `React.FC` (`... MyComp: React.FC ...`) and I then had that implement the interface for the props
     * I then realised the param/prop "children" is required by the React.FC, so you have to include that inside the parameters (but not in the interface)
+    * (17/01/2020) The solution to this problem is actually to just return HTML. In my problem, i was only returning HTML inside a component within conditionals - whilst this looked fine to me, it wasn't to webpack. The reason why the above worked was not because i was returning  `children as ...` at the bottom of the component, but because i was just returning something that wasn't in a conditional. Including the `return children as ...` meant it isn't testable, because that line would never be seen due to the conditionals handling each case, so the best thing to do is dont have your only returned HTML inside conditionals, explicitly return it instead. For example, io split the button component into 3 components, which allowed me to stop using conditionals to return certain HTML.
+
 
 * Using CSS Styling - Another Way
 
