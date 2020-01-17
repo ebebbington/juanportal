@@ -270,6 +270,18 @@ Note you might need to adjust the URL in the tests, e.g. `127.0.0.1` for windows
 
 `npm run stress artillery/dir/file.yml`
 
+## Jest Tests
+
+Jest has been setup and configured to test React components.
+
+### Writing the Tests
+
+* Write every case for a component, such as for every paramemer or conditional.
+
+### Running the Tests
+
+The command to run Jest tests for React components is `npm run testReact <filename>`, where `filename` is the file to test inside `/tests/components/`. Should you leave it blank, it will test every file
+
 ## Using TypeScript
 
 Setting up TS was tough given i had 0 experience, but it all boils down to understanding the flow: 
