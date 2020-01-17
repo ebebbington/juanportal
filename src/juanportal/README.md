@@ -50,6 +50,7 @@ This side of JuanPortal also uses TypeScript where it can, as well as the class 
     * Component file names should be capitilised if they are a main component e.g. a button isn't, whereas a header would be
     * Components should reside inside a directory named after the said file
     * Component directories (ones that hold a specific component) should also use CSS modules
+    * Components will capitital letters in their folder and filename means that specific component gets rendered inside `ReactDOM.render(...)`. For example, the `button` component is lowercase because it's only **used inside other components**, whereas the `Profile` component is uppercase because that gets specifically rendered
 
 * `data`
 
@@ -280,7 +281,18 @@ Jest has been setup and configured to test React components.
 
 ### Running the Tests
 
-The command to run Jest tests for React components is `npm run testReact <filename>`, where `filename` is the file to test inside `/tests/components/`. Should you leave it blank, it will test every file
+The command to run Jest tests for React components is `npm run testReact <filename>`, where `filename` is the file to test inside `/tests/components/`. Should you leave it blank, it will test every file. Use the following examples:
+
+```
+// test a specific file
+npm run testReact tests/components/button/button.spec.js
+
+// test all tests inside a directory
+npm run testReact tests/components/button/
+
+// test all tests
+npm run testReact
+```
 
 ## Using TypeScript
 
