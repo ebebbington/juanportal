@@ -345,6 +345,25 @@ For React, i use Webpack to bundle the code on the server, and into a public dir
     * I then realised the param/prop "children" is required by the React.FC, so you have to include that inside the parameters (but not in the interface)
     * (17/01/2020) The solution to this problem is actually to just return HTML. In my problem, i was only returning HTML inside a component within conditionals - whilst this looked fine to me, it wasn't to webpack. The reason why the above worked was not because i was returning  `children as ...` at the bottom of the component, but because i was just returning something that wasn't in a conditional. Including the `return children as ...` meant it isn't testable, because that line would never be seen due to the conditionals handling each case, so the best thing to do is dont have your only returned HTML inside conditionals, explicitly return it instead. For example, io split the button component into 3 components, which allowed me to stop using conditionals to return certain HTML.
 
+* `No module was found with the name 'button.module.css'`
+
+    * Solved by following this guide: https://stackoverflow.com/questions/41336858/how-to-import-css-modules-with-typescript-react-and-webpack
+    * Causation: using the code `import classes from 'button.module.css'` throws a TS IDE error.
+    * Solution: I added a `typings.d.ts` file inside the button component directory with the following: `declare module "*.module.css";`
+
+
+* `Could not find a declaration file for module 'react-responsive'`
+
+    * Just need to install types :) `np i --save @types/react-responsive`
+    * Caused when trying to do the following: `import { useMediaQuery } from 'react-responsive'`
+
+* `No index signature with a parameter of type 'string' was found on type`
+
+    * Mostly caused (in my example) when trying to do the following inside a class: `Object.keys(obj).forEach((propName ...) => { this[propName]... }` where `this[propName]` was the culprit
+    * To solve, I simply created an interface: `interface IIndexSignature { [key: string]: string }`
+    * Then added this: `class MyClass implements IIndexSignature {}`
+    * And fully implemented the interface by adding a property: `class ... { [key: string]: string }`
+
 
 * Using CSS Styling - Another Way
 

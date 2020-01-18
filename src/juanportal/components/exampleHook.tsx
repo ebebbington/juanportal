@@ -1,5 +1,4 @@
 import React, { useState, ReactElement, useEffect } from 'react'
-//@ts-ignore
 import styles from './thisfile.module.css'
 
 /**

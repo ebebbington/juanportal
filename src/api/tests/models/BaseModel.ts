@@ -93,7 +93,7 @@ class TestModel extends BaseModel {
     // Abstract methods
     //
 
-    protected getMongooseModel (): Model<any> {
+    public getMongooseModel (): Model<any> {
         return MongooseModel
     }
 }
@@ -322,7 +322,7 @@ describe('BaseModel', () => {
 
             it('Should exist and only return the Document', () => {
                 const Test = new TestModel
-                //@ts-ignore - required because we can still access private methods before compile time, yet TS obviously throws an error about this
+                
                 const doc = Test.getMongooseModel()
                 expect(doc).to.exist
             })

@@ -2,7 +2,6 @@ import React, { useState, ReactElement, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 //@ts-ignore
 import headerStyles from './Header.module.css'
-//@ts-ignore
 import { useMediaQuery } from 'react-responsive'
 
 /**

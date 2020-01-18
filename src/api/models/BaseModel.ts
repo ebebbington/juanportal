@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 var logger = require('../helpers/logger')
 const _ = require('lodash')
 import {Document, Schema, Model, model } from 'mongoose'
+import IIndexSignature from '../interfaces/models/IndexSignatureInterface'
 
 /**
  * @class BaseModel
@@ -27,7 +28,8 @@ import {Document, Schema, Model, model } from 'mongoose'
  * @method find                           Used for any SELECT queries
  * @method delete                         Used for any DELETE queries
  */
-export default abstract class BaseModel {
+export default abstract class BaseModel implements IIndexSignature {
+  [key: string]: any
 
   /**
    * When the entry was created
@@ -207,7 +209,6 @@ export default abstract class BaseModel {
       if (this.hasOwnProperty(propName)) {
         // Check if that prop passed in is different than
         // the existing prop
-        //@ts-ignore
         if (this[propName] !== data[propName]) {
           // Push the data to update!
           //this[propName] = data[propName]
@@ -258,7 +259,6 @@ export default abstract class BaseModel {
    */
   public async create (data: { [key: string]: any }): Promise<any> {
     const MongooseModel = this.getMongooseModel()
-    //@ts-ignore
     const document = new MongooseModel(data)
     try {
       await document.save()
