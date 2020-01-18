@@ -350,20 +350,30 @@ For React, i use Webpack to bundle the code on the server, and into a public dir
     * Solved by following this guide: https://stackoverflow.com/questions/41336858/how-to-import-css-modules-with-typescript-react-and-webpack
     * Causation: using the code `import classes from 'button.module.css'` throws a TS IDE error.
     * Solution: I added a `typings.d.ts` file inside the button component directory with the following: `declare module "*.module.css";`
+    * **UPDATE**: The above only fixes the error inside the IDE. Webpack will throw an error when bundling. Though I have found a fix - an odd one.
+    * So the `import ... from '...'` line doesn't work in `.tsx` files right? Yet it works inside `.js` files. So how i achieved this was:
+        * Created a `util.js` file inside each components directory
+        * Imported the styling that was relevent e.g.
+        ```
+        // /components/button/util.js
+        import classes from './button.module.css'
+        ```
+        * And created a helper function to get the stylings and return it for the component:
+        ```
+        // .../util.js
+        import classes from '...'
+        export function getStylings () { return classes }
 
+        // .../button.tsx
+        import { getStylings } from './util.js'
+        const styles = getStylings()
+        ```
+        * Maybe this fixed it because util isn't **directly** bundling `util.js`?
 
 * `Could not find a declaration file for module 'react-responsive'`
 
     * Just need to install types :) `np i --save @types/react-responsive`
     * Caused when trying to do the following: `import { useMediaQuery } from 'react-responsive'`
-
-* `No index signature with a parameter of type 'string' was found on type`
-
-    * Mostly caused (in my example) when trying to do the following inside a class: `Object.keys(obj).forEach((propName ...) => { this[propName]... }` where `this[propName]` was the culprit
-    * To solve, I simply created an interface: `interface IIndexSignature { [key: string]: string }`
-    * Then added this: `class MyClass implements IIndexSignature {}`
-    * And fully implemented the interface by adding a property: `class ... { [key: string]: string }`
-
 
 * Using CSS Styling - Another Way
 
