@@ -43,6 +43,8 @@
 
 # Completed
 
+(*[61ff472](https://github.com/ebebbington/juanportal/commit/61ff472ec2d5335200f6da5f3164fc05b7385a3f) & [3c406b0](https://github.com/ebebbington/juanportal/commit/3c406b0a3b7207d9ef1f2d264b43c2a9650c0a2e) & [81a282f](https://github.com/ebebbington/juanportal/commit/81a282f5c54f0de8c4b25483ebe4821712719332)*) - FT - Address usage of //@ts-ignore
+
 (*[17f8462](https://github.com/ebebbington/juanportal/commit/17f8462c1e8ec0f36bb0815079b774a6f1861a6b)*) - FT - React Testing: button
 
 (*[2b594e8](https://github.com/ebebbington/juanportal/commit/2b594e8067a66a058217a598b18e433ec09b6b83)*) - FT - Implement Artillery - 14/01/2020
