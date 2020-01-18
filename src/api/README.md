@@ -242,7 +242,8 @@ The command(s) to do this are inside of the `package.json` file:
 `npm run test path/to/test/test.js`
 
 * TS files
-Should you be using a TS test, you need to run the second test command:
+
+Should you be using a TS test, you need to run the second test command. This is because Mocha needs an extra flag to test `.ts` files:
 
 `npm run test2 tests/some/dir/myTest.ts`
 
