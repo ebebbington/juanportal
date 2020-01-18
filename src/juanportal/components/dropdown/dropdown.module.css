@@ -1,0 +1,41 @@
+/* Container */
+.dropdownContainer {
+    text-align: center;
+    position: relative;
+}
+.dropdownContainer > p {
+    margin-bottom: 0;
+    display: block; /* So they label sits above the buttom */
+}
+/* The button to open the dropdown */
+.dropdownContainer > button {
+    background-color: #ffffff;
+    color: #0c1f26;
+    border: 0.1em #0c1f26 solid;
+    /*border-radius: 100px;*/
+}
+/* Then invert the colours */
+.dropdownContainer > button:hover {
+    background: #0c1f26;
+    color: #ffffff;
+    transform: scale(1.1);
+}
+/* The list container */
+.dropdownContainer > ul {
+    padding: 0;
+    overflow-y: scroll;
+    max-height: 12em;
+    top: 100%;
+    left: -25%;
+    margin-bottom: 75px;
+    margin-top: 0;
+}
+/* Each list item */
+.dropdownContainer > ul li {
+    color: #e65370;
+    padding: 5px 5px;
+}
+/* Add some space between the checkbox and text */
+.dropdownContainer > ul li > label > input {
+    margin-right: 0.3em;
+}
