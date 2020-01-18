@@ -4,10 +4,30 @@ import { getStylings } from './util'
 const dropdownStylings = getStylings()
 
 interface IProps {
-    title: string
+    title: string,
+    listItemsData: any
 }
 
-const Dropdown = ({title, listItemsData}) => {
+/**
+ * @name Dropdown
+ * 
+ * @description
+ * Responsible for dropdown UI
+ * 
+ * @example
+ * import Dropdown from '../dropdown/dropdown'
+ * const Test = () => {
+ *   const data = [{text: 'Simon', checked: true}, ...]
+ *   const title = 'Friends'
+ *   return (
+ *     <Dropdown title={title} listItemData={data} />
+ *   )
+ * }
+ * 
+ * @param {string} title Title to give the dropdown
+ * @param {Array<{checked: boolean, text: string}} listItemsData Data used to populate the list items
+ */
+const Dropdown = ({title, listItemsData}: IProps) => {
 
     return (
         <div className={dropdownStylings.dropdownContainer}>
@@ -32,3 +52,5 @@ const Dropdown = ({title, listItemsData}) => {
         </div>
     )
 }
+
+export default Dropdown

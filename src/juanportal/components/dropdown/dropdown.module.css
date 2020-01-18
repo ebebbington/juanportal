@@ -9,15 +9,15 @@
 }
 /* The button to open the dropdown */
 .dropdownContainer > button {
-    background-color: #ffffff;
+    background-color: var(--custom-white);
     color: #0c1f26;
-    border: 0.1em #0c1f26 solid;
+    border: 0.1em var(--custom-black) solid;
     /*border-radius: 100px;*/
 }
 /* Then invert the colours */
 .dropdownContainer > button:hover {
-    background: #0c1f26;
-    color: #ffffff;
+    background: var(--custom-black);
+    color: var(--custom-white);
     transform: scale(1.1);
 }
 /* The list container */
@@ -32,7 +32,7 @@
 }
 /* Each list item */
 .dropdownContainer > ul li {
-    color: #e65370;
+    color: var(--custom-blue);
     padding: 5px 5px;
 }
 /* Add some space between the checkbox and text */
