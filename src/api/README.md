@@ -257,3 +257,14 @@ All tests are written using YAML (`.yml|.yaml`)
 ### Running the Tests
 
 `npm run stress <your-file>`
+
+## Help
+
+### TypeScript
+
+* `No index signature with a parameter of type 'string' was found on type`
+
+    * Mostly caused (in my example) when trying to do the following inside a class: `Object.keys(obj).forEach((propName ...) => { this[propName]... }` where `this[propName]` was the culprit
+    * To solve, I simply created an interface: `interface IIndexSignature { [key: string]: string }`
+    * Then added this: `class MyClass implements IIndexSignature {}`
+    * And fully implemented the interface by adding a property: `class ... { [key: string]: string }`
