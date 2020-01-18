@@ -1,0 +1,88 @@
+/* Container to hold the slider and text to accompany the slider */
+.sliderContainer {
+    text-align: center;
+    max-width: 120px; /* Must not exceed this width with the given text */
+}
+/* Text to describe the slider in 1-2 words */
+.sliderContainer > p:first-of-type {
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   overflow: hidden;
+   margin-bottom: 0.2em;
+}
+/* Container for the slider */
+.sliderContainer > label:first-of-type {
+   position: relative;
+   display: inline-block;
+   width: 55px; /* Width of rounded bg */
+   height: 29px;
+}
+/* Hover effect */
+.sliderContainer > label:hover {
+   box-shadow: 0 0 5px var(--custom-red);
+   border-radius: 100px;
+}
+/* Input checkbox */
+.sliderContainer > label > input:first-of-type {
+   opacity: 0;
+   width: 0;
+   height: 0;
+}
+/* The actual slider */
+.sliderContainer > label > span {
+   position: absolute;
+   cursor: pointer;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background-color: var(--custom-red);
+   transition: .4s;
+}
+/* Slider circle */
+.sliderContainer > label > span:before {
+   position: absolute;
+   content: "";
+   height: 23px;
+   width: 23px;
+   left: 4px;
+   bottom: 3px;
+   background-color: var(--custom-white);
+   transition: .4s;
+}
+/* When slider input is checked */
+.sliderContainer > label > input:checked + span {
+   background-color: var(--custom-green);
+}
+/* Move the slider when first checked */
+.sliderContainer > label > input:checked + span:before {
+   transform: translateX(23.5px); /* position of the circle */
+}
+/* For rounded sliders - round the slider */
+.sliderContainer > label > span.round {
+   border-radius: 34px;
+}
+/* For rounded sliders - round the white circle */
+.sliderContainer > label > span.round:before {
+   border-radius: 50%;
+}
+/* The icons inside each slider circle */
+.sliderContainer > label > span > i {
+   position: absolute;
+   left: 10.5px;
+   bottom: 23px;
+   text-align: center;
+}
+.sliderContainer > label > span > i:before {
+   position: absolute;
+   height: 23px;
+   width: 23px;
+   left: -7px;
+   bottom: 1px;
+   top: 1px;;
+   transition: .4s;
+   border-radius: 50%;
+}
+.sliderContainer > label > input:checked + span > i:before {
+   transform: translateX(24px);
+}
