@@ -63,14 +63,14 @@ This side of JuanPortal also uses TypeScript where it can, as well as the class 
 
 * `public`
 
-    * Holds all client side files, such as the CSS, images, bundles React components and so on
+    * Holds all client side files, such as the CSS, images, bundled React components and so on
     * There is a main `layout.pug` file for CSS to hold minimal styles related to all HTML. Note that specific styling **should** be inside a component CSS module
 
 * `routes`
 
     * Routes are defined here, and should follow current implementations
 
-* `test`
+* `tests`
 
     * Holds all tests related to this side of the application (*see more below*)
 
@@ -98,6 +98,10 @@ This side of JuanPortal also uses TypeScript where it can, as well as the class 
 * `ecosystem.config.js`
 
     * The ecosystem file used by PM2 to start the server
+
+* `jest.config.js`
+
+    * Configuration file used by Jest when running tests
 
 * `juanportal.config.js`
 

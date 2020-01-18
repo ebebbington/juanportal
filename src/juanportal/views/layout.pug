@@ -16,15 +16,16 @@ html
         link(rel="stylesheet" href="/public/libs/bootstrap-reboot.min.css" crossorigin="anonymous")
         // Logo
         link(rel="shortcut icon", href="/public/images/juanportal-logo.png")
+        // Below is no longer required as there is no inline stuff anymore
         // Babel
-        script(src="/public/libs/babel.js")
+        //-script(src="/public/libs/babel.js")
         // React
-        script(src="/public/libs/react.js")
+        //-script(src="/public/libs/react.js")
         // React DOM
-        script(src="/public/libs/react-dom.js")
+        //-script(src="/public/libs/react-dom.js")
         // TypeScript
-        script(src="/public/libs/typescript.min.js")
-        script(src="/public/libs/typescript.compile.min.js")
+        //-script(src="/public/libs/typescript.min.js")
+        //-script(src="/public/libs/typescript.compile.min.js")
         // own css
         link(rel="stylesheet", href="/public/stylesheets/layout.css")
         // Notification library - see https://github.com/MLaritz/Vanilla-Notify
@@ -34,8 +35,6 @@ html
         link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous")
     body
         header#header
-        
-        script(src="/public/javascripts/header.js")
 
         .container
             .row
@@ -43,7 +42,7 @@ html
                     #sidebar-container
                         block sidebar
 
-                    script(src="/public/javascripts/sidebar.js")
-
                 .col
                     block content
+                    
+        script(src="/public/javascripts/app.js")

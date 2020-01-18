@@ -1,7 +1,5 @@
 "use strict";
 
-import { text } from "body-parser";
-
 const nodemailer = require('nodemailer')
 const mail = require('../juanportal.config.js')['mail']
 const logger = require('./logger.js')
@@ -62,7 +60,12 @@ class MailHelper {
 }
 
 function example () {
-  const data = {
+  const data: {
+    to: string,
+    subject: string,
+    text: string,
+    html: string
+  } = {
     to: 'EdwardSBebbington@hotmail.com',
     subject: 'hello',
     text: 'hello world',
