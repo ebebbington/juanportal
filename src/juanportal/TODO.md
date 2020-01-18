@@ -35,9 +35,6 @@
 
 * FT: Style New CSS Objects - Develop stylings for all the CSS objects left over
 
-* Fix: Adress usage of `//@ts-ignore`
-    * These should really be needed but in some cases they are required. Discover ways to remove these but keep the app working
-
 * FT: Implement JWT
     * Maybe implement the usage of JWT's using the current JWT helper class?
 
