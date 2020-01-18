@@ -51,7 +51,7 @@
     padding: 0.2em;
 }
 .navMenuListItem h4:hover {
-    color: black;
+    color: var(--custom-black);
 }
 .titleHolder {
     margin: auto;

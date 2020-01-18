@@ -2,9 +2,9 @@
 .profile {
     overflow: hidden;
     margin: 1em;
-    border: 1px solid #eaeaea;
+    border: 1px solid var(--custom-grey);
     margin-bottom: 15px;
-    background-color: #ffffff;
+    background-color: var(--custom-white);
     padding: 1em;
     margin: 0.5em 0.5em 0.5em 0.5em; /* Push it away from the top and bottom */
     display: flex;

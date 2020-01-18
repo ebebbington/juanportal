@@ -3,7 +3,7 @@
  */
 .form {
     text-align: center;
-    background-color: #f4f7f8;
+    background-color: var(--custom-white);
     padding: 1em;
     border-radius: 8px;
 }
@@ -46,7 +46,7 @@ fieldset {
  * File input element
  */
 .fileUploadContainer > input[type="file"] {
-    background-color: #f4f7f8;
+    background-color: var(--custom-grey);
     display: none
 }
 /**
@@ -54,7 +54,7 @@ fieldset {
  */
 .fileUploadContainer > i:not(:empty) {
     margin-left: 0.3em; /* To space the text and button apart */
-    color: #5bc0de;
+    color: var(--custom-blue);
 }
 /* Submit button container */
 .submitContainer {

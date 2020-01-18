@@ -3,7 +3,7 @@
     border-radius: 0 0 3px 0;
     border-right: 1px var(--custom-purple) dotted;
     margin-left: -1px;
-    box-shadow: 0 2px 2px rgba(12,13,14,0.2);
+    box-shadow: 0 2px 2px var(--custom-black);
 }
 .list {
     padding: 0;
