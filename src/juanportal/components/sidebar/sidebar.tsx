@@ -1,7 +1,7 @@
 import React, { useState, ReactElement, useEffect } from 'react'
 import ReactDOM from 'react-dom'
-//@ts-ignore
-import sidebarStyles from './Sidebar.module.css'
+import { getStylings } from './util'
+const sidebarStyles = getStylings()
 import { useMediaQuery } from 'react-responsive'
 
 /**

@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom'
 import LinkButton from '../button/linkButton'
 import Button from '../button/button'
 import { notify, fetchToApiAsJson } from '../util'
-//@ts-ignore
-import styles from './Profile.module.css'
+import { getStylings } from './util'
+const styles = getStylings()
 
 interface IProps {
     count?: number,

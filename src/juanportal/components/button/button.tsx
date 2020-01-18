@@ -1,6 +1,6 @@
 import React, { useState, ReactElement, FunctionComponent } from 'react'
-//@ts-ignore
-import classes from './button.module.css'
+import { getStylings } from './util'
+const classes = getStylings()
 import {getLightStylingByColour} from './util'
 
 interface IParams {

@@ -10,3 +10,7 @@ export function getLightStylingByColour (lightColour) {
       classes.redLight : false
     return lightStyling
 }
+
+export function getStylings () {
+  return classes
+}
