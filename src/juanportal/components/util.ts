@@ -1,3 +1,5 @@
+const vNotify = require('Notify');
+
 /**
  * @name util.js
  * 
@@ -59,22 +61,15 @@ export const notify = ((title: string, text: string, type: string) => {
     newNotiyScript.async = true;
     newNotiyScript.onload = (a: any) => {
         if (type === 'success')
-            //@ts-ignore
             vNotify.success({text: text, title: title})
         if (type === 'warning')
-            //@ts-ignore
             vNotify.warning({text: text, title: title})
         if (type === 'error')
-            //@ts-ignore
             vNotify.error({text: text, title: title})
         if (type === 'info')
-            //@ts-ignore
             vNotify.info({text: text, title: title})
         if (type === 'notify')
-            //@ts-ignore
             vNotify.notify({text: text, title: title})
-        // or
-        // window.vNotify.[...]
     }
     document.body.appendChild(newNotiyScript);
 })
