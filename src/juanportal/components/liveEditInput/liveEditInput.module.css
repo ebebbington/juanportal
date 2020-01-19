@@ -1,0 +1,31 @@
+/* Whole container */
+.liveEditContainer {
+    text-align: center;
+}
+/* Input field */
+.liveEditContainer > label > input:first-of-type {
+    text-align: center;
+    margin: 5px auto auto auto;
+    border-radius: 50px;
+    width: 74px;
+    height: 32px;
+}
+/* Save button container */
+.liveEditContainer > label > .saveHolder {
+    position: absolute;
+}
+/* Save button */
+.liveEditContainer > label > .saveHolder > button {
+    position: absolute;
+    border-radius: 50%;
+    padding: 0;
+    visibility: hidden; /* hide for the time being */
+    width: 18px;
+    height: 18px;
+    bottom: 16px;
+    left: 60px;
+}
+/* When a user clicks the input to edit, show the save icon */
+.liveEditContainer > label > input:focus + .saveHolder > button:first-of-type {
+    visibility: visible;
+}
