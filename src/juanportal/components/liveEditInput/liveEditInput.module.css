@@ -2,28 +2,34 @@
 .liveEditContainer {
     text-align: center;
 }
+.liveEditContainer > p:first-of-type {
+    margin: auto;
+}
 /* Input field */
 .liveEditContainer > label > input:first-of-type {
     text-align: center;
     margin: 5px auto auto auto;
     border-radius: 50px;
-    width: 74px;
-    height: 32px;
+    /* width: 74px; */
+    /* height: 32px; */
 }
 /* Save button container */
-.liveEditContainer > label > .saveHolder {
+.saveHolder {
     position: absolute;
 }
 /* Save button */
-.liveEditContainer > label > .saveHolder > button {
+.saveHolder > button {
     position: absolute;
     border-radius: 50%;
     padding: 0;
     visibility: hidden; /* hide for the time being */
-    width: 18px;
-    height: 18px;
-    bottom: 16px;
-    left: 60px;
+    transform: translate(36%, -28px);
+    color: var(--custom-white);
+    background-color: var(--custom-green);
+    padding: 1px;
+}
+.saveHolder > button:hover {
+    color: var(--custom-white)
 }
 /* When a user clicks the input to edit, show the save icon */
 .liveEditContainer > label > input:focus + .saveHolder > button:first-of-type {

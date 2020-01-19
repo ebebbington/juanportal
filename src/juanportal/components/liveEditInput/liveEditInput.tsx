@@ -3,6 +3,13 @@ import ReactDOM from 'react-dom'
 import { getStylings } from './util'
 const styles = getStylings()
 
+interface IProps {
+    title: string,
+    inputVal?: any,
+    saveHandler?: Function,
+    id?: any
+}
+
 /**
  * @name LiveEditInput
  * 
@@ -16,23 +23,42 @@ const styles = getStylings()
  * @example
  * import LiveEditInput from '../liveEditInput/liveEditInput'
  * const Test = () => {
+ *   const handleSave = ({value, id}) => { console.log('Something with the id of ${id} has a new value of ${value})}
  *   return (
- *     <LiveEditInput title="Update Password" inputVal="Current password" ariaLabel="Update your current password"/>
+ *     <LiveEditInput title="Update Password" inputVal="Current password" saveHandler={handleSave} id="could be email"/>
  *   )
  * }
  * 
  * @param {string} title Description for the live edit e.g. Password
  * @param {string} inputVal Value to pre-populate the input field with
- * @param {string} ariaLabel Title for the input element to support accessibility
+ * @param {Function} saveHandler Your function that will be called when the save button is clicked. Passes in the input value and your passed in id if present
+ * @param {any} id An id you want to associate the value with e.g. when a new vlaue saves, the id could point to a users profile
  */
-const LiveEditInput = ({title, inputVal, ariaLabel}) => {
+const LiveEditInput = ({title, inputVal = '', saveHandler, id}: IProps) => {
+
+    const [inputSize, setInputSize] = useState(inputVal.length ? inputVal.length : 1)
+    const [inputValue, setInputValue] = useState(inputVal)
+
+    const handleInputChange = (value: string) => {
+        setInputValue(value)
+        setInputSize(value.length ? value.length : 1)
+    }
+
+    const handleClick = (target: any) => {
+        const value: string = target.dataset.value
+        const id: any = target.dataset.id || null
+        if (saveHandler) {
+            saveHandler({value, id})
+        }
+    }
+
     return (
         <div className={styles.liveEditContainer}>
             <p>{title}</p>
             <label>
-                <input type="text" className="form-control" value={inputVal} title={ariaLabel}></input>
-                <div className="saveHolder">
-                    <button className="fa fa-check btn" title={ariaLabel}></button>
+                <input size={inputSize} type="text" className="form-control" value={inputValue} title={title} onChange={event => handleInputChange(event.target.value)}></input>
+                <div className={styles.saveHolder}>
+                    <button data-val={inputValue} data-id={id} className="fa fa-check btn" title={title} onClick={event => handleClick(event.target)}></button>
                 </div>
             </label>
         </div>
