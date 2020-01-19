@@ -383,3 +383,11 @@ For React, i use Webpack to bundle the code on the server, and into a public dir
 
     * You can set `modules` to `false` or comment it out inside `webpack.config.js`, then import the CSS file (`import someComp.css.js`), then set classnames like such: `...className="button"
     * Where the style file is: `export default { button { color: 'blue' }}
+
+### Jest
+
+* Defining URL/pathname for Components
+
+    * My header component holds a state on what the URL is, so to cover all cases of this component, i needed a way to define the pathname in different tests, so the Header component can render differently based on `window.location.pathname`. For example, it won't display "Home" when the pathname is `/`.
+    * To combat this, we can define the pathname like such: `window.history.pushState({}, 'Test Title', '/profile/add')`.
+    * Now when we `expect(global.window.location.pathname).toBe('/profile/add')` it passes, whereas original the url was always `/`

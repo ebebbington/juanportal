@@ -84,19 +84,17 @@ const Header = () => {
 
     return (
         <div className={headerStyles.header}>
-            {canDisplay && 
-            <div className={headerStyles.navMenuTrigger}>
+            <div className={`${headerStyles.navMenuTrigger} ${!canDisplay ? headerStyles.hide : ''}`}>
                 <button className="btn" onClick={handleMenuClick}>
                     <i className={`fa fa-2x ${menuExpanded ? 'fa-times' : 'fa-bars'}`}></i>
                 </button>
-                <div className={`${!menuExpanded ? headerStyles.hide : ''} ${headerStyles.navMenu}`}>
+                <div className={`${menuExpanded === false ? headerStyles.hide : ''} ${headerStyles.navMenu} menuHolder`}>
                     <ul className={headerStyles.navMenuList}>
                         {url !== '/' &&<li className={headerStyles.navMenuListItem}><a href="/"><h4>Home</h4></a></li>}
-                        {url.indexOf('/profile/add/') < 0 &&<li className={headerStyles.navMenuListItem}><a href="/profile/add"><h4>Add Profile</h4></a></li>}
+                        {url !== '/profile/add' &&<li className={headerStyles.navMenuListItem}><a href="/profile/add"><h4>Add Profile</h4></a></li>}
                     </ul>
                 </div>
             </div>
-            }
             <div className={headerStyles.titleHolder}>
                 <h1>
                     <strong>
