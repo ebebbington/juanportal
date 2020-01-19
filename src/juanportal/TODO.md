@@ -19,18 +19,23 @@
 # TODO
 
 * FT: Jest Testing for React - Implement tests for the Profile component
-    * Once implemented, append the `Jest` section inside the `Tools Used` in `README.md`
 
 * FT: Jest Testing for React - Implement tests for the RegisterForm component
-    * Once implemented, append the `Jest` section inside the `Tools Used` in `README.md`
 
-* FT: Jest Testing for React - Implement tests for the Header component
-    * Once implemented, append the `Jest` section inside the `Tools Used` in `README.md`
+* FT: Jest Testing for React - Finish Tests for Header component
 
 * FT: Jest Testing for React - Implement tests for the Sidebar component
-    * Once implemented, append the `Jest` section inside the `Tools Used` in `README.md`
 
-* FT: Get More Profiles When 0 - When no profiles are left find more
+* FT: Jest Testing for React - Implement tests for the Revealer component
+
+* FT: Jest Testing for React - Implement tests for the Dropdown component
+
+* FT: Jest Testing for React - Implement tests for the LiveEditInput component
+
+* FT: Jest Testing for React - Implement tests for the Slider component
+
+* FT: Profile Component - Retrieve More when None are Left
+    * When count is defined and no profiles are left in the state, go and fetch more
     * E.g. when all are deleted and none are left, but count was defined, fetch more if possible
 
 * FT: Implement JWT
