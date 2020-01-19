@@ -33,12 +33,12 @@
 * FT: Get More Profiles When 0 - When no profiles are left find more
     * E.g. when all are deleted and none are left, but count was defined, fetch more if possible
 
-* FT: Style New CSS Objects - Develop stylings for all the CSS objects left over
-
 * FT: Implement JWT
     * Maybe implement the usage of JWT's using the current JWT helper class?
 
 # Completed
+
+(*[d0fb92a](https://github.com/ebebbington/juanportal/commit/d0fb92aec704ba6df0267f2cf7ed65600095be82) & [aab263e](https://github.com/ebebbington/juanportal/commit/aab263eba1aa04d89e4b16c106c5a22a1b668a9d) & [aaa90b8](https://github.com/ebebbington/juanportal/commit/aaa90b844efc93d78bacdb11b565d809e2153e28) & [0a30bc1](https://github.com/ebebbington/juanportal/commit/0a30bc19e95bf5343a7212b724f52d85df663298)*) - FT - Implement New React Components
 
 (*[61ff472](https://github.com/ebebbington/juanportal/commit/61ff472ec2d5335200f6da5f3164fc05b7385a3f) & [3c406b0](https://github.com/ebebbington/juanportal/commit/3c406b0a3b7207d9ef1f2d264b43c2a9650c0a2e) & [81a282f](https://github.com/ebebbington/juanportal/commit/81a282f5c54f0de8c4b25483ebe4821712719332)*) - FT - Address usage of //@ts-ignore
 
