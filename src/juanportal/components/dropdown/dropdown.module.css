@@ -29,6 +29,10 @@
     left: -25%;
     margin-bottom: 75px;
     margin-top: 0;
+    /* overwrite bootstrap css to center the dropdown based on the button */
+    /* Reason why it's important is because bootstrap adds the styles dynamically, meaning those styles take 1st priority */
+    left: 50% !important;
+    transform: translate3d(-50%, 77%, 0px) !important;
 }
 /* Each list item */
 .dropdownContainer > ul li {
