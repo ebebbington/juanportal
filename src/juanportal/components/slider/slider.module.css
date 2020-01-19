@@ -14,8 +14,8 @@
 .sliderContainer > label:first-of-type {
    position: relative;
    display: inline-block;
-   width: 55px; /* Width of rounded bg */
-   height: 29px;
+   width: 73px; /* Width of rounded bg */
+   height: 34px;
 }
 /* Hover effect */
 .sliderContainer > label:hover {
@@ -43,10 +43,10 @@
 .sliderContainer > label > span:before {
    position: absolute;
    content: "";
-   height: 23px;
-   width: 23px;
+   height: 26px;
+   width: 26px;
    left: 4px;
-   bottom: 3px;
+   bottom: 4px;
    background-color: var(--custom-white);
    transition: .4s;
 }
@@ -56,21 +56,25 @@
 }
 /* Move the slider when first checked */
 .sliderContainer > label > input:checked + span:before {
-   transform: translateX(23.5px); /* position of the circle */
+   transform: translateX(38.5px); /* position of the circle */
+}
+.sliderContainer > label > input:disabled + span {
+   cursor: no-drop;
+   opacity: 0.5;
 }
 /* For rounded sliders - round the slider */
-.sliderContainer > label > span.round {
+.sliderContainer > label > span {
    border-radius: 34px;
 }
 /* For rounded sliders - round the white circle */
-.sliderContainer > label > span.round:before {
+.sliderContainer > label > span:before {
    border-radius: 50%;
 }
 /* The icons inside each slider circle */
 .sliderContainer > label > span > i {
    position: absolute;
-   left: 10.5px;
-   bottom: 23px;
+   left: 16%;
+   bottom: 25px;
    text-align: center;
 }
 .sliderContainer > label > span > i:before {
@@ -84,5 +88,5 @@
    border-radius: 50%;
 }
 .sliderContainer > label > input:checked + span > i:before {
-   transform: translateX(24px);
+   transform: translateX(41px);
 }

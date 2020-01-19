@@ -6,7 +6,9 @@ const sliderStylings = getStylings()
 
 interface IProps {
     title: string,
-    setChecked: boolean
+    setChecked: boolean,
+    id?: any,
+    checkHandler?: Function
 }
 
 /**
@@ -18,29 +20,42 @@ interface IProps {
  * @example
  * import Slider from '../slider/slider'
  * const Test = () => {
+ *   const checkHandler = (id: any, isChecked: boolean) => {}
  *   return (
- *     <div onClick={() => handleSliderClick}> // extra specific logic such as a fetch
- *       <Slider text="PIN" setChecked={true|false} />
- *     </div>
+ *     <Slider title="PIN" setChecked={true|false} id?={id} checkHandler={checkHandler} />
  *   )
  * }
  * 
  * @param {string} title Title to accompany the slider with, a 1-2 word description
  * @param {boolean} setChecked Tell the component to check the input checkbox
+ * @param {any} id An id for you toassociate the checked data with
+ * @param {Function} checkHandler Handler for you to handle the on change of the input. Passes back the id if exists and the new checked status
  */
-const Slider = ({title, setChecked}: IProps) => {
+const Slider = ({title, setChecked, id, checkHandler}: IProps) => {
     
     const [isChecked, setIsChecked] = useState(setChecked)
     const [iconClass, setIconClass] = useState(setChecked ? 'fa-check' : 'fa-cross')
+    const [isLoading, setIsLoading] = useState(false)
     
     const handleInputCheck = (event: any) => {
         const inputIsChecked = event.target.checked
+        const id = event.target.dataset.id || null
+        // First display our slider correctly
         if (inputIsChecked) {
             setIsChecked(true)
             setIconClass('fa-check')
         } else {
-            setIconClass('fa-cross')
+            setIconClass('fa-times')
             setIsChecked(false)
+        }
+        // Then send the data off for extra logic
+        if (checkHandler) {
+            // todo :: call loading utility function
+            setIsLoading(true)
+            checkHandler(id, inputIsChecked)
+            // todo :: stop loading function
+            setIsLoading(false)
+            
         }
     }
 
@@ -50,7 +65,7 @@ const Slider = ({title, setChecked}: IProps) => {
                 {title}
             </p>
             <label title={`Enable or disable for ${title}`}>
-                <input type="checkbox" tabIndex={0} {...isChecked ? 'checked' : ''} onClick={event => handleInputCheck}></input>
+                <input disabled={isLoading} data-id={id} type="checkbox" tabIndex={0} defaultChecked={isChecked} onClick={event => handleInputCheck(event)}></input>
                 <span className="round">
                     <i className={`fa fa-sm slider-icon ${iconClass}`}></i>
                 </span>
