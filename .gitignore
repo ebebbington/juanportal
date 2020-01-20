@@ -18,3 +18,4 @@ src/*/schemas/*.js
 src/juanportal/public/javascripts/*.js
 src/juanportal/components/util.js
 src/juanportal/coverage
+src/socket/__pycache__

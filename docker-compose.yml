@@ -59,6 +59,24 @@ services:
     networks:
       - juanportal-network
 
+  redis:
+    container_name: juanportal_redis
+    image: redis:alpine
+    networks:
+      - juanportal-network
+
+  socket:
+    container_name: juanportal_socket
+    build:
+      context: .
+      dockerfile: .docker/python.dockerfile
+    volumes:
+      - ./src/socket:/var/www/socket
+    #working_dir: /var/www/socket
+    #command: bash -c "python app.py -p 9009"
+    networks:
+      - juanportal-network
+
 networks:
   juanportal-network:
     driver: bridge
