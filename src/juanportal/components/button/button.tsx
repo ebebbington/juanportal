@@ -5,7 +5,8 @@ import {getLightStylingByColour} from './util'
 
 interface IParams {
   text: string,
-  lightColour: string
+  lightColour: string,
+  clickHandler?: Function
 }
 
 /**
@@ -26,10 +27,11 @@ interface IParams {
  *
  * @param {string} text Text to display inside the button
  * @param {string} lightColour Determines whether the button is a red, amber or green traffic light
+ * @param {Function} clickHandler Your handler to handle the click of the button
  * 
  * @return {HTMLCollection}
  */
-const Button = ({text, lightColour}: IParams) => {
+const Button = ({text, lightColour, clickHandler}: IParams) => {
 
   if (!text) return <></>
   if (!lightColour) return <></>
@@ -37,8 +39,14 @@ const Button = ({text, lightColour}: IParams) => {
   const lightStyling = getLightStylingByColour(lightColour)
   if (!lightStyling) return <></>
 
+  const handleClick = (event: any) => {
+    if (clickHandler) {
+      clickHandler(event)
+    }
+  }
+
   return (
-    <button className={`${classes.trafficLight} ${lightStyling} btn`}>
+    <button className={`${classes.trafficLight} ${lightStyling} btn`} onClick={event => handleClick(event)}>
       {text}
     </button>
   )

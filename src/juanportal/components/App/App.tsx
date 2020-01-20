@@ -4,6 +4,7 @@ import Header from '../Header/header'
 import Sidebar from '../Sidebar/Sidebar'
 import ReactDOM from 'react-dom'
 import React from 'react'
+import Chat from '../Chat/Chat'
 
 const url: string = window.location.pathname
 
@@ -24,4 +25,8 @@ if (/\/profile\/id\//.test(url)) {
 // Register form
 if (url === '/profile/add') {
     ReactDOM.render(<RegisterForm />, document.getElementById('form-container'))
+}
+// Chat
+if (url === '/chat') {
+    ReactDOM.render(<Chat />, document.getElementById('chat-container'))
 }
