@@ -1,26 +1,12 @@
-# from flask import Flask
-# #import redis
-# #from flask_socketio import SocketIO
-
-# app = Flask(__name__)
-# #cache = redis.Redis(host='juanportal_redis', port=6379)
-
-# print('hello')
-
-# #socketio = SocketIO(app)
-
-# @app.route('/')
-# def hello():
-#     return 'Hello World!'
-
-# #if __name__ == '__main__':
-#     #socketio.run(app)
-
 from flask import Flask
 import sys
 import optparse
+import redis
+from flask_socketio import SocketIO
+cache = redis.Redis(host='juanportal_redis', port=6379)
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 
 @app.route("/socket")
 def hello_world():
@@ -38,3 +24,4 @@ if __name__ == '__main__':
         print "Missing required argument: -p/--port"
         sys.exit(1)
     app.run(host='0.0.0.0', port=int(args.port), debug=False)
+    socketio.run(app)

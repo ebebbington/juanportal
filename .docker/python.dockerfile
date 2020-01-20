@@ -19,6 +19,8 @@ RUN apk add --update python py-pip
 
 # Install app dependencies
 RUN pip install Flask
+RUN pip install redis
+RUN pip install flask-socketio
 
 # # Bundle app source
 # COPY simpleapp.py simpleapp.py
