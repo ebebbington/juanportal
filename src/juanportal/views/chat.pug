@@ -1,0 +1,11 @@
+extends layout
+block append head
+    script(src="/public/javascripts/socket.io.js")
+    script.
+        //- var socket = io()
+        //- socket.emit('chat message', 'hello :) from client')
+        //- socket.on('chat message', function (message) {
+        //-     console.log(message)
+        //- })
+block append content
+    #chat-container

@@ -7,6 +7,7 @@ require('dotenv').config()
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const logger = require('./helpers/logger')
+const socketIo = require('socket.io')
 
 /**
  * Server
@@ -86,6 +87,8 @@ class Server {
     this.env = process.env.NODE_ENV || ''
     //create expressjs application
     this.app = express();
+    //@ts-ignore
+    this.app.io = socketIo()
     //configure application
     this.configure();
     // start HTTP logging
@@ -146,8 +149,13 @@ class Server {
   private defineRoutes (): void {
     const profileRoute = require('./routes/profile.js')
     const indexRoute = require('./routes/index.js')
+    const chatRoute = require('./routes/chat.js')
     this.app.use('/profile', profileRoute)
+    this.app.use('/chat', chatRoute)
     this.app.use('/', indexRoute)
+    // io
+    //@ts-ignore
+    require('./routes/socket')(this.app.io)
   }
 }
 

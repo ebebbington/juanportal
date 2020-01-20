@@ -10,6 +10,9 @@ app.set('port', port)
 //create http server
 const server = http.createServer(app);
 server.listen(port);
+// Attach socket io we assigned in app.ts to the server (handling is handled inside the respective route)
+const io = app.io
+io.attach(server)
 server.on("error", onError);
 server.on("listening", onListening);
 
@@ -54,3 +57,5 @@ function onListening() {
         : 'port ' + addr.port
     logger.info('Listening on ' + bind)
 }
+
+module.exports = server
