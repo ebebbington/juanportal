@@ -102,6 +102,36 @@ Finally, go to the website
 * Windows
      `127.0.0.1:9002`
 
+## Containers
+
+### JuanPortal
+
+Juanportal is the main server, where Nginx passes `/` as the proxy to the JuanPortal container. JP acts as the client, or will display anything the client sees for this project
+
+### API
+
+The NodeJS API acts as the data layer for JP, serving to produce and modify the database data. The API currently only receieves requests from JP
+
+### Mongo
+
+Setup as the database for this project
+
+### Mongo Seeder
+
+Populates the mongoose database with pre defined data
+
+### Socket
+
+A Python server running on Flask that acts as the handler for Socket IO
+
+### Redis
+
+A Redis server to allow communication between the Socket and JuanPortal containers
+
+### Nginx
+
+Server that acts as a proxy for the API, Juanportal, and Socket containers
+
 ## Built With
 
 * [NodeJS](http://www.nodejs.com) - Server Side Language
