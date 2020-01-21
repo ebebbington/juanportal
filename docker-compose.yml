@@ -27,7 +27,7 @@ services:
     volumes:
       - ./src/juanportal:/var/www/juanportal
     working_dir: /var/www/juanportal
-    command: bash -c "npm i --verbose && node_modules/.bin/tsc && pm2-runtime ecosystem.config.js"
+    command: bash -c "npm i -s && node_modules/.bin/tsc && pm2-runtime ecosystem.config.js"
     networks:
       - juanportal-network
 
@@ -59,7 +59,7 @@ services:
     volumes:
       - ./src/api:/var/www/api
     working_dir: /var/www/api
-    command: bash -c "npm i --verbose && node_modules/.bin/tsc && pm2-runtime ecosystem.config.js"
+    command: bash -c "npm i -s && node_modules/.bin/tsc && pm2-runtime ecosystem.config.js"
     networks:
       - juanportal-network
 
@@ -68,6 +68,8 @@ services:
     build:
       context: .
       dockerfile: .docker/redis.dockerfile
+    ports:
+      - "6379:6379"
     networks:
       - juanportal-network
 
@@ -78,6 +80,8 @@ services:
       dockerfile: .docker/python.dockerfile
     volumes:
       - ./src/socket:/var/www/socket
+    working_dir: /var/www/socket
+    command: bash -c "pm2-runtime --watch ecosystem.config.yml"
     depends_on:
       - redis
     #working_dir: /var/www/socket
