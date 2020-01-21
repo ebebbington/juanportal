@@ -25,6 +25,7 @@
     "chai-files": "^1.4.0",
     "chai-http": "^4.3.0",
     "cookie-parser": "^1.4.4",
+    "core-js": "^3.6.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-list-endpoints": "^4.0.1",

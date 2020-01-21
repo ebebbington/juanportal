@@ -9,6 +9,10 @@ services:
       dockerfile: .docker/nginx.dockerfile
     ports:
       - "9002:9002"
+    depends_on:
+      - socket
+      - api
+      - node
     volumes:
       - ./src/juanportal:/var/www/juanportal
     working_dir: /var/www/juanportal
@@ -23,7 +27,7 @@ services:
     volumes:
       - ./src/juanportal:/var/www/juanportal
     working_dir: /var/www/juanportal
-    command: bash -c "npm i --verbose && pm2-runtime ecosystem.config.js"
+    command: bash -c "npm i --verbose && node_modules/.bin/tsc && pm2-runtime ecosystem.config.js"
     networks:
       - juanportal-network
 
@@ -55,13 +59,15 @@ services:
     volumes:
       - ./src/api:/var/www/api
     working_dir: /var/www/api
-    command: bash -c "npm i --verbose && pm2-runtime ecosystem.config.js"
+    command: bash -c "npm i --verbose && node_modules/.bin/tsc && pm2-runtime ecosystem.config.js"
     networks:
       - juanportal-network
 
   redis:
     container_name: juanportal_redis
-    image: redis:alpine
+    build:
+      context: .
+      dockerfile: .docker/redis.dockerfile
     networks:
       - juanportal-network
 
@@ -72,6 +78,8 @@ services:
       dockerfile: .docker/python.dockerfile
     volumes:
       - ./src/socket:/var/www/socket
+    depends_on:
+      - redis
     #working_dir: /var/www/socket
     #command: bash -c "python app.py -p 9009"
     networks:

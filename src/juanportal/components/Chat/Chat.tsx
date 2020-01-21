@@ -11,7 +11,7 @@ const Chat = () => {
 
     const [message, setMessage] = useState('')
 
-    const [messages, setMessages] = useReducer((messages, {type, username, message}) => {
+    const [messages, setMessages] = useReducer((messages: any, {type, username, message}: any) => {
         switch (type) {
             case 'add':
                 return [...messages, {username, message}]
