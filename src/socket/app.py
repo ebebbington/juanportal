@@ -1,41 +1,45 @@
+from rediscommunicator import RedisCommunicator
 from flask import Flask
 import sys
 import optparse
 import redis
-from flask_socketio import SocketIO
-# connect to out reddis container
-Redis = redis.Redis(host='juanportal_redis', port=6379)
-# ??
-#Redis.publish('test', 'test')
-# Set and get variables in redis
-Redis.set('my var', 'my value')
-my_var = Redis.get('my var')
-print(my_var)
-# create a pubsub instance
-p = Redis.pubsub()
-# subscribe to channels e.g. p.subscribe('chat', 'support')
-p.subscribe('*')
-# read messages
-print(p.get_message())
-# publish to a channel
-Redis.publish('chat', 'some data')
-print(p.get_message()) # get the message
-# send a message
+import time
+from flask_socketio import SocketIO, send, emit
+import json
 
-
+# initialise our app with flask
 app = Flask(__name__)
+
+# create the socket io instance
 socketIo = SocketIO(app)
+
+RedisCommunicator = RedisCommunicator()
+RedisCommunicator.start_listening()
+
+# Functions defined with @app.route('*') are "view functions", they have to "return" and cant "print"
 
 @app.route("/socket")
 def hello_world():
+    app.logger.info('You hit the /socket route method')
     return "Hello world from Distelli & Docker!"
 
 @app.route('/socket/flask')
 def goodbye_world():
+    app.logger.info('You hit the /socket/flash route method')
     return 'Goodbye!'
 
-@socketIo.on('*')
+@app.route('/socket.io')
+def test(a):
+    app.logger.info('hey')
+
+@socketIo.on('chat message')
 def handle_message(message):
+    app.logger.info('You hit the * socket message method')
+    print('received message: ' + message)
+
+@socketIo.on('chat message')
+def hh(message):
+    app.logger.info('You hit the * socket message method')
     print('received message: ' + message)
 
 if __name__ == '__main__':
@@ -45,5 +49,5 @@ if __name__ == '__main__':
     if args.port == None:
         print "Missing required argument: -p/--port"
         sys.exit(1)
-    app.run(host='0.0.0.0', port=int(args.port), debug=False)
+    app.run(host='0.0.0.0', port=int(args.port), debug=True)
     socketIo.run(app)
