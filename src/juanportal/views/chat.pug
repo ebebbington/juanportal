@@ -9,11 +9,11 @@ block append head
         //- })
     script(src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous")
     script(type="text/javascript" charset="utf-8").
-        var socket = io();
-        socket.on('connect', function() {
-            socket.emit('chat message', 'jhellloo from client');
-        });
-        var ssocket = io.connect('http://' + document.domain + ':' + location.port);
+        //-/var socket = io();
+        //-socket.on('connect', function() {
+        //-    socket.emit('chat message', 'jhellloo from client');
+        //-});
+        var ssocket = io.connect('http://' + document.domain + ':' + 9009);
         ssocket.on('connect', function() {
             ssocket.emit('my event', {data: 'I\'m connected!'});
         });

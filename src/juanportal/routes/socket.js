@@ -24,23 +24,31 @@ module.exports = function (io) {
     const app = require('express')
     const router = app.Router()
     let connections = 0
+    let listOfUsernames = []
     io.on('connection', function (socket) {
         console.log('a user connected')
-        socket.on('disconnect', function () {
+        socket.on('disconnect', function (something) {
             console.log('disconnected')
             connections = connections < 1 ? 0 : connections - 1 
             console.log('current connections after leaving: ' + connections)
+            console.log(something)
         })
-        socket.on('chat message', function (message) {
+        socket.on('user left', (username) => {
+            listOfUsernames = listOfUsernames.filter(un => un !== username);
+            io.sockets.emit('chat message', {username: username, message: 'has left the chat'})
+            io.sockets.emit('refresh user list', listOfUsernames)
+        })
+        socket.on('chat message', function (username, message) {
             console.log('message: ' + message)
-            io.emit('chat message', message)
+            io.sockets.emit('chat message', {username: username, message: message})
         })
         socket.on('user joined', function (username) {
-            console.log('user joined')
+            console.log('user joined with the username: ' + username)
             connections = connections + 1
             console.log('current connections after joining: ' + connections)
             console.log('going to send a user joined message')
-            io.sockets.emit('user joined', {totalUsers: connections, username: username})
+            listOfUsernames.push(username)
+            io.sockets.emit('user joined', {listOfUsernames: listOfUsernames, usernameOfJoinee: username, currentConnections: connections})
         })
     })
     return router
