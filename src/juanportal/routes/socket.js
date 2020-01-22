@@ -1,3 +1,25 @@
+const redis = require('redis')
+
+const sub = redis.createClient({host: 'juanportal_redis', port: 6379})
+const pub = redis.createClient({host: 'juanportal_redis', port: 6379})
+const CHANNEL = 'chat2'
+
+sub.on('subscribe', (channel, count) => {
+    pub.publish(CHANNEL, 'Ive just subscribed! #sentByNode')
+})
+
+sub.on('message', (channel, message) => {
+    if (channel === CHANNEL) {
+        console.log('Received message from redis in node: Channel=' + channel + '. Message=' + message)
+    }
+})
+
+sub.subscribe(CHANNEL)
+
+setInterval(() => {
+    pub.publish(CHANNEL, 'Pinging the redis channel from node every 10s')
+}, 10000);
+
 module.exports = function (io) {
     const app = require('express')
     const router = app.Router()
