@@ -1,1 +1,1 @@
-{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"juanportal.people"}],"uuid":"fe94dad8c4bd458b988f23474abe0688"}
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"juanportal.profiles"}],"uuid":"11fd8fa3efba4eb09623636a7565a738"}
