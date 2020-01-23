@@ -7,53 +7,103 @@ from rediscommunicator import RedisCommunicator
 from flask import Flask, render_template
 import redis
 from flask_socketio import SocketIO, send, emit
+import json
+from collections import namedtuple
 
-# initialise our app with flask
+""" Create our Flask app """
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 
-# create the socket io instance
-socketio = SocketIO(app)
+""" Initialise Redis Pub/Sub """
 
-# Setup redis
 RedisCommunicator = RedisCommunicator()
 RedisCommunicator.start_listening()
 
-some_var: str = 'hi'
+""" Flask Routes """
 
-# Functions defined with @app.route('*') are "view functions", they have to "return" and cant "print"
-
-@app.route("/flask") # based on nginx configs, location block for /socket would match /socket here, acts as the root url
+@app.route("/flask")
 def hello_world():
     print('Going to render our view :)')
     return render_template('index.html', title = 'Socket - Home', data = 'Call me Bond, Data Bond')
 
-@socketio.on('chat message')
-def handle_ws_chat_message(message):
+""" SocketIO Listeners """
+
+socketIO = SocketIO(app)
+connections = 0
+users_online = []
+class EmptyResponse:
+    pass
+
+"""
+example handle: socket.on('chat message', (username, message) => {})
+"""
+def emit_chat_message(username, message):
+    response_data = EmptyResponse()
+    response_data.username = username
+    response_data.message = message
+    emit('chat message', (username, message), broadcast=True)
+
+"""
+example handle: socket.on('users online', (newUserList) => {})
+"""
+def emit_users_online():
+    response_data = EmptyResponse()
+    #response_data.users_online = updated_users_online
+    emit('users online', users_online, broadcast=True)
+
+"""
+example call: socket.emit('chat message', 'edward', 'I just sent a message')
+purpose: send the incoming message to all clients
+"""
+@socketIO.on('chat message')
+def handle_ws_chat_message(username, message):
     print('Handling an incoming chat message for the web socket. Received message is: {}'.format(message))
+    if username and message:
+        emit_chat_message(username, message)
+    else:
+        pass
 
-@socketio.on('message')
-def handle_ws_general_event():
-    print('Incoming web socket request without a subject')
+"""
+example call: socket.emit('user left', 'edward')
+purpose: remove user from online list and send the updated list
+"""
+@socketIO.on('user left')
+def handle_ws_user_left(username):
+    print('Incoming web socket request: user left')
+    #if connections > 0:
+        #connections -= 1
+    users_online.remove(username)
+    if username != '':
+        emit_chat_message(username, 'has left')
+    else:
+        pass
 
-@socketio.on('json')
-def gggg():
-    print('does this ever even get fired?')
-
-@socketio.on('user joined')
+"""
+example call: socket.emit('user joined', 'edward')
+purpose: add user to online list and return the updated list
+"""
+@socketIO.on('user joined')
 def handle_ws_user_joined(username):
-    print('A user has joined the pool')
+    #connections += 1
+    print('A user has joined the pool: {}'.format(username))
+    if username != '':
+        users_online.append(username)
+        emit_chat_message(username, 'has joined')
+        emit_users_online()
+    else:
+        pass
 
-@socketio.on('connect')
+@socketIO.on('connect')
 def handle_ws_connect():
-    print('Incoming successful connection for websockets!')
-    emit('chat message', 'hey')
+    print('Incoming successful connection for WebSockets!')
 
-@socketio.on('disconnect')
+@socketIO.on('disconnect')
 def handle__ws_disconnect():
     print('A web socket connection has just disconnected')
 
+""" Initialise SocketIO """
 
 if __name__ == '__main__':
     #app.run(host='0.0.0.0', port=9009, debug=True) # port = port the container is running on
-    socketio.run(app, host='0.0.0.0', port=9009, debug=True)
+    socketIO.run(app, host='0.0.0.0', port=9009, debug=True)
