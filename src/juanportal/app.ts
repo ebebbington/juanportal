@@ -153,9 +153,9 @@ class Server {
     this.app.use('/profile', profileRoute)
     this.app.use('/chat', chatRoute)
     this.app.use('/', indexRoute)
-    // io
+    // redis
     //@ts-ignore
-    require('./routes/socket')(this.app.io)
+    require('./routes/redis')(this.app.io)
   }
 }
 
