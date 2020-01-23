@@ -6,7 +6,9 @@ RUN apt update -y \
 RUN npm install -g npm@latest
 RUN pip install --upgrade pip
 RUN yes | npm i pm2 -g
-RUN pip install eventlet
+RUN pip install --upgrade pip \
+    && pip install eventlet \
+    && pip install -U python-dotenv
 
 # Install app dependencies
 RUN pip install Flask
