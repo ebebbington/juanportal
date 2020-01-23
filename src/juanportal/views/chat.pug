@@ -1,21 +1,21 @@
 extends layout
 block append head
-    script(src="/public/javascripts/socket.io.js")
-    script.
+    //-script(src="/public/javascripts/socket.io.js")
+    //-script.
         //- var socket = io()
         //- socket.emit('chat message', 'hello :) from client')
         //- socket.on('chat message', function (message) {
         //-     console.log(message)
         //- })
-    script(src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous")
-    script(type="text/javascript" charset="utf-8").
-        //-/var socket = io();
-        //-socket.on('connect', function() {
+    //-script(src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous")
+    //-script(type="text/javascript" charset="utf-8").
+        //- var socket = io();
+        //- socket.on('connect', function() {
         //-    socket.emit('chat message', 'jhellloo from client');
-        //-});
-        var ssocket = io.connect('http://' + document.domain + ':' + 9009);
-        ssocket.on('connect', function() {
-            ssocket.emit('my event', {data: 'I\'m connected!'});
-        });
+        //- });
+        //- var ssocket = io.connect('http://' + document.domain + ':' + 9002);
+        //- ssocket.on('connect', function() {
+        //-     ssocket.emit('my event', {data: 'I\'m connected!'});
+        //- });
 block append content
     #chat-container
