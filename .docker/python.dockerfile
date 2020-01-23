@@ -1,16 +1,12 @@
-FROM alpine:3.8
+FROM python:3
 
 # update and get required packages
-RUN apk update upgrade \
-    && apk add python py-pip \
-    && apk add curl bash \
-    && apk add npm
-
-# update pip
+RUN apt update -y \
+    && apt install -y --no-install-recommends nodejs npm
+RUN npm install -g npm@latest
 RUN pip install --upgrade pip
-
-# install npm
 RUN yes | npm i pm2 -g
+RUN pip install eventlet
 
 # Install app dependencies
 RUN pip install Flask
