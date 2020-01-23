@@ -14,11 +14,12 @@
 /* Status bar inside header (icon and user count */
 .header > .status {
     display: flex;
+    margin-right: 0.5em;
 }
 /* Icon inside header status */
 .header > .status > i {
     text-align: left;
-    color: var(--custom-green)
+    color: var(--custom-green);
 }
 /* Icon and text inside header status */
 .header > .status > i, .header > .status > p {
@@ -48,6 +49,11 @@
 /* Username */
 .header > h3 {
    margin: auto 0 auto auto;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 65%;
+    text-align: right;
 }
 /* Chat feed */
 .body {
@@ -66,12 +72,21 @@
 .body > div > strong {
     border-right: 1px solid var(--custom-green);
     padding-right: 0.5em;
+    margin: auto 0 auto 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 .body > div > strong > p {
     margin: auto;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap
 }
 .body > div > p {
     margin: auto auto auto 0.5em;
+    word-break: break-word;
+    width: 80%;
 }
 /* Message field and buttons container */
 .footer {

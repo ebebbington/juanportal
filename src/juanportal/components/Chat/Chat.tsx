@@ -32,19 +32,10 @@ const Chat = () => {
 
     const [showUsers, setShowUsers] = useState(false)
 
-    const handleUserJoined = ({listOfUsernames, usernameOfJoinee, currentConnections}: {listOfUsernames: string[], usernameOfJoinee: string, currentConnections: number}) => {
-        console.log('A user has joined!')
-        console.log(listOfUsernames, usernameOfJoinee, currentConnections)
-        setUsersOnline({type: 'add', newList: listOfUsernames})
-        if (messagesReceived[messagesReceived.length - 1] !== usernameOfJoinee + ' has joined')
-            setMessagesReceived({type: 'add', username: usernameOfJoinee, message: 'has joined'})
-    }
-
     const handleSend = (event: any) => {
         console.log('Clicked send! Your message is: ' + messageToSend)
         if (messageToSend) {
             console.log('Gonna send your message')
-            // todo :: send message
             socket.emit('chat message', username, messageToSend)
             setMessageToSend('')
             const inputElem = document.querySelector('input')
@@ -56,7 +47,7 @@ const Chat = () => {
         socket.emit('user left', username)
     }
 
-    const handleRefreshUserList = (newUserList: string[]) => {
+    const handleWSUsersOnline = (newUserList: string[]) => {
         setUsersOnline({type: 'add', newList: newUserList})
     }
 
@@ -78,24 +69,31 @@ const Chat = () => {
         setShowUsers(false)
     }
 
-    const handleChatMessage = ({username, message}: {username: string, message: string}) => {
+    const handleWSChatMessage = (username: string, message: string) => {
         console.log('[handleChatMessage]')
-        console.log({username, message})
+        console.log(username, message)
         setMessagesReceived({type: 'add', username: username, message: message})
+    }
+
+    const handleInputKeyPress = (event: any) => {
+        // Click the submit button when pressing enter
+        if (event.keyCode === 13) {
+            const submitButton: any = document.querySelector('.footer > button')
+            if (submitButton) submitButton.click()
+        }
     }
 
     useEffect(() => {
         // Means it's a first time user
         if (!username) {
-            const un = prompt('Your username:') || 'No name because i am awkward'
+            const un = prompt('Your username:') || 'Guest User'
             setUsername(un)
-            //setUsersOnline({type: 'add', username: un})
             console.log('Sending a user joined message with username: ' + un)
             socket.emit('user joined', un)
         }
-        socket.on('user joined', handleUserJoined)
-        socket.on('chat message', handleChatMessage)
-        socket.on('refresh user list', handleRefreshUserList)
+        // Initialise our handlers for received messages
+        socket.on('chat message', handleWSChatMessage)
+        socket.on('users online', handleWSUsersOnline)
     })
 
     return (
@@ -110,7 +108,7 @@ const Chat = () => {
                             )}
                         </ul>
                     }
-                    <p>{usersOnline.length} user(s) online</p>
+                    <p>{usersOnline.length} online</p>
                 </div>
                 <h3>{username}</h3>
             </div>
@@ -123,7 +121,7 @@ const Chat = () => {
             )}
             </div>
             <div className={classes.footer}>
-                <input type="text" placeholder="Type something :)" className="messageInput form-control" onChange={event => setMessageToSend(event.target.value)}/>
+                <input type="text" placeholder="Type something => ENTER" className="messageInput form-control" onChange={event => setMessageToSend(event.target.value)} onKeyPress={event => handleInputKeyPress(event)}/>
                 <Button text="Send" lightColour="green" clickHandler={handleSend} />
                 <Button text="Leave" lightColour="red" clickHandler={handleLeave} />
             </div>
