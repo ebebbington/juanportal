@@ -61,6 +61,7 @@ const Header = () => {
         if (url.indexOf('/profile/id/') > -1)   setTitle('View Profile')
         /* /profile/add */
         if (url === '/profile/add')             setTitle('Add Profile')
+        if (url === '/chat')                    setTitle('Chat')
     })
 
     /**
@@ -92,6 +93,7 @@ const Header = () => {
                     <ul className={headerStyles.navMenuList}>
                         {url !== '/' &&<li className={headerStyles.navMenuListItem}><a href="/"><h4>Home</h4></a></li>}
                         {url !== '/profile/add' &&<li className={headerStyles.navMenuListItem}><a href="/profile/add"><h4>Add Profile</h4></a></li>}
+                        {url !== '/chat' &&<li className={headerStyles.navMenuListItem}><a href="/chat"><h4>Chat</h4></a></li>}
                     </ul>
                 </div>
             </div>
