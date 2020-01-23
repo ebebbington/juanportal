@@ -27,7 +27,7 @@ services:
     volumes:
       - ./src/juanportal:/var/www/juanportal
     working_dir: /var/www/juanportal
-    command: bash -c "npm i -s && npm run buildTSX && pm2-runtime ecosystem.config.js"
+    command: bash -c "npm i -s && node_modules/.bin/tsc && pm2-runtime ecosystem.config.js"
     networks:
       - juanportal-network
 
@@ -59,7 +59,7 @@ services:
     volumes:
       - ./src/api:/var/www/api
     working_dir: /var/www/api
-    command: bash -c "npm i -s && npm run build && pm2-runtime ecosystem.config.js"
+    command: bash -c "npm i -s && node_modules/.bin/tsc && pm2-runtime ecosystem.config.js"
     networks:
       - juanportal-network
 

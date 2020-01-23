@@ -108,6 +108,7 @@ interface IJsonResponse {
     console.log(options)
     return new Promise((resolve, reject) => {
         fetch(url, options).then((response) => {
+            console.log(response)
             return response.json()
         }).then((json: IJsonResponse) => {
             console.log(json)

@@ -2,7 +2,6 @@ FROM nginx:latest
 
 # Update and install required packages
 RUN     apt-get update
-RUN     apt-get install vim -y
 
 # Copy nginx config file
 COPY    ./.docker/config/juanportal.conf /etc/nginx/conf.d/juanportal.conf
