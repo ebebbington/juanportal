@@ -28,11 +28,7 @@
 }
 .trafficLight:hover {
     background-color: var(--custom-white);
-    transform: scale(1.1);
-    box-shadow: 0 1px 0px var(--custom-black);
-}
-.trafficLight:active {
-    transform: scale(0.95);
+    box-shadow: 0px 0px 5px 1px;
 }
 .trafficLight:focus {
     color: var(--custom-white);
