@@ -41,9 +41,11 @@
 * FT: Implement JWT
     * Maybe implement the usage of JWT's using the current JWT helper class?
     
-* FT: Remove Sidebar and Improve Head
+* FT: Remove Sidebar and Improve Header
     * Remove the sidebar
-    * Don't
+    * Make the display of the dropdown look like the sidebar
+    * Always have it showing UNLESS on mobile, then hide it 
+    like current functionality 
 
 # Completed
 
