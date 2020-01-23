@@ -7,13 +7,18 @@ from rediscommunicator import RedisCommunicator
 from flask import Flask, render_template
 import redis
 from flask_socketio import SocketIO, send, emit
-import json
-from collections import namedtuple
+from dotenv import load_dotenv
+load_dotenv()
+import os
+HOST = os.getenv("HOST")
+PORT = os.getenv('PORT')
+SECRET = os.getenv('SECRET')
+DEBUG = os.getenv('DEBUG')
 
 """ Create our Flask app """
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
+app.config['SECRET_KEY'] = SECRET
 
 """ Initialise Redis Pub/Sub """
 
@@ -76,6 +81,7 @@ def handle_ws_user_left(username):
     users_online.remove(username)
     if username != '':
         emit_chat_message(username, 'has left')
+        emit_users_online()
     else:
         pass
 
@@ -106,4 +112,4 @@ def handle__ws_disconnect():
 
 if __name__ == '__main__':
     #app.run(host='0.0.0.0', port=9009, debug=True) # port = port the container is running on
-    socketIO.run(app, host='0.0.0.0', port=9009, debug=True)
+    socketIO.run(app, host=HOST, port=PORT, debug=DEBUG)

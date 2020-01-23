@@ -1,4 +1,9 @@
 import redis
+from dotenv import load_dotenv
+load_dotenv()
+import os
+REDIS_HOST = os.getenv('REDIS_HOST')
+REDIS_PORT = os.getenv('REDIS_PORT')
 
 def channel_handler(data):
     print('Received some data from Redis!')
@@ -8,8 +13,8 @@ class RedisCommunicator:
 
     def __init__(self):
         self.channel_to_subscribe_to = 'chat'
-        self.host = 'juanportal_redis'
-        self.port = 6379
+        self.host = REDIS_HOST
+        self.port = REDIS_PORT
         self.connection = redis.Redis(host=self.host, port=self.port)
         self.p = self.connection.pubsub()
 
