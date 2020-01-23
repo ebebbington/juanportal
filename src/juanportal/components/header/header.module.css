@@ -54,7 +54,7 @@
     color: var(--custom-black);
 }
 .titleHolder {
-    margin: auto;
+    margin: auto 1em auto auto;
 }
 .title {
     color: var(--custom-purple);

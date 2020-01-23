@@ -40,6 +40,10 @@
 
 * FT: Implement JWT
     * Maybe implement the usage of JWT's using the current JWT helper class?
+    
+* FT: Remove Sidebar and Improve Head
+    * Remove the sidebar
+    * Don't
 
 # Completed
 
