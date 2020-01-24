@@ -40,7 +40,7 @@ class RedisHelper {
             const data: any = {host: this.host, port: this.port, cacheDuration: this.cacheDuration}
             logger.error(JSON.stringify(data))
         }
-        if (params.cache) {
+        if (params && params.cache) {
             this.cache = require('express-redis-cache')({
                 host: this.host,
                 port: this.port,
@@ -48,10 +48,10 @@ class RedisHelper {
             });
             this.initialiseCacheLogging()
         }
-        if (params.sub) {
+        if (params && params.sub) {
             this.sub = redis.createClient({host: this.host, port: this.port})
         }
-        if (params.pub) {
+        if (params && params.pub) {
             this.pub = redis.createClient({host: this.host, port: this.port})
         }
     }

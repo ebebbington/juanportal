@@ -8,6 +8,7 @@ This section provides the main server for this project, such as:
     * HTML, CSS, JS
     * Client for our Web Socket
 * Routing
+* Redis Caching
 
 This side of JuanPortal also uses TypeScript where it can, as well as the class approach instead of a module export type style
 
@@ -183,6 +184,11 @@ This is the list of all tools used here, which also act as the tools learnt, or 
 * Web Sockets (SocketIO)
 
     * Our Chat componet uses SocketIO to communicate to our Flask container (Nginx proxy passes Socket IO to the Socket container)
+
+* Redis
+
+    * Caching
+    * Pub/Sub
 
 ## Building
 
