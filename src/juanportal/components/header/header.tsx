@@ -4,6 +4,12 @@ import { getStylings } from './util'
 const headerStyles = getStylings()
 import { useMediaQuery } from 'react-responsive'
 
+interface INavLinks {
+    title: string,
+    url: string,
+    display: boolean
+}
+
 /**
  * @name Header
  * 
@@ -38,7 +44,7 @@ const Header = () => {
      * 
      * @var {boolean}
      */
-    const [menuExpanded, setMenuExpanded] = useState(false)
+    const [menuExpanded, setMenuExpanded] = useState(useMediaQuery({query: `(min-width: 990px`}))
 
     /**
      * URL of the current page
@@ -46,6 +52,29 @@ const Header = () => {
      * @var {string}
      */
     const url: string = window.location.pathname
+
+    const navLinks: Array<INavLinks> = [
+        {
+            title: 'Home',
+            url: '/',
+            display: true
+        },
+        {
+            title: 'Add Profile',
+            url: '/profile/add',
+            display: true
+        },
+        {
+            title: 'Chat',
+            url: '/chat',
+            display: true
+        },
+        {
+            title: 'View Profile',
+            url: '/profile/id/', // /profile/id/*
+            display: false // so we cna still set the title
+        },
+    ]
 
     /**
      * @method useEffect
@@ -55,13 +84,11 @@ const Header = () => {
      * so this is called before rendering
      */
     useEffect(() => {
-        /* / */
-        if (url === '/')                        setTitle('Home')
-        /* /profile/view/:id */
-        if (url.indexOf('/profile/id/') > -1)   setTitle('View Profile')
-        /* /profile/add */
-        if (url === '/profile/add')             setTitle('Add Profile')
-        if (url === '/chat')                    setTitle('Chat')
+        // Set the title of the header with our list of links
+        navLinks.forEach((navLink: INavLinks) => {
+            // also check if our url STARTS with for urls such as /profile/id/{some dynamic data}
+            if (url === navLink.url || url.indexOf(navLink.url) === 0) setTitle(navLink.title)
+        })
     })
 
     /**
@@ -76,33 +103,26 @@ const Header = () => {
     const handleMenuClick = () => {
         // Opposite of what the value already is
         setMenuExpanded(!menuExpanded)
-        // Because `menuExpanded` wont show us the changes yet, we need to define it ourselves
-        const isExpanded: boolean = !menuExpanded
     }
-
-    const maxScreenWidthToDisplayOn = '640px'
-    const canDisplay = useMediaQuery({query: `(max-width: ${maxScreenWidthToDisplayOn})`})
 
     return (
         <div className={headerStyles.header}>
-            <div className={`${headerStyles.navMenuTrigger} ${!canDisplay ? headerStyles.hide : ''}`}>
+            <div>
                 <button className="btn" onClick={handleMenuClick}>
-                    <i className={`fa fa-2x ${menuExpanded ? 'fa-times' : 'fa-bars'}`}></i>
+                    <i className='fa fa-2x fa-bars'></i>
                 </button>
-                <div className={`${menuExpanded === false ? headerStyles.hide : ''} ${headerStyles.navMenu} menuHolder`}>
-                    <ul className={headerStyles.navMenuList}>
-                        {url !== '/' &&<li className={headerStyles.navMenuListItem}><a href="/"><h4>Home</h4></a></li>}
-                        {url !== '/profile/add' &&<li className={headerStyles.navMenuListItem}><a href="/profile/add"><h4>Add Profile</h4></a></li>}
-                        {url !== '/chat' &&<li className={headerStyles.navMenuListItem}><a href="/chat"><h4>Chat</h4></a></li>}
+                <div className={`${menuExpanded ? headerStyles.show : headerStyles.hide} ${headerStyles.navMenu} menuHolder`}>
+                    <ul>
+                    {navLinks.map((navLink: INavLinks) => {
+                        return navLink.display && (<li className={title === navLink.title ? headerStyles.selected : ''} key={navLink.title}>
+                            <a href={navLink.url}>{navLink.title}</a>
+                        </li>)
+                    })}
                     </ul>
                 </div>
             </div>
             <div className={headerStyles.titleHolder}>
-                <h1>
-                    <strong>
-                        <i className={headerStyles.title}>{title ? title : 'Loading...'}</i>
-                    </strong>
-                </h1>
+                <h1>{title ? title : 'Loading...'}</h1>
             </div>
         </div>
     )

@@ -3,7 +3,7 @@ const app = express()
 
 app.route('/')
   .get((req, res) => {
-      res.render('chat')
+      res.render('chat', {title: 'Chat'})
   })
 
 module.exports = app

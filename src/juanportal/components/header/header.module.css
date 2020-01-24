@@ -1,65 +1,100 @@
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        display: none;
+    }
+}
+@keyframes fadeIn{
+    0% {
+        opacity: 0;
+        display: block;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Main container */
 .header{
     text-align: center;
     border-bottom: var(--custom-purple) 1px solid;
     margin-bottom: .5em;
     display: flex;
     background-color: var(--custom-white);
-    height: 65px;
+    height: 57px;
 }
-.navMenuTrigger:focus + .navMenu {
+/* Menu icon container */
+.header > div:first-of-type {
+        /* position: absolute; */
+    /* top: 0px; */
+    background: var(--custom-grey);
+    padding: 0.2em;
+    /* border-right: 1px solid var(--custom-purple); */
+    width: 110px;
+    text-align: left;
+}
+.header > div:first-of-type:focus + .navMenu {
     height: fit-content;
 }
-.navMenuTrigger {
-    position: absolute;
-    top: 7px;
-}
-.navMenuTrigger > button {
+/* Menu action button */
+.header > div:first-of-type > button {
     color: var(--custom-purple);
-    background-color: var(--custom-white);
     box-shadow: 0;
     border-radius: 2px;
     width: 55px;
 }
-.navMenuTrigger button:hover {
+.header > div:first-of-type button:hover {
     background-color: var(--custom-grey);
 }
+/* Nav menu container (div) */
 .navMenu {
+    display: none;
     position: absolute;
     background-color: var(--custom-grey);
-    margin-top: 8px;
-    width: 325px;
     z-index: 1;
+    margin-top:5px;
+    margin-right:-3px;
     border-radius: 0 0 3px 0;
     border-right: 1px var(--custom-purple) solid;
-    border-bottom: 1px var(--custom-purple) solid;
-    margin-left: -1px;
     box-shadow: 0 2px 2px rgba(12,13,14,0.2);
+    opacity: 1;
+    transition-duration: 1s;
 }
-.navMenuList {
+/* List container (ul) */
+.navMenu > ul {
     padding: 0;
     margin: 0;
-
 }
-.navMenuListItem {
+/* Each list item */
+.navMenu > ul li {
     padding: 0.5em;
+    border-bottom: 1px var(--custom-purple) solid;
 }
-.navMenuListItem > a:hover {
+.navMenu > ul li > a:hover {
     text-decoration: none;
-}
-.navMenuListItem h4 {
-    margin: auto;
-    padding: 0.2em;
-}
-.navMenuListItem h4:hover {
     color: var(--custom-black);
 }
 .titleHolder {
-    margin: auto 1em auto auto;
+    background: var(--custom-grey);
+    padding: .6em;
+    width: 100%;
 }
-.title {
+.titleHolder > h1 {
     color: var(--custom-purple);
     text-align: center;
+    font-weight: 600;
+    font-style: italic;
 }
 .hide {
-    display: none;
+    animation: fadeOut 1s forwards;
+}
+.show {
+    display: block;
+    animation: fadeIn 1s forwards;
+}
+.selected {
+    border-right: 5px var(--custom-green) solid;
 }

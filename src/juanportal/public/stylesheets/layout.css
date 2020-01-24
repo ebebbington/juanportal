@@ -35,3 +35,11 @@ h4 {
 #sidebar-container {
     max-width: 100%;
 }
+
+/* To support the display of the nav menu  */
+@media only screen and (min-width: 990px) {
+    .container {
+        max-width: 87%;
+        margin: auto 0 auto auto;
+    }
+}

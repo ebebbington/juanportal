@@ -10,7 +10,6 @@ const url: string = window.location.pathname
 
 // Header and sidebar
 ReactDOM.render(<Header />, document.getElementById('header'))
-ReactDOM.render(<Sidebar />, document.getElementById('sidebar-container'))
 // Profile count
 if (url === '/') {
     ReactDOM.render(<Profile count={5} />, document.getElementById('profile-container'))
