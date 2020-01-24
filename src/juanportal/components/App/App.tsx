@@ -1,7 +1,6 @@
 import Profile from '../Profile/Profile'
 import RegisterForm from '../RegisterForm/RegisterForm'
 import Header from '../Header/header'
-import Sidebar from '../Sidebar/Sidebar'
 import ReactDOM from 'react-dom'
 import React from 'react'
 import Chat from '../Chat/Chat'

@@ -109,7 +109,7 @@ const Header = () => {
         <div className={headerStyles.header}>
             <div>
                 <button className="btn" onClick={handleMenuClick}>
-                    <i className='fa fa-2x fa-bars'></i>
+                    <i className='fa fa-2x fa-bars'/>
                 </button>
                 <div className={`${menuExpanded ? headerStyles.show : headerStyles.hide} ${headerStyles.navMenu} menuHolder`}>
                     <ul>
