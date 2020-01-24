@@ -1,24 +1,21 @@
 const redis = require('redis')
-const REDIS_HOST = 'juanportal_redis'
-const REDIS_PORT = 6379
-const sub = redis.createClient({host: REDIS_HOST, port: REDIS_PORT})
-const pub = redis.createClient({host: REDIS_HOST, port: REDIS_PORT})
-const CHANNEL = 'chat'
+const RedisHelper = require('../helpers/RedisHelper')
+const Redis = new RedisHelper({pub: true, sub: true})
 
-sub.on('subscribe', (channel, count) => {
-    pub.publish(CHANNEL, 'Ive just subscribed! #sentByNode')
+Redis.sub.on('subscribe', (channel, count) => {
+    Redis.pub.publish(Redis.channels.chat, 'Ive just subscribed! #sentByNode')
 })
 
-sub.on('message', (channel, message) => {
-    if (channel === CHANNEL) {
+Redis.sub.on('message', (channel, message) => {
+    if (channel === Redis.channels.chat) {
         console.log('Received message from redis in node: Channel=' + channel + '. Message=' + message)
     }
 })
 
-sub.subscribe(CHANNEL)
+Redis.sub.subscribe(Redis.channels.chat)
 
 setInterval(() => {
-    pub.publish(CHANNEL, 'Pinging the redis channel from node every 1m')
+    Redis.pub.publish(Redis.channels.chat, 'Pinging the redis channel from node every 1m')
 }, 60000);
 
 module.exports = function (io) {

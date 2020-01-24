@@ -12,6 +12,7 @@ src/*/models/*.js
 src/*/controllers/*.js
 src/*/helpers/ImageHelper.js
 src/*/helpers/MailHelper.js
+src/*/helpers/RedisHelper.js
 src/*/helpers/JWT.js
 src/juanportal/public/javascripts/components/*.js
 src/*/schemas/*.js

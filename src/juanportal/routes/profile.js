@@ -1,9 +1,9 @@
 const express = require('express')
-const router = express.Router()
 const app = express()
 const logger = require('../helpers/logger')
-const util = require('util')
 const ImageHelper = require('../helpers/ImageHelper')
+const RedisHelper = require('../helpers/RedisHelper')
+const Redis = new RedisHelper({cache: true})
 
 
 // For when an image is submited in the form when POSTing a profile
@@ -12,13 +12,13 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
 app.route('/id/:id')
-  .get((req, res) => {
+  .get(Redis.cache.route('profile'), (req, res) => {
     const id = req.params.id
     res.status(200).render('profile/view', {title: 'View Profile', id: id})
   })
 
 app.route('/add')
-  .get((req, res) => { res.status(200).render('profile/add', {title: 'Add Profile'})})
+  .get(Redis.cache.route('profile'), (req, res) => { res.status(200).render('profile/add', {title: 'Add Profile'})})
 
 app.route('/image')
   /**
@@ -33,7 +33,7 @@ app.route('/image')
       data: new FormData(form)
     })
    */
-  .post(upload.single('image'), (req, res) => {
+  .post(Redis.cache.route('profile'), upload.single('image'), (req, res) => {
     // todo add checks so people just cant willy nilly send requests e.g. JWT 
     logger.info('[POST /profile/image]')
     const filename = req.query.filename
@@ -59,7 +59,7 @@ app.route('/image')
       dataType: 'json',
     })
    */
-  .delete(upload.single('image'), (req, res) => {
+  .delete(Redis.cache.route('profile'), upload.single('image'), (req, res) => {
     // todo add checks so people just cant willy nilly send requests e.g. JWT
     const filename = req.query.filename
     const Image = new ImageHelper
