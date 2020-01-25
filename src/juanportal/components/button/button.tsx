@@ -6,7 +6,8 @@ import {getLightStylingByColour} from './util'
 interface IParams {
   text: string,
   lightColour: string,
-  clickHandler?: Function
+  clickHandler?: Function,
+  id?: any
 }
 
 /**
@@ -31,7 +32,7 @@ interface IParams {
  * 
  * @return {HTMLCollection}
  */
-const Button = ({text, lightColour, clickHandler}: IParams) => {
+const Button = ({text, lightColour, clickHandler, id}: IParams) => {
 
   if (!text) return <></>
   if (!lightColour) return <></>
@@ -41,7 +42,7 @@ const Button = ({text, lightColour, clickHandler}: IParams) => {
 
   const handleClick = (event: any) => {
     if (clickHandler) {
-      clickHandler(event)
+      clickHandler(event, id)
     }
   }
 

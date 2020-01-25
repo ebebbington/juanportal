@@ -196,7 +196,7 @@ const Profile = ({id, count}: IProps) => {
      * 
      * @return {void}
      */
-    const handleDelete = (id: string) => {
+    const handleDelete = (event: any, id: string) => {
         console.log('[handleDelete]')
         // get image filename from the current profiles list
         let imageFilename: string = ''
@@ -278,8 +278,8 @@ const Profile = ({id, count}: IProps) => {
                             <LinkButton text="View Profile" lightColour="green" href={`/profile/id/${profile._id}`} />
                         </div>
                     }
-                        <div className={styles.action} onClick={() => handleDelete(profile._id)}>
-                            <Button text="Delete Profile" lightColour="amber" />
+                        <div className={styles.action}>
+                            <Button text="Delete Profile" lightColour="amber" clickHandler={handleDelete} id={profile._id} />
                         </div>
                     </div>
                 </div>
