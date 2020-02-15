@@ -6,13 +6,7 @@ This section provides the socker server (endpoint) for the Chat side of JuanPort
 * Flash SocketIO
 * Redis communication
 
-## Endpoints
-
-* `GET /flask`
-
-    * Renders the index view
-
-## Directory Structure / Description
+# Directory Structure / Description
 
 ***Please see the example file in each directory if it exists to understand how this project is architectured***
 
@@ -40,7 +34,7 @@ This section provides the socker server (endpoint) for the Chat side of JuanPort
 
     * Holds pip packages to install (not in use)
 
-## Tools Used
+# Tools Used
 This is the list of all tools used here, which also act as the tools learnt, or tools implemented to learn:
 
 * Python
@@ -49,4 +43,4 @@ This is the list of all tools used here, which also act as the tools learnt, or 
     * Flash
     * Flask SocketIO
 
-* Redis`
+* Redis

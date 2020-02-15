@@ -8,7 +8,7 @@ This project contains:
 * The main application
 * The API (data layer)
 
-## Tools used
+# Tools used
 
 * Docker
 
@@ -17,7 +17,7 @@ This project contains:
     * General use
     * Nginx
 
-## Commit Naming Standards
+# Commit Naming Standards
 
 To avoid confusion, we write commits specifically to each application. The general format is:
 
@@ -33,46 +33,52 @@ Where:
 
 For example, in the situation where documentation was removed from a test, `Cleanup` would take presedence
 
-### Root Commits
+## Root Commits
 Say I update the README
 
 `git commit -m "Root: Docs - Updated README"`
 
-### API Commits
+## API Commits
 Say I create a new model
 
 `git commit -m "API: FT - Create a new model"`
 
-### JuanPortal (Source Code) Commits
+## JuanPortal (Source Code) Commits
 Say I fix a bug
 
 `git commit -m "JP: Fix - Corrected path to some file"`
 
-## Components
+# Components
 
 JuanPortal is split into 2 applications:
 
-### API
+## API
 
 This is the Data layer for JuanPortal (any database related actions or relations reside here, server-side focus).
 
 See the documentation for the API [here](https://github.com/ebebbington/juanportal/blob/develop/src/api/README.md)
 
-### Main App (Juanportal)
+## Main App (Juanportal)
 
 This is the main server (client-side focus) which communicates with the API, displays views and utilises React components. Essentially, this server serves as the client-side area of the whole project.
 
 See the documentation for the Main App [here](https://github.com/ebebbington/juanportal/blob/develop/src/juanportal/README.md)
 
-## Prerequisites
+## Socket
+
+This acts as the server-side to the socket connection, using FlaskIO. It also holds some code related to Redis so I can demonstrate the use of this by having the Main App and the Socket components communicate thorugh Redis.
+
+See the documentation for the Socket [here](https://github.com/ebebbington/juanportal/blob/develop/src/socket/README.md)
+
+# Prerequisites
 
 Have Docker installed. This can be for Windows or for Mac - as long as you have Docker accessible in the command line. Docker knowledge is also essential to know commands such as `docker-compose down` and `docker system prune`.
 
-### Ports
+## Ports
 
 Make sure the port 9002 is open for Nginx.
 
-## Run the Project
+# Run the Project
 
 Clone the repository
 
@@ -102,37 +108,37 @@ Finally, go to the website
 * Windows
      `127.0.0.1:9002`
 
-## Containers
+# Containers
 
-### JuanPortal
+## JuanPortal
 
 Juanportal is the main server, where Nginx passes `/` as the proxy to the JuanPortal container. JP acts as the client, or will display anything the client sees for this project
 
-### API
+## API
 
 The NodeJS API acts as the data layer for JP, serving to produce and modify the database data. The API currently only receieves requests from JP
 
-### Mongo
+## Mongo
 
 Setup as the database for this project
 
-### Mongo Seeder
+## Mongo Seeder
 
 Populates the mongoose database with pre defined data
 
-### Socket
+## Socket
 
 A Python server running on Flask that acts as the handler for Socket IO
 
-### Redis
+## Redis
 
 A Redis server to allow communication between the Socket and JuanPortal containers
 
-### Nginx
+## Nginx
 
 Server that acts as a proxy for the API, Juanportal, and Socket containers
 
-## Built With
+# Built With
 
 * [NodeJS](http://www.nodejs.com) - Server Side Language
 * [Nginx](https://nginx.com) - Webserver
@@ -141,27 +147,13 @@ Server that acts as a proxy for the API, Juanportal, and Socket containers
 * [MongoDB](https://mongodb.com) - Database
 * [TypeScript](https://typescript.com) - Strict Data Types
 
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Authors
-
-* **Edward Bebbington** - *Initial work* - [Place website name here](Place website url here)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
+# Acknowledgments
 
 * Adam Jeffery - Docker environment support, and support for learning all these technologies
 
-## Notes
+# Notes
 
-### Creating a data dump for mongoose
+## Creating a data dump for mongoose
 
 * `exec` into the container and create the documents inside the database
 
@@ -169,7 +161,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 * Exit the container and grab the files: `docker cp juanportal_mongo:/mongo-data-dump .``
 
-### IP's and Ports
+## IP's and Ports
 
 Mac Environment
 

@@ -10,26 +10,7 @@ This section provides the data layer for this project, such as:
 
 Every file where possible uses TypeScript.
 
-## Endpoints
-
-* `GET /api/profile/count/:count`
-
-    * Get many profiles defined by a number in the query
-    * Returns the profiles in the data property e.g. `const profiles = response.data`
-
-* `GET /api/profile/id/:id`
-
-    * Get a profile by their ID
-
-* `DELETE /api/profile/id/:id`
-
-    * Delete a profile by their ID
-
-* `POST /api/profile`
-
-    * Post a profile that has the data inside of a form
-
-## Directory Structure / Description
+# Directory Structure / Description
 
 * `artillery`
 
@@ -116,7 +97,7 @@ Every file where possible uses TypeScript.
 
     * Contains configurations for the TypeScript compiler (when compiling `.ts` files)
 
-## Tools Used
+# Tools Used
 This is the list of all tools used here, which also act as the tools learnt, or tools implemented to learn:
 
 * Object Orientated Approach
@@ -162,7 +143,7 @@ This is the list of all tools used here, which also act as the tools learnt, or 
     * Build an API
     * Follow the 6 Architectural Patterns
 
-## Building
+# Building
 
 The command to do this does reside inside of `package.json` so all you need to do is run:
 
@@ -170,7 +151,7 @@ The command to do this does reside inside of `package.json` so all you need to d
 
 This will 're-build' the server to correct changes made, such as re-compiling TS files, and restarting the server
 
-## Mocha Tests
+# Mocha Tests
 
 The API has tests convered for the whole server, these tests will test every possibility to each endpoint with the expected results e.g
 
@@ -185,7 +166,7 @@ it('Should respond with a 200 status code', (done) => {
 })
 ```
 
-### Writing Tests
+## Writing Tests
 
 * Placement of Tests
 
@@ -233,7 +214,7 @@ it('Should respond with a 200 status code', (done) => {
     })
     ```
 
-### Running the Tests
+## Running the Tests
 
 The command(s) to do this are inside of the `package.json` file:
 
@@ -247,21 +228,21 @@ Should you be using a TS test, you need to run the second test command. This is 
 
 `npm run test2 tests/some/dir/myTest.ts`
 
-## Artillery Tests
+# Artillery Tests
 
 All tests are written using YAML (`.yml|.yaml`)
 
-### Writing the Tests
+## Writing the Tests
 
 * Write tests for each endpoint to see how much the API can handle
 
-### Running the Tests
+## Running the Tests
 
 `npm run stress <your-file>`
 
-## Help
+# Help
 
-### TypeScript
+## TypeScript
 
 * `No index signature with a parameter of type 'string' was found on type`
 

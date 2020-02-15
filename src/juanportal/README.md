@@ -12,32 +12,7 @@ This section provides the main server for this project, such as:
 
 This side of JuanPortal also uses TypeScript where it can, as well as the class approach instead of a module export type style
 
-## Endpoints
-
-* `GET /`
-
-    * Renders the index view
-
-* `GET /profile/id/:id`
-
-    * Where `:id` is the id of the profile
-    * Displays that profile specifically
-
-* `GET /profile/add`
-
-    * Displays the form to register a profile
-
-* `POST /profile/image`
-
-    * Pass in the image to save to the filesystem in the body
-    * API-style call, which returns a JSON response
-
-* `DELETE /profile/image?filenane=[filename]`
-
-    * Where [filename] is the name of the file
-    * API-style call, returns a JSON response
-
-## Directory Structure / Description
+# Directory Structure / Description
 
 ***Please see the example file in each directory if it exists to understand how this project is architectured***
 
@@ -129,7 +104,7 @@ This side of JuanPortal also uses TypeScript where it can, as well as the class 
 
     * Configurations for bundling using webpack. Only used for bundling TSX|JSX files and their CSS modules
 
-## Tools Used
+# Tools Used
 This is the list of all tools used here, which also act as the tools learnt, or tools implemented to learn:
 
 * HTML
@@ -190,7 +165,7 @@ This is the list of all tools used here, which also act as the tools learnt, or 
     * Caching
     * Pub/Sub
 
-## Building
+# Building
 
 The command to do this does reside inside of `package.json`.
 
@@ -206,7 +181,7 @@ Though there are two scripts to do this:
 
     `npm run buildTSX`
 
-## Mocha Tests
+# Mocha Tests
 
 The App has tests convered for the whole server, these tests will test every possibility to each endpoint with the expected results e.g
 
@@ -221,7 +196,7 @@ it('Should respond with a 200 status code', (done) => {
 })
 ```
 
-### Writing Tests
+## Writing Tests
 
 * Placement of Tests
 
@@ -258,7 +233,7 @@ it('Should respond with a 200 status code', (done) => {
     })
     ```
 
-### Running the Tests
+## Running the Tests
 
 The command(s) to do this are inside of the `package.json` file:
 
@@ -272,29 +247,29 @@ Should you be using a TS test, you need to run the second test command:
 
 `npm run test2 tests/some/dir/myTest.ts`
 
-## Artillery Tests
+# Artillery Tests
 
 All tests are written using YAML (`.yml|.yaml`).
 
 Note you might need to adjust the URL in the tests, e.g. `127.0.0.1` for windows from the standard `0.0.0.0` for Mac
 
-### Writing the Tests
+## Writing the Tests
 
 * Write tests for each endpoint to see how much the API can handle
 
-### Running the Tests
+## Running the Tests
 
 `npm run stress artillery/dir/file.yml`
 
-## Jest Tests
+# Jest Tests
 
 Jest has been setup and configured to test React components.
 
-### Writing the Tests
+## Writing the Tests
 
 * Write every case for a component, such as for every paramemer or conditional.
 
-### Running the Tests
+## Running the Tests
 
 The command to run Jest tests for React components is `npm run testReact <filename>`, where `filename` is the file to test inside `/tests/components/`. Should you leave it blank, it will test every file. Use the following examples:
 
@@ -309,7 +284,7 @@ npm run testReact tests/components/button/
 npm run testReact
 ```
 
-## Using TypeScript
+# Using TypeScript
 
 Setting up TS was tough given i had 0 experience, but it all boils down to understanding the flow: 
 
@@ -328,7 +303,7 @@ console.log(!!obj.success)
 
 * See the `.ts` files to understand a bit more
 
-## Using React
+# Using React
 
 For React, i use Webpack to bundle the code on the server, and into a public directory.
 
@@ -336,9 +311,9 @@ For React, i use Webpack to bundle the code on the server, and into a public dir
 
 * The command to do this in just inside of `package.json`
 
-## Help
+# Help
 
-### React (JSX & TSX)
+## React (JSX & TSX)
 
 * `Property x does not exist on type readonly`
 
@@ -395,7 +370,7 @@ For React, i use Webpack to bundle the code on the server, and into a public dir
     * You can set `modules` to `false` or comment it out inside `webpack.config.js`, then import the CSS file (`import someComp.css.js`), then set classnames like such: `...className="button"
     * Where the style file is: `export default { button { color: 'blue' }}
 
-### Jest
+## Jest
 
 * Defining URL/pathname for Components
 
