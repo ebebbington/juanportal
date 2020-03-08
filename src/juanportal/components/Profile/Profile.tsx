@@ -8,7 +8,8 @@ const styles = getStylings()
 
 interface IProps {
     count?: number,
-    id?: string
+    id?: string,
+    match?: { path: string, url: string, isExact: boolean, params: { [key: string]: any }}
 }
 
 interface IProfile {
@@ -61,7 +62,9 @@ interface IProfile {
  * @method deleteProfile Deletes a profile from the API and the image file from this server
  * @method handleDelete Handles the deletion of a profile
  */
-const Profile = ({id, count}: IProps) => {
+const Profile = (props: IProps) => {
+    const { count } = props
+    const id = props.id ? props.id : props.match ? props.match.params.id : ''
 
     /**
      * If the purpose of this component is to view a single profile

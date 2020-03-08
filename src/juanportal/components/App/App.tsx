@@ -1,30 +1,26 @@
 import Profile from '../Profile/Profile'
 import RegisterForm from '../RegisterForm/RegisterForm'
-import Header from '../Header/header'
+import Header from '../header/header'
 import ReactDOM from 'react-dom'
 import React from 'react'
 import Chat from '../Chat/Chat'
+import { BrowserRouter as Router, Link } from 'react-router-dom'
+import { Route } from 'react-router'
 
-const url: string = window.location.pathname
-
-// Header and sidebar
+// Header
 ReactDOM.render(<Header />, document.getElementById('header'))
-// Profile count
-if (url === '/') {
-    ReactDOM.render(<Profile count={5} />, document.getElementById('profile-container'))
+
+// Everything else
+const App = () => {
+    return (
+        <Router>
+            <Route exact path="/">
+                <Profile count={5} />
+            </Route>
+            <Route path="/profile/id/:id" component={Profile} />
+            <Route exact path="/chat" component={Chat} />
+            <Route exact path="/profile/add" component={RegisterForm} />
+        </Router>
+    )
 }
-// Profile ID
-if (/\/profile\/id\//.test(url)) {
-    const arrOfPaths: string[] = url.split('/')
-    const pos: number = arrOfPaths.indexOf('id')
-    const id: string = arrOfPaths[pos + 1]
-    ReactDOM.render(<Profile id={id} />, document.getElementById('profile-container'))
-}
-// Register form
-if (url === '/profile/add') {
-    ReactDOM.render(<RegisterForm />, document.getElementById('form-container'))
-}
-// Chat
-if (url === '/chat') {
-    ReactDOM.render(<Chat />, document.getElementById('chat-container'))
-}
+ReactDOM.render(<App />, document.getElementById('app'))

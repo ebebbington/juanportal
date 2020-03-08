@@ -18,7 +18,7 @@ app.route('/id/:id')
   })
 
 app.route('/add')
-  .get(Redis.cache.route('profile'), (req, res) => { res.status(200).render('profile/add', {title: 'Add Profile'})})
+  .get(Redis.cache.route('profile/add'), (req, res) => { res.status(200).render('profile/add', {title: 'Add Profile'})})
 
 app.route('/image')
   /**
@@ -33,7 +33,7 @@ app.route('/image')
       data: new FormData(form)
     })
    */
-  .post(Redis.cache.route('profile'), upload.single('image'), (req, res) => {
+  .post(upload.single('image'), (req, res) => {
     // todo add checks so people just cant willy nilly send requests e.g. JWT 
     logger.info('[POST /profile/image]')
     const filename = req.query.filename
@@ -59,7 +59,7 @@ app.route('/image')
       dataType: 'json',
     })
    */
-  .delete(Redis.cache.route('profile'), upload.single('image'), (req, res) => {
+  .delete(upload.single('image'), (req, res) => {
     // todo add checks so people just cant willy nilly send requests e.g. JWT
     const filename = req.query.filename
     const Image = new ImageHelper

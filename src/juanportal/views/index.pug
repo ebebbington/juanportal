@@ -1,8 +1,6 @@
 extends layout
 block append head
 block append content
-    #test-container
-    #profile-container
         //- var socket = io();
         //- socket.on('connect', function() {
         //-    console.log('connected')
@@ -16,7 +14,7 @@ block append content
         //-     ssocket.emit('my event', {data: 'I\'m connected!'});
         //- });
    
-    //-script(src="/public/javascripts/components/profile.js" data-plugins="transform-es2015-modules-umd" type="text/babel")
+        //-script(src="/public/javascripts/components/profile.js" data-plugins="transform-es2015-modules-umd" type="text/babel")
         //- // When no profiles exist
         //- if (!people.length)
         //-     .well.no-profiles
@@ -29,8 +27,8 @@ block append content
         //-         h1 #{person.name}
 
     
-    //- script(data-plugins="transform-es2015-modules-umd" type="text/babel").
-    //-     ReactDOM.render(
-    //-         <Profile count="5" />,
-    //-         document.getElementById('profile-container')
-    //-     )  
+        //- script(data-plugins="transform-es2015-modules-umd" type="text/babel").
+        //-     ReactDOM.render(
+        //-         <Profile count="5" />,
+        //-         document.getElementById('profile-container')
+        //-     )  
