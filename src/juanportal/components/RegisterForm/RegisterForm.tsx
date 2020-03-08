@@ -231,6 +231,7 @@ const RegisterForm = () => {
                 return false
             }
             notify('Profile Upload', res.message, res.success ? 'success' : 'error')
+            window.location.href = '/'
         }).catch((err) => {
             console.error('Error thrown when posting a profile')
             console.error(err)
