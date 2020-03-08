@@ -73,6 +73,9 @@
     padding: 0.5em;
     border-bottom: 1px var(--custom-purple) solid;
 }
+.navMenu > ul li > a {
+    color: var(--custom-blue);
+}
 .navMenu > ul li > a:hover {
     text-decoration: none;
     color: var(--custom-black);

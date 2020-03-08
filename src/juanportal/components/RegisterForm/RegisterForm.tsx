@@ -281,17 +281,19 @@ const RegisterForm = () => {
 
     return (
         <form className={formStyles.form}>
-            <h1>Register a Profile</h1>
             <fieldset>
-                <label className={formStyles.fieldContainer}>
+                <legend><h1>Register a Profile</h1></legend>
+                <label className={formStyles.fieldContainer} aria-labelledby="name-label">
+                    <span id="name-label" hidden>Name</span>
                     <input id="name" className="form-control" name="name" placeholder="Your Name *" type="text"
                         onChange={event => handleNameChange(event.target.value)} required/>
                 </label>
-                <label className={formStyles.fieldContainer}>
+                <label className={formStyles.fieldContainer} aria-labelledby="description-label">
+                    <span id="description-label" hidden>Description</span>
                     <input className="form-control" name="description" placeholder="Your Description" type="text"
                         onChange={event => handleDescriptionChange(event.target.value)}/>
                 </label>
-                <label className={formStyles.fileUploadContainer}>
+                <label className={formStyles.fileUploadContainer} aria-label="Profile Picture" title="Profile Picture">
                     <p className="btn btn-info">Upload Profile Image</p>
                     <i id="filename" className={formStyles.filename}></i>
                     <input name="image" type="file" onChange={event => handleFileChange(event)}/>

@@ -10,7 +10,7 @@
 /* The button to open the dropdown */
 .dropdownContainer > button {
     background-color: var(--custom-white);
-    color: #0c1f26;
+    color: var(--custom-black);
     border: 0.1em var(--custom-black) solid;
     /*border-radius: 100px;*/
 }
