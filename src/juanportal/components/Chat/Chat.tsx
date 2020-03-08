@@ -110,7 +110,7 @@ const Chat = () => {
                     }
                     <p>{usersOnline.length} online</p>
                 </div>
-                <h3>{username}</h3>
+                <h2>{username}</h2>
             </div>
             <div className={classes.body}>
             {messagesReceived.map((message: {username: string, message: string}, index: number) =>
@@ -121,7 +121,8 @@ const Chat = () => {
             )}
             </div>
             <div className={classes.footer}>
-                <input type="text" placeholder="Type something => ENTER" className="messageInput form-control" onChange={event => setMessageToSend(event.target.value)} onKeyPress={event => handleInputKeyPress(event)}/>
+                <label htmlFor="message" hidden>Message</label>
+                <input id="message" type="text" placeholder="Type something => ENTER" className="messageInput form-control" onChange={event => setMessageToSend(event.target.value)} onKeyPress={event => handleInputKeyPress(event)}/>
                 <Button text="Send" lightColour="green" clickHandler={handleSend} />
                 <Button text="Leave" lightColour="red" clickHandler={handleLeave} />
             </div>

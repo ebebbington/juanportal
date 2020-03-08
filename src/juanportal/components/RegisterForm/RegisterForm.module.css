@@ -41,6 +41,7 @@ fieldset {
 /* filename */
 .fileUploadContainer > p {
     margin: auto;
+    background-color: var(--custom-blue);
 }
 /**
  * File input element

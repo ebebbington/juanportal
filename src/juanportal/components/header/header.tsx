@@ -108,7 +108,8 @@ const Header = () => {
     return (
         <div className={headerStyles.header}>
             <div>
-                <button className="btn" onClick={handleMenuClick}>
+                <button className="btn" onClick={handleMenuClick} type="button" aria-label="Sidebar" aria-labelledby="header-button-label">
+                    <span id="header-button-label" hidden>{menuExpanded ? 'Close Sidebar' : 'Open Sidebar'}</span>
                     <i className='fa fa-2x fa-bars'/>
                 </button>
                 <div className={`${menuExpanded ? headerStyles.show : headerStyles.hide} ${headerStyles.navMenu} menuHolder`}>

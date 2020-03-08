@@ -255,11 +255,11 @@ const Profile = (props: IProps) => {
     if (profiles.length < 1) {
         return (
             <div className={styles.profile}>
-                <h3>No profiles are left! Why not
+                <h2>No profiles are left! Why not
                     <a href="/profile/add"> add one </a>
                     or
                     <a href="#" onClick={() => findManyProfiles()}> find more?</a>
-                </h3>
+                </h2>
             </div>
         )
     }
@@ -268,10 +268,10 @@ const Profile = (props: IProps) => {
         <> {profiles.map((profile: IProfile) => 
             <div className={styles.profile} key={profile._id}>
                 <div className="col-xs-12 col-sm-4 col-md-5">
-                    <img className={styles.img} alt="Image of user" src={`/public/images/${profile.image}`}></img>
+                    <img className={styles.img} alt={`${profile.name} profile picture`} src={`/public/images/${profile.image}`}></img>
                 </div>
                 <div className="col-xs-12 col-sm-8 col-md-7">
-                    <h3 className={styles.name}>{profile.name}</h3>
+                    <h2 className={styles.name}>{profile.name}</h2>
                     {viewSingle &&
                     <p className={styles.description}>{profile.description || <i>No description</i>}</p>
                     }
