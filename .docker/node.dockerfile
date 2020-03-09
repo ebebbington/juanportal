@@ -5,3 +5,4 @@ RUN     apt-get update
 
 # Install PM2
 RUN     yes | npm i pm2 -g
+RUN apt install npm@latest
