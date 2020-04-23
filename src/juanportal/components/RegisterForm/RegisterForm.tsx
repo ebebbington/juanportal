@@ -290,13 +290,13 @@ const RegisterForm = () => {
                 </label>
                 <label className={formStyles.fieldContainer} aria-labelledby="description-label">
                     <span id="description-label" hidden>Description</span>
-                    <input className="form-control" name="description" placeholder="Your Description" type="text"
-                        onChange={event => handleDescriptionChange(event.target.value)}/>
+                    <input id="description" className="form-control" name="description" placeholder="Your Description" type="text"
+                        title="Description" onChange={event => handleDescriptionChange(event.target.value)}/>
                 </label>
                 <label className={formStyles.fileUploadContainer} aria-label="Profile Picture" title="Profile Picture">
                     <p className="btn btn-info">Upload Profile Image</p>
-                    <i id="filename" className={formStyles.filename}></i>
-                    <input name="image" type="file" onChange={event => handleFileChange(event)}/>
+                    <i id="filename" className={formStyles.filename}/>
+                    <input title="Picture upload" name="image" type="file" onChange={event => handleFileChange(event)}/>
                 </label>
                 <div className={formStyles.submitContainer} onClick={handleSubmit}>
                     <Button text="Submit" lightColour="green" />
