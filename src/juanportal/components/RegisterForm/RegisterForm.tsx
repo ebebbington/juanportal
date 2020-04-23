@@ -286,7 +286,7 @@ const RegisterForm = () => {
                 <label className={formStyles.fieldContainer} aria-labelledby="name-label">
                     <span id="name-label" hidden>Name</span>
                     <input id="name" className="form-control" name="name" placeholder="Your Name *" type="text"
-                        onChange={event => handleNameChange(event.target.value)} required/>
+                        title="Name" onChange={event => handleNameChange(event.target.value)} required/>
                 </label>
                 <label className={formStyles.fieldContainer} aria-labelledby="description-label">
                     <span id="description-label" hidden>Description</span>

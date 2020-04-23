@@ -15,14 +15,16 @@ test('It renders correctly', () => {
 })
 
 test('Name change', () => {
-    const handleNameChange = jest.fn()
-    const wrapper = mount(<RegisterForm />)
+    //const handleNameChange = jest.fn()
+    const { container } = render(<RegisterForm />)
     const event = {
-
         target: { value: 'New Value' }
     }
-    wrapper.find('input#name').simulate('change', event)
-    console.log(document.querySelector('form input#name'))
-    expect(nameInput.value).toBe('New Value')
-    expect(handleNameChange).toHaveBeenCalled()
+    fireEvent.change(screen.getByTitle('Name'), event)
+    //fireEvent.find('input#name').simulate('change', event)
+    const name = container.querySelector('input#name').value
+    expect(name).toBe('New Value')
+    //const test = wrapper.querySelector('input#name')
+    //console.log(test)
+   // expect(handleNameChange).toHaveBeenCalled()
 })
