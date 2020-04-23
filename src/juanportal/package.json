@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha",
+    "test": "node_modules/.bin/mocha tests",
     "buildTS": "node_modules/.bin/tsc && pm2 restart all",
     "buildTSX": "node_modules/.bin/webpack-cli --config webpack.config.js",
     "stress": "node_modules/.bin/artillery run",

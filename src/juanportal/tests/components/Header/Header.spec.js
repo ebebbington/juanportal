@@ -40,12 +40,12 @@ test('Rendering on pathname /profile/add', () => {
 
 test('Rendering on pathname /profile/id/:id', () => {
     window.history.pushState({}, 'Test Title', '/profile/id/65hfh88')
-    render(<Header />)
+    const { container } = render(<Header />)
     const pathIsCorrect = window.location.pathname.indexOf('/profile/id') > -1 ? true : false
     // pathname
     expect(pathIsCorrect).toBe(true)
     // title
-    const title = document.querySelector('h1 strong i').textContent
+    const title = container.querySelector('h1 strong i').textContent
     expect(title).toBe('View Profile')
 })
 
