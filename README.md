@@ -16,37 +16,18 @@ This project contains:
     * Networking
     * General use
     * Nginx
+    
+# Features
 
-# Commit Naming Standards
-
-To avoid confusion, we write commits specifically to each application. The general format is:
-
-`<application>: FT|Fix|Docs|Tests|Cleanup - <Commit title>`
-
-Where:
-
-* `FT` (priority 3) = Feature, for features
-* `Fix` (priority 5)  = Fixed a bug
-* `Docs` (priority 2) = Added information regarding documentation, such as in the `README.md` or comments
-* `Tests` (priority 4) = Developments of tests
-* `Cleanup` (priority 1) = Cleanup of files or code, e.g. removal of comments or unused file
-
-For example, in the situation where documentation was removed from a test, `Cleanup` would take presedence
-
-## Root Commits
-Say I update the README
-
-`git commit -m "Root: Docs - Updated README"`
-
-## API Commits
-Say I create a new model
-
-`git commit -m "API: FT - Create a new model"`
-
-## JuanPortal (Source Code) Commits
-Say I fix a bug
-
-`git commit -m "JP: Fix - Corrected path to some file"`
+* Redis caching for routes
+* Express RESTful API
+* React
+* Mongo DB
+* React Testing Library for JP tests
+* Flask socket
+* Mocha/chai testing
+* Express server
+* Docker
 
 # Components
 

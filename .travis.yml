@@ -16,4 +16,5 @@ after_success:
 script:
   - docker exec juanportal_node npm run test
   - docker exec juanportal_node npm run testReact
-  - docker exec juanportal_api npm run test && npm run test2
+  - docker exec juanportal_api npm run test
+  - docker exec juanportal_api npm run test2
