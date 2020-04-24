@@ -14,5 +14,6 @@ after_success:
   - codecov --file coverage/lcov.info --disable search
 
 script:
-  - docker exec juanportal_node npm run test && npm run testReact
-  - docker exec juannportal_api npm run test && npm run test2
+  - docker exec juanportal_node npm run test
+  - docker exec juanportal_node npm run testReact
+  - docker exec juanportal_api npm run test && npm run test2
