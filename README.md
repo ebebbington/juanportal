@@ -1,4 +1,16 @@
-# JuanPortal (Project)
+<p align="center">
+  <h1 align="center">JuanPortal</h1>
+</p>
+<p align="center">
+  <a href="https://github.com/ebebbington/juanportal/actions">
+    <img src="https://img.shields.io/github/workflow/status/ebebbington/juanportal/master?label=ci">
+  </a>
+  <a href="https://codecov.io/gh/ebebbington/juanportal">
+    <img src="https://codecov.io/gh/ebebbington/juanportal/branch/master/graph/badge.svg">
+  </a>
+</p>
+
+---
 
 JuanPortal is a personal learning application that allows users to create and save Profiles, view and delete those Profiles. It provides a training or learning ground to improve my own knowledge and ability regarding a NodeJS application.
 
