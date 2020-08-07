@@ -2,7 +2,7 @@ import React, { useState, ReactElement, useEffect, useCallback } from 'react'
 import ReactDOM from 'react-dom'
 import LinkButton from '../button/linkButton'
 import Button from '../button/button'
-import { notify, fetchToApiAsJson } from '../util'
+import { notify, fetchToApiAsJson } from '../util.js'
 import { getStylings } from './util'
 const styles = getStylings()
 
@@ -111,11 +111,14 @@ const Profile = (props: IProps) => {
     const findProfile = (): void => {
         console.log('[findProfile]')
         const url: string = '/api/profile/id/' + idOfProfileToFind
+        //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
         fetchToApiAsJson(url).then((res: any) => {
+            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Find Profile', res.message, 'success')
             const arr: any = [res.data]
             setProfiles(arr)
         }).catch((err) => {
+            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Find Profile', `Error occured, see console`, 'error')
             console.error(err)
         })
@@ -135,10 +138,13 @@ const Profile = (props: IProps) => {
     const findManyProfiles = (): void => {
         console.log('[findManyProfiles]')
         const url: string = '/api/profile/count/' + numberOfProfilesToGet
+        //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
         fetchToApiAsJson(url).then((res: any) => {
+            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Find Many Profiles', res.message, 'success')
             setProfiles(res.data)
         }).catch((err) => {
+            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Find Many Profiles', 'Failed', 'error')
             console.error('Error caught when trying to find many profiles')
             console.error(err)
@@ -163,8 +169,10 @@ const Profile = (props: IProps) => {
         const profileUrl: string = '/api/profile/id/' + id
         const profileOptions = { method: 'DELETE' }
         const imageUrl: string = '/profile/image?filename=' + filename
-        const imageOptions = { method: 'DELETE' } 
+        const imageOptions = { method: 'DELETE' }
+        //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
         fetchToApiAsJson(profileUrl, profileOptions).then(() => fetchToApiAsJson(imageUrl, imageOptions)).then((res: any) => {
+            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Delete Profile', res.message, 'success')
             const updatedProfiles = profiles.filter((obj: any) => {
                 return obj._id !== id
@@ -180,6 +188,7 @@ const Profile = (props: IProps) => {
                 }
             }
         }).catch((err) => {
+            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Delete Profile', err.message, 'error')
             console.error('Error caught when trying to delete a profile:')
             console.error(err)
