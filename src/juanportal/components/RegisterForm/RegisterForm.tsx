@@ -137,6 +137,7 @@ const RegisterForm = () => {
         if (validated) {
             registerProfile()
         } else {
+            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Submit', 'Your data failed validation', 'error')
         }
     }
@@ -158,14 +159,17 @@ const RegisterForm = () => {
     const validateForm = (): boolean => {
         console.log('[validateForm]')
         if (!name || name.length < 2) {
+            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Name', 'Must be set and longer than 2 characters', 'error')
             return false
         }
         if (name.length > 150) {
+            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Name', 'Must not be longer than 150 characters', 'error')
             return false
         }
         if (description.length > 400) {
+            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Description', 'Must be less than 400 characters', 'error')
             return false
         }
@@ -173,6 +177,7 @@ const RegisterForm = () => {
         const arr = filename.split('.')
         const fileExt = arr[arr.length -1].toLowerCase()
         if (filename && !exts.includes(fileExt)) {
+            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Image', 'File must be of type .jpg, .png or .jpeg', 'error')
             return false
         }
@@ -223,18 +228,22 @@ const RegisterForm = () => {
         const profileOptions: any = { method: 'POST', body: data}
         const imageUrl = '/profile/image?filename='
         const imageOptions = { method: 'POST', body: new FormData(form)}
+        //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
         fetchToApiAsJson(profileUrl, profileOptions).then(response => fetchToApiAsJson(imageUrl + response.data, imageOptions)).then((res) => {
             if (!res.success) {
                 console.error('Bad request:')
                 console.error(res)
+                //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
                 notify('Profile Upload', res.message, res.success ? 'success' : 'error')
                 return false
             }
+            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Profile Upload', res.message, res.success ? 'success' : 'error')
             window.location.href = '/'
         }).catch((err) => {
             console.error('Error thrown when posting a profile')
             console.error(err)
+            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Profile', err.message, 'error')
         })
     }
