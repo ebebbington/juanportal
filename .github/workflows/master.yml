@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Laravel Tests
+      - name: API Tests
         run: |
           docker-compose up -d > /dev/null
           sleep 200
@@ -18,10 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Laravel Tests
+      - name: Client Tests
         run: |
           docker-compose up -d > /dev/null
           sleep 200
+          docker-compose ps
           docker exec juanportal_node npm run test
           docker exec juanportal_node npm run testReact
 
