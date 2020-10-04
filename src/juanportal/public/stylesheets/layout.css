@@ -11,7 +11,7 @@
 }
 
 head, body {
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif !important;
+    font-family: Georgia, Times, 'Times New Roman', serif !important;
     color: var(--custom-black);
     background-color: var(--custom-grey);
 }
