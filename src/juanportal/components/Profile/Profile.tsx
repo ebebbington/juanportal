@@ -177,6 +177,7 @@ const Profile = (props: IProps) => {
             const updatedProfiles = profiles.filter((obj: any) => {
                 return obj._id !== id
             })
+
             setProfiles(updatedProfiles)
             // Remove the HTML block from the DOM
             const deleteButton: any = document.querySelector(`button.delete[data-id="${id}"`)
@@ -186,6 +187,9 @@ const Profile = (props: IProps) => {
                 if (topParent) {
                     topParent.remove()
                 }
+            }
+            if (updatedProfiles.length === 0) {
+                findManyProfiles()
             }
         }).catch((err) => {
             //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
