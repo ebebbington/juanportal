@@ -14,10 +14,24 @@ interface IKVPair {
 
 /**
  * @example
+ * For caching:
  * const RedisHelper = require('../helpers/RedisHelper')
  * const Redis = new RedisHelper({cache?: true|false, pub?: true|false, sub?: true|false})
  * app.get('/', Redis.cache.route('index'), (req, res) => {})
- * 
+ *
+ * For pub/sub:
+ * const RedisHelper = require('../helpers/RedisHelper')
+ * const Redis = new RedisHelper({pub: true, sub: true})
+ * Redis.sub.on('subscribe', (channel, count) => {
+ *   Redis.pub.publish(Redis.channels.chat, 'Ive just subscribed! #sentByNode')
+ * })
+ * Redis.sub.on('message', (channel, message) => {
+ *   if (channel === Redis.channels.chat) {
+ *     console.log('Received message from redis in node: Channel=' + channel + '. Message=' + message)
+ *   }
+ * })
+ * Redis.sub.subscribe(Redis.channels.chat)
+ *
  * @param {boolean} cache Define where this instance will be used for caching so it can create the cache property
  * @param {boolean} pub True for if this instance will use a publisher
  * @param {boolean} sub True if this instance will use a subscriber

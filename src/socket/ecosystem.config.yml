@@ -1,8 +1,0 @@
-apps:
-  - name: 'Socket'
-    script: 'app.py'
-    ignore_watch: '__pycache__'
-    log_type: 'JSON'
-    log_date_format: 'DD-MM-YYYY'
-    args: '-p 9009'
-    watch: ["app.py"]
