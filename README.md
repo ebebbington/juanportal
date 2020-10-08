@@ -27,7 +27,7 @@ This project contains:
 
 # Components
 
-JuanPortal is split into 2 applications:
+JuanPortal is split into 3 applications:
 
 ## API
 
