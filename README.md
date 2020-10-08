@@ -17,29 +17,13 @@ JuanPortal is a personal learning application that allows users to create and sa
 This project contains:
 
 * The docker environment required to build the sever(s)
-* The main application
-* The API (data layer)
-
-# Tools used
-
-* Docker
-
-    * Containers
-    * Networking
-    * General use
-    * Nginx
-    
-# Features
-
-* Redis caching for routes
-* Express RESTful API
-* React
-* Mongo DB
-* React Testing Library for JP tests
-* Flask socket
-* Mocha/chai testing
-* Express server
-* Docker
+* The main application, an express server
+* The API (data layer), an express server
+* A Socket.io Node server
+* Mongo db
+* Redis for caching
+* Nginx for proxy server
+* React frontend
 
 # Components
 
@@ -59,7 +43,7 @@ See the documentation for the Main App [here](https://github.com/ebebbington/jua
 
 ## Socket
 
-This acts as the server-side to the socket connection, using FlaskIO. It also holds some code related to Redis so I can demonstrate the use of this by having the Main App and the Socket components communicate thorugh Redis.
+This acts as the server-side to the socket connection
 
 See the documentation for the Socket [here](https://github.com/ebebbington/juanportal/blob/develop/src/socket/README.md)
 
@@ -121,7 +105,7 @@ Populates the mongoose database with pre defined data
 
 ## Socket
 
-A Python server running on Flask that acts as the handler for Socket IO
+A express server acting as the web socket server
 
 ## Redis
 
