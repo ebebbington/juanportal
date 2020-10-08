@@ -64,11 +64,11 @@ const Header = () => {
             url: '/profile/add',
             display: true
         },
-        {
-            title: 'Chat',
-            url: '/chat',
-            display: true
-        },
+        // {
+        //     title: 'Chat',
+        //     url: '/chat',
+        //     display: true
+        // },
         {
             title: 'View Profile',
             url: '/profile/id/', // /profile/id/*

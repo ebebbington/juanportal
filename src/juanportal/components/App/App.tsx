@@ -18,7 +18,7 @@ const App = () => {
                 <Profile count={5} />
             </Route>
             <Route path="/profile/id/:id" component={Profile} />
-            <Route exact path="/chat" component={Chat} />
+            {/*<Route exact path="/chat" component={Chat} />*/}
             <Route exact path="/profile/add" component={RegisterForm} />
         </Router>
     )

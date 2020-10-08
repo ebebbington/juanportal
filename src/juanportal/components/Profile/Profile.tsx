@@ -5,6 +5,8 @@ import Button from '../button/button'
 import { notify, fetchToApiAsJson } from '../util.js'
 import { getStylings } from './util'
 const styles = getStylings()
+import openSocket from 'socket.io-client'
+const socket = openSocket('http://127.0.0.1:9002')
 
 interface IProps {
     count?: number,
@@ -63,6 +65,8 @@ interface IProfile {
  * @method handleDelete Handles the deletion of a profile
  */
 const Profile = (props: IProps) => {
+    socket.removeAllListeners()
+
     const { count } = props
     const id = props.id ? props.id : props.match ? props.match.params.id : ''
 
@@ -149,6 +153,26 @@ const Profile = (props: IProps) => {
             console.error('Error caught when trying to find many profiles')
             console.error(err)
         })
+    };
+
+    const handleProfileDeletedSocketEvent = (data: { profileId: number}): void => {
+        console.log('Got profileDeleted event from socket, with id of ' + data.profileId)
+        const updatedProfiles = profiles.filter((obj: any) => {
+            return obj._id !== data.profileId
+        })
+        setProfiles(updatedProfiles)
+        // Remove the HTML block from the DOM
+        const deleteButton: any = document.querySelector(`button.delete[data-id="${data.profileId}"`)
+        // Below if statements are here to stop errors of 'object is possibly null'
+        if (deleteButton)  {
+            const topParent: any = deleteButton.closest('.well.profile')
+            if (topParent) {
+                topParent.remove()
+            }
+        }
+        if (updatedProfiles.length === 0) {
+            findManyProfiles()
+        }
     }
 
     /**
@@ -191,6 +215,8 @@ const Profile = (props: IProps) => {
             if (updatedProfiles.length === 0) {
                 findManyProfiles()
             }
+            console.log("Emitting event to profileDeleted, with id of " + id)
+            socket.emit('profileDeleted', { profileId: id})
         }).catch((err) => {
             //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Delete Profile', err.message, 'error')
@@ -245,6 +271,7 @@ const Profile = (props: IProps) => {
             setViewSingle(false)
             findManyProfiles()
         }
+        socket.on("profileDeleted", handleProfileDeletedSocketEvent)
     }, [])
 
     /**

@@ -77,11 +77,11 @@ services:
     container_name: juanportal_socket
     build:
       context: .
-      dockerfile: .docker/python.dockerfile
+      dockerfile: .docker/node.dockerfile
     volumes:
       - ./src/socket:/var/www/socket
     working_dir: /var/www/socket
-    command: bash -c "pm2-runtime --watch ecosystem.config.yml"
+    command: bash -c "npm run start"
     depends_on:
       - redis
     networks:

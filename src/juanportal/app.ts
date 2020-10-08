@@ -151,7 +151,7 @@ class Server {
     const indexRoute = require('./routes/index.js')
     const chatRoute = require('./routes/chat.js')
     this.app.use('/profile', profileRoute)
-    this.app.use('/chat', chatRoute)
+    //this.app.use('/chat', chatRoute)
     this.app.use('/', indexRoute)
   }
 }

@@ -26,8 +26,17 @@ jobs:
         run: |
           docker-compose up -d > /dev/null
           sleep 200
-          docker-compose ps
           docker exec juanportal_node npm run test
           docker exec juanportal_node npm run testReact
+
+  socket-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Client Tests
+        run: |
+          docker-compose up -d > /dev/null
+          sleep 60
+          docker exec juanportal_socket npm run testTS
 
   #socket-tests:
