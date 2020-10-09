@@ -36,10 +36,7 @@ class SocketServer {
      * @param {number} profileId The id of the profile that was deleted
      */
     private emitProfileDeleted (socket: SocketIO.Socket, profileId: number) {
-        socket.emit('profileDeleted', {
-            profileId: profileId
-        })
-        socket.to(socket.id).emit('profileDeleted', {
+        socket.broadcast.emit('profileDeleted', {
             profileId: profileId
         })
     }

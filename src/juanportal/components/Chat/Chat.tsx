@@ -3,7 +3,7 @@ import { useState, ReactElement, FunctionComponent, useEffect, useReducer } from
 import { getStylings } from './util'
 import Button from '../button/button'
 import openSocket from 'socket.io-client'
-const socket = openSocket('http://127.0.0.1:9002')
+const socket = openSocket('http://0.0.0.0:9002')
 const classes = getStylings()
 
 const Chat = () => {

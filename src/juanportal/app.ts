@@ -8,6 +8,8 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const logger = require('./helpers/logger')
 const socketIo = require('socket.io')
+import cors from "cors"
+
 
 /**
  * Server
@@ -87,6 +89,7 @@ class Server {
     this.env = process.env.NODE_ENV || ''
     //create expressjs application
     this.app = express();
+    this.app.use(cors())
     //@ts-ignore
     this.app.io = socketIo()
     //configure application

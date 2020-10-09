@@ -5,8 +5,8 @@ import Button from '../button/button'
 import { notify, fetchToApiAsJson } from '../util.js'
 import { getStylings } from './util'
 const styles = getStylings()
-import openSocket from 'socket.io-client'
-const socket = openSocket('http://127.0.0.1:9002')
+import io from 'socket.io-client'
+const socket = io('http://127.0.0.1:9002')
 
 interface IProps {
     count?: number,
@@ -215,7 +215,6 @@ const Profile = (props: IProps) => {
             if (updatedProfiles.length === 0) {
                 findManyProfiles()
             }
-            console.log("Emitting event to profileDeleted, with id of " + id)
             socket.emit('profileDeleted', { profileId: id})
         }).catch((err) => {
             //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
@@ -259,6 +258,7 @@ const Profile = (props: IProps) => {
      */
     useEffect (() => {
         console.log('[useEffect]')
+        socket.emit('profileDeleted', { profileId: 23456})
         // Render a single profile by id if requested
         if (idOfProfileToFind) {
             console.log('Going to find a profile as an id was passed in')

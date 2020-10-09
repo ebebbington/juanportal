@@ -3,7 +3,7 @@ import RegisterForm from '../RegisterForm/RegisterForm'
 import Header from '../header/header'
 import ReactDOM from 'react-dom'
 import React from 'react'
-import Chat from '../Chat/Chat'
+//import Chat from '../Chat/Chat'
 import { BrowserRouter as Router, Link } from 'react-router-dom'
 import { Route } from 'react-router'
 

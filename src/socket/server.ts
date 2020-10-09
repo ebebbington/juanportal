@@ -47,10 +47,9 @@ class Server {
    */
   constructor () {
     this.app = express()
-    this.app.use(cors())
     this.httpServer = http.createServer(this.app)
-    this.io = socketIo.listen(this.httpServer);
-    //this.io = socketIo(this.httpServer)
+    //this.io = socketIo.listen(this.httpServer);
+    this.io = socketIo(this.httpServer, { transports: ['polling']})
     this.configure()
     this.listen()
     this.handleSocketConnection()
