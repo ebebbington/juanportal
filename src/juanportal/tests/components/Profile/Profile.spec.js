@@ -17,3 +17,7 @@
 //     const { container } = render(<Profile id={"some id"} />)
 //     console.log(container.querySelectorAll('.profile').length)
 // })
+
+test("placeholder", () => {
+    expect(true).toBe(true)
+})
