@@ -87,11 +87,3 @@ test('Add Profile Link', () => {
     //expect(window.location.assign).toHaveBeenCalledWith('/profile/add')
     expect(profileLink).not.toBe(null)
 })
-
-test('Chat link', () => {
-    const { container } = render(<Header/>)
-    const chatLink = container.querySelector('a[href="/chat"]')
-    // RTL has limitations, cant change href so we can onoy check the href is correct
-    //fireEvent.click(chatLink, { button: 1 })
-    expect(chatLink).not.toBe(null)
-})
