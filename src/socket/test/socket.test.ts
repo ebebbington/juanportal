@@ -20,9 +20,7 @@ describe('Socket Server', () => {
                     client2.emit('profileDeleted', data)
                 }, 1000)
                 await client1.on('profileDeleted', (data: any) => {
-                    expect(data).to.equal({
-                        profileId: 2
-                    })
+                    expect(data.profileId).to.equal(2)
                     client1.disconnect()
                     client2.disconnect()
                 })
