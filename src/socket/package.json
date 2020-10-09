@@ -29,7 +29,7 @@
     "@types/mocha": "^7.0.2",
     "@types/socket.io-client": "^1.4.32",
     "chai": "^4.2.0",
-    "sinon": "^9.0.2",
+    "sinon": "^9.0.2"
   },
   "author": "",
   "license": "ISC"
