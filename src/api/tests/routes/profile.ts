@@ -1,3 +1,5 @@
+import 'mocha'
+
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
@@ -28,7 +30,7 @@ describe('Profile Route', () => {
       it('Should fail when the parameter cannot be parsed as a number', (done) => {
         chai.request(app)
           .get('/api/profile/count/hello')
-          .end((err, res) => {
+          .end((err: any, res: any) => {
             expect(res.status).to.equal(400)
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(false)
@@ -46,7 +48,7 @@ describe('Profile Route', () => {
         await document.save()
         chai.request(app)
           .get('/api/profile/count/5')
-          .end( async (err, res) => {
+          .end( async (err: any, res: any) => {
             expect(res.status).to.equal(200)
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(true)
@@ -57,7 +59,7 @@ describe('Profile Route', () => {
       it('Should return nothing if count is less than 1', (done) => {
         chai.request(app)
           .get('/api/profile/count/0')
-          .end((err, res) => {
+          .end((err: any, res: any) => {
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(false)
             expect(res.status).to.equal(400)
@@ -84,7 +86,7 @@ describe('Profile Route', () => {
         // then we are going to compare that number with the real result
         chai.request(app)
           .get('/api/profile/count/' + numberOfProfilesToFind)
-          .end((err, res) => {
+          .end((err: any, res: any) => {
             const json = JSON.parse(res.text)
             // So here it's a fix to get the amount of profiles whether an array or single object (one profile) was given back
             expect(json.data.length).to.equal(actualNumberOfProfiles)
@@ -96,7 +98,7 @@ describe('Profile Route', () => {
         // fixme :: How can I test an already populated database if its empty?
         chai.request(app)
           .get('/api/profile/count/6')
-          .end((err, res) => {
+          .end((err: any, res: any) => {
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(false)
             expect(res.status).to.equal(404)
@@ -121,7 +123,7 @@ describe('Profile Route', () => {
       it('Should fail when the id cannot be parsed', (done) => {
         chai.request(app)
         .get('/api/profile/id/hello')
-        .end((err, res) => {
+        .end((err: any, res: any) => {
           expect(res.status).to.equal(400)
           const json = JSON.parse(res.text)
           expect(json.success).to.equal(false)
@@ -134,7 +136,7 @@ describe('Profile Route', () => {
         await Profile.find({name: newProfile.name})
         chai.request(app)
         .get('/api/profile/id/' + Profile._id)
-        .end(async (err, res) => {
+        .end(async (err: any, res: any) => {
           const json = JSON.parse(res.text)
           expect(json.success).to.equal(true)
           expect(json.data._id).to.exist
@@ -146,7 +148,7 @@ describe('Profile Route', () => {
         await Profile.find({name: newProfile.name})
         chai.request(app)
         .get('/api/profile/id/' + Profile._id)
-        .end((err, res) => {
+        .end((err: any, res: any) => {
           expect(res.status).to.equal(200)
         })
       })
@@ -154,7 +156,7 @@ describe('Profile Route', () => {
       it('Should respond with 404 if no profile was found', (done) => {
         chai.request(app)
         .get('/api/profile/id/' + '8949549n848n94n899897b788n8gyhghyi7878')
-        .end((err, res) => {
+        .end((err: any, res: any) => {
           expect(res.status).to.equal(404)
           expect(JSON.parse(res.text).success).to.equal(false)
           done()
@@ -175,7 +177,7 @@ describe('Profile Route', () => {
       it('Should fail when the id cannot be parsed', (done) => {
         chai.request(app)
         .delete('/api/profile/id/hello')
-        .end((err, res) => {
+        .end((err: any, res: any) => {
           expect(res.status).to.equal(400)
           const json = JSON.parse(res.text)
           expect(json.success).to.equal(false)
@@ -195,7 +197,7 @@ describe('Profile Route', () => {
         await Profile.find({name: newProfile.name})
         chai.request(app)
         .delete('/api/profile/id/' + Profile._id)
-        .end((err, res) => {
+        .end((err: any, res: any) => {
           const json = JSON.parse(res.text)
           expect(res.status).to.equal(200)
           expect(json.success).to.equal(true)
@@ -205,7 +207,7 @@ describe('Profile Route', () => {
       it('Should fail on an invalid profile', (done) => {
         chai.request(app)
           .delete('/api/profile/id/4h89g58h9g589h89g589hg5h98g598g589h')
-          .end((err, res) => {
+          .end((err: any, res: any) => {
             const json = JSON.parse(res.text)
             expect(res.status).to.equal(404)
             expect(json.success).to.equal(false)
@@ -230,7 +232,7 @@ describe('Profile Route', () => {
           .field('name', newProfile.name)
           .field('description', newProfile.description)
           .attach('image', fs.readFileSync(sampleImagePath), newProfile.image)
-          .end( async (err, res) => {
+          .end( async (err: any, res: any) => {
             expect(res.status).to.equal(200)
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(true)
@@ -249,7 +251,7 @@ describe('Profile Route', () => {
           .field('name', '')
           .field('description', newProfile.description)
           .attach('image', fs.readFileSync(sampleImagePath), newProfile.image)
-          .end( async (err, res) => {
+          .end( async (err: any, res: any) => {
             expect(res.status).to.equal(400)
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(false)
@@ -263,7 +265,7 @@ describe('Profile Route', () => {
           .field('name', newProfile.name)
           .field('description', '')
           .attach('image', fs.readFileSync(sampleImagePath), newProfile.image)
-          .end( async (err, res) => {
+          .end( async (err: any, res: any) => {
             expect(res.status).to.equal(200)
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(true)
@@ -282,7 +284,7 @@ describe('Profile Route', () => {
           .field('name', newProfile.name)
           .field('description', newProfile.description)
           .attach('image', fs.readFileSync(sampleImagePath), 'sample')
-          .end( async (err, res) => {
+          .end( async (err: any, res: any) => {
             expect(res.status).to.equal(400)
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(false)
@@ -296,7 +298,7 @@ describe('Profile Route', () => {
           .post('/api/profile')
           .field('name', newProfile.name)
           .field('description', newProfile.description)
-          .end( async (err, res) => {
+          .end( async (err: any, res: any) => {
             expect(res.status).to.equal(200)
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(true)
@@ -317,7 +319,7 @@ describe('Profile Route', () => {
           .field('name', newProfile.name)
           .field('description', newProfile.description)
           .attach('image', fs.readFileSync(sampleImagePath), newProfile.image)
-          .end( async (err, res) => {
+          .end( async (err: any, res: any) => {
             expect(res.status).to.equal(400)
             const json = JSON.parse(res.text)
             expect(json.success).to.equal(false)

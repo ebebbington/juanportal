@@ -16,7 +16,6 @@ jobs:
           docker-compose up -d > /dev/null
           sleep 200
           docker exec juanportal_api npm run test
-          docker exec juanportal_api npm run test2
 
   client-tests:
     runs-on: ubuntu-latest

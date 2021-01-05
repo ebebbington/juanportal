@@ -19,6 +19,8 @@ src/*/schemas/*.js
 src/juanportal/public/javascripts/*.js
 src/juanportal/components/util.js
 src/juanportal/coverage
+src/api/coverage
+src/api/.nyc_output
 src/socket/__pycache__
 src/socket/*.pyc
 src/socket/node_modules
@@ -26,3 +28,4 @@ src/socket/server.js
 src/socket/socket.js
 src/socket/app.js
 src/socket/bin/www.js
+src/api/**/*.js.map

@@ -8,9 +8,9 @@
   },
   "scripts": {
     "build": "node_modules/.bin/tsc; pm2 restart all",
-    "test": "node_modules/.bin/tsc; pm2 restart all; node_modules/.bin/mocha tests",
-    "test2": "node_modules/.bin/tsc; pm2 restart all; node_modules/.bin/mocha -r ts-node/register tests",
-    "stress": "node_modules/.bin/artillery run"
+    "test": "node_modules/.bin/mocha -r ts-node/register -r source-map-support/register --exit tests/**/*.ts",
+    "stress": "node_modules/.bin/artillery run",
+    "cov": "node_modules/.bin/nyc npm run test"
   },
   "author": "",
   "license": "ISC",
@@ -37,10 +37,13 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/chai": "^4.2.7",
     "@types/mocha": "^5.2.7",
     "artillery": "^1.6.0-29",
     "babel-preset-env": "^1.7.0",
+    "nyc": "^15.1.0",
+    "source-map-support": "^0.5.19",
     "ts-node": "^8.5.4"
   }
 }

@@ -1,3 +1,5 @@
+import 'mocha'
+
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
@@ -6,6 +8,7 @@ const rewire = require('rewire')
 const ProfileModel = rewire('../../models/ProfileModel')
 const MongooseModel = require('../../schemas/ProfileSchema')
 const ProfileController = require('../../controllers/ProfileController')
+import { req, res, next } from "../utils"
 
 const mongoose = require('mongoose')
 require('dotenv').config()
@@ -22,36 +25,6 @@ chai.should()
 describe('ProfileController', () => {
 
     describe('Methods', () => {
-
-        const req = {
-            params: {
-                count: null,
-                id: null,
-            },
-            body: {
-                name: null,
-                description: null
-            },
-            file: null
-        }
-        const res = {
-            statusCode: null,
-            jsonMessage: null,
-            status (statusCode) {
-                this.statusCode = statusCode
-                return this
-            },
-            json: function (obj) {
-                this.jsonMessage = obj
-                return this
-            },
-            end () {
-                return this
-            }
-        }
-        const next = function () {
-            return true
-        }
 
         const profileData = {
             name: 'TESTPROFILENAME',

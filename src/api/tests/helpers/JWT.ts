@@ -1,7 +1,10 @@
+import 'mocha'
+
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
 const JWT = require('../../helpers/JWT')
+import { res, next } from "../utils"
 
 const logger = require('../../helpers/logger')
 logger.debug = function () {}
@@ -21,25 +24,6 @@ describe('JWT', () => {
         const invalidPayload = {
             name: null,
             age: 21
-        }
-        // chainable function
-        const res = {
-            statusCode: null,
-            jsonMessage: null,
-            status (statusCode) {
-                this.statusCode = statusCode
-                return this
-            },
-            json: function (obj) {
-                this.jsonMessage = obj
-                return this
-            },
-            end () {
-                return this
-            }
-        }
-        const next = function () {
-            return true
         }
 
         describe('createToken', () => {

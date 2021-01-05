@@ -83,9 +83,11 @@ export default abstract class BaseModel implements IIndexSignature {
    * @return {mongoose.Types.ObjectId|boolean} The id, or false if cannot convert
    */
   private generateObjectId (id: string): mongoose.Types.ObjectId|boolean {
+    console.log('inside object id')
     try {
       // if the id isnt already an object id, convert it
       const objectId = new mongoose.Types.ObjectId(id)
+      console.log('returning object id: ' + objectId)
       return objectId
     } catch (err) {
       logger.error(`failed to convert ${id} to a mongoose object id`)
@@ -326,13 +328,7 @@ export default abstract class BaseModel implements IIndexSignature {
       this.fill(result[0])
       return result
     }
-    // If it's an array of documents return them as we can't fill
-    if (result.length > 1 && Array.isArray(result)) {
-      return result
-    }
-    // should never reach here
-    logger.error('[BaseModel - find: Unreachable code is reachable. Data to check is:' + result)
-    return false
+    return result
   }
 
   /**
@@ -379,20 +375,17 @@ export default abstract class BaseModel implements IIndexSignature {
       }
     }
     // delete many documents
-    if (deleteMany) {
-      // and if the query is empty and wipe isnt allowed, don't let them delete EVERYTHING
-      if (_.isEmpty(query)) {
-        return false
-      }
-      const result = await MongooseModel.deleteMany(query)
-      if (result.ok === 1 && result.deletedCount && result.deletedCount >= 1) {
-        this.empty()
-        return true
-      } else {
-        return false
-      }
+    // and if the query is empty and wipe isnt allowed, don't let them delete EVERYTHING
+    if (_.isEmpty(query)) {
+      return false
     }
-    return false
+    const result = await MongooseModel.deleteMany(query)
+    if (result.ok === 1 && result.deletedCount && result.deletedCount >= 1) {
+      this.empty()
+      return true
+    } else {
+      return false
+    }
   }
 
 }
