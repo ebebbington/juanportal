@@ -83,7 +83,7 @@ export default abstract class BaseModel implements IIndexSignature {
    * @return {mongoose.Types.ObjectId|boolean} The id, or false if cannot convert
    */
   private generateObjectId (id: string): mongoose.Types.ObjectId|boolean {
-    console.log('inside object id')
+    console.log('inside object id, id passed in is: ' + id)
     try {
       // if the id isnt already an object id, convert it
       const objectId = new mongoose.Types.ObjectId(id)
@@ -225,20 +225,15 @@ export default abstract class BaseModel implements IIndexSignature {
         return false
       }
     }
-    try {
-      const options = { upsert: true }
-      const MongooseModel = this.getMongooseModel()
-      const oldDocument = await MongooseModel.findOneAndUpdate(query, dataToUpdate, options)
-      if (Array.isArray(oldDocument) && !oldDocument.length || !oldDocument) {
-        return false
-      }
-      const updatedDocument = await MongooseModel.findOne(data)
-      this.fill(updatedDocument)
-      return oldDocument
-    } catch (err) {
-      logger.error(err.message)
+    const options = { upsert: true }
+    const MongooseModel = this.getMongooseModel()
+    const oldDocument = await MongooseModel.findOneAndUpdate(query, dataToUpdate, options)
+    if (Array.isArray(oldDocument) && !oldDocument.length || !oldDocument) {
       return false
     }
+    const updatedDocument = await MongooseModel.findOne(data)
+    this.fill(updatedDocument)
+    return oldDocument
   }
 
   /**

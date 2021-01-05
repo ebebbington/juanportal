@@ -12,8 +12,10 @@
   "exclude": [
       "bin",
       "coverage",
+      "controllers/example.ts",
       "interfaces",
       "tests",
+      "helpers/logger.js",
       "ecosystem.config.js",
       "routes/test.js"
    ],

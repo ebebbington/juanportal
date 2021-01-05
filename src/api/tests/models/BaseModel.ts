@@ -331,7 +331,17 @@ describe('BaseModel', () => {
 
         describe('update', () => {
 
-            it('Should return false if no document was found with the models id')
+            it('Should return false if no document was found with the models id',  async () =>  {
+                const Test = new TestModel
+                const res = await Test.update({_id: 567467}, { forename: "hello"})
+                expect(res).to.equal(false)
+            })
+
+            it("Fails to parse the query id into an object id when passed in as invalid, and returns false", async () => {
+                const Test = new TestModel
+                const res = await Test.update({_id: {}}, { forename: "hello"})
+                expect(res).to.equal(false)
+            })
 
             it('Should return the old document after updating', async () => {
                 const document = new MongooseModel({forename: 'Edwuardo'})

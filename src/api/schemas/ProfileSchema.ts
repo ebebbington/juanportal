@@ -10,7 +10,7 @@ const ProfileSchema = new mongoose.Schema({
         validator: function (v: string) {
           return /.+[^\s]/.test(v)
         },
-        message: (props: { value: any; }) => `${props.value} is not set`
+        //message: (props: { value: any; }) => `${props.value} is not set`
       }
     },
     'description': {

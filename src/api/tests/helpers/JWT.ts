@@ -33,6 +33,16 @@ describe('JWT', () => {
                 expect(token).to.equal(false)
             })
 
+            it('Should return a valid token on valid payload', () => {
+                const token = JWT.createToken(validPayload)
+                console.log("THE TOKEN: " + token)
+            })
+
+            it("Should return false when payload is an invalid object", () => {
+                const token = JWT.createToken({exp: "hello"})
+                expect(token).to.equal(false)
+            })
+
             it('Should return nothing on valid payload', () => {
                 const token = JWT.createToken(validPayload)
                 const tokenParts = token.split('.')

@@ -69,10 +69,6 @@ class JWT {
      * @return {boolean|string} false|token False when it couldn't create a token, or the token on success
      */
     public static createToken (payload: object): boolean|string {
-        if (!privateKey) {
-            logger.error('no private key was passed in')
-            return false
-        }
         let hasUndefinedProp = false
         Object.keys(payload).forEach((prop) => {
             if (!(payload as any)[prop]) {
@@ -97,20 +93,20 @@ class JWT {
 /**
  * Example method that shows how to use this class
  */
-function example () {
-    // Create a token
-    const token = JWT.createToken({
-        name: 'ed',
-        nickname: 'ted'
-    })
-    // Check we have a token
-    if (!token) {
-        console.log('Could not create a token!')
-    }
-    // Check an invalid token
-    jwt.verify('not a real token', privateKey, options) // throws an error
-    // Check a valid token
-    jwt.verify(token, privateKey, options) // no error thrown
-}
+// function example () {
+//     // Create a token
+//     const token = JWT.createToken({
+//         name: 'ed',
+//         nickname: 'ted'
+//     })
+//     // Check we have a token
+//     if (!token) {
+//         console.log('Could not create a token!')
+//     }
+//     // Check an invalid token
+//     jwt.verify('not a real token', privateKey, options) // throws an error
+//     // Check a valid token
+//     jwt.verify(token, privateKey, options) // no error thrown
+// }
 
 module.exports = JWT

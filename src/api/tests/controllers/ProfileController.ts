@@ -44,7 +44,9 @@ describe('ProfileController', () => {
             await MongooseModel.deleteMany({name: profileData.name})
         }
 
-        describe('GetProfileById', () => {
+        describe('GetProfileById', function () {
+
+            this.timeout(5000)
 
             it('Should fail when it cannot parse the id to a number', async () => {
                 req.params.id = 'I cannot be parsed to a number'
