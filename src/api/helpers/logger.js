@@ -8,11 +8,11 @@ const format = {
       winston.format.simple(),
       winston.format.align()
     ),
-    development: [winston.format.combine(
+    development: winston.format.combine(
       winston.format.colorize(),
       winston.format.simple(),
       winston.format.align()
-    )]
+    )
 }
 
 const transports = {
@@ -20,14 +20,13 @@ const transports = {
         filename: errorLogFile,
         level: 'warn'
     }),
-    development: [
+    development:
         new winston.transports.Console({
             level: 'debug',
             timestamp: function () {
                 return (new Date()).toISOString();
             }
         })
-    ]
 }
 
 const env = process.env.NODE_ENV === "production" ? "production" : "development"
