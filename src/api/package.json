@@ -11,7 +11,18 @@
     "restart": "pm2 restart all",
     "test": "node_modules/.bin/mocha -r ts-node/register -r source-map-support/register --exit tests/**/*.ts",
     "stress": "node_modules/.bin/artillery run",
-    "cov": "node_modules/.bin/nyc npm run test"
+    "cov": "node_modules/.bin/nyc npm run test",
+    "fmt:check": "npm i standard && node_modules/.bin/standard",
+    "fmt:fix": "npm i standard && node_modules/.bin/standard --fix"
+  },
+  "standard": {
+    "ignore": [
+      "node_modules",
+      "**/*.js",
+      ".nyc_output",
+      "bin",
+      "coverage",
+    ]
   },
   "author": "",
   "license": "ISC",
