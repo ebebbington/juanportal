@@ -13,8 +13,10 @@ jobs:
       - uses: actions/checkout@v2
       - name: API Tests
         run: |
+          cd src/api
+          npm run build
           docker-compose up -d > /dev/null
-          sleep 200
+          sleep 50
           docker exec juanportal_api npm run test
 
   client-tests:

@@ -1,9 +1,5 @@
-src/package-lock.json
-src/node_modules/
 .git
 .idea
-src/logs
-src/public/images
 .vscode
 src/*/app.js
 src/*/interfaces/models/*.js
@@ -28,4 +24,3 @@ src/socket/server.js
 src/socket/socket.js
 src/socket/app.js
 src/socket/bin/www.js
-src/api/**/*.js.map

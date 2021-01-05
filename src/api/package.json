@@ -7,7 +7,8 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "node_modules/.bin/tsc; pm2 restart all",
+    "build": "npm ci && node_modules/.bin/tsc",
+    "restart": "pm2 restart all",
     "test": "node_modules/.bin/mocha -r ts-node/register -r source-map-support/register --exit tests/**/*.ts",
     "stress": "node_modules/.bin/artillery run",
     "cov": "node_modules/.bin/nyc npm run test"
