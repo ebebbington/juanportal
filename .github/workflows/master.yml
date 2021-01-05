@@ -22,14 +22,15 @@ jobs:
 #        run: |
 ##          npm run fmt:check
 
-  client-tests:
+  client-checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Client Tests
         run: |
+          cd src/juanportal
+          npm run build:all
           docker-compose up -d > /dev/null
-          sleep 200
           docker exec juanportal_node npm run test
           docker exec juanportal_node npm run testReact
 
@@ -39,6 +40,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: Socket Tests
         run: |
+          npm run build
           docker-compose up -d > /dev/null
-          sleep 60
-          docker exec juanportal_socket npm run testTS
+          docker exec juanportal_socket npm run test

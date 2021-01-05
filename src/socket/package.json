@@ -4,10 +4,11 @@
   "description": "",
   "main": "ecosystem.config.js",
   "scripts": {
-    "testTS": "npm run buildTS && NODE_ENV=testing && node_modules/.bin/mocha -r ts-node/register",
-    "start": "npm i && node_modules/.bin/tsc && pm2-runtime ecosystem.config.js",
-    "cov": "node_modules/.bin/nyc npm run testTS",
-    "buildTS": "node_modules/.bin/tsc && pm2 restart all"
+    "test": "NODE_ENV=testing && node_modules/.bin/mocha -r ts-node/register",
+    "start": "pm2-runtime ecosystem.config.js",
+    "cov": "node_modules/.bin/nyc npm run test",
+    "restart": "pm2 restart all",
+    "build": "npm ci && node_modules/.bin/tsc"
   },
   "dependencies": {
     "@types/cors": "^2.8.7",
