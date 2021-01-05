@@ -1,9 +1,5 @@
-src/package-lock.json
-src/node_modules/
 .git
 .idea
-src/logs
-src/public/images
 .vscode
 src/*/app.js
 src/*/interfaces/models/*.js
@@ -19,6 +15,8 @@ src/*/schemas/*.js
 src/juanportal/public/javascripts/*.js
 src/juanportal/components/util.js
 src/juanportal/coverage
+src/api/coverage
+src/api/.nyc_output
 src/socket/__pycache__
 src/socket/*.pyc
 src/socket/node_modules

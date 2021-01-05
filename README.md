@@ -5,8 +5,8 @@
   <a href="https://github.com/ebebbington/juanportal/actions">
     <img src="https://img.shields.io/github/workflow/status/ebebbington/juanportal/master?label=ci">
   </a>
-  <a href="https://codecov.io/gh/ebebbington/juanportal">
-    <img src="https://codecov.io/gh/ebebbington/juanportal/branch/master/graph/badge.svg">
+  <a href="https://img.shields.io/badge/API%20coverage-90%25-green">
+    <img src="https://img.shields.io/badge/API%20coverage-94.18%25-green">
   </a>
 </p>
 

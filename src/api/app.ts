@@ -2,32 +2,34 @@
 // Packages
 // ///////////////////////////////
 import express from 'express'
-const mongoose = require('mongoose')
-const morgan = require('morgan')
-require('dotenv').config()
-const cookieParser = require('cookie-parser')
-const bodyParser = require('body-parser')
-const logger = require('./helpers/logger')
+import mongoose from 'mongoose'
+import morgan from 'morgan'
+import dotenv from 'dotenv'
+import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
+import profileRoute from './routes/profile'
+dotenv.config()
+const logger = require('./helpers/logger') // eslint-disable-line
 
 /**
  * Server
- * 
+ *
  * The foundation and entry point for the application
- * 
+ *
  * @author    Edward Bebbington
- * 
+ *
  * @example   const app = require('app') //express app object
- * 
+ *
  * @fires     Server#start
  * @fires     Server#initiateLogging
  * @fires     Server#defineRoutes
  * @fires     Server#configure
  * @fires     Server#instantiateDbConnection
- * 
+ *
  * @property  {express.Application}     app             - Express app object
  * @property  {string}                  env             - The environment to run in
  * @property  {string}                  dbUrl           - URL of the database to connect to
- * 
+ *
  * @function  bootstrap                 - Return an start an instance of the class
  * @function  constructor               - Fires events
  * @function  initiateLogging           - Start HTTP logging
@@ -35,31 +37,30 @@ const logger = require('./helpers/logger')
  * @function  configure                 - Configure such as view engine
  * @function  instantiateDbConnection   - Create connection to database
  * @function  initiateDbLogging         - Start listening for events on the database and log them
- * 
+ *
  * @returns   {ng.auto.IInjectorService} - Returns the newly created injector for this app.
- * 
+ *
  * @since     25/11/2019
- * 
+ *
  */
 class Server {
-
   /**
    * Application object
-   * 
+   *
    * @var {express.Application} public
    */
-  public app: express.Application;
+  public app: express.Application
 
   /**
    * Environment to run e.g development, staging
-   * 
+   *
    * @var {string} private
    */
   private readonly env: string
 
   /**
    * Url to use when connecting to the mongoose database
-   * 
+   *
    * @var {string} private
    */
   private readonly dbUrl: string
@@ -72,8 +73,8 @@ class Server {
    * @static
    * @return {ng.auto.IInjectorService} Returns the newly created injector for this app.
    */
-  public static bootstrap(): Server {
-    return new Server();
+  public static bootstrap (): Server {
+    return new Server()
   }
 
   /**
@@ -82,15 +83,15 @@ class Server {
    * @class Server
    * @constructor
    */
-  constructor() {
+  constructor () {
     // define properties
-    this.env = process.env.NODE_ENV || ''
+    this.env = process.env.NODE_ENV ?? ''
     // this.port = process.env.PORT || 3005
-    this.dbUrl = process.env.DB_URL || ''
-    //create expressjs application
-    this.app = express();
-    //configure application
-    this.configure();
+    this.dbUrl = process.env.DB_URL ?? ''
+    // create expressjs application
+    this.app = express()
+    // configure application
+    this.configure()
     // start HTTP logging
     this.initiateLogging()
     // setup routes
@@ -103,20 +104,20 @@ class Server {
 
   /**
    * Configure the node application
-   * 
+   *
    * @class Server
    * @method configure
    * @return {void}
    */
   private configure (): void {
     this.app.use(cookieParser())
-    this.app.use(bodyParser.urlencoded({ extended: false}))
+    this.app.use(bodyParser.urlencoded({ extended: false }))
     this.app.use(bodyParser.json())
   }
 
   /**
    * Initiate Morgan to start logging HTTP requests
-   * 
+   *
    * @class Server
    * @method initiateLogging
    * @return {void}
@@ -130,44 +131,44 @@ class Server {
     if (this.env !== 'production') {
       this.app.use(morgan('dev', {
         skip: function (req: any, res: any) {
-            return res.statusCode < 400
-        }, stream: process.stderr
-      }));
+          return res.statusCode < 400
+        },
+        stream: process.stderr
+      }))
       this.app.use(morgan('dev', {
         skip: function (req: any, res: any) {
-            return res.statusCode >= 400
-        }, stream: process.stdout
-      }));
+          return res.statusCode >= 400
+        },
+        stream: process.stdout
+      }))
     }
   }
 
   /**
    * Set up and define the routes
-   * 
+   *
    * @class Server
    * @method defineRoutes
    * @return {void}
    */
   private defineRoutes (): void {
-    const profileRoute = require('./routes/profile.js')
     this.app.use('/api/profile', profileRoute)
-    const testRoute = require('./routes/test.js')
-    this.app.use('/api/test', testRoute)
+    // this.app.use('/api/test', testRoute)
   }
 
   /**
    * Make the connection to the database
-   * 
+   *
    * @class Server
    * @method instantiateDbConnection
    * @return {void}
    */
   private instantiateDbConnection (): void {
-    mongoose.connect(this.dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
+    mongoose.connect(this.dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
       .then(() => {
         if (this.env === 'development') {
           logger.info('Database connection has opened')
-        } 
+        }
       })
       .catch((err: any) => {
         logger.info('Error when making conn to db')
@@ -184,26 +185,26 @@ class Server {
    */
   private initiateDbLogging (): void {
     mongoose.connection
-        .on('connecting', () => {
-          logger.info('Connecting to the database')
-        })
-        .on('connected', () => {
-          logger.info('Connected to the database')
-        })
-        .on('close', () => {
-          logger.info('Closed the connection to the database')
-        })
-        .on('error', () => {
-          logger.error('Connection error with the database')
-        })
-        .on('disconnected', () => {
-          logger.info('Lost connection with the database')
-        })
+      .on('connecting', () => {
+        logger.info('Connecting to the database')
+      })
+      .on('connected', () => {
+        logger.info('Connected to the database')
+      })
+      .on('close', () => {
+        logger.info('Closed the connection to the database')
+      })
+      .on('error', () => {
+        logger.error('Connection error with the database')
+      })
+      .on('disconnected', () => {
+        logger.info('Lost connection with the database')
+      })
   }
 }
 
 const server = Server.bootstrap()
-module.exports = server.app
+export default server.app
 
 // ///////////////////////////////
 // HTTP Logging

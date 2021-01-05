@@ -1,7 +1,4 @@
-package-lock.json
 node_modules/
-.git
-.idea
 logs
 public/images
 .vscode
@@ -14,3 +11,7 @@ helpers/ImageHelper.js
 helpers/MailHelper.js
 middleware/*.js
 public/javascripts/components/*.js
+**/*.js.map
+coverage
+.nyc_output
+routes/profile.js

@@ -1,23 +1,23 @@
-import {types} from "util";
-import { pathToFileURL } from "url";
-import e = require("express");
+import { types } from 'util'
+import { pathToFileURL } from 'url'
 // import isModuleNamespaceObject = module
 // import validate = WebAssembly.validate;
 // import { Schema } from "inspector";
 // import { FILE } from "dns";
 
 import BaseModel from './BaseModel'
-import { promises } from "dns";
-import { Model } from "mongoose";
-const MongooseModel = require('../schemas/ProfileSchema')
+import { promises } from 'dns'
+import { Model } from 'mongoose'
+import e = require('express')
+import MongooseModel from '../schemas/ProfileSchema'
 
 /**
  * @class ProfileModel
- * 
+ *
  * @author Edward Bebbington
- * 
+ *
  * @extends BaseModel
- * 
+ *
  * @implements IBaseModel
  *
  * @property {number}     _id             ID of profile from the database
@@ -28,73 +28,72 @@ const MongooseModel = require('../schemas/ProfileSchema')
  * @property {string[]}   fieldsToExpose  fieldsToExpose The list of allowed fields to be assigned to this object
  * @property {string}     created_at      When the document was created
  * @property {string}     updated_at      When the document was last updated
- * 
- * @method getMongooseModel    Retrieve the mongoose document                                
+ *
+ * @method getMongooseModel    Retrieve the mongoose document
  */
-class ProfileModel extends BaseModel {
-
+export default class ProfileModel extends BaseModel {
   /**
    * Id of the profile model
-   * 
+   *
    * @var {string|null} _id
    */
   public _id: string|null = null
 
   /**
    * Name field of the profile model
-   * 
+   *
    * @var {string|null} name
    */
   public name: string|null = null
 
   /**
    * Description field of the profile model
-   * 
+   *
    * @var {string|null} description
    */
   public description: string|null = null
 
   /**
    * Image field of the profile model
-   * 
+   *
    * @var {string|null} image
    */
   public image: string|null = null
 
   /**
    * When the entry was created
-   * 
+   *
    * @var {string|null} created_at
    */
   public readonly created_at: string|null = null
-  
+
   /**
    * When the entry was updated
-   * 
+   *
    * @var {string|null} updated_at
    */
   public readonly updated_at: string|null = null
 
   /**
    * The name of the table associated with this model
-   * 
+   *
    * @var {string} tablename
    */
   public readonly tablename: string = 'Profile'
 
   /**
    * Fields in the database to be assigned to this model
-   * 
+   *
    * Sometimes we dont want to retrieve sensitive data,
    * this allows us to map database columns to the model
-   * 
+   *
    * @var {string[]} fieldsToExpose
    */
   public readonly fieldsToExpose: string[] = [
-      '_id',
-      'name',
-      'description',
-      'image'
+    '_id',
+    'name',
+    'description',
+    'image'
   ]
 
   // constructor (id: number) {
@@ -108,7 +107,7 @@ class ProfileModel extends BaseModel {
 
   /**
    * Get the mongoose model of this model
-   * 
+   *
    * This is here so in the BaseModel, it can call 'this' method to get the document
    *
    * @return {Document} The mongoose model from the schema
@@ -116,7 +115,4 @@ class ProfileModel extends BaseModel {
   protected getMongooseModel (): Model<any> {
     return MongooseModel
   }
-
 }
-
-module.exports = ProfileModel

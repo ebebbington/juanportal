@@ -1,0 +1,24 @@
+{
+  "all": true,
+  "check-coverage": true,
+  "extension": [
+      ".ts"
+  ],
+  "include": [
+      "**/*.js",
+      "**/*.ts"
+    ],
+    "sourceMap": true,
+  "exclude": [
+      "bin",
+      "coverage",
+      "controllers/example.ts",
+      "interfaces",
+      "tests",
+      "helpers/logger.js",
+      "ecosystem.config.js",
+      "routes/test.js"
+   ],
+   "reporter": "html",
+     "instrument": true
+}

@@ -16,15 +16,15 @@ import express from 'express'
 // }
 
 export interface IBaseController {
-    Post(req: express.Request, res: express.Response): Promise<any>,
-    Get(req: express.Request, res: express.Response): Promise<any>,
-    Update(req: express.Request, res: express.Response): Promise<any>,
-    Delete(req: express.Request, res: express.Response): Promise<any>
+  Post: (req: express.Request, res: express.Response) => Promise<any>
+  Get: (req: express.Request, res: express.Response) => Promise<any>
+  Update: (req: express.Request, res: express.Response) => Promise<any>
+  Delete: (req: express.Request, res: express.Response) => Promise<any>
 }
 
 /**
  * Implement like such:
- * 
+ *
  * import {IBaseController} from '../interfaces/controllers/BaseControllerInterface'
  * const ProfileController: IBaseController = class { // cant implement the interfCE UNTIL ts ALLOWS STATIC METODS IN AN INTERFACE, also this will error when requiring it, but it wont if we remove the import statement from the interface file, but even then TS throws errors when using const express = ...
 

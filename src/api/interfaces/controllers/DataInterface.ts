@@ -1,6 +1,6 @@
 /**
  * Anything passed into res.json() should impelemt this
- * 
+ *
  * @example
  * import {IData} from '/path/to/this/file'
  * const data: IData = {
@@ -10,7 +10,7 @@
  * }
  */
 export interface IData {
-  success: boolean,
-  message: string,
+  success: boolean
+  message: string
   data: any
 }

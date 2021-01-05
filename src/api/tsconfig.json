@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "sourceMap": true,
     /* Basic Options */
     // "incremental": true,                   /* Enable incremental compilation */
     // "lib": [],                             /* Specify library files to be included in the compilation. */
@@ -73,6 +74,7 @@
     "interfaces/models/*.ts",
     "middleware/*.ts",
     "interfaces/controllers/*.ts",
-    "schemas/*.ts"
+    "schemas/*.ts",
+    "routes/*.ts"
   ]
 }

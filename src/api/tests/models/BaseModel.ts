@@ -331,7 +331,17 @@ describe('BaseModel', () => {
 
         describe('update', () => {
 
-            it('Should return false if no document was found with the models id')
+            it('Should return false if no document was found with the models id',  async () =>  {
+                const Test = new TestModel
+                const res = await Test.update({_id: 567467}, { forename: "hello"})
+                expect(res).to.equal(false)
+            })
+
+            it("Fails to parse the query id into an object id when passed in as invalid, and returns false", async () => {
+                const Test = new TestModel
+                const res = await Test.update({_id: {}}, { forename: "hello"})
+                expect(res).to.equal(false)
+            })
 
             it('Should return the old document after updating', async () => {
                 const document = new MongooseModel({forename: 'Edwuardo'})
@@ -376,117 +386,6 @@ describe('BaseModel', () => {
                 const fieldName: string = Object.keys(err.errors)[0]
                 const errorMessage: string = err.errors[fieldName].message
                 expect(fieldName).to.equal('forename')
-            })
-
-        })
-
-
-        // skipped because i dont have a way to test pivate methods of an abstract class
-        describe.skip('generateObjectId', () => {
-
-            const Test = new TestModel()
-            const Schema = mongoose.Schema
-            const ObjectIdType = Schema.ObjectId
-            const stringId = '4edd40c86762e0fb12000003'
-
-            it.skip('Should return a mongoose object id on a successful parse', () => {
-                //const objectId = Test.generateObjectId(stringId)
-                //const isValidObjectId = mongoose.Types.ObjectId.isValid(objectId)
-                //expect(isValidObjectId).to.equal(true)
-            })
-
-            it.skip('Should return the passed in id when already a mongoose id', () => {
-                //const objectId = mongoose.Types.ObjectId()
-                //const objectId2 = Base.generateObjectId(objectId)
-                //expect(objectId).to.equal(objectId2)
-            })
-
-            it.skip('Should return false when failed to convert', () => {
-                //const invalidStringId = '5'
-                //const objectId = Base.generateObjectId(invalidStringId)
-                //expect(objectId).to.equal(false)
-            })
-
-            it.skip('Should be a protected method', () => {
-                //const Test = new TestModel({forename: null, surname: null, age: null, postcode: null})
-                //const objectId = Test.generateObjectId(stringId)
-                //const isValidObjectId = mongoose.Types.ObjectId.isValid(objectId)
-                //expect(isValidObjectId).to.equal(true)
-            })
-
-        })
-
-        // Skipped because i havent found a way to access private mthods on an 'import'ed module
-        describe.skip('stripNonExposableProperties', () => {
-
-            // commented out because see above comment
-            // it('Should remove properties from a model that arent in `fieldsToExpose`', () => {
-            //     const exampleDoc = {
-            //         _id: 'mongoose object id',
-            //         forename: 'Edward',
-            //         surname: 'Bebbington',
-            //         age: 21,
-            //         postcode: 'NG31 8FY'
-            //     }
-            //     const Test = new TestModel
-            //     const stripped: any = Test.stripNonExposableProperties(exampleDoc)
-            //     expect(stripped._id).to.not.exist
-            //     expect(stripped.forename).to.equal(exampleDoc.forename)
-            //     expect(stripped.surname).to.equal(exampleDoc.surname)
-            //     expect(stripped.age).to.equal(exampleDoc.age)
-            //     expect(stripped.postcode).to.not.exist
-            // })
-
-        })
-
-        // skipped because i have no way to tets private methods of an abstract class
-        describe.skip('fill', () => {
-
-            it.skip('Should set the matching properties in fieldsToExpose of the passed in document', () => {
-                const Test = new TestModel({forename: null, surname: null, age: null, postcode: null})
-                // Mimick a DB document
-                const doc = {
-                    $__: false,
-                    isNew: false,
-                    errors: false,
-                    _doc: {
-                        forename: 'TESTFORENAME',
-                        surname: 'TESTSURNAME',
-                        age: 100,
-                        postcode: 'TESTPOSTCODE'
-                    },
-                    $locals: false
-                } 
-                //Test.fill(doc)  
-            })
-
-        })
-
-        // skipped because i cant test private methods of an abstract class
-        describe.skip('empty', () => {
-
-            it.skip('Should empty the models properties by their fieldsToExpose', () => {
-                const Test = new TestModel({forename: null, surname: null, age: null, postcode: null})
-                const doc = {
-                    $__: false,
-                    isNew: false,
-                    errors: false,
-                    _doc: {
-                        forename: 'TESTFORENAME',
-                        surname: 'TESTSURNAME',
-                        age: 100,
-                        postcode: 'TESTPOSTCODE'
-                    },
-                    $locals: false
-                } 
-                //Test.fill(doc)
-                expect(Test.surname).to.equal(doc._doc.surname)
-                expect(Test.forename).to.equal(doc._doc.forename)
-                expect(Test.age).to.equal(doc._doc.age)
-                //Test.empty()
-                expect(Test.surname).to.equal(null)
-                expect(Test.forename).to.equal(null)
-                expect(Test.age).to.equal(null)
             })
 
         })

@@ -7,18 +7,30 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "node_modules/.bin/tsc; pm2 restart all",
-    "test": "node_modules/.bin/tsc; pm2 restart all; node_modules/.bin/mocha tests",
-    "test2": "node_modules/.bin/tsc; pm2 restart all; node_modules/.bin/mocha -r ts-node/register tests",
-    "stress": "node_modules/.bin/artillery run"
+    "build": "npm ci && node_modules/.bin/tsc",
+    "restart": "pm2 restart all",
+    "test": "node_modules/.bin/mocha -r ts-node/register -r source-map-support/register --exit tests/**/*.ts",
+    "stress": "npm i --no-save artillery && node_modules/.bin/artillery run",
+    "cov": "node_modules/.bin/nyc npm run test",
+    "fmt:check": "npm install --no-save eslint ts-standard && ts-standard",
+    "fmt:fix": "npm install --no-save ts-standard eslint && ts-standard --fix"
+  },
+  "ts-standard": {
+    "ignore": [
+      "node_modules",
+      "bin",
+      "controllers/example.*",
+      "helpers/*.js",
+      "interfaces/*/*.js",
+      "models/*.js",
+      "routes/*.js",
+      "schemas/*.js",
+      "coverage"
+    ]
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/body-parser": "^1.17.1",
-    "@types/express": "^4.17.2",
-    "@types/mongoose": "^5.5.34",
-    "@types/node": "^12.12.22",
     "body-parser": "^1.19.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
@@ -29,18 +41,28 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "mocha": "^6.2.2",
-    "mongoose": "^5.7.13",
+    "mongoose": "^5.11.10",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
-    "rewire": "^4.0.1",
-    "typescript": "^3.7.3",
+    "typescript": "^3.9.7",
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
+    "@types/body-parser": "^1.17.1",
     "@types/chai": "^4.2.7",
+    "@types/chai-as-promised": "^7.1.3",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/express": "^4.17.2",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/mocha": "^5.2.7",
-    "artillery": "^1.6.0-29",
+    "@types/morgan": "^1.9.2",
+    "@types/multer": "^1.4.5",
+    "@types/node": "^12.12.22",
     "babel-preset-env": "^1.7.0",
-    "ts-node": "^8.5.4"
+    "nyc": "^15.1.0",
+    "source-map-support": "^0.5.19",
+    "ts-node": "^8.5.4",
+    "wrappy": "^1.0.2"
   }
 }

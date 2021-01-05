@@ -1,14 +1,17 @@
+import 'mocha'
+
 const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
+import chaiAsPromised from 'chai-as-promised'
 const expect = chai.expect
 
-const rewire = require('rewire')
-const ProfileModel = rewire('../../models/ProfileModel')
-const MongooseModel = require('../../schemas/ProfileSchema')
-const ProfileController = require('../../controllers/ProfileController')
+import ProfileModel from '../../models/ProfileModel'
+import MongooseModel from '../../schemas/ProfileSchema'
+import ProfileController from '../../controllers/ProfileController'
+import { req, res, next } from "../utils"
 
 const mongoose = require('mongoose')
-require('dotenv').config()
+const dotenv = require('dotenv')
+dotenv.config()
 const dbUrl = process.env.DB_URL
 mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
 
@@ -22,36 +25,6 @@ chai.should()
 describe('ProfileController', () => {
 
     describe('Methods', () => {
-
-        const req = {
-            params: {
-                count: null,
-                id: null,
-            },
-            body: {
-                name: null,
-                description: null
-            },
-            file: null
-        }
-        const res = {
-            statusCode: null,
-            jsonMessage: null,
-            status (statusCode) {
-                this.statusCode = statusCode
-                return this
-            },
-            json: function (obj) {
-                this.jsonMessage = obj
-                return this
-            },
-            end () {
-                return this
-            }
-        }
-        const next = function () {
-            return true
-        }
 
         const profileData = {
             name: 'TESTPROFILENAME',
@@ -71,7 +44,9 @@ describe('ProfileController', () => {
             await MongooseModel.deleteMany({name: profileData.name})
         }
 
-        describe('GetProfileById', () => {
+        describe('GetProfileById', function () {
+
+            this.timeout(5000)
 
             it('Should fail when it cannot parse the id to a number', async () => {
                 req.params.id = 'I cannot be parsed to a number'
