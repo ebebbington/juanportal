@@ -18,9 +18,9 @@ jobs:
           docker-compose up -d > /dev/null
           sleep 50
           docker exec juanportal_api npm run test
-      - name: API Format Check
-        run: |
-          npm run fmt:check
+#      - name: API Format Check
+#        run: |
+##          npm run fmt:check
 
   client-tests:
     runs-on: ubuntu-latest

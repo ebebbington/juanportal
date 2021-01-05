@@ -1,23 +1,23 @@
-import mongoose from 'mongoose'
+import mongoose, { Document, Schema, Model, model } from 'mongoose'
+
+import IIndexSignature from '../interfaces/models/IndexSignatureInterface'
 var logger = require('../helpers/logger')
 const _ = require('lodash')
-import {Document, Schema, Model, model } from 'mongoose'
-import IIndexSignature from '../interfaces/models/IndexSignatureInterface'
 
 /**
  * @class BaseModel
- * 
+ *
  * @description Every model should extend this as it provides core methods models should use
- * 
+ *
  * @example
  * import BaseModel from 'BaseModel'
  * class Model extends BaseModel { ... }
- * 
+ *
  * @property {string|null} created_at     Database field
  * @property {string|null} updated_at     Database field
  * @property {string[]} fieldsToExpose    To fill children fields
  * @property {string}     tablename       Name of the mongoose table for the model
- * 
+ *
  * @method generateObjectId               Generates a mongoose object id from the given param
  * @method stripNonExposableProperties    Strips properties not in the childs fieldsToExpose property
  * @method fill                           Fill the parents properties of a document defined in fieldstoexpose
@@ -33,35 +33,35 @@ export default abstract class BaseModel implements IIndexSignature {
 
   /**
    * When the entry was created
-   * 
+   *
    * @var {string|null} created_at
    */
   protected abstract created_at: string|null
 
   /**
    * When the entry was updated
-   * 
+   *
    * @var {string|null} updated_at
    */
   protected abstract updated_at: string|null
 
   /**
    * Here to implement the fill method, represents an empty object with no children, or the childs matching property when extended
-   * 
+   *
    * @var {string[]} fieldsToExpose
    */
   protected abstract fieldsToExpose: string[]
 
-   /**
+  /**
    * The name of the table associated with this model
-   * 
+   *
    * @var {string} tablename
    */
   protected abstract tablename: string
 
   /**
    * Get the mongoose model of this model
-   * 
+   *
    * This is here so in the BaseModel, it can call 'this' method to get the document
    *
    * @return {Document} The mongoose model from the schema
@@ -70,16 +70,16 @@ export default abstract class BaseModel implements IIndexSignature {
 
   /**
    * Create a mongoose object id from the passed in value
-   * 
+   *
    * @method generateObjectId
-   * 
+   *
    * @example
    * const _id = this.generateObjectId(id)
    * if (!_id) console.log('Failed to convert')
    * if (_id) console.log('Converted')
-   * 
+   *
    * @param {string} id Id of a document to convert
-   * 
+   *
    * @return {mongoose.Types.ObjectId|boolean} The id, or false if cannot convert
    */
   private generateObjectId (id: string): mongoose.Types.ObjectId|boolean {
@@ -93,25 +93,25 @@ export default abstract class BaseModel implements IIndexSignature {
       logger.error(`failed to convert ${id} to a mongoose object id`)
       return false
     }
-  } 
+  }
 
   /**
    * Validate output fields
-   * 
+   *
    * @method stripNonExposableProperties
-   * 
+   *
    * @description Before returning a model extracted from the database,
    *              strip out any properties that arent defined in the fieldsToExpose
    *              array, as suggested. It looks through the object properties and then
    *              checks every field to expose against that. Rinse and repeat
-   * 
+   *
    * @example
    * // this.fieldsToExpose = ['_id', 'name']
    * // document = {_id: ..., name: ..., title: ...}
    * const document = this.stripNonExposableFields(document) // {_id: ..., name: ...}
-   * 
+   *
    * @param {any} document The object holding the db data
-   * 
+   *
    * @return {object} The same passed in document but stripping the non-exposable fields
    */
   private stripNonExposableProperties (document: any = {}): object {
@@ -126,18 +126,18 @@ export default abstract class BaseModel implements IIndexSignature {
   }
 
   /**
-  * Fill the model properties with data from the database  
-  * 
-  * @method fill 
-  * 
+  * Fill the model properties with data from the database
+  *
+  * @method fill
+  *
   * @example
   * const Document = Model.find({}).limit(1)
   * this.fill(Document)
-  * 
+  *
   * @param {object} dbDocument  The document retrieved from a database query. When looping through the keys, it turns out
-  *                             the object has hidden properties, hence when we are type hinting so strictly and 
+  *                             the object has hidden properties, hence when we are type hinting so strictly and
   *                             looking inside the '_doc' property
-  * 
+  *
   * @return {void}
   */
   private fill (dbDocument: {$__: any, isNew: any, errors: any, _doc: object, $locals: any}): void {
@@ -148,8 +148,8 @@ export default abstract class BaseModel implements IIndexSignature {
     Object.keys(strippedDocument).forEach((propName: string, propValue: any) => {
       // If the child class has the property
       if (this.hasOwnProperty(propName)) {
-        // Assign it 
-        // @ts-ignore
+        // Assign it
+        // @ts-expect-error
         this[propName] = documentData[propName]
       }
     })
@@ -157,20 +157,19 @@ export default abstract class BaseModel implements IIndexSignature {
 
   /**
    * Empty the current object by the fieldsToExpose property
-   * 
+   *
    * @method empty
-   * 
+   *
    * @example
    * this.empty();
-   * 
+   *
    * @param {string[]} childFieldsToExpose The string array property of the child class
-   * 
+   *
    * @return void
    */
   private empty (): void {
     this.fieldsToExpose.forEach((value: string, index: number) => {
       if (this.hasOwnProperty(value)) {
-         // @ts-ignore
         this[value] = null
       }
     })
@@ -178,11 +177,11 @@ export default abstract class BaseModel implements IIndexSignature {
 
   /**
    * Update a models properties inside the model itself and the database
-   * 
+   *
    * @method update
-   * 
+   *
    * @requires _id A populated model with _id defined
-   * 
+   *
    * @example
    * const Profile = new ProfileModel(id)
    * const query = {name: 'current name'}
@@ -196,15 +195,15 @@ export default abstract class BaseModel implements IIndexSignature {
    * } else {
    *  logger.error('No document was found with the current id')
    * }
-   * 
+   *
    * @param {object} query The query to find the document to update e.g. where name = edward: {name: 'edward'}
-   * @param {object} data Key value pairs of the property name and new value 
+   * @param {object} data Key value pairs of the property name and new value
    * @param {Document} Document mongoose document for the calling class
-   * 
+   *
    * @return {Promise<Document|boolean>} The old document (before updating) or false based on the success
    */
   public async update (query: { [key: string]: any } = {}, data: { [key: string]: any }): Promise<Document|boolean> {
-    let dataToUpdate: { [key: string]: any } = {} // to store fields to update
+    const dataToUpdate: { [key: string]: any } = {} // to store fields to update
     // Loop through the key values pairs provided
     Object.keys(data).forEach((propName: string, propVal: any) => {
       // Check the props passed in are in this class
@@ -213,7 +212,7 @@ export default abstract class BaseModel implements IIndexSignature {
         // the existing prop
         if (this[propName] !== data[propName]) {
           // Push the data to update!
-          //this[propName] = data[propName]
+          // this[propName] = data[propName]
           dataToUpdate[propName] = data[propName]
         }
       }
@@ -238,29 +237,29 @@ export default abstract class BaseModel implements IIndexSignature {
 
   /**
    * Insert a document into the database
-   * 
+   *
    * @requires getMongooseDocument Children must add this method and return their Document
-   * 
+   *
    * Used to create a model from data to then be saved into the database
-   * 
+   *
    * @method create
-   * 
+   *
    * @example
    * const Profile = new ProfileModel;
    * const data = {name: 'hello', ....}
    * const errs = await Profile.create(data) // fills the model
-   * 
+   *
    * @param {{ [key: string]: any[] }} data Key value pairs e.g. {name: '', image: ''}
-   * 
+   *
    * @return {void|object} Return value is set if validation errors are returned
    */
-  public async create (data: { [key: string]: any }): Promise<any> {
+  public async create (data: { [key: string]: any }): Promise<void | any> {
     const MongooseModel = this.getMongooseModel()
     const document = new MongooseModel(data)
     try {
       await document.save()
       this.fill(document)
-      logger.info(`[BaseModel - create: filled the model]`)
+      logger.info('[BaseModel - create: filled the model]')
     } catch (validationError) {
       const fieldName: string = Object.keys(validationError.errors)[0]
       const errorMessage: string = validationError.errors[fieldName].message
@@ -271,10 +270,10 @@ export default abstract class BaseModel implements IIndexSignature {
 
   /**
    * @method find
-   * 
+   *
    * @description The entry point method for finding db results.
    *              Fills the calling model when finding or found a single document
-   * 
+   *
    * @example
    * class MyOtherClass extends BaseModel {
    *  ...
@@ -289,14 +288,14 @@ export default abstract class BaseModel implements IIndexSignature {
    * if (result) {
    *  // do what you need
    * }
-   * 
+   *
    * @param {object} query Key value pair of data to use in the query, e.g find a name by 'edward': query = {name: 'edward'}. Defaults to {} (find all) if not passed in
    * @param {number} limiter Number to limit results by, defaults to 1 if not passed in
-   * @param {object} sortable Key value pair(s) to sort data e.g. const sorter = {date: -1}. Defaults to empty (don't sort) if not passed in 
-   * 
+   * @param {object} sortable Key value pair(s) to sort data e.g. const sorter = {date: -1}. Defaults to empty (don't sort) if not passed in
+   *
    * @returns {[object]|boolean} False if an error, array if the db query returned data
    */
-  public async find (query?: { [key: string]: any }, limiter: number = 1, sortable: object = {}): Promise<boolean|Array<object>> {
+  public async find (query?: { [key: string]: any }, limiter: number = 1, sortable: object = {}): Promise<boolean|object[]> {
     // Convert the _id to an object id if passed in
     if (query && query._id) {
       query._id = this.generateObjectId(query._id)
@@ -318,8 +317,8 @@ export default abstract class BaseModel implements IIndexSignature {
     }
     // If it's a single object then fill (check strongly as we are supposed to be returning a document)
     // and if limit isnt defined or equals 1
-    //if (result && !result.length && !Array.isArray(result) && typeof result === 'object') {
-    if (result && result.length === 1) {  
+    // if (result && !result.length && !Array.isArray(result) && typeof result === 'object') {
+    if (result && result.length === 1) {
       this.fill(result[0])
       return result
     }
@@ -328,24 +327,24 @@ export default abstract class BaseModel implements IIndexSignature {
 
   /**
    * @method delete
-   * 
+   *
    * @description Handles DELETE queries to the database. Converts a passed in _id also.
-   * 
+   *
    * @example
    * class TestModel extends BaseModel {
    *  ...
    * }
-   * const query = {}|null|undefined|{name: ...} 
+   * const query = {}|null|undefined|{name: ...}
    * const deleteMany = true|false
    * const Test = new TestModel
    * const success = await Test.delete(query, deleteMany) // returns false mis query is empty and deletemany is true to stop a purge
    * if (success) {
    *  // do what you need to do
    * }
-   * 
+   *
    * @param {object} query Key value pair of data to use in the query, e.g delete on by name = 'edward': query = {name: 'edward'}. Defaults to {} if not passed in
    * @param {boolean} deleteMany Do you want to delete many? Defaults to false to deleteOne
-   * 
+   *
    * @returns {boolean} Success of the method call
    */
   public async delete (query: { [key: string]: any } = {}, deleteMany: boolean = false): Promise<boolean> {
@@ -382,5 +381,4 @@ export default abstract class BaseModel implements IIndexSignature {
       return false
     }
   }
-
 }

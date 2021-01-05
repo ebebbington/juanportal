@@ -1,8 +1,8 @@
-const express = require('express')
-const app = express()
-const ProfileController = require('../controllers/ProfileController')
+import express from 'express'
+import ProfileController from '../controllers/ProfileController'
 
-const multer = require('multer')
+import multer from 'multer'
+const app = express()
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
@@ -21,7 +21,7 @@ app.route('/count/:count')
 
 app.route('/id/:id')
 
-    /**
+/**
      * @example
      * const id = 'get the id here
      * $.ajax({
@@ -57,6 +57,7 @@ app.route('/')
       data: new FormData(form)
     })
    */
-  .post(upload.single('image'), ProfileController.PostProfile)
+  // @ts-expect-error
+  .post(upload.single('image'), ProfileController.PostProfile) // eslint-disable-line
 
-module.exports = app
+export default app

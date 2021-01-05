@@ -74,6 +74,7 @@
     "interfaces/models/*.ts",
     "middleware/*.ts",
     "interfaces/controllers/*.ts",
-    "schemas/*.ts"
+    "schemas/*.ts",
+    "routes/*.ts"
   ]
 }

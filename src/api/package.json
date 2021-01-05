@@ -10,18 +10,22 @@
     "build": "npm ci && node_modules/.bin/tsc",
     "restart": "pm2 restart all",
     "test": "node_modules/.bin/mocha -r ts-node/register -r source-map-support/register --exit tests/**/*.ts",
-    "stress": "node_modules/.bin/artillery run",
+    "stress": "npm i --no-save artillery && node_modules/.bin/artillery run",
     "cov": "node_modules/.bin/nyc npm run test",
-    "fmt:check": "npm i standard && node_modules/.bin/standard",
-    "fmt:fix": "npm i standard && node_modules/.bin/standard --fix"
+    "fmt:check": "npm install --no-save eslint ts-standard && ts-standard",
+    "fmt:fix": "npm install --no-save ts-standard eslint && ts-standard --fix"
   },
-  "standard": {
+  "ts-standard": {
     "ignore": [
       "node_modules",
-      "**/*.js",
-      ".nyc_output",
       "bin",
-      "coverage",
+      "controllers/example.*",
+      "helpers/*.js",
+      "interfaces/*/*.js",
+      "models/*.js",
+      "routes/*.js",
+      "schemas/*.js",
+      "coverage"
     ]
   },
   "author": "",
@@ -41,17 +45,20 @@
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "rewire": "^4.0.1",
-    "typescript": "^3.7.3",
+    "typescript": "^3.9.7",
     "winston": "^3.2.1"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/body-parser": "^1.17.1",
     "@types/chai": "^4.2.7",
+    "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.2",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/mocha": "^5.2.7",
+    "@types/morgan": "^1.9.2",
+    "@types/multer": "^1.4.5",
     "@types/node": "^12.12.22",
-    "artillery": "^1.6.0-29",
     "babel-preset-env": "^1.7.0",
     "nyc": "^15.1.0",
     "source-map-support": "^0.5.19",
