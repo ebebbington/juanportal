@@ -45,6 +45,8 @@ describe('JWT', () => {
 
             it('Should return nothing on valid payload', () => {
                 const token = JWT.createToken(validPayload)
+                console.log('the token: ')
+                console.log(token)
                 const tokenParts = token.split('.')
                 expect(tokenParts.length).to.equal(3)
                 const req = {

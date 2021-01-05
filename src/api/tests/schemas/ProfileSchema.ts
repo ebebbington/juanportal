@@ -6,7 +6,7 @@ const expect = chai.expect
 const app = require('../../app')
 const chaiHttp = require('chai-http')
 
-const MongooseModel = require('../../schemas/ProfileSchema')
+import MongooseModel from '../../schemas/ProfileSchema'
 
 const logger = require('../../helpers/logger')
 logger.debug = function (){}

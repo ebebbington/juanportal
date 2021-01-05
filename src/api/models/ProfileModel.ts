@@ -9,7 +9,7 @@ import BaseModel from './BaseModel'
 import { promises } from 'dns'
 import { Model } from 'mongoose'
 import e = require('express')
-const MongooseModel = require('../schemas/ProfileSchema')
+import MongooseModel from '../schemas/ProfileSchema'
 
 /**
  * @class ProfileModel

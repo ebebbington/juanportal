@@ -14,3 +14,4 @@ public/javascripts/components/*.js
 **/*.js.map
 coverage
 .nyc_output
+routes/profile.js

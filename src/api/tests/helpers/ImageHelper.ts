@@ -3,7 +3,7 @@ import 'mocha'
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
-const ImageHelper = require('../../helpers/ImageHelper')
+import ImageHelper from '../../helpers/ImageHelper'
 
 const logger = require('../../helpers/logger')
 logger.debug = function () {}
@@ -25,7 +25,8 @@ describe('ImageHelper', () => {
 
             it('Should return a correct name on valid file name', () => {
                 const exampleFileName = 'sampleimage.jpg'
-                const result = ImageHelper.generateRandomName(exampleFileName)
+                const result = ImageHelper.generateRandomName(exampleFileName) as string
+                expect(typeof result).to.equal("string")
                 const fileName = result.split('.')[0]
                 const extension = result.split('.')[1]
                 expect(fileName.length).to.equal(36)

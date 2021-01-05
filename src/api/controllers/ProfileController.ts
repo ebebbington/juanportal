@@ -32,7 +32,7 @@ export default class ProfileController { // eslint-disable-line allow class to o
      * @return {express.Response} res
      */
   // eslint-disable-next-line
-  public static async GetProfilesByAmount (req: express.Request<import('express-serve-static-core').ParamsDictionary>, res: express.Response, next: Function): Promise<express.Response | void> {
+  public static async GetProfilesByAmount (req: express.Request<import('express-serve-static-core').ParamsDictionary>, res: express.Response, next: Function): Promise<any> {
     logger.info('[Profile Controller - GetProfilesByAmount]')
 
     //
@@ -107,7 +107,7 @@ export default class ProfileController { // eslint-disable-line allow class to o
      *
      * @return {express.Response} res
      */
-  public static async GetProfileById (req: express.Request<import('express-serve-static-core').ParamsDictionary>, res: express.Response, next: Function): Promise<express.Response | void> {
+  public static async GetProfileById (req: express.Request<import('express-serve-static-core').ParamsDictionary>, res: express.Response, next: Function): Promise<any> {
     logger.info('[Profile Controller - GetProfileById]')
 
     //
@@ -167,7 +167,7 @@ export default class ProfileController { // eslint-disable-line allow class to o
      *
      * @return {express.Response} res
      */
-  public static async DeleteProfileById (req: express.Request<import('express-serve-static-core').ParamsDictionary>, res: express.Response, next: Function): Promise<express.Response | void> {
+  public static async DeleteProfileById (req: express.Request<import('express-serve-static-core').ParamsDictionary>, res: express.Response, next: Function): Promise<any> {
     logger.info('[ProfileController - DeleteProfileById]')
 
     //
@@ -235,7 +235,7 @@ export default class ProfileController { // eslint-disable-line allow class to o
      *
      * @return {express.Response} res
      */
-  public static async PostProfile (req: IMulterRequest&express.Request<import('express-serve-static-core').ParamsDictionary>, res: express.Response, next: Function): Promise<express.Response | void> {
+  public static async PostProfile (req: IMulterRequest&express.Request<import('express-serve-static-core').ParamsDictionary>, res: express.Response, next: Function): Promise<any> {
     logger.info('[ProfileController - PostProfile]')
 
     //

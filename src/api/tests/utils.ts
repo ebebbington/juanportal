@@ -1,14 +1,4 @@
-export const req: {
-  params: {
-    count: null | number | string,
-    id: string | null
-  },
-  body: {
-    name:null | string,
-    description: null | string
-  },
-  file: string | null | { originalname:string}
-} = {
+export const req: any = {
   params: {
     count: null,
     id: null,
@@ -19,13 +9,7 @@ export const req: {
   },
   file: null
 }
-export const res: {
-  statusCode: null| number,
-  jsonMessage: string | null,
-  status: (statusCode: number) => any,
-  json: (obj: any) => any,
-  end: () => any
-} = {
+export const res:any = {
   statusCode: null,
   jsonMessage: null,
   status (statusCode: number) {

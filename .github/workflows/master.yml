@@ -37,10 +37,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Client Tests
+      - name: Socket Tests
         run: |
           docker-compose up -d > /dev/null
           sleep 60
           docker exec juanportal_socket npm run testTS
-
-  #socket-tests:

@@ -4,8 +4,7 @@ const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
 
-const rewire = require('rewire')
-const ProfileModel = rewire('../../models/ProfileModel')
+import ProfileModel from '../../models/ProfileModel'
 import BaseModel from '../../models/BaseModel'
 
 const mongoose = require('mongoose')
@@ -240,15 +239,15 @@ describe('Profile Model', () => {
 
         // })
 
-        describe('getMongooseModel', () => {
-
-            it('Should exist and return the Mongoose Model', () => {
-                const Profile = new ProfileModel
-                const MongooseModel = Profile.getMongooseModel()
-                expect(MongooseModel).to.exist
-            })
-
-        })
+        // describe('getMongooseModel', () => {
+        //
+        //     it('Should exist and return the Mongoose Model', () => {
+        //         const Profile = new ProfileModel
+        //         const MongooseModel = Profile.getMongooseModel()
+        //         expect(MongooseModel).to.exist
+        //     })
+        //
+        // })
 
     })
     

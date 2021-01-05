@@ -1,19 +1,18 @@
 import 'mocha'
 
-const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
+import chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
 const expect = chai.expect
-const app = require('../../app')
-const chaiHttp = require('chai-http')
-const ProfileModel = require('../../models/ProfileModel')
-const fs = require('fs')
-const util = require('util')
+import app from '../../app'
+import chaiHttp from 'chai-http'
+import ProfileModel from '../../models/ProfileModel'
+import fs from 'fs'
 
-const multer = require('multer')
+import multer from 'multer'
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
-const MongooseModel = require('../../schemas/ProfileSchema')
+import MongooseModel from '../../schemas/ProfileSchema'
 
 const logger = require('../../helpers/logger')
 //logger.debug = function (){}
@@ -80,8 +79,8 @@ describe('Profile Route', () => {
         const Profile = new ProfileModel
         const profiles = await Profile.find({}, numberOfProfilesToFind)
         // Check if we got many profiles, else a single profile will be retirved, and as we cant check a length on that, we check the props to determine if even a single result came back
-        const actualNumberOfProfiles = profiles ? profiles.length : 0
-        const hasProfiles = actualNumberOfProfiles ? true : false
+        const actualNumberOfProfiles = Array.isArray(profiles) ? profiles.length : 0
+        const hasProfiles = actualNumberOfProfiles > 0 ? true : false
         expect(hasProfiles).to.equal(true) // some profiles should already exist when running this
         // then we are going to compare that number with the real result
         chai.request(app)
@@ -228,6 +227,7 @@ describe('Profile Route', () => {
 
       it('Should succeed with valid data, and update the database', async () => {
         chai.request(app)
+          // @ts-ignore
           .post('/api/profile', upload.single('image'))
           .field('name', newProfile.name)
           .field('description', newProfile.description)
@@ -247,7 +247,8 @@ describe('Profile Route', () => {
 
       it('Should fail if the name fails validation', async () => {
         chai.request(app)
-          .post('/api/profile', upload.single('image'))
+            // @ts-ignore
+            .post('/api/profile', upload.single('image'))
           .field('name', '')
           .field('description', newProfile.description)
           .attach('image', fs.readFileSync(sampleImagePath), newProfile.image)
@@ -261,7 +262,8 @@ describe('Profile Route', () => {
 
       it('Should pass if no description is given', async () => {
         chai.request(app)
-          .post('/api/profile', upload.single('image'))
+            // @ts-ignore
+            .post('/api/profile', upload.single('image'))
           .field('name', newProfile.name)
           .field('description', '')
           .attach('image', fs.readFileSync(sampleImagePath), newProfile.image)
@@ -280,7 +282,8 @@ describe('Profile Route', () => {
 
       it('Should fail if image fails validation', async () => {
         chai.request(app)
-          .post('/api/profile', upload.single('image'))
+            // @ts-ignore
+            .post('/api/profile', upload.single('image'))
           .field('name', newProfile.name)
           .field('description', newProfile.description)
           .attach('image', fs.readFileSync(sampleImagePath), 'sample')
@@ -315,7 +318,8 @@ describe('Profile Route', () => {
         const document = new MongooseModel(newProfile)
         await document.save()
         chai.request(app)
-          .post('/api/profile', upload.single('image'))
+            // @ts-ignore
+            .post('/api/profile', upload.single('image'))
           .field('name', newProfile.name)
           .field('description', newProfile.description)
           .attach('image', fs.readFileSync(sampleImagePath), newProfile.image)

@@ -3,8 +3,8 @@ const { privateKey } = require('../api.config.js') // eslint-disable-line
 const logger = require('../helpers/logger') // eslint-disable-line
 
 const options = {
-  maxAge: '1h',
-  algorithms: ['HS256'] // RS256 was broken
+  expiresIn: '1h',
+  algorithm: 'HS256' // RS256 was broken
 }
 
 /**
