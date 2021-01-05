@@ -3,9 +3,7 @@ import express, { Application as ExpressApp } from 'express'
 require('dotenv').config()
 const port: string = process.env.PORT || '9009'
 import socketIo, { Server as SocketIOServer } from 'socket.io'
-import SocketIO from "socket.io"
 import SocketServer from "./socket";
-import cors from "cors"
 
 /**
  * @class Server

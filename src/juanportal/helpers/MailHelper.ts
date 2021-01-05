@@ -14,7 +14,7 @@ const logger = require('./logger.js')
  * @method send Send email email
  * 
  */
-class MailHelper {
+export default class MailHelper {
 
   /**
    * Send an email
@@ -47,7 +47,7 @@ class MailHelper {
       const transporter = nodemailer.createTransport(transporterOptions)
 
       // Send the email
-      const info = await transporter.sendMail({
+      await transporter.sendMail({
         from: `"${mail.user}👻" <${mail.email}>`, // 'Edward <email address>
         to: data.to,
         subject: data.subject,

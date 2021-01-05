@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect'
 import React from 'react'
 import {render, fireEvent, screen} from '@testing-library/react'
 import RegisterForm from '../../../components/RegisterForm/RegisterForm'
-import { shallow, mount, configure } from 'enzyme'
+import { configure } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16';
 import { Simulate } from 'react-dom/test-utils'
 configure({adapter: new Adapter()});

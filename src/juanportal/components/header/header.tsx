@@ -1,5 +1,4 @@
-import React, { useState, ReactElement, useEffect } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useState, useEffect } from 'react'
 import { getStylings } from './util'
 const headerStyles = getStylings()
 import { useMediaQuery } from 'react-responsive'

@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useState } from 'react'
 import { notify, fetchToApiAsJson } from '../util'
 import { getStylings } from './util'
 const formStyles = getStylings()
 import Button from '../button/button'
-
-
 
 /**
  * @class RegisterForm

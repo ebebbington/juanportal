@@ -1,12 +1,10 @@
 /* Container for all content */
 .profile {
     overflow: hidden;
-    margin: 1em;
     border: 1px solid var(--custom-grey);
-    margin-bottom: 15px;
     background-color: var(--custom-white);
     padding: 1em;
-    margin: 0.5em 0.5em 0.5em 0.5em; /* Push it away from the top and bottom */
+    margin: 0.5em; /* Push it away from the top and bottom */
     display: flex;
     width: 97%;
 }

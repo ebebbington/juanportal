@@ -21,7 +21,6 @@
 .saveHolder > button {
     position: absolute;
     border-radius: 50%;
-    padding: 0;
     visibility: hidden; /* hide for the time being */
     transform: translate(36%, -28px);
     color: var(--custom-white);

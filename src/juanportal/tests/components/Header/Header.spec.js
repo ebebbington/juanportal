@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect'
 
 import React from 'react'
-import {render, fireEvent, screen} from '@testing-library/react'
+import {render, fireEvent} from '@testing-library/react'
 import Header from '../../../components/header/header'
 
 // test('Rendering on pathname /', () => {
@@ -58,10 +58,10 @@ import Header from '../../../components/header/header'
 test('Clicks on the menu to expand and collapse it', () => {
     const { container } = render(<Header />)
     const menuButton = document.querySelector('button')
-    console.log(menuButton)
-  console.log(container.querySelector('button'))
+    //console.log(menuButton)
+    //console.log(container.querySelector('button'))
     const listContainer = container.querySelector('.menuHolder')
-    console.log(getComputedStyle(listContainer, null).display)
+    //console.log(getComputedStyle(listContainer, null).display)
     let isExpanded = getComputedStyle(listContainer, null).display === 'block'
     expect(isExpanded).toBe(true)
     fireEvent.click(menuButton, { button: 1})

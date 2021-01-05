@@ -51,8 +51,8 @@ class ImageHelper {
                 try {
                     fs.createWriteStream(imagesDir + filename).write(file)
                     return this.existsOnFS(filename)
-                } catch (e) {
-                    logger.error(e)
+                } catch (err) {
+                    logger.error(err)
                     return false
                 }
             }
@@ -84,7 +84,7 @@ class ImageHelper {
         logger.info('[ImageHelper - existsOnFS]')
         const fullPath: string = imagesDir + name
         try {
-            return fs.existsSync(fullPath) ? true : false
+            return fs.existsSync(fullPath)
         } catch (e) {
             return false
         }
@@ -105,6 +105,7 @@ class ImageHelper {
     public deleteFromFS(imageName: string): boolean {
         const pathToImage = imagesDir + imageName
         logger.info(pathToImage)
+
         // delete image
         try {
             fs.unlinkSync(pathToImage)

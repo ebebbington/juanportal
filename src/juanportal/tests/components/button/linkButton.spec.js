@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect'
 
 import React from 'react'
-import {render, fireEvent, screen} from '@testing-library/react'
+import {render} from '@testing-library/react'
 import LinkButton from '../../../components/button/linkButton'
 
 test('It renders the correct href on an anchor tag', () => {
