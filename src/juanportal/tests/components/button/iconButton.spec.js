@@ -1,13 +1,12 @@
 import '@testing-library/jest-dom/extend-expect'
 
-import React from 'react'
-import {render, fireEvent, screen} from '@testing-library/react'
+import {render} from '@testing-library/react'
 import IconButton from '../../../components/button/iconButton'
 
 test('It renders a child', () => {
     render(<IconButton text="I am a button" lightColour="green" iconClass="fa fa-group" />)
     const button = document.querySelector('button')
-    const children = button.children
+    // const children = button.children
     const iTag = document.querySelector('i')
     const pTag = document.querySelector('p')
     expect(iTag.nodeName).toBe('I')

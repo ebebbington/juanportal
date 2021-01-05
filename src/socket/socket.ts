@@ -9,7 +9,7 @@ import SocketIO, {Server as SocketIOServer} from "socket.io";
  * @method    handle                  {@link Socket#handle}
  * @method    handleProfileDeleted    {@link Socket#handleProfileDeleted}
  */
-class SocketServer {
+class Socket {
 
     /**
      * @var {SocketIOServer} The SocketIO object to handle everything
@@ -72,4 +72,4 @@ class SocketServer {
     }
 }
 
-export default SocketServer
+export default Socket

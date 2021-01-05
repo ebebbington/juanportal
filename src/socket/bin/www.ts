@@ -5,7 +5,7 @@ const app = express()
 import SocketServer from '.././socket'
 require('dotenv').config()
 const port = process.env.NODE_PORT || 9009
-import socketIo, { Server as SocketIOServer } from 'socket.io'
+import socketIo  from 'socket.io'
 
 app.set('port', port)
 

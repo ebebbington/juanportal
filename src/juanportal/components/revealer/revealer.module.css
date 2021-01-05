@@ -3,7 +3,6 @@
     max-width: fit-content;
     --width: 63px;
     background: var(--custom-white);
-    transition-duration: 1s;
     display: flex; /* Display the icon and text in a row */
     overflow: hidden; /* To hide the text, given the width is only around the icon */
     border-top: 2px var(--custom-purple) solid;

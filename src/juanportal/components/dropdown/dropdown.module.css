@@ -26,7 +26,6 @@
     overflow-y: scroll;
     max-height: 12em;
     top: 100%;
-    left: -25%;
     margin-bottom: 75px;
     margin-top: 0;
     /* overwrite bootstrap css to center the dropdown based on the button */

@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema, Model, model } from 'mongoose'
+import mongoose, { Document, Model } from 'mongoose'
 
 import IIndexSignature from '../interfaces/models/IndexSignatureInterface'
 var logger = require('../helpers/logger')
@@ -202,7 +202,7 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @return {Promise<Document|boolean>} The old document (before updating) or false based on the success
    */
-  public async update (query: { [key: string]: any } = {}, data: { [key: string]: any }): Promise<Document|boolean> {
+  public async update (query: { [key: string]: any }, data: { [key: string]: any }): Promise<Document|boolean> {
     const dataToUpdate: { [key: string]: any } = {} // to store fields to update
     // Loop through the key values pairs provided
     Object.keys(data).forEach((propName: string, propVal: any) => {

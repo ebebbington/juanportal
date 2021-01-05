@@ -1,4 +1,3 @@
-import { throws } from "assert"
 const redis = require('redis')
 require('dotenv').config()
 const logger = require('./logger')
