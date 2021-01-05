@@ -3,10 +3,16 @@
 </p>
 <p align="center">
   <a href="https://github.com/ebebbington/juanportal/actions">
-    <img src="https://img.shields.io/github/workflow/status/ebebbington/juanportal/master?label=ci">
+    <img src="https://img.shields.io/github/workflow/status/ebebbington/juanportal/master?label=Tests">
   </a>
   <a href="https://img.shields.io/badge/API%20coverage-90%25-green">
     <img src="https://img.shields.io/badge/API%20coverage-94.18%25-green">
+  </a>
+  <a href="https://github.com/ebebbington/juanportal/actions">
+    <img src="https://img.shields.io/github/workflow/status/ebebbington/juanportal/CodeQL?label=CodeQL">
+  </a>
+  <a href="https://sonarcloud.io/dashboard?id=ebebbington_juanportal">
+    <img src="https://sonarcloud.io/api/project_badges/measure?project=ebebbington_juanportal&metric=alert_status">
   </a>
 </p>
 
