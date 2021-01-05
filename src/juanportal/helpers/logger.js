@@ -32,9 +32,7 @@ const transports = {
 
 const env = process.env.NODE_ENV === "production" ? "production" : "development"
 
-const logger = new winston.createLogger({
+module.exports = new winston.createLogger({
     format: format[env],
     transports: transports[env]
 })
-
-module.exports = logger

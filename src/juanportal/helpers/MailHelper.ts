@@ -14,7 +14,7 @@ const logger = require('./logger.js')
  * @method send Send email email
  * 
  */
-class MailHelper {
+export default class MailHelper {
 
   /**
    * Send an email
