@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/extend-expect'
 
+import React from 'react'
 import {render, fireEvent, screen} from '@testing-library/react'
 import RegisterForm from '../../../components/RegisterForm/RegisterForm'
 import { configure } from 'enzyme'

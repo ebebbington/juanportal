@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/extend-expect'
 
+import React from 'react'
 import {render} from '@testing-library/react'
 import Button from '../../../components/button/button'
 
@@ -20,10 +21,9 @@ test('It renders text', () => {
 
 test('It renders all types of lights', () => {
     lights.forEach(light => {
-        render(<Button text="hello" lightColour=`${light}` />)
-        const className = document.querySelector('button').className
-        const exists = className.indexOf(`trafficLight ${light}Light`) >= 0 ? true : false
-        expect(exists).toBe(true)
+        render(<Button text="hello" lightColour={`${light}`} />)
+        const buttons = document.querySelectorAll(`button.trafficLight.${light}Light`)
+        expect(buttons.length).toBe(1) // buttons must be set
     })
 })
 
