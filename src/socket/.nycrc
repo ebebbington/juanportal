@@ -7,7 +7,7 @@
     ],
        "instrument": true,
   "include": [
-      "*.ts",
+      "*.ts"
   ],
   "exclude": [
       "bin",
