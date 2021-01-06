@@ -17,6 +17,7 @@ describe('Socket Server', () => {
                 setTimeout(() => {
                     client2.emit('profileDeleted', data)
                 }, 1000)
+                // TODO FIXME THIS DOESNT WORK
                 await client1.on('profileDeleted', (event: any) => {
                     expect(event.profileId).to.equal(2)
                     client1.disconnect()
