@@ -16,7 +16,6 @@ jobs:
           cd src/api
           npm run build
           docker-compose up -d > /dev/null
-          sleep 50
           docker exec juanportal_api npm run test
 #      - name: API Format Check
 #        run: |
@@ -45,15 +44,6 @@ jobs:
           docker-compose up -d > /dev/null
           docker exec juanportal_socket npm run test
 
-  cache-docker-test-one:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: docker-compose pull
-      - uses: satackey/action-docker-layer-caching@v0.0.11
-        continue-on-error: true
-      - run: docker-compose up --build -d
-
   cache-docker-test-two:
     runs-on: ubuntu-latest
     steps:
@@ -64,5 +54,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: docker-compose pull
-      - run: docker-compose up -d --build
+      - run: docker-compose up -d > /dev/null
