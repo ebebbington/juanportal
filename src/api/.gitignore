@@ -1,6 +1,8 @@
 node_modules/
 logs
 public/images
+api.config.js
+helpers/logger.js
 .vscode
 app.js
 interfaces/models/*.js

@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
-const { privateKey } = require('../api.config.js') // eslint-disable-line
+import configs  from '../api.config' // eslint-disable-line
+const privateKey = configs.privateKey
 const logger = require('../helpers/logger') // eslint-disable-line
 
 const options = {

@@ -1,6 +1,8 @@
-const winston = require('winston')
-require('dotenv').config()
-const { rootDir } = require('../api.config')
+import winston from 'winston'
+import dotenv from 'dotenv'
+dotenv.config()
+import configs  from '../api.config'
+const rootDir = configs.rootDir
 const errorLogFile = rootDir + '/logs/error.log'
 
 const format = {
@@ -13,25 +15,25 @@ const format = {
       winston.format.simple(),
       winston.format.align()
     )
-}
+};
 
 const transports = {
     production: new winston.transports.File({
         filename: errorLogFile,
-        level: 'warn'
+        level: 'warn',
+        format: winston.format.timestamp()
     }),
     development:
         new winston.transports.Console({
             level: 'debug',
-            timestamp: function () {
-                return (new Date()).toISOString();
-            }
+            // @ts-ignore winston types suck
+            format: winston.format.timestamp()
         })
 }
 
 const env = process.env.NODE_ENV === "production" ? "production" : "development"
 
-const logger = new winston.createLogger({
+const logger = winston.createLogger({
     format: format[env],
     transports: transports[env]
 })
