@@ -13,20 +13,8 @@
     "stress": "npm i --no-save artillery && node_modules/.bin/artillery run",
     "cov": "node_modules/.bin/nyc npm run test",
     "fmt:check": "npm i --no-save prettier && node_modules/.bin/prettier --check .",
-    "fmt:fix": "npm i --no-save prettier && node_modules/.bin/prettier --write ."
-  },
-  "ts-standard": {
-    "ignore": [
-      "node_modules",
-      "bin",
-      "controllers/example.*",
-      "helpers/*.js",
-      "interfaces/*/*.js",
-      "models/*.js",
-      "routes/*.js",
-      "schemas/*.js",
-      "coverage"
-    ]
+    "fmt:fix": "npm i --no-save prettier && node_modules/.bin/prettier --write .",
+    "lint": "npm i --no-save eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser && node_modules/.bin/eslint --ext .ts ."
   },
   "author": "",
   "license": "ISC",
