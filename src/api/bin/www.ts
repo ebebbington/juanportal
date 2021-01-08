@@ -1,31 +1,20 @@
-const express = require('express')
-const http = require('http')
-const app = require('.././app')
-require('dotenv').config()
+import http from 'http'
+import app from '.././app'
+import dotenv from "dotenv"
+dotenv.config()
 const port = process.env.NODE_PORT || 3006
-const logger = require('.././helpers/logger')
+import logger from '.././helpers/logger'
 
 app.set('port', port)
 
 //create http server
 const server = http.createServer(app);
 server.listen(port);
-server.on("error", onError);
-server.on("listening", onListening);
-
-/**
- * On server error
- *
- * @param error The error object
- * @return {void}
- */
-function onError(error) {
+server.on("error", function(error: any) {
     if (error.syscall !== 'listen') {
         throw error
     }
-    const bind = typeof this.port === 'string'
-        ? 'Pipe ' + this.port
-        : 'Port ' + this.port
+    const bind = 'Pipe ' + port
 
     // handle specific listen errors with friendly messages
     switch (error.code) {
@@ -40,7 +29,8 @@ function onError(error) {
         default:
             throw error
     }
-}
+});
+server.on("listening", onListening);
 
 /**
  * On server listening
@@ -49,10 +39,8 @@ function onError(error) {
  */
 function onListening() {
     const addr = server.address()
-    const bind = typeof addr === 'string'
-        ? 'pipe ' + addr
-        : 'port ' + addr.port
-    logger.info('Listening on ' + bind)
+    const bind = 'pipe ' + addr
+    logger.info('Listening on ' + JSON.stringify(bind))
 }
 
-module.exports = server
+export default server

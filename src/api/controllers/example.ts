@@ -2,8 +2,8 @@ import express from 'express'
 import { IData } from '../interfaces/controllers/DataInterface'
 import { IMulterRequest } from '../interfaces/controllers/MulterRequestInterface'
 
-const logger = require('../helpers/logger')
-const util = require('util')
+// const logger = require('../helpers/logger')
+// const util = require('util')
 
 /**
  * @class SomeController

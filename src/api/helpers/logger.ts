@@ -38,4 +38,4 @@ const logger = winston.createLogger({
     transports: transports[env]
 })
 
-module.exports = logger
+export default logger

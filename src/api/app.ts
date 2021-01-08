@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import profileRoute from './routes/profile'
 dotenv.config()
-const logger = require('./helpers/logger') // eslint-disable-line
+import logger from './helpers/logger' // eslint-disable-line
 
 /**
  * Server

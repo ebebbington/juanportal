@@ -1,7 +1,7 @@
 import mongoose, { Document, Model } from 'mongoose'
 
 import IIndexSignature from '../interfaces/models/IndexSignatureInterface'
-var logger = require('../helpers/logger')
+import logger from '../helpers/logger'
 const _ = require('lodash')
 
 /**

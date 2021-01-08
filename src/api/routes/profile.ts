@@ -2,6 +2,7 @@ import express from 'express'
 import ProfileController from '../controllers/ProfileController'
 
 import multer from 'multer'
+import ProfileModel from "../models/ProfileModel";
 const app = express()
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
@@ -44,7 +45,6 @@ app.route('/id/:id')
   .delete(ProfileController.DeleteProfileById)
 
 app.route('/')
-
   /**
    * @example
    * const form = $('form')[0]

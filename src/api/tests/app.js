@@ -4,7 +4,7 @@ const expect = chai.expect
 const app = require('.././app')
 const mongoose = require('mongoose')
 
-const logger = require('../helpers/logger')
+import logger from '../helpers/logger'
 logger.info = function (a) {}
 logger.debug = function (a) {}
 

@@ -4,7 +4,7 @@ import { IMulterRequest } from '../interfaces/controllers/MulterRequestInterface
 
 import ProfileModel from '../models/ProfileModel'
 import ImageHelper from '../helpers/ImageHelper'
-const logger = require('../helpers/logger') // eslint-disable-line
+import logger from '../helpers/logger' // eslint-disable-line
 
 /**
  * @class ProfileController
