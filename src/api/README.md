@@ -4,146 +4,147 @@
 
 This section provides the data layer for this project, such as:
 
-* Express Server
-* MVC
-* Database
-* RESTful capabilities
-* Routing
+- Express Server
+- MVC
+- Database
+- RESTful capabilities
+- Routing
 
 Every file where possible uses TypeScript.
 
 # Directory Structure / Description
 
-* `artillery`
+- `artillery`
 
-    * Contains all stress tests for the API
+  - Contains all stress tests for the API
 
-* `bin`
+- `bin`
 
-    * Server
+  - Server
 
-* `controllers`
+- `controllers`
 
-    * Contains the controllers to match the MVC architecture
-    * All controllers use TypeScript
-    * All controllers utilise the related interfaces such as IData and IMulterRequest (**specifically IData when responding**)
-    * Controller methods are written specifically for their purpose and follow a 'fail-early' approach
+  - Contains the controllers to match the MVC architecture
+  - All controllers use TypeScript
+  - All controllers utilise the related interfaces such as IData and IMulterRequest (**specifically IData when responding**)
+  - Controller methods are written specifically for their purpose and follow a 'fail-early' approach
 
-* `helpers`
+- `helpers`
 
-    * Helper or utility files, that don't fit into the usual structure. These could be things such as a logger, or a class to achieve one thing e.g. JWT, Encryption
-    * Helpers should be written in TypeScript where possible, and should be classes
+  - Helper or utility files, that don't fit into the usual structure. These could be things such as a logger, or a class to achieve one thing e.g. JWT, Encryption
+  - Helpers should be written in TypeScript where possible, and should be classes
 
-* `interfaces`
+- `interfaces`
 
-    * Provides the specific TypeScript interfaces for controllers or methods
+  - Provides the specific TypeScript interfaces for controllers or methods
 
-* `models`
+- `models`
 
-    * Holds the models for the API.
-    * All models should be written in TypeScript and extend the BaseModel, following the architecture approach
+  - Holds the models for the API.
+  - All models should be written in TypeScript and extend the BaseModel, following the architecture approach
 
-* `routes`
+- `routes`
 
-    * Routes are defined here, and should follow current implementations, such as directory sending it to the required controller
+  - Routes are defined here, and should follow current implementations, such as directory sending it to the required controller
 
-* `schemas`
+- `schemas`
 
-    * DB Schemas are defined here, and should export a model
+  - DB Schemas are defined here, and should export a model
 
-* `tests`
+- `tests`
 
-    * Holds all tests related to this side of the application (*see more below*)
+  - Holds all tests related to this side of the application (_see more below_)
 
-* `.babelrc`
+- `.babelrc`
 
-    * Contains configurations for babel
+  - Contains configurations for babel
 
-* `.env`
+- `.env`
 
-    * Configurations for the environment
+  - Configurations for the environment
 
-* `.gitignore`
+- `.gitignore`
 
-    * Files for Git to ignore
+  - Files for Git to ignore
 
-* `api.config.js`
+- `api.config.js`
 
-    * Configurations for this section
+  - Configurations for this section
 
-* `app.*`
+- `app.*`
 
-    * Entry point for the server, provides a class based architecture to setup and configure the server
+  - Entry point for the server, provides a class based architecture to setup and configure the server
 
-* `ecosystem.config.js`
+- `ecosystem.config.js`
 
-    * The ecosystem file used by PM2 to start the server
+  - The ecosystem file used by PM2 to start the server
 
-* `package*.json`
+- `package*.json`
 
-    * Container NPM related information to keep track of modules
+  - Container NPM related information to keep track of modules
 
-* `README.md`
+- `README.md`
 
-    * Documentation for this section
+  - Documentation for this section
 
-* `sample.jpg`
+- `sample.jpg`
 
-    * Exmaple image used for testing purposes
+  - Exmaple image used for testing purposes
 
-* `TODO.md`
+- `TODO.md`
 
-    * Contains the list of todo's, whats left and what's been completed
+  - Contains the list of todo's, whats left and what's been completed
 
-* `tsconfig.json`
+- `tsconfig.json`
 
-    * Contains configurations for the TypeScript compiler (when compiling `.ts` files)
+  - Contains configurations for the TypeScript compiler (when compiling `.ts` files)
 
 # Tools Used
+
 This is the list of all tools used here, which also act as the tools learnt, or tools implemented to learn:
 
-* Object Orientated Approach
+- Object Orientated Approach
 
-* TypeScript
+- TypeScript
 
-    * General use
-    * Everything is written in TypeScript
-    * Writing .ts files
-    * Using the TS compiler to compile the files down
+  - General use
+  - Everything is written in TypeScript
+  - Writing .ts files
+  - Using the TS compiler to compile the files down
 
-* Node
+- Node
 
-    * Express (server, body parser etc...)
-    * NPM
-    * PM2
+  - Express (server, body parser etc...)
+  - NPM
+  - PM2
 
-* Mongo / Mongoose
+- Mongo / Mongoose
 
-  * Schemas
-  * Models
-  * Documents
-  * Seeding
+  - Schemas
+  - Models
+  - Documents
+  - Seeding
 
-* MVC Architecture
+- MVC Architecture
 
-    * Routes
-    * Controllers
-    * Models
-    * Inheritence (TS)
-    * Interfaces (TS)
+  - Routes
+  - Controllers
+  - Models
+  - Inheritence (TS)
+  - Interfaces (TS)
 
-* Artillery
+- Artillery
 
-    * Stress test the API
+  - Stress test the API
 
-* Mocha | Chai
+- Mocha | Chai
 
-    * Tests covered for the whole application (.js and .ts extensions)
+  - Tests covered for the whole application (.js and .ts extensions)
 
-* [RESTful] API
+- [RESTful] API
 
-    * Build an API
-    * Follow the 6 Architectural Patterns
+  - Build an API
+  - Follow the 6 Architectural Patterns
 
 # Building
 
@@ -170,61 +171,61 @@ it('Should respond with a 200 status code', (done) => {
 
 ## Writing Tests
 
-* Placement of Tests
+- Placement of Tests
 
-    * Tests should mimick the directory structure of the **file** to test e.g you just created a new Model (`/models/myNewModel.ts`), create `myNewModel.ts` inside of `/tests/models/`
+  - Tests should mimick the directory structure of the **file** to test e.g you just created a new Model (`/models/myNewModel.ts`), create `myNewModel.ts` inside of `/tests/models/`
 
-* File naming
+- File naming
 
-    * Name tests the exact same as their counterpart e.g. you create a test for `SomeController.ts` or `log.js`, the file names should be those exact names
-    * For testing TypeScript files, you should make the test a `.ts` extension and test all aspects
+  - Name tests the exact same as their counterpart e.g. you create a test for `SomeController.ts` or `log.js`, the file names should be those exact names
+  - For testing TypeScript files, you should make the test a `.ts` extension and test all aspects
 
-* Writing
+- Writing
 
-    * Newline at the start and end of every `describe` and `it`
+  - Newline at the start and end of every `describe` and `it`
 
-    * Should you test every aspect that you can of a file, and use the NPM module `rewire` if possible. Tests should be written like so:
+  - Should you test every aspect that you can of a file, and use the NPM module `rewire` if possible. Tests should be written like so:
 
-    ```
-    // tests/models/myNewModel.ts
+  ```
+  // tests/models/myNewModel.ts
 
-    describe('myNewModel', () => {
+  describe('myNewModel', () => {
 
-        describe('Properties', () => {
+      describe('Properties', () => {
 
-            descibe('MyProperty', () => {
+          descibe('MyProperty', () => {
 
-                it('Should do this', () => {
-                    expect(that).to.be(this)
-                })
+              it('Should do this', () => {
+                  expect(that).to.be(this)
+              })
 
-            })
+          })
 
-        })
+      })
 
-        describe('Methods', () => {
+      describe('Methods', () => {
 
-            describe('MyMethod', () => {
+          describe('MyMethod', () => {
 
-                it('Should return that', () => {
-                    expect(MyMethod()).to.equal(that)
-                })
+              it('Should return that', () => {
+                  expect(MyMethod()).to.equal(that)
+              })
 
-            })
+          })
 
-        })
-    })
-    ```
+      })
+  })
+  ```
 
 ## Running the Tests
 
 The command(s) to do this are inside of the `package.json` file:
 
-* JS files
+- JS files
 
 `npm run test path/to/test/test.js`
 
-* TS files
+- TS files
 
 Should you be using a TS test, you need to run the second test command. This is because Mocha needs an extra flag to test `.ts` files:
 
@@ -236,7 +237,7 @@ All tests are written using YAML (`.yml|.yaml`)
 
 ## Writing the Tests
 
-* Write tests for each endpoint to see how much the API can handle
+- Write tests for each endpoint to see how much the API can handle
 
 ## Running the Tests
 
@@ -246,9 +247,9 @@ All tests are written using YAML (`.yml|.yaml`)
 
 ## TypeScript
 
-* `No index signature with a parameter of type 'string' was found on type`
+- `No index signature with a parameter of type 'string' was found on type`
 
-    * Mostly caused (in my example) when trying to do the following inside a class: `Object.keys(obj).forEach((propName ...) => { this[propName]... }` where `this[propName]` was the culprit
-    * To solve, I simply created an interface: `interface IIndexSignature { [key: string]: string }`
-    * Then added this: `class MyClass implements IIndexSignature {}`
-    * And fully implemented the interface by adding a property: `class ... { [key: string]: string }`
+  - Mostly caused (in my example) when trying to do the following inside a class: `Object.keys(obj).forEach((propName ...) => { this[propName]... }` where `this[propName]` was the culprit
+  - To solve, I simply created an interface: `interface IIndexSignature { [key: string]: string }`
+  - Then added this: `class MyClass implements IIndexSignature {}`
+  - And fully implemented the interface by adding a property: `class ... { [key: string]: string }`

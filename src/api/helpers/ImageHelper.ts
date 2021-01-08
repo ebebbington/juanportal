@@ -1,4 +1,4 @@
-import path from 'path'
+import path from "path";
 
 /**
  * @class ImageHelper
@@ -14,33 +14,35 @@ import path from 'path'
  *
  * @method generateRandomName Generate a 36 character string
  */
-export default class ImageHelper { // eslint-disable-line  allow only using static props
+export default class ImageHelper {
+  // eslint-disable-line  allow only using static props
   /**
-     * Generate a random 36 character string, keeping the extension intact
-     *
-     * @method generateRandomName
-     *
-     * @example
-     * const ImageHelper = require('ImageHelper')
-     * let exampleFileName = 'paris-disneyland-2019.PNG'
-     * exampleFileName = ImageHelper.generateRandomName(exampleFileName) // `[a-zA-Z]{36}`.PNG
-     *
-     * @param {string} filename Name of the file, only to get the extension of
-     *
-     * @return {string|boolean} The random string | no extension
-     */
-  public static generateRandomName (filename: string): string|boolean {
-    const extension: string = path.extname(filename)
-    if (extension === '') {
-      return false
+   * Generate a random 36 character string, keeping the extension intact
+   *
+   * @method generateRandomName
+   *
+   * @example
+   * const ImageHelper = require('ImageHelper')
+   * let exampleFileName = 'paris-disneyland-2019.PNG'
+   * exampleFileName = ImageHelper.generateRandomName(exampleFileName) // `[a-zA-Z]{36}`.PNG
+   *
+   * @param {string} filename Name of the file, only to get the extension of
+   *
+   * @return {string|boolean} The random string | no extension
+   */
+  public static generateRandomName(filename: string): string | boolean {
+    const extension: string = path.extname(filename);
+    if (extension === "") {
+      return false;
     }
-    const randomString: string = Math.random().toString(36).substring(2, 8) +
-            Math.random().toString(36).substring(2, 8) +
-            Math.random().toString(36).substring(2, 8) +
-            Math.random().toString(36).substring(2, 8) +
-            Math.random().toString(36).substring(2, 8) +
-            Math.random().toString(36).substring(2, 8)
-    const newFileName = randomString + extension
-    return newFileName
+    const randomString: string =
+      Math.random().toString(36).substring(2, 8) +
+      Math.random().toString(36).substring(2, 8) +
+      Math.random().toString(36).substring(2, 8) +
+      Math.random().toString(36).substring(2, 8) +
+      Math.random().toString(36).substring(2, 8) +
+      Math.random().toString(36).substring(2, 8);
+    const newFileName = randomString + extension;
+    return newFileName;
   }
 }

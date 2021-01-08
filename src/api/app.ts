@@ -1,15 +1,15 @@
 // ///////////////////////////////
 // Packages
 // ///////////////////////////////
-import express from 'express'
-import mongoose from 'mongoose'
-import morgan from 'morgan'
-import dotenv from 'dotenv'
-import cookieParser from 'cookie-parser'
-import bodyParser from 'body-parser'
-import profileRoute from './routes/profile'
-dotenv.config()
-import logger from './helpers/logger' // eslint-disable-line
+import express from "express";
+import mongoose from "mongoose";
+import morgan from "morgan";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+import profileRoute from "./routes/profile";
+dotenv.config();
+import logger from "./helpers/logger"; // eslint-disable-line
 
 /**
  * Server
@@ -49,21 +49,21 @@ class Server {
    *
    * @var {express.Application} public
    */
-  public app: express.Application
+  public app: express.Application;
 
   /**
    * Environment to run e.g development, staging
    *
    * @var {string} private
    */
-  private readonly env: string
+  private readonly env: string;
 
   /**
    * Url to use when connecting to the mongoose database
    *
    * @var {string} private
    */
-  private readonly dbUrl: string
+  private readonly dbUrl: string;
 
   /**
    * Bootstrap the application.
@@ -73,8 +73,8 @@ class Server {
    * @static
    * @return {ng.auto.IInjectorService} Returns the newly created injector for this app.
    */
-  public static bootstrap (): Server {
-    return new Server()
+  public static bootstrap(): Server {
+    return new Server();
   }
 
   /**
@@ -83,23 +83,23 @@ class Server {
    * @class Server
    * @constructor
    */
-  constructor () {
+  constructor() {
     // define properties
-    this.env = process.env.NODE_ENV ?? ''
+    this.env = process.env.NODE_ENV ?? "";
     // this.port = process.env.PORT || 3005
-    this.dbUrl = process.env.DB_URL ?? ''
+    this.dbUrl = process.env.DB_URL ?? "";
     // create expressjs application
-    this.app = express()
+    this.app = express();
     // configure application
-    this.configure()
+    this.configure();
     // start HTTP logging
-    this.initiateLogging()
+    this.initiateLogging();
     // setup routes
-    this.defineRoutes()
+    this.defineRoutes();
     // connect to the database
-    this.instantiateDbConnection()
+    this.instantiateDbConnection();
     // start db logging
-    this.initiateDbLogging()
+    this.initiateDbLogging();
   }
 
   /**
@@ -109,10 +109,10 @@ class Server {
    * @method configure
    * @return {void}
    */
-  private configure (): void {
-    this.app.use(cookieParser())
-    this.app.use(bodyParser.urlencoded({ extended: false }))
-    this.app.use(bodyParser.json())
+  private configure(): void {
+    this.app.use(cookieParser());
+    this.app.use(bodyParser.urlencoded({ extended: false }));
+    this.app.use(bodyParser.json());
   }
 
   /**
@@ -122,25 +122,29 @@ class Server {
    * @method initiateLogging
    * @return {void}
    */
-  private initiateLogging (): void {
+  private initiateLogging(): void {
     // For production environment
-    if (this.env === 'production') {
-      this.app.use(morgan('combined'))
+    if (this.env === "production") {
+      this.app.use(morgan("combined"));
     }
     // Everything else use development logging
-    if (this.env !== 'production') {
-      this.app.use(morgan('dev', {
-        skip: function (req: any, res: any) {
-          return res.statusCode < 400
-        },
-        stream: process.stderr
-      }))
-      this.app.use(morgan('dev', {
-        skip: function (req: any, res: any) {
-          return res.statusCode >= 400
-        },
-        stream: process.stdout
-      }))
+    if (this.env !== "production") {
+      this.app.use(
+        morgan("dev", {
+          skip: function (req: any, res: any) {
+            return res.statusCode < 400;
+          },
+          stream: process.stderr,
+        })
+      );
+      this.app.use(
+        morgan("dev", {
+          skip: function (req: any, res: any) {
+            return res.statusCode >= 400;
+          },
+          stream: process.stdout,
+        })
+      );
     }
   }
 
@@ -151,8 +155,8 @@ class Server {
    * @method defineRoutes
    * @return {void}
    */
-  private defineRoutes (): void {
-    this.app.use('/api/profile', profileRoute)
+  private defineRoutes(): void {
+    this.app.use("/api/profile", profileRoute);
     // this.app.use('/api/test', testRoute)
   }
 
@@ -163,17 +167,18 @@ class Server {
    * @method instantiateDbConnection
    * @return {void}
    */
-  private instantiateDbConnection (): void {
-    mongoose.connect(this.dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+  private instantiateDbConnection(): void {
+    mongoose
+      .connect(this.dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
       .then(() => {
-        if (this.env === 'development') {
-          logger.info('Database connection has opened')
+        if (this.env === "development") {
+          logger.info("Database connection has opened");
         }
       })
       .catch((err: any) => {
-        logger.info('Error when making conn to db')
-        logger.error(err)
-      })
+        logger.info("Error when making conn to db");
+        logger.error(err);
+      });
   }
 
   /**
@@ -183,28 +188,28 @@ class Server {
    * @method initiateDblogging
    * @return {void}
    */
-  private initiateDbLogging (): void {
+  private initiateDbLogging(): void {
     mongoose.connection
-      .on('connecting', () => {
-        logger.info('Connecting to the database')
+      .on("connecting", () => {
+        logger.info("Connecting to the database");
       })
-      .on('connected', () => {
-        logger.info('Connected to the database')
+      .on("connected", () => {
+        logger.info("Connected to the database");
       })
-      .on('close', () => {
-        logger.info('Closed the connection to the database')
+      .on("close", () => {
+        logger.info("Closed the connection to the database");
       })
-      .on('error', () => {
-        logger.error('Connection error with the database')
+      .on("error", () => {
+        logger.error("Connection error with the database");
       })
-      .on('disconnected', () => {
-        logger.info('Lost connection with the database')
-      })
+      .on("disconnected", () => {
+        logger.info("Lost connection with the database");
+      });
   }
 }
 
-const server = Server.bootstrap()
-export default server.app
+const server = Server.bootstrap();
+export default server.app;
 
 // ///////////////////////////////
 // HTTP Logging

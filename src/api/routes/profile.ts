@@ -1,13 +1,14 @@
-import express from 'express'
-import ProfileController from '../controllers/ProfileController'
+import express from "express";
+import ProfileController from "../controllers/ProfileController";
 
-import multer from 'multer'
+import multer from "multer";
 import ProfileModel from "../models/ProfileModel";
-const app = express()
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage })
+const app = express();
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-app.route('/count/:count')
+app
+  .route("/count/:count")
 
   /**
    * @example
@@ -18,33 +19,35 @@ app.route('/count/:count')
    *  dataType: 'json'
    * })
    */
-  .get(ProfileController.GetProfilesByAmount)
+  .get(ProfileController.GetProfilesByAmount);
 
-app.route('/id/:id')
+app
+  .route("/id/:id")
 
-/**
-     * @example
-     * const id = 'get the id here
-     * $.ajax({
-     *  url: '/api/profile/id/' + id,
-     *  method: 'get',
-     *  dataType: 'json'
-     * })
-     */
+  /**
+   * @example
+   * const id = 'get the id here
+   * $.ajax({
+   *  url: '/api/profile/id/' + id,
+   *  method: 'get',
+   *  dataType: 'json'
+   * })
+   */
   .get(ProfileController.GetProfileById)
 
   /**
-     * @example
-     * const id = 'get the id here
-     * $.ajax({
-     *  url: '/api/profile/id/' + id,
-     *  method: 'delete',
-     *  dataType: 'json'
-     * })
-     */
-  .delete(ProfileController.DeleteProfileById)
+   * @example
+   * const id = 'get the id here
+   * $.ajax({
+   *  url: '/api/profile/id/' + id,
+   *  method: 'delete',
+   *  dataType: 'json'
+   * })
+   */
+  .delete(ProfileController.DeleteProfileById);
 
-app.route('/')
+app
+  .route("/")
   /**
    * @example
    * const form = $('form')[0]
@@ -58,6 +61,6 @@ app.route('/')
     })
    */
   // @ts-expect-error
-  .post(upload.single('image'), ProfileController.PostProfile) // eslint-disable-line
+  .post(upload.single("image"), ProfileController.PostProfile); // eslint-disable-line
 
-export default app
+export default app;

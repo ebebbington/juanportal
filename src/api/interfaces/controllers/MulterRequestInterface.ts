@@ -8,5 +8,5 @@
  * }
  */
 export interface IMulterRequest extends Request {
-  file: any
+  file: any;
 }

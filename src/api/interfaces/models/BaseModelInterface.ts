@@ -7,6 +7,4 @@
  * import IBaseModel from 'BaseModelInterface'
  * class MyModel implements IBaseModel {}
  */
-export default interface IBaseModel {
-
-}
+export default interface IBaseModel {}

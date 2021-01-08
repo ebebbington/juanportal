@@ -14,7 +14,7 @@
  * class Test implements dictionary { [key: string]: string }
  */
 interface IIndexSignature {
-  [index: string]: string
+  [index: string]: string;
 }
 
-export default IIndexSignature
+export default IIndexSignature;

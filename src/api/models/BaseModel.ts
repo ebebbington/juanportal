@@ -1,8 +1,8 @@
-import mongoose, { Document, Model } from 'mongoose'
+import mongoose, { Document, Model } from "mongoose";
 
-import IIndexSignature from '../interfaces/models/IndexSignatureInterface'
-import logger from '../helpers/logger'
-const _ = require('lodash')
+import IIndexSignature from "../interfaces/models/IndexSignatureInterface";
+import logger from "../helpers/logger";
+const _ = require("lodash");
 
 /**
  * @class BaseModel
@@ -29,35 +29,35 @@ const _ = require('lodash')
  * @method delete                         Used for any DELETE queries
  */
 export default abstract class BaseModel implements IIndexSignature {
-  [key: string]: any
+  [key: string]: any;
 
   /**
    * When the entry was created
    *
    * @var {string|null} created_at
    */
-  protected abstract created_at: string|null
+  protected abstract created_at: string | null;
 
   /**
    * When the entry was updated
    *
    * @var {string|null} updated_at
    */
-  protected abstract updated_at: string|null
+  protected abstract updated_at: string | null;
 
   /**
    * Here to implement the fill method, represents an empty object with no children, or the childs matching property when extended
    *
    * @var {string[]} fieldsToExpose
    */
-  protected abstract fieldsToExpose: string[]
+  protected abstract fieldsToExpose: string[];
 
   /**
    * The name of the table associated with this model
    *
    * @var {string} tablename
    */
-  protected abstract tablename: string
+  protected abstract tablename: string;
 
   /**
    * Get the mongoose model of this model
@@ -66,7 +66,7 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @return {Document} The mongoose model from the schema
    */
-  protected abstract getMongooseModel (): Model<any>
+  protected abstract getMongooseModel(): Model<any>;
 
   /**
    * Create a mongoose object id from the passed in value
@@ -82,16 +82,16 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @return {mongoose.Types.ObjectId|boolean} The id, or false if cannot convert
    */
-  private generateObjectId (id: string): mongoose.Types.ObjectId|boolean {
-    console.log('inside object id, id passed in is: ' + id)
+  private generateObjectId(id: string): mongoose.Types.ObjectId | boolean {
+    console.log("inside object id, id passed in is: " + id);
     try {
       // if the id isnt already an object id, convert it
-      const objectId = new mongoose.Types.ObjectId(id)
-      console.log('returning object id: ' + objectId)
-      return objectId
+      const objectId = new mongoose.Types.ObjectId(id);
+      console.log("returning object id: " + objectId);
+      return objectId;
     } catch (err) {
-      logger.error(`failed to convert ${id} to a mongoose object id`)
-      return false
+      logger.error(`failed to convert ${id} to a mongoose object id`);
+      return false;
     }
   }
 
@@ -114,45 +114,55 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @return {object} The same passed in document but stripping the non-exposable fields
    */
-  private stripNonExposableProperties (document: any = {}): object {
+  private stripNonExposableProperties(document: any = {}): object {
     // Loop through the fields to expose
     Object.keys(document).forEach((property: string, value: any) => {
-      const allowedToExpose: boolean = this.fieldsToExpose.includes(property)
+      const allowedToExpose: boolean = this.fieldsToExpose.includes(property);
       if (!allowedToExpose) {
-        delete document[property]
+        delete document[property];
       }
-    })
-    return document
+    });
+    return document;
   }
 
   /**
-  * Fill the model properties with data from the database
-  *
-  * @method fill
-  *
-  * @example
-  * const Document = Model.find({}).limit(1)
-  * this.fill(Document)
-  *
-  * @param {object} dbDocument  The document retrieved from a database query. When looping through the keys, it turns out
-  *                             the object has hidden properties, hence when we are type hinting so strictly and
-  *                             looking inside the '_doc' property
-  *
-  * @return {void}
-  */
-  private fill (dbDocument: {$__: any, isNew: any, errors: any, _doc: object, $locals: any}): void {
-    this.empty()
-    const documentData: object = dbDocument._doc
-    const strippedDocument: object = this.stripNonExposableProperties(documentData)
+   * Fill the model properties with data from the database
+   *
+   * @method fill
+   *
+   * @example
+   * const Document = Model.find({}).limit(1)
+   * this.fill(Document)
+   *
+   * @param {object} dbDocument  The document retrieved from a database query. When looping through the keys, it turns out
+   *                             the object has hidden properties, hence when we are type hinting so strictly and
+   *                             looking inside the '_doc' property
+   *
+   * @return {void}
+   */
+  private fill(dbDocument: {
+    $__: any;
+    isNew: any;
+    errors: any;
+    _doc: object;
+    $locals: any;
+  }): void {
+    this.empty();
+    const documentData: object = dbDocument._doc;
+    const strippedDocument: object = this.stripNonExposableProperties(
+      documentData
+    );
     // Loops through the document properties
-    Object.keys(strippedDocument).forEach((propName: string, propValue: any) => {
-      // If the child class has the property
-      if (this.hasOwnProperty(propName)) {
-        // Assign it
-        // @ts-expect-error
-        this[propName] = documentData[propName]
+    Object.keys(strippedDocument).forEach(
+      (propName: string, propValue: any) => {
+        // If the child class has the property
+        if (this.hasOwnProperty(propName)) {
+          // Assign it
+          // @ts-expect-error
+          this[propName] = documentData[propName];
+        }
       }
-    })
+    );
   }
 
   /**
@@ -167,12 +177,12 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @return void
    */
-  private empty (): void {
+  private empty(): void {
     this.fieldsToExpose.forEach((value: string, index: number) => {
       if (this.hasOwnProperty(value)) {
-        this[value] = null
+        this[value] = null;
       }
-    })
+    });
   }
 
   /**
@@ -202,8 +212,11 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @return {Promise<Document|boolean>} The old document (before updating) or false based on the success
    */
-  public async update (query: { [key: string]: any }, data: { [key: string]: any }): Promise<Document|boolean> {
-    const dataToUpdate: { [key: string]: any } = {} // to store fields to update
+  public async update(
+    query: { [key: string]: any },
+    data: { [key: string]: any }
+  ): Promise<Document | boolean> {
+    const dataToUpdate: { [key: string]: any } = {}; // to store fields to update
     // Loop through the key values pairs provided
     Object.keys(data).forEach((propName: string, propVal: any) => {
       // Check the props passed in are in this class
@@ -213,26 +226,30 @@ export default abstract class BaseModel implements IIndexSignature {
         if (this[propName] !== data[propName]) {
           // Push the data to update!
           // this[propName] = data[propName]
-          dataToUpdate[propName] = data[propName]
+          dataToUpdate[propName] = data[propName];
         }
       }
-    })
+    });
     // Convert the _id to an object id if passed in
     if (query && query._id) {
-      query._id = this.generateObjectId(query._id)
+      query._id = this.generateObjectId(query._id);
       if (!query._id) {
-        return false
+        return false;
       }
     }
-    const options = { upsert: true }
-    const MongooseModel = this.getMongooseModel()
-    const oldDocument = await MongooseModel.findOneAndUpdate(query, dataToUpdate, options)
-    if (Array.isArray(oldDocument) && !oldDocument.length || !oldDocument) {
-      return false
+    const options = { upsert: true };
+    const MongooseModel = this.getMongooseModel();
+    const oldDocument = await MongooseModel.findOneAndUpdate(
+      query,
+      dataToUpdate,
+      options
+    );
+    if ((Array.isArray(oldDocument) && !oldDocument.length) || !oldDocument) {
+      return false;
     }
-    const updatedDocument = await MongooseModel.findOne(data)
-    this.fill(updatedDocument)
-    return oldDocument
+    const updatedDocument = await MongooseModel.findOne(data);
+    this.fill(updatedDocument);
+    return oldDocument;
   }
 
   /**
@@ -253,18 +270,18 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @return {void|object} Return value is set if validation errors are returned
    */
-  public async create (data: { [key: string]: any }): Promise<void | any> {
-    const MongooseModel = this.getMongooseModel()
-    const document = new MongooseModel(data)
+  public async create(data: { [key: string]: any }): Promise<void | any> {
+    const MongooseModel = this.getMongooseModel();
+    const document = new MongooseModel(data);
     try {
-      await document.save()
-      this.fill(document)
-      logger.info('[BaseModel - create: filled the model]')
+      await document.save();
+      this.fill(document);
+      logger.info("[BaseModel - create: filled the model]");
     } catch (validationError) {
-      const fieldName: string = Object.keys(validationError.errors)[0]
-      const errorMessage: string = validationError.errors[fieldName].message
-      logger.error(`Validation error: ${errorMessage}`)
-      return validationError
+      const fieldName: string = Object.keys(validationError.errors)[0];
+      const errorMessage: string = validationError.errors[fieldName].message;
+      logger.error(`Validation error: ${errorMessage}`);
+      return validationError;
     }
   }
 
@@ -295,34 +312,40 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @returns {[object]|boolean} False if an error, array if the db query returned data
    */
-  public async find (query?: { [key: string]: any }, limiter: number = 1, sortable: object = {}): Promise<boolean|object[]> {
+  public async find(
+    query?: { [key: string]: any },
+    limiter: number = 1,
+    sortable: object = {}
+  ): Promise<boolean | object[]> {
     // Convert the _id to an object id if passed in
     if (query && query._id) {
-      query._id = this.generateObjectId(query._id)
+      query._id = this.generateObjectId(query._id);
       if (!query._id) {
-        return false
+        return false;
       }
     }
     // If query is empty, set it to an empty object
     if (!query) {
-      query = {}
+      query = {};
     }
-    const MongooseModel = this.getMongooseModel()
+    const MongooseModel = this.getMongooseModel();
     // Find using the query is there is one, limit the results if present, and sort if present as well
-    const result = await MongooseModel.find(query).limit(limiter).sort(sortable)
+    const result = await MongooseModel.find(query)
+      .limit(limiter)
+      .sort(sortable);
     // check for an empty response
-    if (Array.isArray(result) && !result.length || !result) {
+    if ((Array.isArray(result) && !result.length) || !result) {
       // empty
-      return false
+      return false;
     }
     // If it's a single object then fill (check strongly as we are supposed to be returning a document)
     // and if limit isnt defined or equals 1
     // if (result && !result.length && !Array.isArray(result) && typeof result === 'object') {
     if (result && result.length === 1) {
-      this.fill(result[0])
-      return result
+      this.fill(result[0]);
+      return result;
     }
-    return result
+    return result;
   }
 
   /**
@@ -347,38 +370,44 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @returns {boolean} Success of the method call
    */
-  public async delete (query: { [key: string]: any } = {}, deleteMany: boolean = false): Promise<boolean> {
+  public async delete(
+    query: { [key: string]: any } = {},
+    deleteMany: boolean = false
+  ): Promise<boolean> {
     // warn
-    if (_.isEmpty(query)) logger.warn(`[BaseModel: delete - query param isnt defined. If deleteMany is defined (${deleteMany}) its going to delete all`)
+    if (_.isEmpty(query))
+      logger.warn(
+        `[BaseModel: delete - query param isnt defined. If deleteMany is defined (${deleteMany}) its going to delete all`
+      );
     // convert _id if passed in
     if (query && query._id) {
-      query._id = this.generateObjectId(query._id)
+      query._id = this.generateObjectId(query._id);
       if (!query._id) {
-        return false
+        return false;
       }
     }
-    const MongooseModel = this.getMongooseModel()
+    const MongooseModel = this.getMongooseModel();
     // delete a single doucment
     if (!deleteMany) {
-      const result = await MongooseModel.deleteOne(query)
+      const result = await MongooseModel.deleteOne(query);
       if (result.ok === 1 && result.deletedCount === 1) {
-        this.empty()
-        return true
+        this.empty();
+        return true;
       } else {
-        return false
+        return false;
       }
     }
     // delete many documents
     // and if the query is empty and wipe isnt allowed, don't let them delete EVERYTHING
     if (_.isEmpty(query)) {
-      return false
+      return false;
     }
-    const result = await MongooseModel.deleteMany(query)
+    const result = await MongooseModel.deleteMany(query);
     if (result.ok === 1 && result.deletedCount && result.deletedCount >= 1) {
-      this.empty()
-      return true
+      this.empty();
+      return true;
     } else {
-      return false
+      return false;
     }
   }
 }

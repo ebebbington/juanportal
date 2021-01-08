@@ -1,41 +1,41 @@
-import winston from 'winston'
-import dotenv from 'dotenv'
-dotenv.config()
-import configs  from '../api.config'
-const rootDir = configs.rootDir
-const errorLogFile = rootDir + '/logs/error.log'
+import winston from "winston";
+import dotenv from "dotenv";
+dotenv.config();
+import configs from "../api.config";
+const rootDir = configs.rootDir;
+const errorLogFile = rootDir + "/logs/error.log";
 
 const format = {
-    production: winston.format.combine(
-      winston.format.simple(),
-      winston.format.align()
-    ),
-    development: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.simple(),
-      winston.format.align()
-    )
+  production: winston.format.combine(
+    winston.format.simple(),
+    winston.format.align()
+  ),
+  development: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.simple(),
+    winston.format.align()
+  ),
 };
 
 const transports = {
-    production: new winston.transports.File({
-        filename: errorLogFile,
-        level: 'warn',
-        format: winston.format.timestamp()
-    }),
-    development:
-        new winston.transports.Console({
-            level: 'debug',
-            // @ts-ignore winston types suck
-            format: winston.format.timestamp()
-        })
-}
+  production: new winston.transports.File({
+    filename: errorLogFile,
+    level: "warn",
+    format: winston.format.timestamp(),
+  }),
+  development: new winston.transports.Console({
+    level: "debug",
+    // @ts-ignore winston types suck
+    format: winston.format.timestamp(),
+  }),
+};
 
-const env = process.env.NODE_ENV === "production" ? "production" : "development"
+const env =
+  process.env.NODE_ENV === "production" ? "production" : "development";
 
 const logger = winston.createLogger({
-    format: format[env],
-    transports: transports[env]
-})
+  format: format[env],
+  transports: transports[env],
+});
 
-export default logger
+export default logger;

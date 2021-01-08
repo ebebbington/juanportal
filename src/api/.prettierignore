@@ -7,3 +7,4 @@ models/*.js
 routes/*.js
 schemas/*.js
 *.js
+artillery
