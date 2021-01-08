@@ -12,8 +12,8 @@
     "test": "node_modules/.bin/mocha -r ts-node/register -r source-map-support/register --exit tests/**/*.ts",
     "stress": "npm i --no-save artillery && node_modules/.bin/artillery run",
     "cov": "node_modules/.bin/nyc npm run test",
-    "fmt:check": "npm install --no-save eslint ts-standard && ts-standard",
-    "fmt:fix": "npm install --no-save ts-standard eslint && ts-standard --fix"
+    "fmt:check": "npm i --no-save prettier && node_modules/.bin/prettier --check .",
+    "fmt:fix": "npm i --no-save prettier && node_modules/.bin/prettier --write ."
   },
   "ts-standard": {
     "ignore": [

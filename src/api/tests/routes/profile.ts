@@ -14,7 +14,7 @@ const upload = multer({ storage: storage })
 
 import MongooseModel from '../../schemas/ProfileSchema'
 
-const logger = require('../../helpers/logger')
+import logger from '../../helpers/logger'
 //logger.debug = function (){}
 //logger.info = function (){}
 

@@ -17,6 +17,10 @@ jobs:
           npm run build
           docker-compose up -d > /dev/null
           docker exec juanportal_api npm run test
+      - name: API Linter Check
+        run: |
+          npm run fmt:check
+
 #      - name: API Format Check
 #        run: |
 ##          npm run fmt:check
