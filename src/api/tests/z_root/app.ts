@@ -1,31 +1,28 @@
-const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
+import "mocha"
+
+import chai from 'chai'
 const expect = chai.expect
-const app = require('.././app')
-const mongoose = require('mongoose')
+import app from '../../app'
+import mongoose from 'mongoose'
 
-import logger from '../helpers/logger'
-logger.info = function (a) {}
-logger.debug = function (a) {}
+import logger from "../../helpers/logger";
+// @ts-ignore
+logger.debug = function (): void {
+  return;
+};
+// @ts-ignore
+logger.info = function (): void {
+  return;
+};
 
-chai.use(chaiAsPromised)
 chai.should()
 
 describe('App', () => {
-  describe('Test specific', () => {
-    it('Info logging should be disabled for this test file', () => {
-      const response = logger.info('Test')
-      expect(response).to.equal(undefined)
-    })
-    it('Debug logging should be disabled for this test file', () => {
-      const response = logger.debug('Test')
-      expect(response).to.equal(undefined)
-    })
-  })
   describe('Middleware', () => {
     it('Should be using cookie parser', () => {
       let found = false
-      app._router.stack.forEach(stackObj => {
+      // deno-lint-ignore @typescript-eslint/no-explicit-any
+      app._router.stack.forEach((stackObj: any) => {
         if (stackObj.name === 'cookieParser')
           found = true
       });
@@ -33,7 +30,8 @@ describe('App', () => {
     })
     it('Should be using logger middleware', () => {
       let found = false
-      app._router.stack.forEach(stackObj => {
+      // deno-lint-ignore @typescript-eslint/no-explicit-any
+      app._router.stack.forEach((stackObj: any) => {
         if (stackObj.name === 'logger')
           found = true
       });
@@ -41,7 +39,8 @@ describe('App', () => {
     })
     it('Should be using body parser', () => {
       let found = false
-      app._router.stack.forEach(stackObj => {
+      // deno-lint-ignore @typescript-eslint/no-explicit-any
+      app._router.stack.forEach((stackObj: any) => {
         if (stackObj.name === 'jsonParser')
           found = true
       });

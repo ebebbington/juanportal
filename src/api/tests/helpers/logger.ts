@@ -8,7 +8,7 @@ import { getLogger } from "../../helpers/logger";
 
 chai.should();
 
-describe.only("logger", () => {
+describe("logger", () => {
   describe("Production", () => {
     it("Should log to a file", () => {
       const prodLogger = getLogger("production");
@@ -16,7 +16,7 @@ describe.only("logger", () => {
       prodLogger.error("errrrr")
       const result = fs.readFileSync("./logs/error.log");
       fs.unlinkSync("./logs/error.log")
-      expect(result.toString()).to.equal("error: errrrr")
+      expect(result.toString()).to.equal("error: errrrr\n")
     });
   });
   describe("Development", () => {

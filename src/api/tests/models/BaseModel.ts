@@ -14,22 +14,30 @@ import "mocha"; // Because this file was throwing TS errors about 'cannot find n
 // Run this test using: mocha -r ts-node/register <test file>
 //
 
-const chai = require("chai");
-const chaiAsPromised = require("chai-as-promised");
+import chai from "chai"
+import chaiAsPromised from "chai-as-promised"
 const expect = chai.expect;
-const logger = require("/var/www/api/helpers/logger");
-logger.debug = function () {};
-logger.info = function () {};
+import logger from "../../helpers/logger";
+// @ts-ignore
+logger.debug = function (): void {
+  return;
+};
+// @ts-ignore
+logger.info = function (): void {
+  return;
+};
 chai.use(chaiAsPromised);
 chai.should();
-require("dotenv").config();
+import dotenv from "dotenv"
+dotenv.config()
 const dbUrl = process.env.DB_URL;
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 
 import BaseModel from "../../models/BaseModel";
 import { DH_CHECK_P_NOT_PRIME } from "constants";
 import { Model } from "mongoose";
+import dot = Mocha.reporters.dot;
 const Schema = mongoose.Schema;
 const schema = new Schema({
   forename: {

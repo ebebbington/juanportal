@@ -5,24 +5,30 @@ import chaiAsPromised from "chai-as-promised";
 const expect = chai.expect;
 import app from "../../app";
 import chaiHttp from "chai-http";
-import ProfileModel from "../../models/ProfileModel";
+import ProfileModel, {ProfileDocument} from "../../models/ProfileModel";
 import fs from "fs";
-
+import MongooseModel from "../../schemas/ProfileSchema";
+import { Document } from "mongoose"
 import multer from "multer";
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-import MongooseModel from "../../schemas/ProfileSchema";
-
 import logger from "../../helpers/logger";
-//logger.debug = function (){}
-//logger.info = function (){}
+// @ts-ignore
+logger.debug = function (): void {
+  return;
+};
+// @ts-ignore
+logger.info = function (): void {
+  return;
+};
 
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);
 chai.should();
 
-describe("Profile Route", () => {
+describe("Profile Route", function () {
+  this.timeout(5000)
   describe("GET /api/profile/count/:count", () => {
     it("Should fail when the parameter cannot be parsed as a number", (done) => {
       chai
@@ -42,6 +48,7 @@ describe("Profile Route", () => {
         name: "TESTPROFILENAME",
         image: "TESTPROFILEIMAGE.jpg",
       };
+      await MongooseModel.deleteOne({ name: newProfile.name })
       const document = new MongooseModel(newProfile);
       await document.save();
       chai
@@ -49,6 +56,7 @@ describe("Profile Route", () => {
         .get("/api/profile/count/5")
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .end(async (err: any, res: any) => {
+          console.log('4')
           expect(res.status).to.equal(200);
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(true);
@@ -99,14 +107,23 @@ describe("Profile Route", () => {
         });
     });
 
-    // skipped because i dont have a way to test an already populated db if its empty
-    it.skip("Should respond with a 404 status on no profiles found", async () => {
-      // fixme :: How can I test an already populated database if its empty?
+    it("Should respond with a 404 status on no profiles found", async () => {
+      const Profile = new ProfileModel()
+      const result = await Profile.find({}, 9) as unknown as Document[];
+      const profiles = result.map(res => {
+        return res.toObject()
+      }) as unknown as ProfileDocument[]
+      await Profile.delete({name: profiles[0].name})
+      await Profile.delete({name: profiles[1].name})
+      await Profile.delete({name: profiles[2].name})
       chai
         .request(app)
         .get("/api/profile/count/6")
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .end((err: any, res: any) => {
+        .end(async (err: any, res: any) => {
+          await Profile.create(profiles[0])
+          await Profile.create(profiles[1])
+          await Profile.create(profiles[2])
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(false);
           expect(res.status).to.equal(404);
@@ -175,13 +192,11 @@ describe("Profile Route", () => {
     });
 
     after("Remove test profile", async function () {
-      this.timeout(5000);
       await MongooseModel.deleteMany({ name: newProfile.name });
     });
   });
 
   describe("DELETE /profile/id/:id", function () {
-    this.timeout(5000);
 
     it("Should fail when the id cannot be parsed", (done) => {
       chai

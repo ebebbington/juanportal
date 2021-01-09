@@ -77,7 +77,7 @@ describe("JWT", () => {
         const response = JWT.checkToken(req, res, next);
         expect(response.statusCode).to.equal(403);
         expect(response.jsonMessage.success).to.equal(false);
-        expect(response.jsonMessage.message).to.equal("todo");
+        expect(response.jsonMessage.message).to.equal("jwt malformed");
       });
 
       it("Should return a  403 status if no token in req", () => {

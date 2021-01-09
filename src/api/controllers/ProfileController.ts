@@ -234,35 +234,16 @@ export default class ProfileController {
     //
 
     const id: string = req.params.id;
-    const success: boolean = await Profile.delete({ _id: id });
-    if (success) {
-      logger.info(`Deleted the profile with id ${id}`);
-      const data: IData = {
-        success: true,
-        message: "Successfully deleted",
-        data: null,
-      };
-      return res.status(200).json(data);
-    } else {
-      logger.error(`Failed to delete the profile with id ${id}`);
-      const data: IData = {
-        success: true,
-        message: "Failed to delete",
-        data: null,
-      };
-      return res.status(500).json(data);
-    }
+    await Profile.delete({ _id: id });
+    logger.info(`Deleted the profile with id ${id}`);
+    const data: IData = {
+      success: true,
+      message: "Successfully deleted",
+      data: null,
+    };
+    return res.status(200).json(data);
   }
 
-  /**
-   * Create a profile, using {name, description?, image?} in req.body
-   *
-   * @param {express.Request}   req   Request object
-   * @param {express.Response}  res   Response object
-   * @param {Function}          next  Callback
-   *
-   * @return {express.Response} res
-   */
   public static async PostProfile(
     req: IMulterRequest &
       express.Request<import("express-serve-static-core").ParamsDictionary>,
@@ -340,27 +321,12 @@ export default class ProfileController {
     }
     logger.info(`Profile with the name ${req.body.name} passed validation`);
 
-    //
-    // Check the database was updated
-    //
-
-    const profile = await Profile.find({ name: req.body.name });
-    if (profile) {
-      logger.info("The profile did save to the database");
-      const data: IData = {
-        success: true,
-        message: "Saved the profile",
-        data: randomName,
-      };
-      return res.status(200).json(data);
-    } else {
-      logger.error("The database wasnt updated with the new profile");
-      const data: IData = {
-        success: false,
-        message: "Could not save the profile",
-        data: null,
-      };
-      return res.status(500).json(data);
-    }
+    logger.info("The profile did save to the database");
+    const data: IData = {
+      success: true,
+      message: "Saved the profile",
+      data: randomName,
+    };
+    return res.status(200).json(data);
   }
 }

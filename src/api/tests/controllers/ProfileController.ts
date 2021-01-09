@@ -4,10 +4,12 @@ const chai = require("chai");
 import chaiAsPromised from "chai-as-promised";
 const expect = chai.expect;
 
-import ProfileModel from "../../models/ProfileModel";
+import ProfileModel, {ProfileDocument} from "../../models/ProfileModel";
 import MongooseModel from "../../schemas/ProfileSchema";
 import ProfileController from "../../controllers/ProfileController";
 import { req, res, next, TestResponse } from "../utils";
+import {Document, LeanDocument} from "mongoose";
+import Doc = Mocha.reporters.Doc;
 
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
@@ -177,15 +179,24 @@ describe("ProfileController", () => {
         );
       });
 
-      // skipped because i need to find a tes to test an already populated database if its empty
-      it.skip("Should fail when no profiles were found", async () => {
+      it("Should fail when no profiles were found", async () => {
         req.params.count = 5;
-        // fixme :: How can I test an already populated database if its empty?
+        const Profile = new ProfileModel()
+        const result = await Profile.find({}, 9) as unknown as Document[];
+        const profiles = result.map(res => {
+          return res.toObject()
+        }) as unknown as ProfileDocument[]
+        await Profile.delete({name: profiles[0].name})
+        await Profile.delete({name: profiles[1].name})
+        await Profile.delete({name: profiles[2].name})
         const response = ((await ProfileController.GetProfilesByAmount(
-          req,
-          res,
-          next
+            req,
+            res,
+            next
         )) as unknown) as TestResponse;
+        await Profile.create(profiles[0])
+        await Profile.create(profiles[1])
+        await Profile.create(profiles[2])
         expect(response.statusCode).to.equal(404);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.message).to.equal("No profiles were found");
@@ -244,7 +255,7 @@ describe("ProfileController", () => {
         req.body.name = null;
         req.body.description = null;
         req.file = null;
-        let response = ((await ProfileController.PostProfile(
+        const response = ((await ProfileController.PostProfile(
           req,
           res,
           next
