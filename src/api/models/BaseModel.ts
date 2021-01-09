@@ -1,4 +1,4 @@
-import mongoose, {Document, Error, Model} from "mongoose";
+import mongoose, { Document, Error, Model } from "mongoose";
 
 import IIndexSignature from "../interfaces/models/IndexSignatureInterface";
 import logger from "../helpers/logger";
@@ -6,9 +6,9 @@ import logger from "../helpers/logger";
 interface ValidationError {
   errors: {
     [key: string]: {
-      message: string
-    }
-  }
+      message: string;
+    };
+  };
 }
 
 /**
@@ -246,7 +246,9 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @return {void|object} Return value is set if validation errors are returned
    */
-  public async create(data: { [key: string]: unknown }): Promise<void | ValidationError> {
+  public async create(data: {
+    [key: string]: unknown;
+  }): Promise<void | ValidationError> {
     const MongooseModel = this.getMongooseModel();
     const document = new MongooseModel(data);
     try {
