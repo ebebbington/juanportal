@@ -20,7 +20,7 @@ const format = {
 const transports = {
   production: new winston.transports.File({
     filename: errorLogFile,
-    level: "warn",
+    level: "error",
     format: winston.format.timestamp(),
   }),
   development: new winston.transports.Console({
@@ -38,5 +38,15 @@ const logger = winston.createLogger({
   format: format[env],
   transports: transports[env],
 });
+
+export function getLogger(
+  env: "production" | "development" = "development"
+): winston.Logger {
+  console.log("returning logger for " + env);
+  return winston.createLogger({
+    format: format[env],
+    transports: transports[env],
+  });
+}
 
 export default logger;

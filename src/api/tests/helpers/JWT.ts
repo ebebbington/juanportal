@@ -77,6 +77,19 @@ describe("JWT", () => {
         const response = JWT.checkToken(req, res, next);
         expect(response.statusCode).to.equal(403);
         expect(response.jsonMessage.success).to.equal(false);
+        expect(response.jsonMessage.message).to.equal("todo");
+      });
+
+      it("Should return a  403 status if no token in req", () => {
+        const req = {
+          headers: {},
+        };
+        const response = JWT.checkToken(req, res, next);
+        expect(response.statusCode).to.equal(403);
+        expect(response.jsonMessage.success).to.equal(false);
+        expect(response.jsonMessage.message).to.equal(
+          "Authorisation header is not set"
+        );
       });
     });
   });

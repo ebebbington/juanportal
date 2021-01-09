@@ -323,8 +323,8 @@ export default abstract class BaseModel implements IIndexSignature {
     // If it's a single object then fill (check strongly as we are supposed to be returning a document)
     // and if limit isnt defined or equals 1
     // if (result && !result.length && !Array.isArray(result) && typeof result === 'object') {
-    result.forEach((result) => {
-      this.stripNonExposableFields(result);
+    result.forEach((doc) => {
+      this.stripNonExposableFields(doc);
     });
     if (result && result.length === 1) {
       this.fill(result[0]);
