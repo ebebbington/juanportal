@@ -30,3 +30,13 @@ export const res: any = {
 export const next = function (): boolean {
   return true;
 };
+
+export type TestResponse = {
+  statusCode: number;
+  jsonMessage: {
+    success: boolean;
+    message: string;
+    // eslint-disable-next-line no-explicit-any
+    data: any;
+  };
+};

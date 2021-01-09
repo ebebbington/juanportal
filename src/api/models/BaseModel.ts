@@ -1,4 +1,4 @@
-import mongoose, { Document, Error, Model } from "mongoose";
+import mongoose, { Document, Model } from "mongoose";
 
 import IIndexSignature from "../interfaces/models/IndexSignatureInterface";
 import logger from "../helpers/logger";
@@ -74,7 +74,7 @@ export default abstract class BaseModel implements IIndexSignature {
    * @return {Document} The mongoose model from the schema
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected abstract getMongooseModel(): Model<Document<any>>;
+  protected abstract getMongooseModel(): Model<any>;
 
   /**
    * Create a mongoose object id from the passed in value
@@ -91,16 +91,23 @@ export default abstract class BaseModel implements IIndexSignature {
    * @return {mongoose.Types.ObjectId|boolean} The id, or false if cannot convert
    */
   private generateObjectId(id: string): mongoose.Types.ObjectId | boolean {
-    console.log("inside object id, id passed in is: " + id);
     try {
       // if the id isnt already an object id, convert it
       const objectId = new mongoose.Types.ObjectId(id);
-      console.log("returning object id: " + objectId);
       return objectId;
     } catch (err) {
       logger.error(`failed to convert ${id} to a mongoose object id`);
       return false;
     }
+  }
+
+  private stripNonExposableFields(document: Document): void {
+    Object.keys(document.toObject()).forEach((property: string) => {
+      const allowedToExpose = this.fieldsToExpose.includes(property);
+      if (allowedToExpose === false) {
+        document.set(property, null); // only if we dont use doc.toObject()
+      }
+    });
   }
 
   /**
@@ -120,22 +127,14 @@ export default abstract class BaseModel implements IIndexSignature {
    */
   private fill(document: Document): void {
     this.empty();
-    Object.keys(document).forEach((property: string) => {
-      const allowedToExpose = this.fieldsToExpose.includes(property);
-      if (allowedToExpose === false) {
-        // eslint-disable-next-line
-        // @ts-ignore
-        delete document[property];
-      }
-    });
     // Loops through the document properties
-    Object.keys(document).forEach((propName: string) => {
+    Object.keys(document.toObject()).forEach((propName: string) => {
       // If the child class has the property
-      if (Object.prototype.hasOwnProperty.call(this, propName)) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (this.hasOwnProperty(propName)) {
         // Assign it
-        // eslint-disable-next-line
-        // @ts-ignore
-        this[propName] = document[propName];
+        // eslint-disable-next-line no-prototype-builtins
+        this[propName] = document.get(propName);
       }
     });
   }
@@ -154,7 +153,8 @@ export default abstract class BaseModel implements IIndexSignature {
    */
   private empty(): void {
     this.fieldsToExpose.forEach((value: string) => {
-      if (Object.prototype.hasOwnProperty.call(this, value)) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (this.hasOwnProperty(value)) {
         this[value] = null;
       }
     });
@@ -223,6 +223,7 @@ export default abstract class BaseModel implements IIndexSignature {
       return false;
     }
     const updatedDocument = await MongooseModel.findOne(data);
+    this.stripNonExposableFields(updatedDocument);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.fill(updatedDocument as Document);
     return oldDocument;
@@ -253,6 +254,7 @@ export default abstract class BaseModel implements IIndexSignature {
     const document = new MongooseModel(data);
     try {
       await document.save();
+      this.stripNonExposableFields(document);
       this.fill(document);
       logger.info("[BaseModel - create: filled the model]");
     } catch (validationError) {
@@ -297,10 +299,7 @@ export default abstract class BaseModel implements IIndexSignature {
   ): Promise<boolean | Document[]> {
     // Convert the _id to an object id if passed in
     if (query && query._id) {
-      if (typeof query._id !== "string") {
-        throw new Error("_id must b string, you passed in: " + query._id);
-      }
-      query._id = this.generateObjectId(query._id);
+      query._id = this.generateObjectId(query._id as string);
       if (!query._id) {
         return false;
       }
@@ -314,19 +313,21 @@ export default abstract class BaseModel implements IIndexSignature {
     const result = await MongooseModel.find(query)
       .limit(limiter)
       .sort(sortable);
+
     // check for an empty response
     if ((Array.isArray(result) && !result.length) || !result) {
       // empty
       return false;
     }
+
     // If it's a single object then fill (check strongly as we are supposed to be returning a document)
     // and if limit isnt defined or equals 1
     // if (result && !result.length && !Array.isArray(result) && typeof result === 'object') {
+    result.forEach((result) => {
+      this.stripNonExposableFields(result);
+    });
     if (result && result.length === 1) {
-      console.log("rsult from find:");
-      console.log(result[0]);
       this.fill(result[0]);
-      return result;
     }
     return result;
   }
@@ -364,10 +365,7 @@ export default abstract class BaseModel implements IIndexSignature {
       );
     // convert _id if passed in
     if (query && query._id) {
-      if (typeof query._id !== "string") {
-        throw new Error("_id must b string, you passed in: " + query._id);
-      }
-      query._id = this.generateObjectId(query._id);
+      query._id = this.generateObjectId(query._id as string);
       if (!query._id) {
         return false;
       }

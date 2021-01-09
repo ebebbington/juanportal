@@ -11,6 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: API Test and Coverage Check
+        run: |
+          cd src/api
+          npm run build
+          docker-compose up -d > /dev/null
+          docker exec juanportal_api npm run cov
       - name: API Format Check
         run: |
           cd src/api
@@ -19,12 +25,6 @@ jobs:
         run: |
           cd src/api
           npm run lint
-      - name: API Test and Coverage Check
-        run: |
-          cd src/api
-          npm run build
-          docker-compose up -d > /dev/null
-          docker exec juanportal_api npm run cov
 
   client-checks:
     runs-on: ubuntu-latest

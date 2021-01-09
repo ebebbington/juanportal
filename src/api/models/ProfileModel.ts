@@ -4,7 +4,7 @@
 // import { FILE } from "dns";
 
 import BaseModel from "./BaseModel";
-import { Model, Document } from "mongoose";
+import { Model } from "mongoose";
 import MongooseModel from "../schemas/ProfileSchema";
 
 /**
@@ -109,7 +109,7 @@ export default class ProfileModel extends BaseModel {
    * @return {Document} The mongoose model from the schema
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected getMongooseModel(): Model<Document<any>> {
+  protected getMongooseModel(): Model<any> {
     return MongooseModel;
   }
 }

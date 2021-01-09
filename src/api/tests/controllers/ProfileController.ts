@@ -7,7 +7,7 @@ const expect = chai.expect;
 import ProfileModel from "../../models/ProfileModel";
 import MongooseModel from "../../schemas/ProfileSchema";
 import ProfileController from "../../controllers/ProfileController";
-import { req, res, next } from "../utils";
+import { req, res, next, TestResponse } from "../utils";
 
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
@@ -47,7 +47,11 @@ describe("ProfileController", () => {
 
       it("Should fail when it cannot parse the id to a number", async () => {
         req.params.id = "I cannot be parsed to a number";
-        const response = await ProfileController.GetProfileById(req, res, next);
+        const response = ((await ProfileController.GetProfileById(
+          req,
+          res,
+          next
+        )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.message).to.equal(
@@ -58,7 +62,11 @@ describe("ProfileController", () => {
       it("Should succeed on a valid id", async () => {
         const Profile = await saveProfileAndFindAndReturnModel();
         req.params.id = Profile._id;
-        const response = await ProfileController.GetProfileById(req, res, next);
+        const response = ((await ProfileController.GetProfileById(
+          req,
+          res,
+          next
+        )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(200);
         expect(response.jsonMessage.success).to.equal(true);
         expect(response.jsonMessage.message).to.equal(
@@ -75,7 +83,11 @@ describe("ProfileController", () => {
       it("Should fail when no profile was found", async () => {
         const validObjectId = mongoose.Types.ObjectId();
         req.params.id = validObjectId;
-        const response = await ProfileController.GetProfileById(req, res, next);
+        const response = ((await ProfileController.GetProfileById(
+          req,
+          res,
+          next
+        )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(404);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.message).to.equal("Couldnt find a profile");
@@ -85,11 +97,11 @@ describe("ProfileController", () => {
     describe("DeleteProfileById", () => {
       it("Should fail when it cannot parse the id to a number", async () => {
         req.params.id = "I cannot be parsed to a number";
-        const response = await ProfileController.DeleteProfileById(
+        const response = ((await ProfileController.DeleteProfileById(
           req,
           res,
           next
-        );
+        )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.message).to.equal(
@@ -99,11 +111,11 @@ describe("ProfileController", () => {
 
       it("Should fail when the profile doesnt exist", async () => {
         req.params.id = mongoose.Types.ObjectId();
-        const response = await ProfileController.DeleteProfileById(
+        const response = ((await ProfileController.DeleteProfileById(
           req,
           res,
           next
-        );
+        )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(404);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.message).to.equal("Profile doesnt exist");
@@ -112,11 +124,11 @@ describe("ProfileController", () => {
       it("Should delete a profile on valid id", async () => {
         const Profile = await saveProfileAndFindAndReturnModel();
         req.params.id = Profile._id;
-        const response = await ProfileController.DeleteProfileById(
+        const response = ((await ProfileController.DeleteProfileById(
           req,
           res,
           next
-        );
+        )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(200);
         expect(response.jsonMessage.success).to.equal(true);
         expect(response.jsonMessage.message).to.equal("Successfully deleted");
@@ -127,11 +139,11 @@ describe("ProfileController", () => {
     describe("GetProfilesByAmount", () => {
       it("Should fail when no param is defined in the URL", async () => {
         req.params.count = null;
-        const response = await ProfileController.GetProfilesByAmount(
+        const response = ((await ProfileController.GetProfilesByAmount(
           req,
           res,
           next
-        );
+        )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.message).to.equal("No count was passed in");
@@ -139,11 +151,11 @@ describe("ProfileController", () => {
 
       it("Should fail when it cannot parse the URL parameter to a number", async () => {
         req.params.count = "i cannot be parsed to a number";
-        const response = await ProfileController.GetProfilesByAmount(
+        const response = ((await ProfileController.GetProfilesByAmount(
           req,
           res,
           next
-        );
+        )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.message).to.equal(
@@ -153,11 +165,11 @@ describe("ProfileController", () => {
 
       it("Should fail when the URL parameter is less than 1", async () => {
         req.params.count = -1;
-        const response = await ProfileController.GetProfilesByAmount(
+        const response = ((await ProfileController.GetProfilesByAmount(
           req,
           res,
           next
-        );
+        )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.message).to.equal(
@@ -169,11 +181,11 @@ describe("ProfileController", () => {
       it.skip("Should fail when no profiles were found", async () => {
         req.params.count = 5;
         // fixme :: How can I test an already populated database if its empty?
-        const response = await ProfileController.GetProfilesByAmount(
+        const response = ((await ProfileController.GetProfilesByAmount(
           req,
           res,
           next
-        );
+        )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(404);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.message).to.equal("No profiles were found");
@@ -186,11 +198,11 @@ describe("ProfileController", () => {
         await saveProfileAndFindAndReturnModel();
         await saveProfileAndFindAndReturnModel();
         await saveProfileAndFindAndReturnModel();
-        const response = await ProfileController.GetProfilesByAmount(
+        const response = ((await ProfileController.GetProfilesByAmount(
           req,
           res,
           next
-        );
+        )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(200);
         expect(response.jsonMessage.success).to.equal(true);
         expect(response.jsonMessage.message).to.equal("Grabbed profiles");
@@ -204,7 +216,11 @@ describe("ProfileController", () => {
         req.body.name = profileData.name;
         req.body.description = null;
         req.file = null;
-        const response = await ProfileController.PostProfile(req, res, next);
+        const response = ((await ProfileController.PostProfile(
+          req,
+          res,
+          next
+        )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.message).to.equal("Profile already exists");
@@ -213,7 +229,11 @@ describe("ProfileController", () => {
 
       it("Should fail when passed in file name has an invalid extension", async () => {
         req.file = { originalname: "sample" };
-        const response = await ProfileController.PostProfile(req, res, next);
+        const response = ((await ProfileController.PostProfile(
+          req,
+          res,
+          next
+        )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.message).to.equal("No extension was found");
@@ -224,7 +244,11 @@ describe("ProfileController", () => {
         req.body.name = null;
         req.body.description = null;
         req.file = null;
-        let response = await ProfileController.PostProfile(req, res, next);
+        let response = ((await ProfileController.PostProfile(
+          req,
+          res,
+          next
+        )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.data).to.equal("name");
@@ -235,7 +259,11 @@ describe("ProfileController", () => {
         req.body.name = profileData.name;
         req.body.description = null;
         req.file = null;
-        const response = await ProfileController.PostProfile(req, res, next);
+        const response = ((await ProfileController.PostProfile(
+          req,
+          res,
+          next
+        )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(200);
         expect(response.jsonMessage.success).to.equal(true);
         expect(response.jsonMessage.message).to.equal("Saved the profile");

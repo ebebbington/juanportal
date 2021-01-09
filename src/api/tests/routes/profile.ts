@@ -1,12 +1,12 @@
 import "mocha";
 
-import * as chai from "chai";
-import * as chaiAsPromised from "chai-as-promised";
+import chai from "chai";
+import chaiAsPromised from "chai-as-promised";
 const expect = chai.expect;
 import app from "../../app";
-import * as chaiHttp from "chai-http";
+import chaiHttp from "chai-http";
 import ProfileModel from "../../models/ProfileModel";
-import * as fs from "fs";
+import fs from "fs";
 
 import multer from "multer";
 const storage = multer.memoryStorage();

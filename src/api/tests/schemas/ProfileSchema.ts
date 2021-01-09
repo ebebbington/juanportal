@@ -6,9 +6,11 @@ const expect = chai.expect;
 import chaiHttp from "chai-http";
 import MongooseModel from "../../schemas/ProfileSchema";
 import logger from "../../helpers/logger";
+// @ts-ignore
 logger.debug = function (): void {
   return;
 };
+// @ts-ignore
 logger.info = function (): void {
   return;
 };
@@ -25,13 +27,6 @@ describe("ProfileSchema", () => {
   // };
 
   describe("name", () => {
-    it("Should be a string", () => {
-      const document = new MongooseModel({ name: 234567 });
-      document.validate(() => {
-        expect(typeof document.name).to.equal("string");
-      });
-    });
-
     it("Should be required", (done) => {
       const document = new MongooseModel();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -65,13 +60,6 @@ describe("ProfileSchema", () => {
   });
 
   describe("description", () => {
-    it("Should be a string", () => {
-      const document = new MongooseModel({ description: 234567 });
-      document.validate(() => {
-        expect(typeof document.description).to.equal("string");
-      });
-    });
-
     it("Should not be required", (done) => {
       const document = new MongooseModel({ name: "edward" });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -99,13 +87,6 @@ describe("ProfileSchema", () => {
   });
 
   describe("image", () => {
-    it("Should be a string", () => {
-      const document = new MongooseModel({ image: 234567 });
-      document.validate(() => {
-        expect(typeof document.image).to.equal("string");
-      });
-    });
-
     it("Should be requred", (done) => {
       const document = new MongooseModel({ name: "edward" });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

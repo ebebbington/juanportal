@@ -143,6 +143,7 @@ describe("BaseModel", () => {
       });
 
       it("Should correctly query when limit isnt defined", async () => {
+        await MongooseModel.deleteMany({});
         // insert one
         const document = new MongooseModel({
           forename: "Hello",
@@ -150,7 +151,10 @@ describe("BaseModel", () => {
         await document.save();
         const Test = new TestModel();
         const result: any = await Test.find();
+        console.log("result:");
+        console.log(result);
         expect(result[0].forename).to.equal("Hello");
+        expect(Test.forename).to.equal("Hello");
         await MongooseModel.deleteMany({});
       });
 
@@ -369,9 +373,13 @@ describe("BaseModel", () => {
       it("Should fail when validation isnt met", async () => {
         const Test = new TestModel();
         const err = await Test.create({ forename: "" });
-        const fieldName: string = Object.keys(err.errors)[0];
-        const errorMessage: string = err.errors[fieldName].message;
-        expect(fieldName).to.equal("forename");
+        expect(err).to.exist;
+        if (err) {
+          // just to bypass tsc errors
+          const fieldName: string = Object.keys(err.errors)[0];
+          const errorMessage: string = err.errors[fieldName].message;
+          expect(fieldName).to.equal("forename");
+        }
       });
     });
   });

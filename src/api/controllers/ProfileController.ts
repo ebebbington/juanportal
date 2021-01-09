@@ -35,8 +35,12 @@ export default class ProfileController {
   // eslint-disable-next-line
   public static async GetProfilesByAmount(
     req: express.Request<import("express-serve-static-core").ParamsDictionary>,
-    res: express.Response
+    res: express.Response,
+    next?: express.NextFunction
   ): Promise<express.Response> {
+    if (next) {
+      //
+    }
     logger.info("[Profile Controller - GetProfilesByAmount]");
 
     //
@@ -112,12 +116,17 @@ export default class ProfileController {
    * @param {express.Request}   req   Request object
    * @param {express.Response}  res   Response object
    *
+   * @param next
    * @return {express.Response} res
    */
   public static async GetProfileById(
     req: express.Request<import("express-serve-static-core").ParamsDictionary>,
-    res: express.Response
+    res: express.Response,
+    next?: express.NextFunction
   ): Promise<express.Response> {
+    if (next) {
+      //
+    }
     logger.info("[Profile Controller - GetProfileById]");
 
     //
@@ -179,8 +188,12 @@ export default class ProfileController {
    */
   public static async DeleteProfileById(
     req: express.Request<import("express-serve-static-core").ParamsDictionary>,
-    res: express.Response
+    res: express.Response,
+    next?: express.NextFunction
   ): Promise<express.Response> {
+    if (next) {
+      //
+    }
     logger.info("[ProfileController - DeleteProfileById]");
 
     //
@@ -253,8 +266,12 @@ export default class ProfileController {
   public static async PostProfile(
     req: IMulterRequest &
       express.Request<import("express-serve-static-core").ParamsDictionary>,
-    res: express.Response
+    res: express.Response,
+    next?: express.NextFunction
   ): Promise<express.Response> {
+    if (next) {
+      //
+    }
     logger.info("[ProfileController - PostProfile]");
 
     //
