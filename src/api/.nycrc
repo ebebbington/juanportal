@@ -1,11 +1,10 @@
 {
   "all": true,
   "check-coverage": true,
-  "branches": 100,
-  "lines": 100,
-  "functions": 100,
-  "statements": 100,
-  "per-file": true,
+  "branches": 85,
+  "lines": 95,
+  "functions": 95,
+  "statements": 95,
   "extension": [
       ".ts"
   ],
@@ -24,6 +23,6 @@
       "ecosystem.config.js",
       "routes/test.js"
    ],
-   "reporter": "html",
+   "reporter": "text",
      "instrument": true
 }

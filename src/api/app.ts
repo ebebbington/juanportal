@@ -85,9 +85,13 @@ class Server {
    */
   constructor() {
     // define properties
-    this.env = process.env.NODE_ENV ?? "";
+    this.env = process.env.NODE_ENV as string;
     // this.port = process.env.PORT || 3005
-    this.dbUrl = process.env.DB_URL ?? "";
+    this.dbUrl = process.env.DB_URL as string;
+    /* istanbul ignore if */
+    if (!this.env || !this.dbUrl) {
+      throw new Error(`NODE_ENV snd DB_URL env vars must be set`);
+    }
     // create expressjs application
     this.app = express();
     // configure application
@@ -190,18 +194,18 @@ class Server {
    */
   private initiateDbLogging(): void {
     mongoose.connection
-      .on("connecting", () => {
-        logger.info("Connecting to the database");
-      })
+      // .on("connecting", () => {
+      //   logger.info("Connecting to the database");
+      // })
       .on("connected", () => {
         logger.info("Connected to the database");
       })
       .on("close", () => {
         logger.info("Closed the connection to the database");
       })
-      .on("error", () => {
-        logger.error("Connection error with the database");
-      })
+      // .on("error", () => {
+      //   logger.error("Connection error with the database");
+      // })
       .on("disconnected", () => {
         logger.info("Lost connection with the database");
       });

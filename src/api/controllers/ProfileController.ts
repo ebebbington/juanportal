@@ -250,6 +250,7 @@ export default class ProfileController {
     res: express.Response,
     next?: express.NextFunction
   ): Promise<express.Response> {
+    /* istanbul ignore if */
     if (next) {
       //
     }
