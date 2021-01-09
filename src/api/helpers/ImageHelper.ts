@@ -15,7 +15,6 @@ import path from "path";
  * @method generateRandomName Generate a 36 character string
  */
 export default class ImageHelper {
-  // eslint-disable-line  allow only using static props
   /**
    * Generate a random 36 character string, keeping the extension intact
    *

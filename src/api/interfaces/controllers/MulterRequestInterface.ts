@@ -8,5 +8,6 @@
  * }
  */
 export interface IMulterRequest extends Request {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   file: any;
 }

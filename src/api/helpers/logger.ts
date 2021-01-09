@@ -25,7 +25,8 @@ const transports = {
   }),
   development: new winston.transports.Console({
     level: "debug",
-    // @ts-ignore winston types suck
+    // Winston types suck
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     format: winston.format.timestamp(),
   }),
 };

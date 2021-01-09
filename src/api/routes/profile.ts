@@ -2,7 +2,6 @@ import express from "express";
 import ProfileController from "../controllers/ProfileController";
 
 import multer from "multer";
-import ProfileModel from "../models/ProfileModel";
 const app = express();
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -60,7 +59,8 @@ app
       data: new FormData(form)
     })
    */
-  // @ts-expect-error
-  .post(upload.single("image"), ProfileController.PostProfile); // eslint-disable-line
+  // eslint-disable-next-line
+  // @ts-ignore
+  .post(upload.single("image"), ProfileController.PostProfile);
 
 export default app;

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const req: any = {
   params: {
     count: null,
@@ -9,6 +10,7 @@ export const req: any = {
   },
   file: null,
 };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const res: any = {
   statusCode: null,
   jsonMessage: null,
@@ -16,6 +18,7 @@ export const res: any = {
     this.statusCode = statusCode;
     return this;
   },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   json: function (obj: any) {
     this.jsonMessage = obj;
     return this;
@@ -24,6 +27,6 @@ export const res: any = {
     return this;
   },
 };
-export const next = function () {
+export const next = function (): boolean {
   return true;
 };

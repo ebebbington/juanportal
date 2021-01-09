@@ -41,9 +41,9 @@ class JWT {
    * @return {void|res} Void when accepted by calling next(), or return response on error
    */
   public static checkToken(
-    req: any,
-    res: any,
-    next: Function
+    req: express.Request,
+    res: express.Response,
+    next: (err?: Error) => void
   ): void | Response {
     const token: string = req.headers.authorization;
     try {
@@ -71,10 +71,10 @@ class JWT {
    *
    * @return {boolean|string} false|token False when it couldn't create a token, or the token on success
    */
-  public static createToken(payload: object): boolean | string {
+  public static createToken(payload: Record<string, unknown>): boolean | string {
     let hasUndefinedProp = false;
     Object.keys(payload).forEach((prop) => {
-      if (!(payload as any)[prop]) {
+      if (!payload[prop]) {
         hasUndefinedProp = true;
       }
     });
@@ -85,7 +85,7 @@ class JWT {
       return false;
     }
     try {
-      const token: string = jwt.sign(
+      const token = jwt.sign(
         payload,
         privateKey,
         options as jwt.SignOptions

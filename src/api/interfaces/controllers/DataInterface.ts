@@ -12,5 +12,5 @@
 export interface IData {
   success: boolean;
   message: string;
-  data: any;
+  data: unknown;
 }

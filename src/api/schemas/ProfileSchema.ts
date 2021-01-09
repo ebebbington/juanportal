@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose"
 
 const ProfileSchema = new mongoose.Schema(
   {
@@ -11,7 +11,7 @@ const ProfileSchema = new mongoose.Schema(
       ],
       maxlength: [140, "Name is too long and should not exceed 140 characters"],
       validate: {
-        validator: function (v: string) {
+        validator: function (v: string): boolean {
           return /.+[^\s]/.test(v);
         },
         // message: (props: { value: any; }) => `${props.value} is not set`
@@ -29,10 +29,10 @@ const ProfileSchema = new mongoose.Schema(
       type: String,
       required: true,
       validate: {
-        validator: function (v: string) {
+        validator: function (v: string): boolean {
           return /\.(jpg|jpeg|JPG|JPEG|png|PNG)$/.test(v);
         },
-        message: (props: { value: any }) =>
+        message: (): string =>
           "Image does not have a valid extension. Please use: .jpg, .jpeg or .png",
       },
       minlength: [5, "Image name is to small, therefore not a valid name"], // eg z.png

@@ -1,12 +1,12 @@
 import "mocha";
 
-import chai from "chai";
-import chaiAsPromised from "chai-as-promised";
+import * as chai from "chai";
+import * as chaiAsPromised from "chai-as-promised";
 const expect = chai.expect;
 import app from "../../app";
-import chaiHttp from "chai-http";
+import * as chaiHttp from "chai-http";
 import ProfileModel from "../../models/ProfileModel";
-import fs from "fs";
+import * as fs from "fs";
 
 import multer from "multer";
 const storage = multer.memoryStorage();
@@ -28,7 +28,7 @@ describe("Profile Route", () => {
       chai
         .request(app)
         .get("/api/profile/count/hello")
-        .end((err: any, res: any) => {
+        .end((err, res) => {
           expect(res.status).to.equal(400);
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(false);
@@ -47,7 +47,8 @@ describe("Profile Route", () => {
       chai
         .request(app)
         .get("/api/profile/count/5")
-        .end(async (err: any, res: any) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .end(async (err: any, res: any) => {
           expect(res.status).to.equal(200);
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(true);
@@ -59,7 +60,8 @@ describe("Profile Route", () => {
       chai
         .request(app)
         .get("/api/profile/count/0")
-        .end((err: any, res: any) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .end((err: any, res: any) => {
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(false);
           expect(res.status).to.equal(400);
@@ -83,13 +85,14 @@ describe("Profile Route", () => {
       const actualNumberOfProfiles = Array.isArray(profiles)
         ? profiles.length
         : 0;
-      const hasProfiles = actualNumberOfProfiles > 0 ? true : false;
+      const hasProfiles = actualNumberOfProfiles > 0;
       expect(hasProfiles).to.equal(true); // some profiles should already exist when running this
       // then we are going to compare that number with the real result
       chai
         .request(app)
         .get("/api/profile/count/" + numberOfProfilesToFind)
-        .end((err: any, res: any) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .end((err: any, res: any) => {
           const json = JSON.parse(res.text);
           // So here it's a fix to get the amount of profiles whether an array or single object (one profile) was given back
           expect(json.data.length).to.equal(actualNumberOfProfiles);
@@ -102,7 +105,8 @@ describe("Profile Route", () => {
       chai
         .request(app)
         .get("/api/profile/count/6")
-        .end((err: any, res: any) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .end((err: any, res: any) => {
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(false);
           expect(res.status).to.equal(404);
@@ -126,7 +130,8 @@ describe("Profile Route", () => {
       chai
         .request(app)
         .get("/api/profile/id/hello")
-        .end((err: any, res: any) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .end((err: any, res: any) => {
           expect(res.status).to.equal(400);
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(false);

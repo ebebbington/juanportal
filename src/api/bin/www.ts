@@ -10,6 +10,7 @@ app.set("port", port);
 //create http server
 const server = http.createServer(app);
 server.listen(port);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 server.on("error", function (error: any) {
   if (error.syscall !== "listen") {
     throw error;
@@ -37,7 +38,7 @@ server.on("listening", onListening);
  *
  * @return {void}
  */
-function onListening() {
+function onListening(): void {
   const addr = server.address();
   const bind = "pipe " + addr;
   logger.info("Listening on " + JSON.stringify(bind));

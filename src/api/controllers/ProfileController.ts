@@ -4,7 +4,8 @@ import { IMulterRequest } from "../interfaces/controllers/MulterRequestInterface
 
 import ProfileModel from "../models/ProfileModel";
 import ImageHelper from "../helpers/ImageHelper";
-import logger from "../helpers/logger"; // eslint-disable-line
+import logger from "../helpers/logger";
+import {Document} from "mongoose"; // eslint-disable-line
 
 /**
  * @class ProfileController
@@ -22,7 +23,6 @@ import logger from "../helpers/logger"; // eslint-disable-line
  */
 // eslint-disable-next-line
 export default class ProfileController {
-  // eslint-disable-line allow class to only have static props
   /**
    * Retrieve a defined amount of profiles in date order by req.params.count
    *
@@ -36,8 +36,7 @@ export default class ProfileController {
   public static async GetProfilesByAmount(
     req: express.Request<import("express-serve-static-core").ParamsDictionary>,
     res: express.Response,
-    next: Function
-  ): Promise<any> {
+  ): Promise<express.Response> {
     logger.info("[Profile Controller - GetProfilesByAmount]");
 
     //
@@ -54,7 +53,7 @@ export default class ProfileController {
       return res.status(400).json(data);
     }
 
-    const parsedCount: any = parseInt(req.params.count);
+    const parsedCount = parseInt(req.params.count);
     if (isNaN(parsedCount)) {
       logger.error(
         `Cannot parse the count param of ${req.params.count} param to an int`
@@ -96,7 +95,7 @@ export default class ProfileController {
     }
 
     logger.info(
-      `Profiles with a length of ${(profiles as any[]).length} were found`
+      `Profiles with a length of ${(profiles as Document[]).length} were found`
     );
     const data: IData = {
       success: true,
@@ -112,22 +111,20 @@ export default class ProfileController {
    *
    * @param {express.Request}   req   Request object
    * @param {express.Response}  res   Response object
-   * @param {Function}          next  Callback
    *
    * @return {express.Response} res
    */
   public static async GetProfileById(
     req: express.Request<import("express-serve-static-core").ParamsDictionary>,
     res: express.Response,
-    next: Function
-  ): Promise<any> {
+  ): Promise<express.Response> {
     logger.info("[Profile Controller - GetProfileById]");
 
     //
     // Checks
     //
 
-    const parsedId: any = parseInt(req.params.id);
+    const parsedId = parseInt(req.params.id);
     if (isNaN(parsedId)) {
       logger.error(`The id of ${req.params.id} cannot be parsed to an int`);
       const data: IData = {
@@ -183,15 +180,14 @@ export default class ProfileController {
   public static async DeleteProfileById(
     req: express.Request<import("express-serve-static-core").ParamsDictionary>,
     res: express.Response,
-    next: Function
-  ): Promise<any> {
+  ): Promise<express.Response> {
     logger.info("[ProfileController - DeleteProfileById]");
 
     //
     // Checks
     //
 
-    const parsedId: any = parseInt(req.params.id);
+    const parsedId = parseInt(req.params.id);
     if (isNaN(parsedId)) {
       logger.error(`Couldnt parse ${req.params.id} into a number`);
       const data: IData = {
@@ -258,8 +254,7 @@ export default class ProfileController {
     req: IMulterRequest &
       express.Request<import("express-serve-static-core").ParamsDictionary>,
     res: express.Response,
-    next: Function
-  ): Promise<any> {
+  ): Promise<express.Response> {
     logger.info("[ProfileController - PostProfile]");
 
     //
@@ -268,7 +263,7 @@ export default class ProfileController {
 
     // still return a default name for the client to use
     const sampleFilename = "sample.jpg";
-    let imageFileName: string = "";
+    let imageFileName = "";
     if (req.file) {
       logger.info("A file was passed in");
       imageFileName = req.file.originalname;

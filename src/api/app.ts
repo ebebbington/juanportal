@@ -131,7 +131,7 @@ class Server {
     if (this.env !== "production") {
       this.app.use(
         morgan("dev", {
-          skip: function (req: any, res: any) {
+          skip: function (req: express.Request, res: express.Response) {
             return res.statusCode < 400;
           },
           stream: process.stderr,
@@ -139,7 +139,7 @@ class Server {
       );
       this.app.use(
         morgan("dev", {
-          skip: function (req: any, res: any) {
+          skip: function (req: express.Request, res: express.Response) {
             return res.statusCode >= 400;
           },
           stream: process.stdout,
@@ -175,8 +175,8 @@ class Server {
           logger.info("Database connection has opened");
         }
       })
-      .catch((err: any) => {
-        logger.info("Error when making conn to db");
+      .catch((err: Error) => {
+        logger.error("Error when making conn to db");
         logger.error(err);
       });
   }

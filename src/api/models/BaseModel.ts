@@ -2,7 +2,6 @@ import mongoose, { Document, Model } from "mongoose";
 
 import IIndexSignature from "../interfaces/models/IndexSignatureInterface";
 import logger from "../helpers/logger";
-const _ = require("lodash");
 
 /**
  * @class BaseModel
@@ -29,7 +28,7 @@ const _ = require("lodash");
  * @method delete                         Used for any DELETE queries
  */
 export default abstract class BaseModel implements IIndexSignature {
-  [key: string]: any;
+  [key: string]: string | boolean | number | unknown;
 
   /**
    * When the entry was created
@@ -66,7 +65,8 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @return {Document} The mongoose model from the schema
    */
-  protected abstract getMongooseModel(): Model<any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  protected abstract getMongooseModel(): Model<Document<any>>;
 
   /**
    * Create a mongoose object id from the passed in value
@@ -96,36 +96,6 @@ export default abstract class BaseModel implements IIndexSignature {
   }
 
   /**
-   * Validate output fields
-   *
-   * @method stripNonExposableProperties
-   *
-   * @description Before returning a model extracted from the database,
-   *              strip out any properties that arent defined in the fieldsToExpose
-   *              array, as suggested. It looks through the object properties and then
-   *              checks every field to expose against that. Rinse and repeat
-   *
-   * @example
-   * // this.fieldsToExpose = ['_id', 'name']
-   * // document = {_id: ..., name: ..., title: ...}
-   * const document = this.stripNonExposableFields(document) // {_id: ..., name: ...}
-   *
-   * @param {any} document The object holding the db data
-   *
-   * @return {object} The same passed in document but stripping the non-exposable fields
-   */
-  private stripNonExposableProperties(document: any = {}): object {
-    // Loop through the fields to expose
-    Object.keys(document).forEach((property: string, value: any) => {
-      const allowedToExpose: boolean = this.fieldsToExpose.includes(property);
-      if (!allowedToExpose) {
-        delete document[property];
-      }
-    });
-    return document;
-  }
-
-  /**
    * Fill the model properties with data from the database
    *
    * @method fill
@@ -134,31 +104,26 @@ export default abstract class BaseModel implements IIndexSignature {
    * const Document = Model.find({}).limit(1)
    * this.fill(Document)
    *
-   * @param {object} dbDocument  The document retrieved from a database query. When looping through the keys, it turns out
+   * @param {object} document  The document retrieved from a database query. When looping through the keys, it turns out
    *                             the object has hidden properties, hence when we are type hinting so strictly and
    *                             looking inside the '_doc' property
    *
    * @return {void}
    */
-  private fill(dbDocument: {
-    $__: any;
-    isNew: any;
-    errors: any;
-    _doc: object;
-    $locals: any;
-  }): void {
+  private fill(document: Document): void {
     this.empty();
-    const documentData: object = dbDocument._doc;
-    const strippedDocument: object = this.stripNonExposableProperties(
-      documentData
-    );
+    Object.keys(document).forEach((property: string) => {
+      const allowedToExpose = this.fieldsToExpose.includes(property);
+      if (allowedToExpose === false) {
+        delete document[property];
+      }
+    });
     // Loops through the document properties
-    Object.keys(strippedDocument).forEach(
-      (propName: string, propValue: any) => {
+    Object.keys(document).forEach(
+      (propName: string) => {
         // If the child class has the property
-        if (this.hasOwnProperty(propName)) {
+        if (Object.prototype.hasOwnProperty.call(this, propName)) {
           // Assign it
-          // @ts-expect-error
           this[propName] = documentData[propName];
         }
       }
@@ -178,8 +143,8 @@ export default abstract class BaseModel implements IIndexSignature {
    * @return void
    */
   private empty(): void {
-    this.fieldsToExpose.forEach((value: string, index: number) => {
-      if (this.hasOwnProperty(value)) {
+    this.fieldsToExpose.forEach((value: string) => {
+      if (Object.prototype.hasOwnProperty.call(this, value)) {
         this[value] = null;
       }
     });
@@ -213,14 +178,14 @@ export default abstract class BaseModel implements IIndexSignature {
    * @return {Promise<Document|boolean>} The old document (before updating) or false based on the success
    */
   public async update(
-    query: { [key: string]: any },
-    data: { [key: string]: any }
+    query: { [key: string]: unknown },
+    data: { [key: string]: unknown }
   ): Promise<Document | boolean> {
-    const dataToUpdate: { [key: string]: any } = {}; // to store fields to update
+    const dataToUpdate: { [key: string]: unknown } = {}; // to store fields to update
     // Loop through the key values pairs provided
-    Object.keys(data).forEach((propName: string, propVal: any) => {
+    Object.keys(data).forEach((propName: string) => {
       // Check the props passed in are in this class
-      if (this.hasOwnProperty(propName)) {
+      if (Object.prototype.hasOwnProperty.call(this, propName)) {
         // Check if that prop passed in is different than
         // the existing prop
         if (this[propName] !== data[propName]) {
@@ -248,7 +213,8 @@ export default abstract class BaseModel implements IIndexSignature {
       return false;
     }
     const updatedDocument = await MongooseModel.findOne(data);
-    this.fill(updatedDocument);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.fill(updatedDocument as Document<any>);
     return oldDocument;
   }
 
@@ -266,11 +232,11 @@ export default abstract class BaseModel implements IIndexSignature {
    * const data = {name: 'hello', ....}
    * const errs = await Profile.create(data) // fills the model
    *
-   * @param {{ [key: string]: any[] }} data Key value pairs e.g. {name: '', image: ''}
+   * @param data Key value pairs e.g. {name: '', image: ''}
    *
    * @return {void|object} Return value is set if validation errors are returned
    */
-  public async create(data: { [key: string]: any }): Promise<void | any> {
+  public async create(data: { [key: string]: unknown }): Promise<void | Error> {
     const MongooseModel = this.getMongooseModel();
     const document = new MongooseModel(data);
     try {
@@ -313,10 +279,10 @@ export default abstract class BaseModel implements IIndexSignature {
    * @returns {[object]|boolean} False if an error, array if the db query returned data
    */
   public async find(
-    query?: { [key: string]: any },
-    limiter: number = 1,
-    sortable: object = {}
-  ): Promise<boolean | object[]> {
+    query?: { [key: string]: unknown },
+    limiter = 1,
+    sortable = {}
+  ): Promise<boolean | Document[]> {
     // Convert the _id to an object id if passed in
     if (query && query._id) {
       query._id = this.generateObjectId(query._id);
@@ -342,6 +308,8 @@ export default abstract class BaseModel implements IIndexSignature {
     // and if limit isnt defined or equals 1
     // if (result && !result.length && !Array.isArray(result) && typeof result === 'object') {
     if (result && result.length === 1) {
+      console.log('rsult from find:')
+      console.log(result[0])
       this.fill(result[0]);
       return result;
     }
@@ -371,11 +339,11 @@ export default abstract class BaseModel implements IIndexSignature {
    * @returns {boolean} Success of the method call
    */
   public async delete(
-    query: { [key: string]: any } = {},
-    deleteMany: boolean = false
+    query: { [key: string]: unknown } = {},
+    deleteMany = false
   ): Promise<boolean> {
     // warn
-    if (_.isEmpty(query))
+    if (Object.keys(query).length === 0)
       logger.warn(
         `[BaseModel: delete - query param isnt defined. If deleteMany is defined (${deleteMany}) its going to delete all`
       );
@@ -399,7 +367,7 @@ export default abstract class BaseModel implements IIndexSignature {
     }
     // delete many documents
     // and if the query is empty and wipe isnt allowed, don't let them delete EVERYTHING
-    if (_.isEmpty(query)) {
+    if (Object.keys(query).length === 0) {
       return false;
     }
     const result = await MongooseModel.deleteMany(query);
