@@ -12,34 +12,18 @@
     "test": "node_modules/.bin/mocha -r ts-node/register -r source-map-support/register --exit tests/**/*.ts",
     "stress": "npm i --no-save artillery && node_modules/.bin/artillery run",
     "cov": "node_modules/.bin/nyc npm run test",
-    "fmt:check": "npm install --no-save eslint ts-standard && ts-standard",
-    "fmt:fix": "npm install --no-save ts-standard eslint && ts-standard --fix"
-  },
-  "ts-standard": {
-    "ignore": [
-      "node_modules",
-      "bin",
-      "controllers/example.*",
-      "helpers/*.js",
-      "interfaces/*/*.js",
-      "models/*.js",
-      "routes/*.js",
-      "schemas/*.js",
-      "coverage"
-    ]
+    "fmt:check": "npm i --no-save prettier && node_modules/.bin/prettier --check .",
+    "fmt:fix": "npm i --no-save prettier && node_modules/.bin/prettier --write .",
+    "lint": "npm i --no-save eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser && node_modules/.bin/eslint --ext .ts ."
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
-    "chai-http": "^4.3.0",
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
     "mocha": "^6.2.2",
     "mongoose": "^5.11.10",
     "morgan": "^1.9.1",
@@ -59,10 +43,11 @@
     "@types/morgan": "^1.9.2",
     "@types/multer": "^1.4.5",
     "@types/node": "^12.12.22",
-    "babel-preset-env": "^1.7.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-http": "^4.3.0",
     "nyc": "^15.1.0",
     "source-map-support": "^0.5.19",
-    "ts-node": "^8.5.4",
-    "wrappy": "^1.0.2"
+    "ts-node": "^8.5.4"
   }
 }

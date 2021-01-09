@@ -1,12 +1,12 @@
 config:
-    target: "http://0.0.0.0:9002/api"
-    phases:
-        - duration: 60
-          arrivalRate: 50
-    defaults:
+  target: "http://0.0.0.0:9002/api"
+  phases:
+    - duration: 60
+      arrivalRate: 50
+  defaults:
 
 scenarios:
-    - name: "Test the base end point of the API"
-      flow:
-        - get:
-            url: "/"
+  - name: "Test the base end point of the API"
+    flow:
+      - get:
+          url: "/"

@@ -1,6 +1,10 @@
 node_modules/
 logs
+bin/www.js.map
+bin/www.js
 public/images
+api.config.js
+helpers/logger.js
 .vscode
 app.js
 interfaces/models/*.js

@@ -10,7 +10,7 @@
  * }
  */
 export interface IData {
-  success: boolean
-  message: string
-  data: any
+  success: boolean;
+  message: string;
+  data: unknown;
 }

@@ -1,4 +1,4 @@
-import express from 'express'
+import express from "express";
 
 // class Types {
 //     public static Get = function () {}
@@ -16,10 +16,22 @@ import express from 'express'
 // }
 
 export interface IBaseController {
-  Post: (req: express.Request, res: express.Response) => Promise<any>
-  Get: (req: express.Request, res: express.Response) => Promise<any>
-  Update: (req: express.Request, res: express.Response) => Promise<any>
-  Delete: (req: express.Request, res: express.Response) => Promise<any>
+  Post: (
+    req: express.Request,
+    res: express.Response
+  ) => Promise<express.Response>;
+  Get: (
+    req: express.Request,
+    res: express.Response
+  ) => Promise<express.Response>;
+  Update: (
+    req: express.Request,
+    res: express.Response
+  ) => Promise<express.Response>;
+  Delete: (
+    req: express.Request,
+    res: express.Response
+  ) => Promise<express.Response>;
 }
 
 /**

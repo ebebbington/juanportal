@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const req: any = {
   params: {
     count: null,
@@ -5,25 +6,37 @@ export const req: any = {
   },
   body: {
     name: null,
-    description: null
+    description: null,
   },
-  file: null
-}
-export const res:any = {
+  file: null,
+};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const res: any = {
   statusCode: null,
   jsonMessage: null,
-  status (statusCode: number) {
-    this.statusCode = statusCode
-    return this
+  status(statusCode: number) {
+    this.statusCode = statusCode;
+    return this;
   },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   json: function (obj: any) {
-    this.jsonMessage = obj
-    return this
+    this.jsonMessage = obj;
+    return this;
   },
-  end () {
-    return this
-  }
-}
-export const next = function () {
-  return true
-}
+  end() {
+    return this;
+  },
+};
+export const next = function (): boolean {
+  return true;
+};
+
+export type TestResponse = {
+  statusCode: number;
+  jsonMessage: {
+    success: boolean;
+    message: string;
+    // eslint-disable-next-line no-explicit-any
+    data: any;
+  };
+};

@@ -1,0 +1,12 @@
+node_modules
+bin/*.js
+controllers/*.js
+helpers/*.js
+interfaces/*/*.js
+models/*.js
+routes/*.js
+schemas/*.js
+*.js
+artillery
+coverage
+.nyc_output

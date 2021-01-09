@@ -1,12 +1,13 @@
-import express from 'express'
-import ProfileController from '../controllers/ProfileController'
+import express from "express";
+import ProfileController from "../controllers/ProfileController";
 
-import multer from 'multer'
-const app = express()
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage })
+import multer from "multer";
+const app = express();
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-app.route('/count/:count')
+app
+  .route("/count/:count")
 
   /**
    * @example
@@ -17,34 +18,35 @@ app.route('/count/:count')
    *  dataType: 'json'
    * })
    */
-  .get(ProfileController.GetProfilesByAmount)
+  .get(ProfileController.GetProfilesByAmount);
 
-app.route('/id/:id')
+app
+  .route("/id/:id")
 
-/**
-     * @example
-     * const id = 'get the id here
-     * $.ajax({
-     *  url: '/api/profile/id/' + id,
-     *  method: 'get',
-     *  dataType: 'json'
-     * })
-     */
+  /**
+   * @example
+   * const id = 'get the id here
+   * $.ajax({
+   *  url: '/api/profile/id/' + id,
+   *  method: 'get',
+   *  dataType: 'json'
+   * })
+   */
   .get(ProfileController.GetProfileById)
 
   /**
-     * @example
-     * const id = 'get the id here
-     * $.ajax({
-     *  url: '/api/profile/id/' + id,
-     *  method: 'delete',
-     *  dataType: 'json'
-     * })
-     */
-  .delete(ProfileController.DeleteProfileById)
+   * @example
+   * const id = 'get the id here
+   * $.ajax({
+   *  url: '/api/profile/id/' + id,
+   *  method: 'delete',
+   *  dataType: 'json'
+   * })
+   */
+  .delete(ProfileController.DeleteProfileById);
 
-app.route('/')
-
+app
+  .route("/")
   /**
    * @example
    * const form = $('form')[0]
@@ -57,7 +59,8 @@ app.route('/')
       data: new FormData(form)
     })
    */
-  // @ts-expect-error
-  .post(upload.single('image'), ProfileController.PostProfile) // eslint-disable-line
+  // eslint-disable-next-line
+  // @ts-ignore
+  .post(upload.single("image"), ProfileController.PostProfile);
 
-export default app
+export default app;

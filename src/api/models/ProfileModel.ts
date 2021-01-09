@@ -3,9 +3,18 @@
 // import { Schema } from "inspector";
 // import { FILE } from "dns";
 
-import BaseModel from './BaseModel'
-import { Model } from 'mongoose'
-import MongooseModel from '../schemas/ProfileSchema'
+import BaseModel from "./BaseModel";
+import { Model } from "mongoose";
+import MongooseModel from "../schemas/ProfileSchema";
+import * as mongoose from "mongoose";
+
+export interface ProfileDocument {
+  _id: mongoose.Types.ObjectId;
+  name: string;
+  description: string;
+  image: string;
+  [key: string]: unknown;
+}
 
 /**
  * @class ProfileModel
@@ -33,49 +42,49 @@ export default class ProfileModel extends BaseModel {
    *
    * @var {string|null} _id
    */
-  public _id: string|null = null
+  public _id: string | null = null;
 
   /**
    * Name field of the profile model
    *
    * @var {string|null} name
    */
-  public name: string|null = null
+  public name: string | null = null;
 
   /**
    * Description field of the profile model
    *
    * @var {string|null} description
    */
-  public description: string|null = null
+  public description: string | null = null;
 
   /**
    * Image field of the profile model
    *
    * @var {string|null} image
    */
-  public image: string|null = null
+  public image: string | null = null;
 
   /**
    * When the entry was created
    *
    * @var {string|null} created_at
    */
-  public readonly created_at: string|null = null
+  public readonly created_at: string | null = null;
 
   /**
    * When the entry was updated
    *
    * @var {string|null} updated_at
    */
-  public readonly updated_at: string|null = null
+  public readonly updated_at: string | null = null;
 
   /**
    * The name of the table associated with this model
    *
    * @var {string} tablename
    */
-  public readonly tablename: string = 'Profile'
+  public readonly tablename: string = "Profile";
 
   /**
    * Fields in the database to be assigned to this model
@@ -86,11 +95,11 @@ export default class ProfileModel extends BaseModel {
    * @var {string[]} fieldsToExpose
    */
   public readonly fieldsToExpose: string[] = [
-    '_id',
-    'name',
-    'description',
-    'image'
-  ]
+    "_id",
+    "name",
+    "description",
+    "image",
+  ];
 
   // constructor (id: number) {
   //   super(id)
@@ -108,7 +117,8 @@ export default class ProfileModel extends BaseModel {
    *
    * @return {Document} The mongoose model from the schema
    */
-  protected getMongooseModel (): Model<any> {
-    return MongooseModel
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  protected getMongooseModel(): Model<any> {
+    return MongooseModel;
   }
 }
