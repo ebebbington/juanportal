@@ -1,7 +1,8 @@
 import http, { Server as HTTPServer } from "http";
 import express, { Application as ExpressApp } from "express";
-require("dotenv").config();
-const port: string = process.env.PORT || "9009";
+import dotenv from "dotenv"
+dotenv.config()
+const port = process.env.PORT || "9009";
 import socketIo, { Server as SocketIOServer } from "socket.io";
 import SocketServer from "./socket";
 
@@ -58,7 +59,7 @@ class Server {
    * @description
    * Configure the server
    */
-  private configure() {
+  private configure(): void {
     this.app.set("port", this.port);
     this.io.attach(this.httpServer);
   }
@@ -69,7 +70,7 @@ class Server {
    * @description
    * Create an instance of the Socket server and pass the SocketIO object to the Socket server to handle everything
    */
-  private handleSocketConnection() {
+  private handleSocketConnection(): void {
     const socket = new SocketServer(this.io);
     socket.handle();
   }
@@ -80,7 +81,7 @@ class Server {
    * @description
    * Start the server
    */
-  private listen() {
+  private listen(): void {
     this.httpServer.listen(this.port, () => {
       console.log("Listening on " + this.port);
     });

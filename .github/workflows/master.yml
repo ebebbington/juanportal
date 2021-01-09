@@ -38,10 +38,18 @@ jobs:
           docker exec juanportal_node npm run test
           docker exec juanportal_node npm run testReact
 
-  socket-tests:
+  socket-checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Socket Format Checks
+        run: |
+          cd src/socket
+          npm run fmt:check
+      - name: Socket Lint Checks
+        run: |
+          cd src/socket
+          npm run lint
       - name: Socket Tests
         run: |
           cd src/socket

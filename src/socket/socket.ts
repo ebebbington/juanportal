@@ -34,7 +34,7 @@ class Socket {
    * @param {SocketIO.Socket} socket The socket object
    * @param {number} profileId The id of the profile that was deleted
    */
-  private emitProfileDeleted(socket: SocketIO.Socket, profileId: number) {
+  private emitProfileDeleted(socket: SocketIO.Socket, profileId: number): void {
     socket.broadcast.emit("profileDeleted", {
       profileId: profileId,
     });
@@ -49,7 +49,7 @@ class Socket {
    * @param {SocketIO.Socket}   socket      The socket object
    * @param {number}            profileId   Profile id that was deleted
    */
-  private handleProfileDeleted(socket: SocketIO.Socket, profileId: number) {
+  private handleProfileDeleted(socket: SocketIO.Socket, profileId: number): void {
     this.emitProfileDeleted(socket, profileId);
   }
 
@@ -59,7 +59,7 @@ class Socket {
    *
    * @return {void}
    */
-  public handle() {
+  public handle(): void {
     this.io.on("connection", (socket: SocketIO.Socket) => {
       // Answer the call request
       socket.on("profileDeleted", (data: { profileId: number }) => {

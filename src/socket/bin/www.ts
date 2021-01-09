@@ -1,9 +1,9 @@
-console.log("hi");
-const express = require("express");
-const http = require("http");
+import express from "express"
+import http from "http"
 const app = express();
 import SocketServer from ".././socket";
-require("dotenv").config();
+import dotenv from "dotenv"
+dotenv.config();
 const port = process.env.NODE_PORT || 9009;
 import socketIo from "socket.io";
 
@@ -19,7 +19,8 @@ io.attach(server);
 const socket = new SocketServer(io);
 socket.handle();
 
-function onError(this: any, error: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function onError(this: any, error: any): void {
   console.log("on error");
   if (error.syscall !== "listen") {
     throw error;
