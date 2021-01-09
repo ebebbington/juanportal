@@ -2,73 +2,72 @@
 
 This section provides the web socket server, which aids in:
 
-* realtime updates of profiles deleted
+- realtime updates of profiles deleted
 
 This container contains:
 
-* Node SocketIO Server
-
+- Node SocketIO Server
 
 # Directory Structure / Description
 
-* `node_modules/`
+- `node_modules/`
 
-    * Holds our modules we require
-    
-* `test/`
+  - Holds our modules we require
 
-    * Holds our test files
+- `test/`
 
-* `.env`
+  - Holds our test files
 
-    * Our environmental file
-    
-* `.nycrc`
+- `.env`
 
-    * Configuration file for using code coverage
-    
-* `app.ts`
+  - Our environmental file
 
-    * Entry point file to bootstrap the application
+- `.nycrc`
 
-* `ecosystem.config.js`
+  - Configuration file for using code coverage
 
-    * Entry point for PM2 to manage our application
+- `app.ts`
 
-* `server.ts`
+  - Entry point file to bootstrap the application
 
-    * Our main file, holds the HTTP server and web scoket server
+- `ecosystem.config.js`
 
-* `package-lock.json`
+  - Entry point for PM2 to manage our application
 
-    * Defines dependencies for package.json dependencies
+- `server.ts`
 
-* `package.json`
+  - Our main file, holds the HTTP server and web scoket server
 
-    * Defines dependencies for NPM
-    
-* `server.ts`
+- `package-lock.json`
 
-    * Server class to start the express application
-    
-* `socket.ts`
+  - Defines dependencies for package.json dependencies
 
-    * Socket class to handle anything socket related
+- `package.json`
 
-* `tsconfig.json`
+  - Defines dependencies for NPM
 
-    * Configuration file for TypeScript
+- `server.ts`
+
+  - Server class to start the express application
+
+- `socket.ts`
+
+  - Socket class to handle anything socket related
+
+- `tsconfig.json`
+
+  - Configuration file for TypeScript
 
 # Tools Used
 
 This is the list of all tools used here, which also act as the tools learnt, or tools implemented to learn:
 
-* HTTP Server
+- HTTP Server
 
-* Node
+- Node
 
-    * HTTP Server
-    * SocketIO
+  - HTTP Server
+  - SocketIO
 
 # Building
 
@@ -81,7 +80,7 @@ To do so, run: `npm run buildTS`.
 Tests are created that resemble the file structure.
 
 Code coverage is included as a `package.json` script but is ignored as I
-haven't found a way to get it working properly. This is mainly due to NYC 
+haven't found a way to get it working properly. This is mainly due to NYC
 needing a file to be required for it to be covered - something i'm not doing
 as I am using Typescript
 

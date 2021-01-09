@@ -1,4 +1,4 @@
-import SocketIO, {Server as SocketIOServer} from "socket.io";
+import SocketIO, { Server as SocketIOServer } from "socket.io";
 
 /**
  * @class Socket
@@ -10,66 +10,63 @@ import SocketIO, {Server as SocketIOServer} from "socket.io";
  * @method    handleProfileDeleted    {@link Socket#handleProfileDeleted}
  */
 class Socket {
+  /**
+   * @var {SocketIOServer} The SocketIO object to handle everything
+   */
+  private io: SocketIOServer;
 
-    /**
-     * @var {SocketIOServer} The SocketIO object to handle everything
-     */
-    private io: SocketIOServer
+  /**
+   * @param {SocketIOServer} io
+   */
+  constructor(io: SocketIOServer) {
+    this.io = io;
+  }
 
-    /**
-     * @param {SocketIOServer} io
-     */
-    constructor(io: SocketIOServer) {
-        this.io = io
-    }
+  /**
+   * @method emitProfileDeleted
+   *
+   * @description
+   * Send a message to all clients that a profile was deleted, so they can remove it form the dom
+   *
+   * @example
+   * this.emitProfileDeleted(socket, profileId)
+   *
+   * @param {SocketIO.Socket} socket The socket object
+   * @param {number} profileId The id of the profile that was deleted
+   */
+  private emitProfileDeleted(socket: SocketIO.Socket, profileId: number) {
+    socket.broadcast.emit("profileDeleted", {
+      profileId: profileId,
+    });
+  }
 
-    /**
-     * @method emitProfileDeleted
-     *
-     * @description
-     * Send a message to all clients that a profile was deleted, so they can remove it form the dom
-     *
-     * @example
-     * this.emitProfileDeleted(socket, profileId)
-     *
-     * @param {SocketIO.Socket} socket The socket object
-     * @param {number} profileId The id of the profile that was deleted
-     */
-    private emitProfileDeleted (socket: SocketIO.Socket, profileId: number) {
-        socket.broadcast.emit('profileDeleted', {
-            profileId: profileId
-        })
-    }
+  /**
+   * @method handleProfileDeleted
+   *
+   * @description
+   * Event listener for when a profile is deleted
+   *
+   * @param {SocketIO.Socket}   socket      The socket object
+   * @param {number}            profileId   Profile id that was deleted
+   */
+  private handleProfileDeleted(socket: SocketIO.Socket, profileId: number) {
+    this.emitProfileDeleted(socket, profileId);
+  }
 
-    /**
-     * @method handleProfileDeleted
-     *
-     * @description
-     * Event listener for when a profile is deleted
-     *
-     * @param {SocketIO.Socket}   socket      The socket object
-     * @param {number}            profileId   Profile id that was deleted
-     */
-    private handleProfileDeleted (socket: SocketIO.Socket, profileId: number) {
-        this.emitProfileDeleted(socket, profileId)
-    }
-
-    /**
-     * @description
-     * The entry point for handling all events and connections
-     *
-     * @return {void}
-     */
-    public handle () {
-        this.io.on('connection', (socket: SocketIO.Socket) => {
-
-            // Answer the call request
-            socket.on("profileDeleted", (data: { profileId: number } ) => {
-                this.handleProfileDeleted(socket, data.profileId)
-            });
-
-        })
-    }
+  /**
+   * @description
+   * The entry point for handling all events and connections
+   *
+   * @return {void}
+   */
+  public handle() {
+    this.io.on("connection", (socket: SocketIO.Socket) => {
+      // Answer the call request
+      socket.on("profileDeleted", (data: { profileId: number }) => {
+        this.handleProfileDeleted(socket, data.profileId);
+      });
+    });
+  }
 }
 
-export default Socket
+export default Socket;

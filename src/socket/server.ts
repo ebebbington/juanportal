@@ -1,8 +1,8 @@
-import http, { Server as HTTPServer } from 'http'
-import express, { Application as ExpressApp } from 'express'
-require('dotenv').config()
-const port: string = process.env.PORT || '9009'
-import socketIo, { Server as SocketIOServer } from 'socket.io'
+import http, { Server as HTTPServer } from "http";
+import express, { Application as ExpressApp } from "express";
+require("dotenv").config();
+const port: string = process.env.PORT || "9009";
+import socketIo, { Server as SocketIOServer } from "socket.io";
 import SocketServer from "./socket";
 
 /**
@@ -19,38 +19,37 @@ import SocketServer from "./socket";
  * @method    listen                  {@link Socket#listen}
  */
 class Server {
-
   /**
    * @var {HTTPServer} Basic HTTP Server to start our application
    */
-  private readonly httpServer: HTTPServer
+  private readonly httpServer: HTTPServer;
 
   /**
    * @var {ExpressApp} Used to be passed into the HTTP server for easier setup
    */
-  public readonly  app: ExpressApp
+  public readonly app: ExpressApp;
 
   /**
    * @var {SocketIOServer} The SocketIO connection (io)
    */
-  private readonly io: SocketIOServer
+  private readonly io: SocketIOServer;
 
   /**
    * @var {string} Port For the HTTP server to listen on
    */
-  private readonly port: string = port
+  private readonly port: string = port;
 
   /**
    * Usual setup and configuration
    */
-  constructor () {
-    this.app = express()
-    this.httpServer = http.createServer(this.app)
+  constructor() {
+    this.app = express();
+    this.httpServer = http.createServer(this.app);
     //this.io = socketIo.listen(this.httpServer);
-    this.io = socketIo(this.httpServer, { transports: ['polling']})
-    this.configure()
-    this.listen()
-    this.handleSocketConnection()
+    this.io = socketIo(this.httpServer, { transports: ["polling"] });
+    this.configure();
+    this.listen();
+    this.handleSocketConnection();
   }
 
   /**
@@ -59,9 +58,9 @@ class Server {
    * @description
    * Configure the server
    */
-  private configure () {
-    this.app.set('port', this.port)
-    this.io.attach(this.httpServer)
+  private configure() {
+    this.app.set("port", this.port);
+    this.io.attach(this.httpServer);
   }
 
   /**
@@ -70,9 +69,9 @@ class Server {
    * @description
    * Create an instance of the Socket server and pass the SocketIO object to the Socket server to handle everything
    */
-  private handleSocketConnection () {
-    const socket = new SocketServer(this.io)
-    socket.handle()
+  private handleSocketConnection() {
+    const socket = new SocketServer(this.io);
+    socket.handle();
   }
 
   /**
@@ -81,12 +80,12 @@ class Server {
    * @description
    * Start the server
    */
-  private listen () {
+  private listen() {
     this.httpServer.listen(this.port, () => {
-      console.log('Listening on ' + this.port)
-    })
+      console.log("Listening on " + this.port);
+    });
   }
 }
 
-const server = new Server()
-export default server
+const server = new Server();
+export default server;
