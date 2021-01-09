@@ -48,13 +48,11 @@ class JWT {
   ): void | express.Response {
     const token = req.headers.authorization;
     if (!token) {
-      return res
-        .status(403)
-        .json({
-          success: false,
-          message: "Authorisation header is not set",
-          data: token,
-        });
+      return res.status(403).json({
+        success: false,
+        message: "Authorisation header is not set",
+        data: token,
+      });
     }
     try {
       jwt.verify(token, privateKey, options as jwt.VerifyOptions);
