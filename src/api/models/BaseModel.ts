@@ -115,6 +115,8 @@ export default abstract class BaseModel implements IIndexSignature {
     Object.keys(document).forEach((property: string) => {
       const allowedToExpose = this.fieldsToExpose.includes(property);
       if (allowedToExpose === false) {
+        // eslint-disable-next-line
+        // @ts-ignore
         delete document[property];
       }
     });
@@ -123,7 +125,9 @@ export default abstract class BaseModel implements IIndexSignature {
       // If the child class has the property
       if (Object.prototype.hasOwnProperty.call(this, propName)) {
         // Assign it
-        this[propName] = documentData[propName];
+        // eslint-disable-next-line
+        // @ts-ignore
+        this[propName] = document[propName];
       }
     });
   }
@@ -195,7 +199,7 @@ export default abstract class BaseModel implements IIndexSignature {
     });
     // Convert the _id to an object id if passed in
     if (query && query._id) {
-      query._id = this.generateObjectId(query._id);
+      query._id = this.generateObjectId(query._id as string);
       if (!query._id) {
         return false;
       }
@@ -212,7 +216,7 @@ export default abstract class BaseModel implements IIndexSignature {
     }
     const updatedDocument = await MongooseModel.findOne(data);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.fill(updatedDocument as Document<any>);
+    this.fill(updatedDocument as Document);
     return oldDocument;
   }
 
@@ -277,12 +281,15 @@ export default abstract class BaseModel implements IIndexSignature {
    * @returns {[object]|boolean} False if an error, array if the db query returned data
    */
   public async find(
-    query?: { [key: string]: unknown },
+    query?: { [key: string]: unknown }, // TODO THIS SHOULD NOT BE OPTIONAl
     limiter = 1,
     sortable = {}
   ): Promise<boolean | Document[]> {
     // Convert the _id to an object id if passed in
     if (query && query._id) {
+      if (typeof query._id !== "string") {
+        throw new Error("_id must b string, you passed in: " + query._id);
+      }
       query._id = this.generateObjectId(query._id);
       if (!query._id) {
         return false;
@@ -347,6 +354,9 @@ export default abstract class BaseModel implements IIndexSignature {
       );
     // convert _id if passed in
     if (query && query._id) {
+      if (typeof query._id !== "string") {
+        throw new Error("_id must b string, you passed in: " + query._id);
+      }
       query._id = this.generateObjectId(query._id);
       if (!query._id) {
         return false;

@@ -8,3 +8,4 @@ routes/*.js
 schemas/*.js
 *.js
 artillery
+coverage
