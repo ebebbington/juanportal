@@ -13,9 +13,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: API Format Check
         run: |
+          cd src/api
           npm run fmt:check
       - name: API Linter Check
         run: |
+          cd src/api
           npm run lint
       - name: API Test and Coverage Check
         run: |
