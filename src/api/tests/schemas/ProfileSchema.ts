@@ -1,16 +1,16 @@
 import "mocha";
 
-import chai from "chai"
-import chaiAsPromised from "chai-as-promised"
+import chai from "chai";
+import chaiAsPromised from "chai-as-promised";
 const expect = chai.expect;
-import chaiHttp from "chai-http"
+import chaiHttp from "chai-http";
 import MongooseModel from "../../schemas/ProfileSchema";
-import logger from "../../helpers/logger"
-logger.debug = function () : void {
-  return
+import logger from "../../helpers/logger";
+logger.debug = function (): void {
+  return;
 };
 logger.info = function (): void {
-  return
+  return;
 };
 
 chai.use(chaiAsPromised);

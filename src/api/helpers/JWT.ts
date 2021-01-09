@@ -71,7 +71,9 @@ class JWT {
    *
    * @return {boolean|string} false|token False when it couldn't create a token, or the token on success
    */
-  public static createToken(payload: Record<string, unknown>): boolean | string {
+  public static createToken(
+    payload: Record<string, unknown>
+  ): boolean | string {
     let hasUndefinedProp = false;
     Object.keys(payload).forEach((prop) => {
       if (!payload[prop]) {
@@ -85,11 +87,7 @@ class JWT {
       return false;
     }
     try {
-      const token = jwt.sign(
-        payload,
-        privateKey,
-        options as jwt.SignOptions
-      );
+      const token = jwt.sign(payload, privateKey, options as jwt.SignOptions);
       return token;
     } catch (err) {
       logger.error(`Failed to sign the token: ${err.message}`);

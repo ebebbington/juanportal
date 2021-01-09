@@ -5,7 +5,7 @@ import { IMulterRequest } from "../interfaces/controllers/MulterRequestInterface
 import ProfileModel from "../models/ProfileModel";
 import ImageHelper from "../helpers/ImageHelper";
 import logger from "../helpers/logger";
-import {Document} from "mongoose"; // eslint-disable-line
+import { Document } from "mongoose"; // eslint-disable-line
 
 /**
  * @class ProfileController
@@ -35,7 +35,7 @@ export default class ProfileController {
   // eslint-disable-next-line
   public static async GetProfilesByAmount(
     req: express.Request<import("express-serve-static-core").ParamsDictionary>,
-    res: express.Response,
+    res: express.Response
   ): Promise<express.Response> {
     logger.info("[Profile Controller - GetProfilesByAmount]");
 
@@ -116,7 +116,7 @@ export default class ProfileController {
    */
   public static async GetProfileById(
     req: express.Request<import("express-serve-static-core").ParamsDictionary>,
-    res: express.Response,
+    res: express.Response
   ): Promise<express.Response> {
     logger.info("[Profile Controller - GetProfileById]");
 
@@ -179,7 +179,7 @@ export default class ProfileController {
    */
   public static async DeleteProfileById(
     req: express.Request<import("express-serve-static-core").ParamsDictionary>,
-    res: express.Response,
+    res: express.Response
   ): Promise<express.Response> {
     logger.info("[ProfileController - DeleteProfileById]");
 
@@ -253,7 +253,7 @@ export default class ProfileController {
   public static async PostProfile(
     req: IMulterRequest &
       express.Request<import("express-serve-static-core").ParamsDictionary>,
-    res: express.Response,
+    res: express.Response
   ): Promise<express.Response> {
     logger.info("[ProfileController - PostProfile]");
 

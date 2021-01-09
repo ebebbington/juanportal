@@ -119,15 +119,13 @@ export default abstract class BaseModel implements IIndexSignature {
       }
     });
     // Loops through the document properties
-    Object.keys(document).forEach(
-      (propName: string) => {
-        // If the child class has the property
-        if (Object.prototype.hasOwnProperty.call(this, propName)) {
-          // Assign it
-          this[propName] = documentData[propName];
-        }
+    Object.keys(document).forEach((propName: string) => {
+      // If the child class has the property
+      if (Object.prototype.hasOwnProperty.call(this, propName)) {
+        // Assign it
+        this[propName] = documentData[propName];
       }
-    );
+    });
   }
 
   /**
@@ -308,8 +306,8 @@ export default abstract class BaseModel implements IIndexSignature {
     // and if limit isnt defined or equals 1
     // if (result && !result.length && !Array.isArray(result) && typeof result === 'object') {
     if (result && result.length === 1) {
-      console.log('rsult from find:')
-      console.log(result[0])
+      console.log("rsult from find:");
+      console.log(result[0]);
       this.fill(result[0]);
       return result;
     }

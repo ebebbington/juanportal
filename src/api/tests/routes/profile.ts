@@ -47,8 +47,8 @@ describe("Profile Route", () => {
       chai
         .request(app)
         .get("/api/profile/count/5")
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .end(async (err: any, res: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .end(async (err: any, res: any) => {
           expect(res.status).to.equal(200);
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(true);
@@ -60,8 +60,8 @@ describe("Profile Route", () => {
       chai
         .request(app)
         .get("/api/profile/count/0")
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .end((err: any, res: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .end((err: any, res: any) => {
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(false);
           expect(res.status).to.equal(400);
@@ -91,8 +91,8 @@ describe("Profile Route", () => {
       chai
         .request(app)
         .get("/api/profile/count/" + numberOfProfilesToFind)
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .end((err: any, res: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .end((err: any, res: any) => {
           const json = JSON.parse(res.text);
           // So here it's a fix to get the amount of profiles whether an array or single object (one profile) was given back
           expect(json.data.length).to.equal(actualNumberOfProfiles);
@@ -105,8 +105,8 @@ describe("Profile Route", () => {
       chai
         .request(app)
         .get("/api/profile/count/6")
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .end((err: any, res: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .end((err: any, res: any) => {
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(false);
           expect(res.status).to.equal(404);
@@ -130,8 +130,8 @@ describe("Profile Route", () => {
       chai
         .request(app)
         .get("/api/profile/id/hello")
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .end((err: any, res: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .end((err: any, res: any) => {
           expect(res.status).to.equal(400);
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(false);
