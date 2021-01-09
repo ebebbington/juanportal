@@ -1,7 +1,5 @@
 # API (RESTful API for the Data Layer)
 
-![https://img.shields.io/badge/coverage-90%25-green]()
-
 This section provides the data layer for this project, such as:
 
 - Express Server

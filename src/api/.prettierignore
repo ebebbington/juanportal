@@ -9,3 +9,4 @@ schemas/*.js
 *.js
 artillery
 coverage
+.nyc_output
