@@ -1,7 +1,15 @@
-import mongoose, { Document, Model } from "mongoose";
+import mongoose, {Document, Error, Model} from "mongoose";
 
 import IIndexSignature from "../interfaces/models/IndexSignatureInterface";
 import logger from "../helpers/logger";
+
+interface ValidationError {
+  errors: {
+    [key: string]: {
+      message: string
+    }
+  }
+}
 
 /**
  * @class BaseModel
@@ -238,7 +246,7 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @return {void|object} Return value is set if validation errors are returned
    */
-  public async create(data: { [key: string]: unknown }): Promise<void | Error> {
+  public async create(data: { [key: string]: unknown }): Promise<void | ValidationError> {
     const MongooseModel = this.getMongooseModel();
     const document = new MongooseModel(data);
     try {
@@ -249,7 +257,7 @@ export default abstract class BaseModel implements IIndexSignature {
       const fieldName: string = Object.keys(validationError.errors)[0];
       const errorMessage: string = validationError.errors[fieldName].message;
       logger.error(`Validation error: ${errorMessage}`);
-      return validationError;
+      return validationError as ValidationError;
     }
   }
 

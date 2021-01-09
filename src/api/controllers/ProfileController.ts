@@ -5,7 +5,7 @@ import { IMulterRequest } from "../interfaces/controllers/MulterRequestInterface
 import ProfileModel from "../models/ProfileModel";
 import ImageHelper from "../helpers/ImageHelper";
 import logger from "../helpers/logger";
-import { Document } from "mongoose"; // eslint-disable-line
+import { Document } from "mongoose";
 
 /**
  * @class ProfileController
@@ -74,7 +74,7 @@ export default class ProfileController {
         message: "Number of requested profiles did not meet the minimum of 1",
         data: null,
       };
-      return res.status(400).json(data).end();
+      return res.status(400).json(data);
     }
 
     //
@@ -91,7 +91,7 @@ export default class ProfileController {
         message: "No profiles were found",
         data: null,
       };
-      return res.status(404).json(data).end();
+      return res.status(404).json(data);
     }
 
     logger.info(
@@ -154,7 +154,7 @@ export default class ProfileController {
           image: Profile.image,
         },
       };
-      return res.status(200).json(data).end();
+      return res.status(200).json(data);
     } else {
       logger.error("No profile was found");
       const data: IData = {
@@ -162,7 +162,7 @@ export default class ProfileController {
         message: "Couldnt find a profile",
         data: null,
       };
-      return res.status(404).json(data).end();
+      return res.status(404).json(data);
     }
   }
 
@@ -229,7 +229,7 @@ export default class ProfileController {
         message: "Successfully deleted",
         data: null,
       };
-      return res.status(200).json(data).end();
+      return res.status(200).json(data);
     } else {
       logger.error(`Failed to delete the profile with id ${id}`);
       const data: IData = {
@@ -237,7 +237,7 @@ export default class ProfileController {
         message: "Failed to delete",
         data: null,
       };
-      return res.status(500).json(data).end();
+      return res.status(500).json(data);
     }
   }
 
@@ -297,7 +297,7 @@ export default class ProfileController {
         message: "Profile already exists",
         data: null,
       };
-      return res.status(400).json(data).end();
+      return res.status(400).json(data);
     }
     logger.info(`Profile with the name ${req.body.name} doesnt already exist`);
 
@@ -319,7 +319,7 @@ export default class ProfileController {
         message: errorMessage,
         data: fieldName,
       };
-      return res.status(400).json(data).end();
+      return res.status(400).json(data);
     }
     logger.info(`Profile with the name ${req.body.name} passed validation`);
 
@@ -343,7 +343,7 @@ export default class ProfileController {
         message: "Could not save the profile",
         data: null,
       };
-      return res.status(500).json(data).end();
+      return res.status(500).json(data);
     }
   }
 }

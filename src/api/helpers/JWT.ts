@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
-import configs from "../api.config"; // eslint-disable-line
+import configs from "../api.config";
 const privateKey = configs.privateKey;
+import express from "express";
 import logger from "../helpers/logger"; // eslint-disable-line
 
 const options = {
@@ -44,8 +45,11 @@ class JWT {
     req: express.Request,
     res: express.Response,
     next: (err?: Error) => void
-  ): void | Response {
-    const token: string = req.headers.authorization;
+  ): void | express.Response {
+    const token = req.headers.authorization;
+    if (!token) {
+      return res.status(403).json({ success: false, message: "Authorisation header is not set", data: token})
+    }
     try {
       jwt.verify(token, privateKey, options as jwt.VerifyOptions);
       logger.info("Verified JWT in request");
