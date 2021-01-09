@@ -4,11 +4,11 @@ const chai = require("chai");
 import chaiAsPromised from "chai-as-promised";
 const expect = chai.expect;
 
-import ProfileModel, {ProfileDocument} from "../../models/ProfileModel";
+import ProfileModel, { ProfileDocument } from "../../models/ProfileModel";
 import MongooseModel from "../../schemas/ProfileSchema";
 import ProfileController from "../../controllers/ProfileController";
 import { req, res, next, TestResponse } from "../utils";
-import {Document, LeanDocument} from "mongoose";
+import { Document, LeanDocument } from "mongoose";
 import Doc = Mocha.reporters.Doc;
 
 const mongoose = require("mongoose");
@@ -181,22 +181,22 @@ describe("ProfileController", () => {
 
       it("Should fail when no profiles were found", async () => {
         req.params.count = 5;
-        const Profile = new ProfileModel()
-        const result = await Profile.find({}, 9) as unknown as Document[];
-        const profiles = result.map(res => {
-          return res.toObject()
-        }) as unknown as ProfileDocument[]
-        await Profile.delete({name: profiles[0].name})
-        await Profile.delete({name: profiles[1].name})
-        await Profile.delete({name: profiles[2].name})
+        const Profile = new ProfileModel();
+        const result = ((await Profile.find({}, 9)) as unknown) as Document[];
+        const profiles = (result.map((res) => {
+          return res.toObject();
+        }) as unknown) as ProfileDocument[];
+        await Profile.delete({ name: profiles[0].name });
+        await Profile.delete({ name: profiles[1].name });
+        await Profile.delete({ name: profiles[2].name });
         const response = ((await ProfileController.GetProfilesByAmount(
-            req,
-            res,
-            next
+          req,
+          res,
+          next
         )) as unknown) as TestResponse;
-        await Profile.create(profiles[0])
-        await Profile.create(profiles[1])
-        await Profile.create(profiles[2])
+        await Profile.create(profiles[0]);
+        await Profile.create(profiles[1]);
+        await Profile.create(profiles[2]);
         expect(response.statusCode).to.equal(404);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.message).to.equal("No profiles were found");

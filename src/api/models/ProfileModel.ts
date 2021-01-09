@@ -9,11 +9,11 @@ import MongooseModel from "../schemas/ProfileSchema";
 import * as mongoose from "mongoose";
 
 export interface ProfileDocument {
-  _id: mongoose.Types.ObjectId,
-  name: string,
-  description: string,
-  image: string,
-  [key: string]: unknown
+  _id: mongoose.Types.ObjectId;
+  name: string;
+  description: string;
+  image: string;
+  [key: string]: unknown;
 }
 
 /**
