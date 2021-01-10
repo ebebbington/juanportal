@@ -1,19 +1,25 @@
 {
-  "extends": "@istanbuljs/nyc-config-typescript",
   "all": true,
   "check-coverage": true,
+  "branches": 100,
+  "lines": 100,
+  "functions": 100,
+  "statements": 100,
   "extension": [
-        ".ts"
-    ],
-       "instrument": true,
-  "include": [
-      "*.ts"
+      ".ts"
   ],
+  "include": [
+      "**/*.js",
+      "**/*.ts"
+    ],
+    "sourceMap": true,
   "exclude": [
       "bin",
       "coverage",
+      "test",
       "ecosystem.config.js",
-      "test"
+      "app.*"
    ],
-   "reporter": "html"
+   "reporter": "html",
+     "instrument": true
 }

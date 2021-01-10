@@ -1,8 +1,8 @@
-import express from "express"
-import http from "http"
+import express from "express";
+import http from "http";
 const app = express();
 import SocketServer from ".././socket";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 dotenv.config();
 const port = process.env.NODE_PORT || 9009;
 import socketIo from "socket.io";
@@ -42,8 +42,13 @@ function onError(this: any, error: any): void {
 }
 server.on("listening", function () {
   const addr = server.address();
-  const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
-  console.log("Listening on " + bind);
+  if (addr === null) {
+    console.log("listening on pipe unknown");
+  } else {
+    const bind =
+      typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+    console.log("Listening on " + bind);
+  }
 });
 
 module.exports = server;

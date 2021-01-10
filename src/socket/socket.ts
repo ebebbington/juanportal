@@ -49,7 +49,10 @@ class Socket {
    * @param {SocketIO.Socket}   socket      The socket object
    * @param {number}            profileId   Profile id that was deleted
    */
-  private handleProfileDeleted(socket: SocketIO.Socket, profileId: number): void {
+  private handleProfileDeleted(
+    socket: SocketIO.Socket,
+    profileId: number
+  ): void {
     this.emitProfileDeleted(socket, profileId);
   }
 
@@ -66,6 +69,10 @@ class Socket {
         this.handleProfileDeleted(socket, data.profileId);
       });
     });
+  }
+
+  public close(): void {
+    this.io.close();
   }
 }
 

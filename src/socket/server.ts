@@ -1,8 +1,12 @@
 import http, { Server as HTTPServer } from "http";
 import express, { Application as ExpressApp } from "express";
-import dotenv from "dotenv"
-dotenv.config()
-const port = process.env.PORT || "9009";
+import dotenv from "dotenv";
+dotenv.config();
+const port = process.env.PORT as string;
+/* istanbul ignore if */
+if (!port) {
+  throw new Error("PORT env var must be set");
+}
 import socketIo, { Server as SocketIOServer } from "socket.io";
 import SocketServer from "./socket";
 
@@ -85,6 +89,11 @@ class Server {
     this.httpServer.listen(this.port, () => {
       console.log("Listening on " + this.port);
     });
+  }
+
+  public close(): void {
+    this.httpServer.close();
+    this.io.close();
   }
 }
 
