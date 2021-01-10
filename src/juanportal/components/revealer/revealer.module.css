@@ -1,32 +1,32 @@
 /* Container */
 .revealerContainer {
-    max-width: fit-content;
-    --width: 63px;
-    background: var(--custom-white);
-    display: flex; /* Display the icon and text in a row */
-    overflow: hidden; /* To hide the text, given the width is only around the icon */
-    border-top: 2px var(--custom-purple) solid;
-    border-bottom: 2px var(--custom-purple) solid;
-    border-left: 0; /* remove btn class border */
-    border-right: 0; /* remove btn class border */
-    margin: auto auto 15px auto;
-    /* Below will make the container fit the 3x size nicely */
-    width: var(--width);
-    height: 55px;
-    transition: width 1s ease-in-out;
+  max-width: fit-content;
+  --width: 63px;
+  background: var(--custom-white);
+  display: flex; /* Display the icon and text in a row */
+  overflow: hidden; /* To hide the text, given the width is only around the icon */
+  border-top: 2px var(--custom-purple) solid;
+  border-bottom: 2px var(--custom-purple) solid;
+  border-left: 0; /* remove btn class border */
+  border-right: 0; /* remove btn class border */
+  margin: auto auto 15px auto;
+  /* Below will make the container fit the 3x size nicely */
+  width: var(--width);
+  height: 55px;
+  transition: width 1s ease-in-out;
 }
 .revealerContainer:hover {
-    cursor: pointer;
-    /* width: calc(0px + var(--width) * 2); Width is required because we want to expand the box, and the huge px size is required because there is no transition duration when using auto or fit-content - so make it use px's and fit any content within */
-    /* Center the whole container using the width of the text too: its 210px */
-    /*margin-left: calc(0px - var(--reveal-container-open-width) / 2);*/
+  cursor: pointer;
+  /* width: calc(0px + var(--width) * 2); Width is required because we want to expand the box, and the huge px size is required because there is no transition duration when using auto or fit-content - so make it use px's and fit any content within */
+  /* Center the whole container using the width of the text too: its 210px */
+  /*margin-left: calc(0px - var(--reveal-container-open-width) / 2);*/
 }
 /* Both the icon and text */
 .revealerContainer > i:first-of-type,
 .revealerContainer > h2:first-of-type {
-    margin-top: auto;
-    margin-bottom: auto;
-    padding: 0 5px 0 5px;
-    color: var(--custom-purple);
-    white-space: nowrap;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 0 5px 0 5px;
+  color: var(--custom-purple);
+  white-space: nowrap;
 }

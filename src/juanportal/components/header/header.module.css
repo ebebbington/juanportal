@@ -1,103 +1,103 @@
 @keyframes fadeOut {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-        display: none;
-    }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
 }
-@keyframes fadeIn{
-    0% {
-        opacity: 0;
-        display: block;
-    }
-    100% {
-        opacity: 1;
-    }
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    display: block;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /* Main container */
-.header{
-    text-align: center;
-    border-bottom: var(--custom-purple) 1px solid;
-    margin-bottom: .5em;
-    display: flex;
-    background-color: var(--custom-white);
-    height: 57px;
+.header {
+  text-align: center;
+  border-bottom: var(--custom-purple) 1px solid;
+  margin-bottom: 0.5em;
+  display: flex;
+  background-color: var(--custom-white);
+  height: 57px;
 }
 /* Menu icon container */
 .header > div:first-of-type {
-        /* position: absolute; */
-    /* top: 0px; */
-    background: var(--custom-grey);
-    padding: 0.2em;
-    /* border-right: 1px solid var(--custom-purple); */
-    width: 110px;
-    text-align: left;
+  /* position: absolute; */
+  /* top: 0px; */
+  background: var(--custom-grey);
+  padding: 0.2em;
+  /* border-right: 1px solid var(--custom-purple); */
+  width: 110px;
+  text-align: left;
 }
 .header > div:first-of-type:focus + .navMenu {
-    height: fit-content;
+  height: fit-content;
 }
 /* Menu action button */
 .header > div:first-of-type > button {
-    color: var(--custom-purple);
-    box-shadow: 0;
-    border-radius: 2px;
-    width: 55px;
+  color: var(--custom-purple);
+  box-shadow: 0;
+  border-radius: 2px;
+  width: 55px;
 }
 .header > div:first-of-type button:hover {
-    background-color: var(--custom-grey);
+  background-color: var(--custom-grey);
 }
 /* Nav menu container (div) */
 .navMenu {
-    display: none;
-    position: absolute;
-    background-color: var(--custom-grey);
-    z-index: 1;
-    margin-top:5px;
-    margin-right:-3px;
-    border-radius: 0 0 3px 0;
-    border-right: 1px var(--custom-purple) solid;
-    box-shadow: 0 2px 2px rgba(12,13,14,0.2);
-    opacity: 1;
-    transition-duration: 1s;
+  display: none;
+  position: absolute;
+  background-color: var(--custom-grey);
+  z-index: 1;
+  margin-top: 5px;
+  margin-right: -3px;
+  border-radius: 0 0 3px 0;
+  border-right: 1px var(--custom-purple) solid;
+  box-shadow: 0 2px 2px rgba(12, 13, 14, 0.2);
+  opacity: 1;
+  transition-duration: 1s;
 }
 /* List container (ul) */
 .navMenu > ul {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 /* Each list item */
 .navMenu > ul li {
-    padding: 0.5em;
-    border-bottom: 1px var(--custom-purple) solid;
+  padding: 0.5em;
+  border-bottom: 1px var(--custom-purple) solid;
 }
 .navMenu > ul li > a {
-    color: var(--custom-blue);
+  color: var(--custom-blue);
 }
 .navMenu > ul li > a:hover {
-    text-decoration: none;
-    color: var(--custom-black);
+  text-decoration: none;
+  color: var(--custom-black);
 }
 .titleHolder {
-    background: var(--custom-grey);
-    padding: .6em;
-    width: 100%;
+  background: var(--custom-grey);
+  padding: 0.6em;
+  width: 100%;
 }
 .titleHolder > h1 {
-    color: var(--custom-purple);
-    text-align: center;
-    font-weight: 600;
-    font-style: italic;
+  color: var(--custom-purple);
+  text-align: center;
+  font-weight: 600;
+  font-style: italic;
 }
 .hide {
-    animation: fadeOut 1s forwards;
+  animation: fadeOut 1s forwards;
 }
 .show {
-    display: block;
-    animation: fadeIn 1s forwards;
+  display: block;
+  animation: fadeIn 1s forwards;
 }
 .selected {
-    border-right: 5px var(--custom-green) solid;
+  border-right: 5px var(--custom-green) solid;
 }

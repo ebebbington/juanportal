@@ -2,168 +2,169 @@
 
 This section provides the main server for this project, such as:
 
-* Express Server
-* Display views
-* All client side functionality:
-    * HTML, CSS, JS
-    * Client for our Web Socket
-* Routing
-* Redis Caching
+- Express Server
+- Display views
+- All client side functionality:
+  - HTML, CSS, JS
+  - Client for our Web Socket
+- Routing
+- Redis Caching
 
 This side of JuanPortal also uses TypeScript where it can, as well as the class approach instead of a module export type style
 
 # Directory Structure / Description
 
-***Please see the example file in each directory if it exists to understand how this project is architectured***
+**_Please see the example file in each directory if it exists to understand how this project is architectured_**
 
-* `bin`
+- `bin`
 
-    * Server
+  - Server
 
-* `components`
+- `components`
 
-    * Holds the React components. All components are obviously written in JSX, but are coupled with TypeScript for TSX
-    * Components should use class or function components (functional ideally to utilise hooks)
-    * Component file names should be capitilised if they are a main component e.g. a button isn't, whereas a header would be
-    * Components should reside inside a directory named after the said file
-    * Component directories (ones that hold a specific component) should also use CSS modules
-    * Components will capitital letters in their folder and filename means that specific component gets rendered inside `ReactDOM.render(...)`. For example, the `button` component is lowercase because it's only **used inside other components**, whereas the `Profile` component is uppercase because that gets specifically rendered
+  - Holds the React components. All components are obviously written in JSX, but are coupled with TypeScript for TSX
+  - Components should use class or function components (functional ideally to utilise hooks)
+  - Component file names should be capitilised if they are a main component e.g. a button isn't, whereas a header would be
+  - Components should reside inside a directory named after the said file
+  - Component directories (ones that hold a specific component) should also use CSS modules
+  - Components will capitital letters in their folder and filename means that specific component gets rendered inside `ReactDOM.render(...)`. For example, the `button` component is lowercase because it's only **used inside other components**, whereas the `Profile` component is uppercase because that gets specifically rendered
 
-* `data`
+- `data`
 
-    * Random or lost files/folders with nowhere to go, that could prove use some day or any other reason to keep a file but has no place to go
+  - Random or lost files/folders with nowhere to go, that could prove use some day or any other reason to keep a file but has no place to go
 
-* `helpers`
+- `helpers`
 
-    * Helper or utility files, that don't fit into the usual structure. These could be things such as a logger, or a class to achieve one thing e.g. JWT, Encryption
-    * Helpers should be written in TypeScript where possible, and should be classes
+  - Helper or utility files, that don't fit into the usual structure. These could be things such as a logger, or a class to achieve one thing e.g. JWT, Encryption
+  - Helpers should be written in TypeScript where possible, and should be classes
 
-* `public`
+- `public`
 
-    * Holds all client side files, such as the CSS, images, bundled React components and so on
-    * There is a main `layout.pug` file for CSS to hold minimal styles related to all HTML. Note that specific styling **should** be inside a component CSS module
+  - Holds all client side files, such as the CSS, images, bundled React components and so on
+  - There is a main `layout.pug` file for CSS to hold minimal styles related to all HTML. Note that specific styling **should** be inside a component CSS module
 
-* `routes`
+- `routes`
 
-    * Routes are defined here, and should follow current implementations
+  - Routes are defined here, and should follow current implementations
 
-* `tests`
+- `tests`
 
-    * Holds all tests related to this side of the application (*see more below*)
+  - Holds all tests related to this side of the application (_see more below_)
 
-* `views`
+- `views`
 
-    * Contains the PUG files as the views
-    * There is a main `layout.pug` file for the views to hold data that many files use such as a Bootstrap CDN
+  - Contains the PUG files as the views
+  - There is a main `layout.pug` file for the views to hold data that many files use such as a Bootstrap CDN
 
-* `.babelrc`
+- `.babelrc`
 
-    * Contains configurations for babel
+  - Contains configurations for babel
 
-* `.env`
+- `.env`
 
-    * Configurations for the environment
+  - Configurations for the environment
 
-* `.gitignore`
+- `.gitignore`
 
-    * Files for Git to ignore
+  - Files for Git to ignore
 
-* `app.*`
+- `app.*`
 
-    * Entry point for the server, provides a class based architecture to setup and configure the server
+  - Entry point for the server, provides a class based architecture to setup and configure the server
 
-* `ecosystem.config.js`
+- `ecosystem.config.js`
 
-    * The ecosystem file used by PM2 to start the server
+  - The ecosystem file used by PM2 to start the server
 
-* `jest.config.js`
+- `jest.config.js`
 
-    * Configuration file used by Jest when running tests
+  - Configuration file used by Jest when running tests
 
-* `juanportal.config.js`
+- `juanportal.config.js`
 
-    * Configurations for this section
+  - Configurations for this section
 
-* `package*.json`
+- `package*.json`
 
-    * Container NPM related information to keep track of modules
+  - Container NPM related information to keep track of modules
 
-* `README.md`
+- `README.md`
 
-    * Documentation for this section
+  - Documentation for this section
 
-* `TODO.md`
+- `TODO.md`
 
-    * Contains the list of todo's, whats left and what's been completed
+  - Contains the list of todo's, whats left and what's been completed
 
-* `tsconfig.json`
+- `tsconfig.json`
 
-    * Contains configurations for the TypeScript compiler (when compiling `.ts` files)
+  - Contains configurations for the TypeScript compiler (when compiling `.ts` files)
 
-* `webpack.config.js`
+- `webpack.config.js`
 
-    * Configurations for bundling using webpack. Only used for bundling TSX|JSX files and their CSS modules
+  - Configurations for bundling using webpack. Only used for bundling TSX|JSX files and their CSS modules
 
 # Tools Used
+
 This is the list of all tools used here, which also act as the tools learnt, or tools implemented to learn:
 
-* HTML
+- HTML
 
-    * General mark-up
-    * JSX mark-up / XML-style
-    * PUG template engine
-    * Bootstrap
+  - General mark-up
+  - JSX mark-up / XML-style
+  - PUG template engine
+  - Bootstrap
 
-* CSS
+- CSS
 
-    * General CSS
-    * CSS modules
+  - General CSS
+  - CSS modules
 
-* JS
+- JS
 
-    * General JS
-    * jQuery (no longer used after adding React)
+  - General JS
+  - jQuery (no longer used after adding React)
 
-* React
+- React
 
-    * General use
-    * Class components
-    * Function components
-    * Hooks
+  - General use
+  - Class components
+  - Function components
+  - Hooks
 
-* Webpack
+- Webpack
 
-    * Configurations
-    * Bundling JSX | TSX | CSS Modules
+  - Configurations
+  - Bundling JSX | TSX | CSS Modules
 
-* TypeScript
+- TypeScript
 
-    * General use
-    * Writing .ts files
-    * Using the TS compiler to compile the files down
+  - General use
+  - Writing .ts files
+  - Using the TS compiler to compile the files down
 
-* Node
+- Node
 
-    * Express (server, body parser etc...)
-    * NPM
-    * PM2
+  - Express (server, body parser etc...)
+  - NPM
+  - PM2
 
-* Mocha | Chai
+- Mocha | Chai
 
-    * Tests covered for the whole application (.ts and .js extensions)
+  - Tests covered for the whole application (.ts and .js extensions)
 
-* Jest
+- Jest
 
-* Client-side folder architecture
+- Client-side folder architecture
 
-* Web Sockets (SocketIO)
+- Web Sockets (SocketIO)
 
-    * Our Chat componet uses SocketIO to communicate to our Flask container (Nginx proxy passes Socket IO to the Socket container)
+  - Our Chat componet uses SocketIO to communicate to our Flask container (Nginx proxy passes Socket IO to the Socket container)
 
-* Redis
+- Redis
 
-    * Caching
-    * Pub/Sub
+  - Caching
+  - Pub/Sub
 
 # Building
 
@@ -173,13 +174,13 @@ This will 're-build' the server to correct changes made, such as re-compiling TS
 
 Though there are two scripts to do this:
 
-* Building TS files
+- Building TS files
 
-    `npm run buildTS`
+  `npm run buildTS`
 
-* Building TSX files
+- Building TSX files
 
-    `npm run buildTSX`
+  `npm run buildTSX`
 
 # Mocha Tests
 
@@ -198,50 +199,50 @@ it('Should respond with a 200 status code', (done) => {
 
 ## Writing Tests
 
-* Placement of Tests
+- Placement of Tests
 
-    * Tests should mimick the directory structure of the **file** to test e.g you just created a new Route (`/routes/myNewRoute.ts`), create `myNewRoute.js` inside of `/tests/routes/`
+  - Tests should mimick the directory structure of the **file** to test e.g you just created a new Route (`/routes/myNewRoute.ts`), create `myNewRoute.js` inside of `/tests/routes/`
 
-* File naming
+- File naming
 
-    * Name tests the exact same as their counterpart e.g. you create a test for `SomeRoute.ts` or `log.js`, the file names should be those exact names
-    * For testing TypeScript files, you should make the test a `.ts` extension and test all aspects
+  - Name tests the exact same as their counterpart e.g. you create a test for `SomeRoute.ts` or `log.js`, the file names should be those exact names
+  - For testing TypeScript files, you should make the test a `.ts` extension and test all aspects
 
-* Writing
+- Writing
 
-    * Newline at the start and end of every `describe` and `it`
+  - Newline at the start and end of every `describe` and `it`
 
-    * Should you test every aspect that you can of a file, and use the NPM module `rewire` if possible. Tests should be written like so:
+  - Should you test every aspect that you can of a file, and use the NPM module `rewire` if possible. Tests should be written like so:
 
-    ```
-    // tests/models/myNewRoute.ts
+  ```
+  // tests/models/myNewRoute.ts
 
-    describe('myNewRoute', () => {
+  describe('myNewRoute', () => {
 
-        describe('/', () => {
+      describe('/', () => {
 
-            descibe('GET', () => {
+          descibe('GET', () => {
 
-                it('Should do this', () => {
-                    expect(that).to.be(this)
-                })
+              it('Should do this', () => {
+                  expect(that).to.be(this)
+              })
 
-            })
+          })
 
-        })
+      })
 
-    })
-    ```
+  })
+  ```
 
 ## Running the Tests
 
 The command(s) to do this are inside of the `package.json` file:
 
-* JS files
+- JS files
 
 `npm run test path/to/test/test.js`
 
-* TS files
+- TS files
 
 Should you be using a TS test, you need to run the second test command:
 
@@ -255,7 +256,7 @@ Note you might need to adjust the URL in the tests, e.g. `127.0.0.1` for windows
 
 ## Writing the Tests
 
-* Write tests for each endpoint to see how much the API can handle
+- Write tests for each endpoint to see how much the API can handle
 
 ## Running the Tests
 
@@ -267,7 +268,7 @@ Jest has been setup and configured to test React components.
 
 ## Writing the Tests
 
-* Write every case for a component, such as for every paramemer or conditional.
+- Write every case for a component, such as for every paramemer or conditional.
 
 ## Running the Tests
 
@@ -286,94 +287,99 @@ npm run testReact
 
 # Using TypeScript
 
-Setting up TS was tough given i had 0 experience, but it all boils down to understanding the flow: 
+Setting up TS was tough given i had 0 experience, but it all boils down to understanding the flow:
 
-* Create a simple TS file e.g. `test.ts` with the contents of:
+- Create a simple TS file e.g. `test.ts` with the contents of:
 
 ```
 const obj: { success: boolean } = {success: false }
 console.log(!!obj.success)
 ```
 
-* Then set up the TS compil;er configurations to find this file and convert it, for me I place the compiled copies into the same directory as their counterpart. So then i want to require or import a file (`import Something from './mytsfile'`), it will look for the compiled JS file.
+- Then set up the TS compil;er configurations to find this file and convert it, for me I place the compiled copies into the same directory as their counterpart. So then i want to require or import a file (`import Something from './mytsfile'`), it will look for the compiled JS file.
 
-* See `tsconfig.json` for the configurations
+- See `tsconfig.json` for the configurations
 
-* Use `tsc;` to compile (using that config)
+- Use `tsc;` to compile (using that config)
 
-* See the `.ts` files to understand a bit more
+- See the `.ts` files to understand a bit more
 
 # Using React
 
 For React, i use Webpack to bundle the code on the server, and into a public directory.
 
-* I use the `webpack.config.js` file to setup the configurations, such as allowing the files to pass through loaders.
+- I use the `webpack.config.js` file to setup the configurations, such as allowing the files to pass through loaders.
 
-* The command to do this in just inside of `package.json`
+- The command to do this in just inside of `package.json`
 
 # Help
 
 ## React (JSX & TSX)
 
-* `Property x does not exist on type readonly`
+- `Property x does not exist on type readonly`
 
-    * You must add an interface to define the passed in properties
+  - You must add an interface to define the passed in properties
     `interface IProps { exampleProp: string }`
     `class ... extends React.Component<IProps>`
     `// or`
     `class ... { constructor (props: IProps) {...}`
 
-* Errors thrown when trying to use hooks
+- Errors thrown when trying to use hooks
 
-    * Could be you are rendering a hook component inside of a class component?
-    * Also check `ReactDOM` is correctly typed
+  - Could be you are rendering a hook component inside of a class component?
+  - Also check `ReactDOM` is correctly typed
 
-* `JSX element type 'x | x' is not a constructor function for JSX element`
+- `JSX element type 'x | x' is not a constructor function for JSX element`
 
-    * Solved by following the guide here: https://stackoverflow.com/questions/54905376/type-error-jsx-element-type-null-undefined-is-not-a-constructor-functi
-    * I made the component implement `React.FC` (`... MyComp: React.FC ...`) and I then had that implement the interface for the props
-    * I then realised the param/prop "children" is required by the React.FC, so you have to include that inside the parameters (but not in the interface)
-    * (17/01/2020) The solution to this problem is actually to just return HTML. In my problem, i was only returning HTML inside a component within conditionals - whilst this looked fine to me, it wasn't to webpack. The reason why the above worked was not because i was returning  `children as ...` at the bottom of the component, but because i was just returning something that wasn't in a conditional. Including the `return children as ...` meant it isn't testable, because that line would never be seen due to the conditionals handling each case, so the best thing to do is dont have your only returned HTML inside conditionals, explicitly return it instead. For example, io split the button component into 3 components, which allowed me to stop using conditionals to return certain HTML.
+  - Solved by following the guide here: https://stackoverflow.com/questions/54905376/type-error-jsx-element-type-null-undefined-is-not-a-constructor-functi
+  - I made the component implement `React.FC` (`... MyComp: React.FC ...`) and I then had that implement the interface for the props
+  - I then realised the param/prop "children" is required by the React.FC, so you have to include that inside the parameters (but not in the interface)
+  - (17/01/2020) The solution to this problem is actually to just return HTML. In my problem, i was only returning HTML inside a component within conditionals - whilst this looked fine to me, it wasn't to webpack. The reason why the above worked was not because i was returning `children as ...` at the bottom of the component, but because i was just returning something that wasn't in a conditional. Including the `return children as ...` meant it isn't testable, because that line would never be seen due to the conditionals handling each case, so the best thing to do is dont have your only returned HTML inside conditionals, explicitly return it instead. For example, io split the button component into 3 components, which allowed me to stop using conditionals to return certain HTML.
 
-* `No module was found with the name 'button.module.css'`
+- `No module was found with the name 'button.module.css'`
 
-    * Solved by following this guide: https://stackoverflow.com/questions/41336858/how-to-import-css-modules-with-typescript-react-and-webpack
-    * Causation: using the code `import classes from 'button.module.css'` throws a TS IDE error.
-    * Solution: I added a `typings.d.ts` file inside the button component directory with the following: `declare module "*.module.css";`
-    * **UPDATE**: The above only fixes the error inside the IDE. Webpack will throw an error when bundling. Though I have found a fix - an odd one.
-    * So the `import ... from '...'` line doesn't work in `.tsx` files right? Yet it works inside `.js` files. So how i achieved this was:
-        * Created a `util.js` file inside each components directory
-        * Imported the styling that was relevent e.g.
-        ```
-        // /components/button/util.js
-        import classes from './button.module.css'
-        ```
-        * And created a helper function to get the stylings and return it for the component:
-        ```
-        // .../util.js
-        import classes from '...'
-        export function getStylings () { return classes }
+  - Solved by following this guide: https://stackoverflow.com/questions/41336858/how-to-import-css-modules-with-typescript-react-and-webpack
+  - Causation: using the code `import classes from 'button.module.css'` throws a TS IDE error.
+  - Solution: I added a `typings.d.ts` file inside the button component directory with the following: `declare module "*.module.css";`
+  - **UPDATE**: The above only fixes the error inside the IDE. Webpack will throw an error when bundling. Though I have found a fix - an odd one.
+  - So the `import ... from '...'` line doesn't work in `.tsx` files right? Yet it works inside `.js` files. So how i achieved this was:
 
-        // .../button.tsx
-        import { getStylings } from './util.js'
-        const styles = getStylings()
-        ```
-        * Maybe this fixed it because util isn't **directly** bundling `util.js`?
+    - Created a `util.js` file inside each components directory
+    - Imported the styling that was relevent e.g.
 
-* `Could not find a declaration file for module 'react-responsive'`
+    ```
+    // /components/button/util.js
+    import classes from './button.module.css'
+    ```
 
-    * Just need to install types :) `np i --save @types/react-responsive`
-    * Caused when trying to do the following: `import { useMediaQuery } from 'react-responsive'`
+    - And created a helper function to get the stylings and return it for the component:
 
-* Using CSS Styling - Another Way
+    ```
+    // .../util.js
+    import classes from '...'
+    export function getStylings () { return classes }
 
-    * You can set `modules` to `false` or comment it out inside `webpack.config.js`, then import the CSS file (`import someComp.css.js`), then set classnames like such: `...className="button"
-    * Where the style file is: `export default { button { color: 'blue' }}
+    // .../button.tsx
+    import { getStylings } from './util.js'
+    const styles = getStylings()
+    ```
+
+    - Maybe this fixed it because util isn't **directly** bundling `util.js`?
+
+- `Could not find a declaration file for module 'react-responsive'`
+
+  - Just need to install types :) `np i --save @types/react-responsive`
+  - Caused when trying to do the following: `import { useMediaQuery } from 'react-responsive'`
+
+- Using CSS Styling - Another Way
+
+  - You can set `modules` to `false` or comment it out inside `webpack.config.js`, then import the CSS file (`import someComp.css.js`), then set classnames like such: `...className="button"
+  - Where the style file is: `export default { button { color: 'blue' }}
 
 ## Jest
 
-* Defining URL/pathname for Components
+- Defining URL/pathname for Components
 
-    * My header component holds a state on what the URL is, so to cover all cases of this component, i needed a way to define the pathname in different tests, so the Header component can render differently based on `window.location.pathname`. For example, it won't display "Home" when the pathname is `/`.
-    * To combat this, we can define the pathname like such: `window.history.pushState({}, 'Test Title', '/profile/add')`.
-    * Now when we `expect(global.window.location.pathname).toBe('/profile/add')` it passes, whereas original the url was always `/`
+  - My header component holds a state on what the URL is, so to cover all cases of this component, i needed a way to define the pathname in different tests, so the Header component can render differently based on `window.location.pathname`. For example, it won't display "Home" when the pathname is `/`.
+  - To combat this, we can define the pathname like such: `window.history.pushState({}, 'Test Title', '/profile/add')`.
+  - Now when we `expect(global.window.location.pathname).toBe('/profile/add')` it passes, whereas original the url was always `/`

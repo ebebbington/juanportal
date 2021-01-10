@@ -1,5 +1,5 @@
-import classes from './RegisterForm.module.css'
+import classes from "./RegisterForm.module.css";
 
-export function getStylings () {
-    return classes
+export function getStylings() {
+  return classes;
 }

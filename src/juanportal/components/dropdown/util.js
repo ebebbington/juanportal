@@ -1,5 +1,5 @@
-import classes from './dropdown.module.css'
+import classes from "./dropdown.module.css";
 
-export function getStylings () {
-    return classes
+export function getStylings() {
+  return classes;
 }

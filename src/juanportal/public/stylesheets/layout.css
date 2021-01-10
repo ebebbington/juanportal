@@ -1,37 +1,41 @@
 :root {
-    --custom-white: #FFFFFF;
-    --custom-black: #0c1f26;
-    --custom-grey: #fafafa;
-    --custom-pink: #e65370;
-    --custom-purple: #5300c5;
-    --custom-red: #B60000; /* FF0000 */
-    --custom-green: #006626; /* 1cb354 */
-    --custom-orange: #9F3500; /* ff9966 */
-    --custom-blue: #0050A7; /* 5bc0de */
+  --custom-white: #ffffff;
+  --custom-black: #0c1f26;
+  --custom-grey: #fafafa;
+  --custom-pink: #e65370;
+  --custom-purple: #5300c5;
+  --custom-red: #b60000; /* FF0000 */
+  --custom-green: #006626; /* 1cb354 */
+  --custom-orange: #9f3500; /* ff9966 */
+  --custom-blue: #0050a7; /* 5bc0de */
 }
 
-head, body {
-    font-family: Georgia, Times, 'Times New Roman', serif !important;
-    color: var(--custom-black);
-    background-color: var(--custom-grey);
+head,
+body {
+  font-family: Georgia, Times, "Times New Roman", serif !important;
+  color: var(--custom-black);
+  background-color: var(--custom-grey);
 }
 
-h1, h2, h3, h4 {
-    color: var(--custom-purple)
+h1,
+h2,
+h3,
+h4 {
+  color: var(--custom-purple);
 }
 h1 {
-    font-size: 1.5em;
+  font-size: 1.5em;
 }
 h2 {
-    font-size: 1.35em;
+  font-size: 1.35em;
 }
 h3 {
-    font-size: 1.2em;
+  font-size: 1.2em;
 }
 h4 {
-    font-size: 1em;
+  font-size: 1em;
 }
 
 #sidebar-container {
-    max-width: 100%;
+  max-width: 100%;
 }

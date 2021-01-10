@@ -1,97 +1,98 @@
 /* Container*/
 .chatHolder {
-    padding: 1em;
-    border: 1px solid var(--custom-white);
-    border-radius: 5px;
+  padding: 1em;
+  border: 1px solid var(--custom-white);
+  border-radius: 5px;
 }
 /* header container */
 .header {
-    display: flex;
-    padding: 0.5em;
-    background-color: var(--custom-white);
-    border-bottom: 5px solid var(--custom-blue);
+  display: flex;
+  padding: 0.5em;
+  background-color: var(--custom-white);
+  border-bottom: 5px solid var(--custom-blue);
 }
 /* Status bar inside header (icon and user count */
 .header > .status {
-    display: flex;
-    margin-right: 0.5em;
+  display: flex;
+  margin-right: 0.5em;
 }
 /* Icon inside header status */
 .header > .status > i {
-    text-align: left;
-    color: var(--custom-green);
+  text-align: left;
+  color: var(--custom-green);
 }
 /* Icon and text inside header status */
-.header > .status > i, .header > .status > p {
-    margin-top: auto;
-    margin-bottom: auto;
+.header > .status > i,
+.header > .status > p {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 /* status text */
 .header > .status > p {
-    margin-left: 0.5em;
+  margin-left: 0.5em;
 }
 .header > .status > ul {
-    position: absolute;
-    z-index: 99999;
-    /* margin: auto; */
-    left: 36px;
-    top: 51px;
-    background: var(--custom-grey);
-    list-style-type: none;
-    padding: 0;
-    box-shadow: 0px 1px 9px 3px;
-    border-radius: 5px;
+  position: absolute;
+  z-index: 99999;
+  /* margin: auto; */
+  left: 36px;
+  top: 51px;
+  background: var(--custom-grey);
+  list-style-type: none;
+  padding: 0;
+  box-shadow: 0px 1px 9px 3px;
+  border-radius: 5px;
 }
 .header > .status > ul li {
-    padding: 0.3em;
-    color: var(--custom-green);
+  padding: 0.3em;
+  color: var(--custom-green);
 }
 /* Username */
 .header > h3 {
-   margin: auto 0 auto auto;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 58%;
-    text-align: right;
+  margin: auto 0 auto auto;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 58%;
+  text-align: right;
 }
 /* Chat feed */
 .body {
-    min-height: 300px;
-    max-height: 300px;
-    background-color: var(--custom-white);
-    border-radius: 5px;
-    margin-bottom:1em;
-    overflow-y: scroll;
+  min-height: 300px;
+  max-height: 300px;
+  background-color: var(--custom-white);
+  border-radius: 5px;
+  margin-bottom: 1em;
+  overflow-y: scroll;
 }
 .body > div {
-    border-bottom: 1px solid var(--custom-blue);
-    display: flex;
-    padding: 0.5em;
+  border-bottom: 1px solid var(--custom-blue);
+  display: flex;
+  padding: 0.5em;
 }
 .body > div > strong {
-    border-right: 1px solid var(--custom-green);
-    padding-right: 0.5em;
-    margin: auto 0 auto 0;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+  border-right: 1px solid var(--custom-green);
+  padding-right: 0.5em;
+  margin: auto 0 auto 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .body > div > strong > p {
-    margin: auto;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap
+  margin: auto;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .body > div > p {
-    margin: auto auto auto 0.5em;
-    word-break: break-word;
-    width: 80%;
+  margin: auto auto auto 0.5em;
+  word-break: break-word;
+  width: 80%;
 }
 /* Message field and buttons container */
 .footer {
-    text-align: center;
+  text-align: center;
 }
 .footer button {
-    margin-top: 0.5em;
+  margin-top: 0.5em;
 }

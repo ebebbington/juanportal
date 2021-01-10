@@ -1,62 +1,66 @@
 "use strict";
 
-import nodemailer from 'nodemailer'
-import config from '../juanportal.config'
-const mail = config.mail
-import logger from './logger'
+import nodemailer from "nodemailer";
+import config from "../juanportal.config";
+const mail = config.mail;
+import logger from "./logger";
 
 /**
  * @class MailHelper
- * 
+ *
  * @description Send emails from the server
- * 
+ *
  * @author Edward bebbington
- * 
+ *
  * @method send Send email email
- * 
+ *
  */
 export default class MailHelper {
-
   /**
    * Send an email
-   * 
+   *
    * @method send
-   * 
+   *
    * @example
    * MailHelper.send(data).catch((err) => {
    *   logger.error('Failed to send an email. Most likely because the password isnt set in the config')
    * })
-   * 
+   *
    * @description Gets the servers email data, along with the params to construct
    * and email and send it
-   * 
+   *
    * @param {{to: string, subject: string, text: string, html?: string}} data Required data to send the email
-   * 
+   *
    * @returns {void}
    */
-  public static async send (data: {to: string, subject: string, text: string, html?: string}): Promise<void> {
-      // Create a transporter
-      const transporterOptions = {
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-          user: mail.email,
-          pass: mail.pass
-        }
-      }
-      const transporter = nodemailer.createTransport(transporterOptions)
+  public static async send(data: {
+    to: string;
+    subject: string;
+    text: string;
+    html?: string;
+  }): Promise<void> {
+    // Create a transporter
+    const transporterOptions = {
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: mail.email,
+        pass: mail.pass,
+      },
+    };
+    const transporter = nodemailer.createTransport(transporterOptions);
 
-      // Send the email
-      await transporter.sendMail({
-        from: `"${mail.user}👻" <${mail.email}>`, // 'Edward <email address>
-        to: data.to,
-        subject: data.subject,
-        text: data.text,
-        html: data.html
-      })
-      // Get the response
-      logger.debug('Send the email')
+    // Send the email
+    await transporter.sendMail({
+      from: `"${mail.user}👻" <${mail.email}>`, // 'Edward <email address>
+      to: data.to,
+      subject: data.subject,
+      text: data.text,
+      html: data.html,
+    });
+    // Get the response
+    logger.debug("Send the email");
   }
 }
 

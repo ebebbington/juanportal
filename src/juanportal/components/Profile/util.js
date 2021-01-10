@@ -1,5 +1,5 @@
-import classes from './Profile.module.css'
+import classes from "./Profile.module.css";
 
-export function getStylings () {
-    return classes
+export function getStylings() {
+  return classes;
 }

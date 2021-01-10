@@ -1,71 +1,69 @@
 // ///////////////////////////////
 // Packages
 // ///////////////////////////////
-import express from 'express'
-import morgan from 'morgan'
-import dotenv from 'dotenv'
-dotenv.config()
-import cookieParser from 'cookie-parser'
-import bodyParser from 'body-parser'
-import socketIo from 'socket.io'
-import cors from "cors"
-import profileRoute from './routes/profile.js'
-import indexRoute from './routes/index.js'
-
+import express from "express";
+import morgan from "morgan";
+import dotenv from "dotenv";
+dotenv.config();
+import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+import socketIo from "socket.io";
+import cors from "cors";
+import profileRoute from "./routes/profile.js";
+import indexRoute from "./routes/index.js";
 
 /**
  * Server
- * 
+ *
  * The foundation and entry point for the application
- * 
+ *
  * @author    Edward Bebbington
- * 
+ *
  * @example
  *            const server = Server.bootstrap()
  *            const app = server.app
- * 
+ *
  * @fires     Server#start
  * @fires     Server#initiateLogging
  * @fires     Server#defineRoutes
  * @fires     Server#configure
- * 
+ *
  * @property  {express.Application}     app             - Express app object
  * @property  {string}                  viewEngine      - View engine to use
  * @property  {string}                  env             - The environment to run in
- * 
+ *
  * @function  bootstrap                 - Return an start an instance of the class
  * @function  constructor               - Fires events
  * @function  initiateLogging           - Start HTTP logging
  * @function  defineRoutes              - Set up the routes
  * @function  configure                 - Configure such as view engine
- * 
+ *
  * @returns   {ng.auto.IInjectorService} - Returns the newly created injector for this app.
- * 
+ *
  * @since     25/11/2019
- * 
+ *
  */
 class Server {
-
   /**
    * Application object
-   * 
+   *
    * @var any     public
    */
   public app: express.Application;
 
   /**
    * View engine to use
-   * 
+   *
    * @var string  private
    */
-  private readonly viewEngine: string
+  private readonly viewEngine: string;
 
   /**
    * Environment to run e.g development, staging
-   * 
+   *
    * @var string  private
    */
-  private readonly env: string
+  private readonly env: string;
 
   /**
    * Bootstrap the application.
@@ -87,79 +85,85 @@ class Server {
    */
   constructor() {
     // define properties
-    this.viewEngine = 'pug'
-    this.env = process.env.NODE_ENV || ''
+    this.viewEngine = "pug";
+    this.env = process.env.NODE_ENV || "";
     //create expressjs application
     this.app = express();
-    this.app.use(cors())
+    this.app.use(cors());
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    this.app.io = socketIo()
+    this.app.io = socketIo();
     //configure application
     this.configure();
     // start HTTP logging
-    this.initiateLogging()
+    this.initiateLogging();
     // setup routes
-    this.defineRoutes()
+    this.defineRoutes();
   }
 
   /**
    * Configure the node application
-   * 
+   *
    * @class Server
    * @method configure
    * @return {void}
    */
-  private configure (): void {
-    this.app.set('view engine', this.viewEngine) // view engine
-    this.app.set('views', __dirname + '/views') // set dir to look for views
-    this.app.use(express.static(__dirname + '/public')) // serve from public
-    this.app.use(cookieParser())
-    this.app.use(bodyParser.json({limit: '50mb'}))
-    this.app.use(bodyParser.urlencoded({limit: '50mb', extended: false}))
+  private configure(): void {
+    this.app.set("view engine", this.viewEngine); // view engine
+    this.app.set("views", __dirname + "/views"); // set dir to look for views
+    this.app.use(express.static(__dirname + "/public")); // serve from public
+    this.app.use(cookieParser());
+    this.app.use(bodyParser.json({ limit: "50mb" }));
+    this.app.use(bodyParser.urlencoded({ limit: "50mb", extended: false }));
   }
 
   /**
    * Initiate Morgan to start logging HTTP requests
-   * 
+   *
    * @class Server
    * @method initiateLogging
    * @return {void}
    */
-  private initiateLogging (): void {
-    if (this.env === 'production') {
-      this.app.use(morgan('combined'))
+  private initiateLogging(): void {
+    if (this.env === "production") {
+      this.app.use(morgan("combined"));
     }
     // Everything else use development logging
-    if (this.env !== 'production') {
-      this.app.use(morgan('dev', {
-        skip: function (req, res) {
-            return res.statusCode < 400
-        }, stream: process.stderr
-      }));
-      this.app.use(morgan('dev', {
-        skip: function (req, res) {
-            return res.statusCode >= 400
-        }, stream: process.stdout
-      }));
+    if (this.env !== "production") {
+      this.app.use(
+        morgan("dev", {
+          skip: function (req, res) {
+            return res.statusCode < 400;
+          },
+          stream: process.stderr,
+        })
+      );
+      this.app.use(
+        morgan("dev", {
+          skip: function (req, res) {
+            return res.statusCode >= 400;
+          },
+          stream: process.stdout,
+        })
+      );
     }
   }
 
   /**
    * Set up and define the routes
-   * 
+   *
    * @class Server
    * @method defineRoutes
    * @return {void}
    */
-  private defineRoutes (): void {
-    this.app.use('/profile', profileRoute)
-    this.app.use('/', indexRoute)
+  private defineRoutes(): void {
+    this.app.use("/profile", profileRoute);
+    this.app.use("/", indexRoute);
   }
 }
 
-const server = Server.bootstrap()
-export default server.app
+const server = Server.bootstrap();
+export default server.app;
 
 // ///////////////////////////////
 // HTTP Logging

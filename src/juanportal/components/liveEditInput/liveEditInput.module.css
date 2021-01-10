@@ -1,36 +1,36 @@
 /* Whole container */
 .liveEditContainer {
-    text-align: center;
+  text-align: center;
 }
 .liveEditContainer > p:first-of-type {
-    margin: auto;
+  margin: auto;
 }
 /* Input field */
 .liveEditContainer > label > input:first-of-type {
-    text-align: center;
-    margin: 5px auto auto auto;
-    border-radius: 50px;
-    /* width: 74px; */
-    /* height: 32px; */
+  text-align: center;
+  margin: 5px auto auto auto;
+  border-radius: 50px;
+  /* width: 74px; */
+  /* height: 32px; */
 }
 /* Save button container */
 .saveHolder {
-    position: absolute;
+  position: absolute;
 }
 /* Save button */
 .saveHolder > button {
-    position: absolute;
-    border-radius: 50%;
-    visibility: hidden; /* hide for the time being */
-    transform: translate(36%, -28px);
-    color: var(--custom-white);
-    background-color: var(--custom-green);
-    padding: 1px;
+  position: absolute;
+  border-radius: 50%;
+  visibility: hidden; /* hide for the time being */
+  transform: translate(36%, -28px);
+  color: var(--custom-white);
+  background-color: var(--custom-green);
+  padding: 1px;
 }
 .saveHolder > button:hover {
-    color: var(--custom-white)
+  color: var(--custom-white);
 }
 /* When a user clicks the input to edit, show the save icon */
 .liveEditContainer > label > input:focus + .saveHolder > button:first-of-type {
-    visibility: visible;
+  visibility: visible;
 }

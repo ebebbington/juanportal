@@ -1,5 +1,5 @@
-import classes from './liveEditInput.module.css'
+import classes from "./liveEditInput.module.css";
 
-export function getStylings () {
-    return classes
+export function getStylings() {
+  return classes;
 }
