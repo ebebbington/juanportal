@@ -1,7 +1,7 @@
 import fs from 'fs'
-const _ = require('lodash')
-const logger = require('./logger')
-const { imagesDir, rootDir } = require('../juanportal.config.js')
+import logger from './logger'
+import config from '../juanportal.config'
+const { imagesDir } = config
 
 /**
  * @class ImageHelper
@@ -34,6 +34,7 @@ class ImageHelper {
      * 
      * @return {boolean} False if it still exists or an error occured, true if successed
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public saveToFS(filename: string, file: any): boolean {
         logger.info('[ImageHelper - saveToFS]')
         if (!filename) {
@@ -60,7 +61,7 @@ class ImageHelper {
         // Else just copy the default image
         if (!file) {
             logger.info('No file was passed in')
-            const sampleImage: any = fs.readFileSync(imagesDir + 'sample.jpg')
+            const sampleImage = fs.readFileSync(imagesDir + 'sample.jpg')
             fs.createWriteStream(imagesDir + filename).write(sampleImage)
             //fs.createReadStream(imagesDir + 'sample.jpg').pipe(fs.createWriteStream(imagesDir + filename))
             return this.existsOnFS(filename)

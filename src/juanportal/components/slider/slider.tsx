@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import ReactDOM from 'react-dom'
-import { notify, fetchToApiAsJson } from '../util'
+import React, {ReactElement, useState} from 'react'
+// import ReactDOM from 'react-dom'
+// import { notify, fetchToApiAsJson } from '../util'
 import { getStylings } from './util'
 const sliderStylings = getStylings()
 
 interface IProps {
     title: string,
     setChecked: boolean,
-    id?: any,
-    checkHandler?: Function
+    id?: string,
+    checkHandler?: (id: string, isChecked: boolean) => void
 }
 
 /**
@@ -31,13 +31,13 @@ interface IProps {
  * @param {any} id An id for you toassociate the checked data with
  * @param {Function} checkHandler Handler for you to handle the on change of the input. Passes back the id if exists and the new checked status
  */
-const Slider = ({title, setChecked, id, checkHandler}: IProps) => {
+const Slider = ({title, setChecked, id, checkHandler}: IProps): ReactElement => {
     
     const [isChecked, setIsChecked] = useState(setChecked)
     const [iconClass, setIconClass] = useState(setChecked ? 'fa-check' : 'fa-cross')
     const [isLoading, setIsLoading] = useState(false)
     
-    const handleInputCheck = (event: any) => {
+    const handleInputCheck = (event: React.MouseEvent): void => {
         const inputIsChecked = event.target.checked
         const id = event.target.dataset.id || null
         // First display our slider correctly
@@ -65,7 +65,7 @@ const Slider = ({title, setChecked, id, checkHandler}: IProps) => {
                 {title}
             </p>
             <label title={`Enable or disable for ${title}`}>
-                <input disabled={isLoading} data-id={id} type="checkbox" tabIndex={0} defaultChecked={isChecked} onClick={event => handleInputCheck(event)}></input>
+                <input disabled={isLoading} data-id={id} type="checkbox" tabIndex={0} defaultChecked={isChecked} onClick={(event): void => handleInputCheck(event)}></input>
                 <span className="round">
                     <i className={`fa fa-sm slider-icon ${iconClass}`}></i>
                 </span>

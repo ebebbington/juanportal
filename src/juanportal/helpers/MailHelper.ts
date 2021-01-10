@@ -1,8 +1,9 @@
 "use strict";
 
-const nodemailer = require('nodemailer')
-const mail = require('../juanportal.config.js')['mail']
-const logger = require('./logger.js')
+import nodemailer from 'nodemailer'
+import config from '../juanportal.config'
+const mail = config.mail
+import logger from './logger'
 
 /**
  * @class MailHelper
@@ -31,9 +32,9 @@ export default class MailHelper {
    * 
    * @param {{to: string, subject: string, text: string, html?: string}} data Required data to send the email
    * 
-   * @returns {void|object} Void, but if an error is thrown, its passed into the catch
+   * @returns {void}
    */
-  public static async send (data: {to: string, subject: string, text: string, html?: string}): Promise<void|object> { 
+  public static async send (data: {to: string, subject: string, text: string, html?: string}): Promise<void> {
       // Create a transporter
       const transporterOptions = {
         host: "smtp.gmail.com",
@@ -59,22 +60,22 @@ export default class MailHelper {
   }
 }
 
-function example () {
-  const data: {
-    to: string,
-    subject: string,
-    text: string,
-    html: string
-  } = {
-    to: 'EdwardSBebbington@hotmail.com',
-    subject: 'hello',
-    text: 'hello world',
-    html: '<b>hi</b>' // overwrites the text if present
-  }
-  MailHelper.send(data).catch((err) => {
-    logger.error('Failed to send an email. Most likely because the password isnt set in the config')
-  })
-}
+// function example () {
+//   const data: {
+//     to: string,
+//     subject: string,
+//     text: string,
+//     html: string
+//   } = {
+//     to: 'EdwardSBebbington@hotmail.com',
+//     subject: 'hello',
+//     text: 'hello world',
+//     html: '<b>hi</b>' // overwrites the text if present
+//   }
+//   MailHelper.send(data).catch((err) => {
+//     logger.error('Failed to send an email. Most likely because the password isnt set in the config')
+//   })
+// }
 
 // // async..await is not allowed in global scope, must use a wrapper
 // async function sendWithRealAcc(){

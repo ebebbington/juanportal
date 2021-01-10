@@ -1,6 +1,8 @@
-const redis = require('redis')
-require('dotenv').config()
-const logger = require('./logger')
+import redis from 'redis'
+import dotenv from 'dotenv'
+import redisCache from 'express-redis-cache'
+dotenv.config()
+import logger from './logger'
 
 interface IParams {
     cache?: boolean,
@@ -38,11 +40,11 @@ interface IKVPair {
 class RedisHelper {
 
     public readonly host:           string|undefined    = process.env.REDIS_HOST
-    public readonly port:           string|undefined    = process.env.REDIS_PORT
+    public readonly port:           number|undefined    = Number(process.env.REDIS_PORT)
     public readonly cacheDuration:  number|undefined    = Number(process.env.REDIS_CACHE_EXPIRE)
-    public          cache:          any|null            = null
-    public          sub:            any|null            = null
-    public          pub:            any|null            = null
+    public          cache:          redisCache.ExpressRedisCache | null            = null
+    public          sub:            redis.RedisClient | null            = null
+    public          pub:            redis.RedisClient | null            = null
     public readonly channels:       IKVPair             = {
         chat: 'chat'
     }
@@ -50,11 +52,11 @@ class RedisHelper {
     public constructor (params: IParams) {
         if (!this.host || !this.port || !this.cacheDuration) {
             logger.error('Env data for Redis has not been correctly defined')
-            const data: any = {host: this.host, port: this.port, cacheDuration: this.cacheDuration}
+            const data = {host: this.host, port: this.port, cacheDuration: this.cacheDuration}
             logger.error(JSON.stringify(data))
         }
         if (params && params.cache) {
-            this.cache = require('express-redis-cache')({
+            this.cache = redisCache({
                 host: this.host,
                 port: this.port,
                 expire: this.cacheDuration
@@ -62,28 +64,30 @@ class RedisHelper {
             this.initialiseCacheLogging()
         }
         if (params && params.sub) {
-            this.sub = redis.createClient({host: this.host, port: this.port})
+            this.sub = redis.createClient({host: this.host, port: this.port as number})
         }
         if (params && params.pub) {
-            this.pub = redis.createClient({host: this.host, port: this.port})
+            this.pub = redis.createClient({host: this.host, port: this.port as number})
         }
     }
 
-    private initialiseCacheLogging () {
-        this.cache
-            .on('error', (err: any) => {
-                logger.error('Redis cache has encourtered a problem')
-                logger.error(err)
-            })
-            .on('message', (message: any) => {
-                logger.info('Redis cache has received a message: ' + message)
-            })
-            .on('connected', () => {
-                logger.info('Redis cache has connected')
-            })
-            .on('disconnected', () => {
-                logger.info('Redis cache has disconnected')
-            })
+    private initialiseCacheLogging (): void {
+        if (this.cache) {
+            this.cache
+                .on('error', (err) => {
+                    logger.error('Redis cache has encourtered a problem')
+                    logger.error(err)
+                })
+                .on('message', (message) => {
+                    logger.info('Redis cache has received a message: ' + message)
+                })
+                .on('connected', () => {
+                    logger.info('Redis cache has connected')
+                })
+                .on('disconnected', () => {
+                    logger.info('Redis cache has disconnected')
+                })
+        }
     }
 }
 

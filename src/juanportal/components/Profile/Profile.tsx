@@ -1,5 +1,5 @@
-import React, { useState, ReactElement, useEffect, useCallback } from 'react'
-import ReactDOM from 'react-dom'
+import React, {useState, useEffect, ReactElement, Dispatch, SetStateAction} from 'react'
+//import ReactDOM from 'react-dom'
 import LinkButton from '../button/linkButton'
 import Button from '../button/button'
 import { notify, fetchToApiAsJson } from '../util.js'
@@ -11,7 +11,7 @@ const socket = io('http://127.0.0.1:9002')
 interface IProps {
     count?: number,
     id?: string,
-    match?: { path: string, url: string, isExact: boolean, params: { [key: string]: any }}
+    match?: { path: string, url: string, isExact: boolean, params: { id: string }}
 }
 
 interface IProfile {
@@ -64,7 +64,7 @@ interface IProfile {
  * @method deleteProfile Deletes a profile from the API and the image file from this server
  * @method handleDelete Handles the deletion of a profile
  */
-const Profile = (props: IProps) => {
+const Profile = (props: IProps): ReactElement => {
     socket.removeAllListeners()
 
     const { count } = props
@@ -82,21 +82,22 @@ const Profile = (props: IProps) => {
      * 
      * @var {object[]}
      */
-    const [profiles, setProfiles] = useState([])
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [profiles, setProfiles]: [IProfile[], Dispatch<SetStateAction<any>>] = useState([])
 
     /**
      * Id of a profile to find if passed in
      * 
      * @var {number|null}
      */
-    const [idOfProfileToFind, setId] = useState(id)
+    const [idOfProfileToFind] = useState(id)
 
     /**
      * Amount of profiles to retrieve
      * 
      * @var {number|null}
      */
-    const [numberOfProfilesToGet, setCount] = useState(count)
+    const [numberOfProfilesToGet] = useState(count)
 
     /**
      * @method findProfile
@@ -114,12 +115,12 @@ const Profile = (props: IProps) => {
      */
     const findProfile = (): void => {
         console.log('[findProfile]')
-        const url: string = '/api/profile/id/' + idOfProfileToFind
+        const url = '/api/profile/id/' + idOfProfileToFind
         //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
-        fetchToApiAsJson(url).then((res: any) => {
+        fetchToApiAsJson(url).then((res) => {
             //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Find Profile', res.message, 'success')
-            const arr: any = [res.data]
+            const arr = [res.data] as IProfile[]
             setProfiles(arr)
         }).catch((err) => {
             //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
@@ -141,9 +142,9 @@ const Profile = (props: IProps) => {
      */
     const findManyProfiles = (): void => {
         console.log('[findManyProfiles]')
-        const url: string = '/api/profile/count/' + numberOfProfilesToGet
+        const url = '/api/profile/count/' + numberOfProfilesToGet
         //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
-        fetchToApiAsJson(url).then((res: any) => {
+        fetchToApiAsJson(url).then((res) => {
             //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Find Many Profiles', res.message, 'success')
             setProfiles(res.data)
@@ -157,15 +158,17 @@ const Profile = (props: IProps) => {
 
     const handleProfileDeletedSocketEvent = (data: { profileId: number}): void => {
         console.log('Got profileDeleted event from socket, with id of ' + data.profileId)
-        const updatedProfiles = profiles.filter((obj: any) => {
+        const updatedProfiles = profiles.filter((obj) => {
+            // eslint-disable-next-line
+            // @ts-ignore FIXME :: Check this... The profileId is deffo a number form the ws, so im curious if this code block has ever worked
             return obj._id !== data.profileId
         })
         setProfiles(updatedProfiles)
         // Remove the HTML block from the DOM
-        const deleteButton: any = document.querySelector(`button.delete[data-id="${data.profileId}"`)
+        const deleteButton: HTMLElement | null = document.querySelector(`button.delete[data-id="${data.profileId}"`)
         // Below if statements are here to stop errors of 'object is possibly null'
         if (deleteButton)  {
-            const topParent: any = deleteButton.closest('.well.profile')
+            const topParent = deleteButton.closest('.well.profile')
             if (topParent) {
                 topParent.remove()
             }
@@ -188,26 +191,26 @@ const Profile = (props: IProps) => {
      * @param {string} id ID of the profile to delete
      * @param {string} filename Filename of the profiles image to delete
      */
-    const deleteProfile = (id: string, filename: string) => {
+    const deleteProfile = (id: string, filename: string): void => {
         console.log('[deleteProfile]')
         const profileUrl: string = '/api/profile/id/' + id
         const profileOptions = { method: 'DELETE' }
         const imageUrl: string = '/profile/image?filename=' + filename
         const imageOptions = { method: 'DELETE' }
         //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
-        fetchToApiAsJson(profileUrl, profileOptions).then(() => fetchToApiAsJson(imageUrl, imageOptions)).then((res: any) => {
+        fetchToApiAsJson(profileUrl, profileOptions).then(() => fetchToApiAsJson(imageUrl, imageOptions)).then((res) => {
             //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
             notify('Delete Profile', res.message, 'success')
-            const updatedProfiles = profiles.filter((obj: any) => {
+            const updatedProfiles = profiles.filter((obj) => {
                 return obj._id !== id
             })
 
             setProfiles(updatedProfiles)
             // Remove the HTML block from the DOM
-            const deleteButton: any = document.querySelector(`button.delete[data-id="${id}"`)
+            const deleteButton: HTMLElement | null = document.querySelector(`button.delete[data-id="${id}"`)
             // Below if statements are here to stop errors of 'object is possibly null'
             if (deleteButton)  {
-                const topParent: any = deleteButton.closest('.well.profile')
+                const topParent = deleteButton.closest('.well.profile')
                 if (topParent) {
                     topParent.remove()
                 }
@@ -237,11 +240,11 @@ const Profile = (props: IProps) => {
      * 
      * @return {void}
      */
-    const handleDelete = (event: any, id: string) => {
+    const handleDelete = (event: React.MouseEvent, id: string): void => {
         console.log('[handleDelete]')
         // get image filename from the current profiles list
-        let imageFilename: string = ''
-        profiles.forEach((item: any, index: number) => {
+        let imageFilename = ''
+        profiles.forEach((item) => {
             if (item._id === id) imageFilename = item.image
         })
         deleteProfile(id, imageFilename)
@@ -277,7 +280,7 @@ const Profile = (props: IProps) => {
     /**
      * Here to 'act' as a component did update, so we can keep track of the state
      */
-    const componentDidUpdate = () => {
+    const componentDidUpdate = (): void => {
         console.log('[componentDidUpdate]')
         console.log('Profiles: ', profiles)
         console.log('View single: ', viewSingle)
@@ -298,7 +301,7 @@ const Profile = (props: IProps) => {
                 <h2>No profiles are left! Why not
                     <a href="/profile/add"> add one </a>
                     or
-                    <a href="#" onClick={() => findManyProfiles()}> find more?</a>
+                    <a href="#" onClick={(): void => findManyProfiles()}> find more?</a>
                 </h2>
             </div>
         )
@@ -322,7 +325,7 @@ const Profile = (props: IProps) => {
                         </div>
                     }
                         <div className={styles.action}>
-                            <Button text="Delete Profile" lightColour="amber" clickHandler={handleDelete} id={profile._id} />
+                            <Button text="Delete Profile" lightColour="amber" clickHandler={(event): void => handleDelete(event, profile._id)} id={profile._id} />
                         </div>
                     </div>
                 </div>

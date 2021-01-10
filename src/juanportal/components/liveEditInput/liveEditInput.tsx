@@ -1,13 +1,13 @@
-import React, { useState, ReactElement, useEffect } from 'react'
-import ReactDOM from 'react-dom'
+import React, {ReactElement, useState} from 'react'
+// import ReactDOM from 'react-dom'
 import { getStylings } from './util'
 const styles = getStylings()
 
 interface IProps {
     title: string,
-    inputVal?: any,
-    saveHandler?: Function,
-    id?: any
+    inputVal?: string,
+    saveHandler?: (data: { val: string, id : string | number}) => void,
+    id?: string | number
 }
 
 /**
@@ -34,21 +34,21 @@ interface IProps {
  * @param {Function} saveHandler Your function that will be called when the save button is clicked. Passes in the input value and your passed in id if present
  * @param {any} id An id you want to associate the value with e.g. when a new vlaue saves, the id could point to a users profile
  */
-const LiveEditInput = ({title, inputVal = '', saveHandler, id}: IProps) => {
+const LiveEditInput = ({title, inputVal = '', saveHandler, id}: IProps): ReactElement => {
 
     const [inputSize, setInputSize] = useState(inputVal.length ? inputVal.length : 1)
     const [inputValue, setInputValue] = useState(inputVal)
 
-    const handleInputChange = (value: string) => {
+    const handleInputChange = (value: string): void => {
         setInputValue(value)
         setInputSize(value.length ? value.length : 1)
     }
 
-    const handleClick = (target: any) => {
-        const value: string = target.dataset.value
-        const id: any = target.dataset.id || null
+    const handleClick = (target: React.MouseEvent): void => {
+        const val: string = target.dataset.value
+        const id: string | number = target.dataset.id
         if (saveHandler) {
-            saveHandler({value, id})
+            saveHandler({val, id})
         }
     }
 
@@ -56,9 +56,9 @@ const LiveEditInput = ({title, inputVal = '', saveHandler, id}: IProps) => {
         <div className={styles.liveEditContainer}>
             <p>{title}</p>
             <label>
-                <input size={inputSize} type="text" className="form-control" value={inputValue} title={title} onChange={event => handleInputChange(event.target.value)}></input>
+                <input size={inputSize} type="text" className="form-control" value={inputValue} title={title} onChange={(event): void => handleInputChange(event.target.value)}></input>
                 <div className={styles.saveHolder}>
-                    <button data-val={inputValue} data-id={id} className="fa fa-check btn" title={title} onClick={event => handleClick(event.target)}></button>
+                    <button data-val={inputValue} data-id={id} className="fa fa-check btn" title={title} onClick={(event): void => handleClick(event.target)}></button>
                 </div>
             </label>
         </div>

@@ -1,4 +1,4 @@
-import React, { useState, ReactElement, FunctionComponent } from 'react'
+import React, {ReactElement} from 'react'
 import { getStylings } from './util'
 const classes = getStylings()
 import {getLightStylingByColour} from './util'
@@ -6,8 +6,8 @@ import {getLightStylingByColour} from './util'
 interface IParams {
   text: string,
   lightColour: string,
-  clickHandler?: Function,
-  id?: any
+  clickHandler?: (event: React.MouseEvent, id?: string | number) => void,
+  id?: string | number
 }
 
 /**
@@ -32,7 +32,7 @@ interface IParams {
  * 
  * @return {HTMLCollection}
  */
-const Button = ({text, lightColour, clickHandler, id}: IParams) => {
+const Button = ({text, lightColour, clickHandler, id}: IParams): ReactElement => {
 
   if (!text) return <></>
   if (!lightColour) return <></>
@@ -40,14 +40,14 @@ const Button = ({text, lightColour, clickHandler, id}: IParams) => {
   const lightStyling = getLightStylingByColour(lightColour)
   if (!lightStyling) return <></>
 
-  const handleClick = (event: any) => {
+  const handleClick = (event: React.MouseEvent): void => {
     if (clickHandler) {
       clickHandler(event, id)
     }
   }
 
   return (
-    <button className={`${classes.trafficLight} ${lightStyling} btn`} onClick={event => handleClick(event)}>
+    <button className={`${classes.trafficLight} ${lightStyling} btn`} onClick={(event): void => handleClick(event)}>
       {text}
     </button>
   )

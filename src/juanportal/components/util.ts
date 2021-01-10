@@ -1,4 +1,6 @@
-const vNotify = require('Notify');
+// eslint-disable-next-line
+// @ts-ignore No types :/
+import vNotify from 'Notify'
 
 /**
  * @name util.js
@@ -47,7 +49,7 @@ const vNotify = require('Notify');
  * 
  * @return {void}
  */
-export const notify = ((title: string, text: string, type: string) => {
+export const notify = ((title: string, text: string, type: string): void => {
     // Checking for an old script and removing it because prior to this, the body would just fill up
     // with script tags, so here it's just a cleanup job
     const oldNotifyScript = document.querySelector('script#notify')
@@ -59,7 +61,7 @@ export const notify = ((title: string, text: string, type: string) => {
     newNotiyScript.src = "/public/libs/vanilla-notify.min.js";
     newNotiyScript.id = 'notify'
     newNotiyScript.async = true;
-    newNotiyScript.onload = (a: any) => {
+    newNotiyScript.onload = (): void => {
         if (type === 'success')
             vNotify.success({text: text, title: title})
         if (type === 'warning')
@@ -77,6 +79,7 @@ export const notify = ((title: string, text: string, type: string) => {
 interface IJsonResponse {
     success: boolean,
     message: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any
 }
 /**
@@ -101,7 +104,7 @@ interface IJsonResponse {
  * 
  * @return {Promise<any>}
  */
- export const fetchToApiAsJson = (url: string, options: { [key: string]: any } = {}): Promise<any> => {
+ export const fetchToApiAsJson = (url: string, options: RequestInit = {}): Promise<IJsonResponse> => {
     console.log('[fetchToApiAsJson')
     console.log('URL: ' + url)
     console.log('Options: ')

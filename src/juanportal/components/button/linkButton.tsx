@@ -1,4 +1,4 @@
-import React, { useState, ReactElement, FunctionComponent } from 'react'
+import React, {ReactElement} from 'react'
 import { getStylings } from './util'
 const classes = getStylings()
 import {getLightStylingByColour} from './util'
@@ -31,7 +31,7 @@ interface IParams {
  * 
  * @return {HTMLCollection}
  */
-const LinkButton = ({href, text, lightColour}: IParams) => {
+const LinkButton = ({href, text, lightColour}: IParams): ReactElement => {
 
     if (!text) return <></>
     if (!lightColour) return <></>

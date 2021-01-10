@@ -2,13 +2,15 @@
 // Packages
 // ///////////////////////////////
 import express from 'express'
-const morgan = require('morgan')
-require('dotenv').config()
-const cookieParser = require('cookie-parser')
-const bodyParser = require('body-parser')
-const logger = require('./helpers/logger')
-const socketIo = require('socket.io')
+import morgan from 'morgan'
+import dotenv from 'dotenv'
+dotenv.config()
+import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
+import socketIo from 'socket.io'
 import cors from "cors"
+import profileRoute from './routes/profile.js'
+import indexRoute from './routes/index.js'
 
 
 /**
@@ -90,6 +92,7 @@ class Server {
     //create expressjs application
     this.app = express();
     this.app.use(cors())
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     this.app.io = socketIo()
     //configure application
@@ -130,12 +133,12 @@ class Server {
     // Everything else use development logging
     if (this.env !== 'production') {
       this.app.use(morgan('dev', {
-        skip: function (req: any, res: any) {
+        skip: function (req, res) {
             return res.statusCode < 400
         }, stream: process.stderr
       }));
       this.app.use(morgan('dev', {
-        skip: function (req: any, res: any) {
+        skip: function (req, res) {
             return res.statusCode >= 400
         }, stream: process.stdout
       }));
@@ -150,8 +153,6 @@ class Server {
    * @return {void}
    */
   private defineRoutes (): void {
-    const profileRoute = require('./routes/profile.js')
-    const indexRoute = require('./routes/index.js')
     this.app.use('/profile', profileRoute)
     this.app.use('/', indexRoute)
   }

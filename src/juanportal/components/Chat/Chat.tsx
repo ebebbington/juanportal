@@ -1,18 +1,18 @@
-import * as React from 'react'
-import { useState, ReactElement, FunctionComponent, useEffect, useReducer } from 'react'
+import React, {ReactElement} from 'react'
+import { useState, useEffect, useReducer } from 'react'
 import { getStylings } from './util'
 import Button from '../button/button'
 import openSocket from 'socket.io-client'
 const socket = openSocket('http://0.0.0.0:9002')
 const classes = getStylings()
 
-const Chat = () => {
+const Chat = (): ReactElement => {
 
     socket.removeAllListeners()
 
     const [messageToSend, setMessageToSend] = useState('')
 
-    const [messagesReceived, setMessagesReceived] = useReducer((messages: any, {type, username, message}: {type: string, username: string, message: string}) => {
+    const [messagesReceived, setMessagesReceived] = useReducer((messages, {type, username, message}: {type: string, username: string, message: string}) => {
         if (type === 'add') {
             return [...messages, {username, message}]
         } else {
@@ -22,7 +22,7 @@ const Chat = () => {
 
     const [username, setUsername] = useState('')
 
-    const [usersOnline, setUsersOnline] = useReducer((users: any, {type, newList}: {type: string, newList: string[]}) => {
+    const [usersOnline, setUsersOnline] = useReducer((users, {type, newList}: {type: string, newList: string[]}) => {
         if (type === 'add') {
             return newList
         } else {
@@ -32,7 +32,7 @@ const Chat = () => {
 
     const [showUsers, setShowUsers] = useState(false)
 
-    const handleSend = (event: any) => {
+    const handleSend = (): void => {
         console.log('Clicked send! Your message is: ' + messageToSend)
         if (messageToSend) {
             console.log('Gonna send your message')
@@ -43,15 +43,15 @@ const Chat = () => {
         }
     }
 
-    window.onbeforeunload = function () {
+    window.onbeforeunload = function (): void {
         socket.emit('user left', username)
     }
 
-    const handleWSUsersOnline = (newUserList: string[]) => {
+    const handleWSUsersOnline = (newUserList: string[]): void => {
         setUsersOnline({type: 'add', newList: newUserList})
     }
 
-    const handleLeave = (event: any) => {
+    const handleLeave = (): void => {
         console.log('Clicked leave!')
         if (confirm('Are you sure you want to leave?')) {
             console.log('Gonna leave')
@@ -59,31 +59,31 @@ const Chat = () => {
         }
     }
 
-    const handleMouseEnterOnStatus = (event: any) => {
+    const handleMouseEnterOnStatus = (): void => {
         console.log('[handleMouseEnterOnStatus]')
         setShowUsers(true)
     }
 
-    const handleMouseLeaveOnStatus = (event: any) => {
+    const handleMouseLeaveOnStatus = (): void => {
         console.log('[handleMouseLeaveOnStatus]')
         setShowUsers(false)
     }
 
-    const handleWSChatMessage = (username: string, message: string) => {
+    const handleWSChatMessage = (username: string, message: string): void => {
         console.log('[handleChatMessage]')
         console.log(username, message)
         setMessagesReceived({type: 'add', username: username, message: message})
     }
 
-    const handleInputKeyPress = (event: any) => {
+    const handleInputKeyPress = (event: React.MouseEvent): void => {
         // Click the submit button when pressing enter
         if (event.keyCode === 13) {
-            const submitButton: any = document.querySelector('.footer > button')
+            const submitButton: HTMLElement = document.querySelector('.footer > button')
             if (submitButton) submitButton.click()
         }
     }
 
-    useEffect(() => {
+    useEffect((): void => {
         // Means it's a first time user
         if (!username) {
             const un = prompt('Your username:') || 'Guest User'
@@ -100,7 +100,7 @@ const Chat = () => {
         <div className={classes.chatHolder}>
             <div className={classes.header}>
                 <div className={classes.status}>
-                    <i className="fa fa-circle" onMouseEnter={event => handleMouseEnterOnStatus(event)} onMouseLeave={event => handleMouseLeaveOnStatus(event)}/>
+                    <i className="fa fa-circle" onMouseEnter={handleMouseEnterOnStatus} onMouseLeave={handleMouseLeaveOnStatus}/>
                     {showUsers &&
                         <ul className="userList">
                             {usersOnline.map((username: string, index: number) =>
@@ -122,7 +122,7 @@ const Chat = () => {
             </div>
             <div className={classes.footer}>
                 <label htmlFor="message" hidden>Message</label>
-                <input id="message" type="text" placeholder="Type something => ENTER" className="messageInput form-control" onChange={event => setMessageToSend(event.target.value)} onKeyPress={event => handleInputKeyPress(event)}/>
+                <input id="message" type="text" placeholder="Type something => ENTER" className="messageInput form-control" onChange={(event): void => setMessageToSend(event.target.value)} onKeyPress={(event): void => handleInputKeyPress(event)}/>
                 <Button text="Send" lightColour="green" clickHandler={handleSend} />
                 <Button text="Leave" lightColour="red" clickHandler={handleLeave} />
             </div>

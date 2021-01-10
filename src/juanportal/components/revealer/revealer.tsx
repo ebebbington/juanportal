@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import ReactDOM from 'react-dom'
-import { notify, fetchToApiAsJson } from '../util'
+import React from 'react'
+// import ReactDOM from 'react-dom'
 import { getStylings } from './util'
 const styles = getStylings()
 
 interface IProps {
     iconClass: string,
     text: string,
-    clickHandler?: Function
+    clickHandler?: (event: React.MouseEvent) => void
 }
 
 /**
@@ -26,7 +25,7 @@ interface IProps {
  *     console.log('Someone clicked the Revealer!)
  *   }
  *   return (
- *     <Revealer iconClass="fa-chart" text="See Analytics" clickHandler={clickHandler}/>
+ *     <Revealer iconClass="fa-chart" text="See Analytics" clickHandler={handleClick}/>
  *   )
  * }
  * 
@@ -34,13 +33,13 @@ interface IProps {
  * @param {string} text The text to accompany the icon e.g. "See analytics"
  * @param {Function} clickHandler? Your own defined function to handle a click of the button. Passes back the event object
  */
-const Revealer = ({iconClass, text, clickHandler}: IProps) => {
+const Revealer = ({iconClass, text, clickHandler}: IProps): React.FC => {
 
-    const defaultWidth: number = 63 // px
+    const defaultWidth = 63 // px
 
-    const handleMouseEnter = (event: any) => {
-        const buttonElem: any = event.target
-        const textElem: any =event.target.children[1]
+    const handleMouseEnter = (event: React.MouseEvent): void => {
+        const buttonElem = event.target
+        const textElem =event.target.children[1]
         if (buttonElem && textElem) {
             const textWidth: number = textElem.offsetWidth
             const newWidth: string = defaultWidth + textWidth + 'px'
@@ -48,8 +47,8 @@ const Revealer = ({iconClass, text, clickHandler}: IProps) => {
         }
     }
 
-    const handleMouseLeave = (event: any) => {
-        const buttonElem: any = event.target
+    const handleMouseLeave = (event: React.MouseEvent): void => {
+        const buttonElem: HTMLElement = event.target
         if (buttonElem) {
             buttonElem.style.width = defaultWidth + 'px'
         }
@@ -57,9 +56,9 @@ const Revealer = ({iconClass, text, clickHandler}: IProps) => {
 
     return (
         <button className={styles.revealerContainer}
-        onMouseEnter={event => handleMouseEnter(event)}
-        onMouseLeave={event => handleMouseLeave(event)}
-        onClick={event => clickHandler(event)}>
+        onMouseEnter={(event): void => handleMouseEnter(event)}
+        onMouseLeave={(event): void => handleMouseLeave(event)}
+        onClick={(event): void => clickHandler(event)}>
             <i className={`fa fa-3x ${iconClass}`}></i>
             <h2>{text}</h2>
         </button>

@@ -1,17 +1,21 @@
-import React, { useState, ReactElement, useEffect } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useState } from 'react'
+// import ReactDOM from 'react-dom'
 import { getStylings } from './util'
 const dropdownStylings = getStylings()
 
 interface ILiData {
     text: string,
     checked: boolean,
-    id?: any
+    id?: string | number
 }
 interface IProps {
     title: string,
     liData: Array<ILiData>,
-    checkedHandler?: Function
+    checkedHandler?: (data: {
+        text: string,
+        id?: string,
+        checked: boolean
+    }) => void
 }
 
 /**
@@ -38,19 +42,19 @@ interface IProps {
  * @param {Array<{text: string, id?: string, checked: boolean}>} liData Data used to populate the list items, where `id` can be used to identify certain data
  * @param {Function} checkedHandler On change of input, calls this function passing in the text, checked, and id data should the calling component wish to do extra logic when data is changed
  */
-const Dropdown = ({title, liData, checkedHandler}: IProps) => {
+const Dropdown = ({title, liData, checkedHandler}: IProps): React.FC => {
 
     // Just loop through the data provided to get the number of checked
     // items, to display this count on initial load
     let countOfChecked = 0
-    liData.forEach((data: any) => {
+    liData.forEach((data) => {
         if (data.checked) countOfChecked += 1
     });
     const [selected, setSelected] = useState(countOfChecked)
 
-    const handleChange = (event: any) => {
+    const handleChange = (event: React.MouseEvent): void => {
         const text: string = event.target.value
-        const isChecked: boolean = event.target.checked ? true : false
+        const isChecked: boolean = event.target.checked
         const id: string = event.target.dataset.id
         const passBackData: {
             text: string,
@@ -76,10 +80,10 @@ const Dropdown = ({title, liData, checkedHandler}: IProps) => {
                 {selected} Selected
             </button>
             <ul className="dropdown-menu" aria-labelledby="dropdown-description">
-            {liData.map((data: any) => 
+            {liData.map((data) =>
                 <li key={data.text}>
                     <label>
-                        <input type="checkbox" defaultChecked={data.checked} onChange={event => handleChange(event)} data-id={data.id} value={data.text}></input>
+                        <input type="checkbox" defaultChecked={data.checked} onChange={(event): void => handleChange(event)} data-id={data.id} value={data.text}></input>
                         {data.text}
                     </label>
                 </li>

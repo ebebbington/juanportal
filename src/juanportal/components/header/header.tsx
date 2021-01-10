@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect, ReactElement} from 'react'
 import { getStylings } from './util'
 const headerStyles = getStylings()
 import { useMediaQuery } from 'react-responsive'
@@ -29,7 +29,7 @@ interface INavLinks {
  * 
  * @return {HTMLCollection}
  */
-const Header = () => {
+const Header = (): ReactElement => {
 
     /**
      * Title of the current page
@@ -99,7 +99,7 @@ const Header = () => {
      * @example
      * <button onClick={() => handleMenyClick}/>
      */
-    const handleMenuClick = () => {
+    const handleMenuClick = (): void => {
         // Opposite of what the value already is
         setMenuExpanded(!menuExpanded)
     }

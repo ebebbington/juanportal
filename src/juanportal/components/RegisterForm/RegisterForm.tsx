@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {ReactElement, useState} from 'react'
 import { notify, fetchToApiAsJson } from '../util'
 import { getStylings } from './util'
 const formStyles = getStylings()
@@ -58,7 +58,7 @@ import Button from '../button/button'
  * @method componentDidUpdate       Called when a state property changes
  * @method render                   Automatically called, renders the form in the DOM
  */
-const RegisterForm = () => {
+const RegisterForm = (): ReactElement => {
 
     /**
      * Holds data related to the component
@@ -127,7 +127,7 @@ const RegisterForm = () => {
      *
      * @return {void}
      */
-    const handleSubmit = (event: any): void => {
+    const handleSubmit = (event: React.MouseEvent): void => {
         console.log('[handleSubmit]')
         event.preventDefault()
         const validated: boolean = validateForm()
@@ -191,18 +191,18 @@ const RegisterForm = () => {
      * 
      * @return {Promise}
      */
-    const uploadImage = (newFilename: string): Promise<any> => {
-        console.log('[uploadImage]')
-        const form: any = document.querySelector('form')
-        const data: any = new URLSearchParams()
-        for (const pair of new FormData(form)) {
-            data.append(pair[0], pair[1])
-        }
-        console.log('new filenamee: ' + newFilename)
-        console.log('data:')
-        console.log(data)
-        return fetch('/profile/image?filename=' + newFilename, { method: 'POST', body: data})
-    }
+    // const uploadImage = (newFilename: string): Promise<any> => {
+    //     console.log('[uploadImage]')
+    //     const form: any = document.querySelector('form')
+    //     const data: any = new URLSearchParams()
+    //     for (const pair of new FormData(form)) {
+    //         data.append(pair[0], pair[1])
+    //     }
+    //     console.log('new filenamee: ' + newFilename)
+    //     console.log('data:')
+    //     console.log(data)
+    //     return fetch('/profile/image?filename=' + newFilename, { method: 'POST', body: data})
+    // }
 
     /**
      * @method registerProfile
@@ -214,17 +214,18 @@ const RegisterForm = () => {
      * @example
      * this.registerProfile()
      */
-    const registerProfile = () => {
+    const registerProfile = (): void => {
         console.log('[registerProfile]')
-        const form: any = document.querySelector('form')
-        const data: any = new URLSearchParams()
-        for (const pair of new FormData(form)) {
-            data.append(pair[0], pair[1])
-        }
-        const profileUrl: string = '/api/profile'
-        const profileOptions: any = { method: 'POST', body: data}
+        const form: HTMLFormElement | undefined = document.querySelector('form') as HTMLFormElement | undefined
+        const data = new FormData(form) // TODO TEST ME, ENSURE I WORK, as the below commented out code was throwing errors, and this line is just much simpler, BUT it may not work
+        // const data = new URLSearchParams()
+        // for (const pair of new FormData(form as HTMLFormElement | undefined)) {
+        //     data.append(pair[0], pair[1])
+        // }
+        const profileUrl = '/api/profile'
+        const profileOptions = { method: 'POST', body: data}
         const imageUrl = '/profile/image?filename='
-        const imageOptions = { method: 'POST', body: new FormData(form)}
+        const imageOptions = { method: 'POST', body: new FormData(form as HTMLFormElement | undefined)}
         //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
         fetchToApiAsJson(profileUrl, profileOptions).then(response => fetchToApiAsJson(imageUrl + response.data, imageOptions)).then((res) => {
             if (!res.success) {
@@ -259,15 +260,18 @@ const RegisterForm = () => {
      * 
      * @return {void}
      */
-    const handleFileChange = (event: any): void => {
+    const handleFileChange = (event: React.ChangeEvent): void => {
         console.log('[handleFileChange]')
         //
         // Filename - try/catch so it doesn't throw an error in the case where no file is selected e.g. closes the prompt
         //
         const filenameElem = document.getElementById('filename')
         try {
-            setFilename(event.target.files[0].name)
-            if (filenameElem) filenameElem.innerHTML = event.target.files[0].name
+            const target: HTMLInputElement = event.target as HTMLInputElement
+            if (target && target.files && target.files.length) {
+                setFilename(target.files[0].name)
+                if (filenameElem) filenameElem.innerHTML = target.files[0].name
+            }
         } catch (e) {
             // As the file (if been selected) is now gone due to a cancellation, remove the text to represent 'No file chosen'
             setFilename('')
@@ -276,7 +280,7 @@ const RegisterForm = () => {
         }
     }
 
-    const componentDidUpdate = () => {
+    const componentDidUpdate = (): void => {
         console.log('[componentDidUpdate]')
         console.log('Name: ' + name)
         console.log('Description: ' + description)
@@ -292,17 +296,17 @@ const RegisterForm = () => {
                 <label className={formStyles.fieldContainer} aria-labelledby="name-label">
                     <span id="name-label" hidden>Name</span>
                     <input id="name" className="form-control" name="name" placeholder="Your Name *" type="text"
-                        title="Name" onChange={event => handleNameChange(event.target.value)} required/>
+                        title="Name" onChange={(event): void => handleNameChange(event.target.value)} required/>
                 </label>
                 <label className={formStyles.fieldContainer} aria-labelledby="description-label">
                     <span id="description-label" hidden>Description</span>
                     <input id="description" className="form-control" name="description" placeholder="Your Description" type="text"
-                        title="Description" onChange={event => handleDescriptionChange(event.target.value)}/>
+                        title="Description" onChange={(event): void => handleDescriptionChange(event.target.value)}/>
                 </label>
                 <label className={formStyles.fileUploadContainer} aria-label="Profile Picture" title="Profile Picture">
                     <p className="btn btn-info">Upload Profile Image</p>
                     <i id="filename" className={formStyles.filename}/>
-                    <input title="Picture upload" name="image" type="file" onChange={event => handleFileChange(event)}/>
+                    <input title="Picture upload" name="image" type="file" onChange={(event): void => handleFileChange(event)}/>
                 </label>
                 <div className={formStyles.submitContainer} onClick={handleSubmit}>
                     <Button text="Submit" lightColour="green" />
