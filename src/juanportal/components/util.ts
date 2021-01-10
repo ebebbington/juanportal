@@ -1,6 +1,7 @@
 // eslint-disable-next-line
 // @ts-ignore No types :/
 import vNotify from "Notify";
+const buttonStyling = require("./button/button.module.css")
 
 /**
  * @name util.js
@@ -128,3 +129,15 @@ export const fetchToApiAsJson = (
       });
   });
 };
+
+export function getLightStylingByColour(lightColour: string): string | boolean {
+  const lightStyling =
+      lightColour === "green"
+          ? buttonStyling.greenLight
+          : lightColour === "amber"
+          ? buttonStyling.amberLight
+          : lightColour === "red"
+              ? buttonStyling.redLight
+              : false;
+  return lightStyling;
+}

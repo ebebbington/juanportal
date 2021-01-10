@@ -1,7 +1,6 @@
 import React from "react";
 // import ReactDOM from 'react-dom'
-import { getStylings } from "./util";
-const styles = getStylings();
+const styles = require("./revealer.module.css")
 
 interface IProps {
   iconClass: string;

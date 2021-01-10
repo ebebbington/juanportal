@@ -4,7 +4,7 @@ import { getStylings } from "./util";
 import Button from "../button/button";
 import openSocket from "socket.io-client";
 const socket = openSocket("http://0.0.0.0:9002");
-const classes = getStylings();
+const classes = require("./Chat.module.css")
 
 const Chat = (): ReactElement => {
   socket.removeAllListeners();

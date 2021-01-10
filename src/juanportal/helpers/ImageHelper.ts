@@ -50,7 +50,9 @@ class ImageHelper {
         // this is for when we need to only specify file and not file.buffer
         try {
           fs.createWriteStream(imagesDir + filename).write(file);
-          return this.existsOnFS(filename);
+          const exists = this.existsOnFS(filename)
+          logger.info(`[ImageHelper] - Does ${imagesDir + filename} exist: ${exists}`)
+          return exists;
         } catch (err) {
           logger.error(err);
           return false;
@@ -81,8 +83,9 @@ class ImageHelper {
    * @return {boolean} if it exists
    */
   public existsOnFS(name: string): boolean {
-    logger.info("[ImageHelper - existsOnFS]");
+    logger.info("[ImageHelper - existsOnFS] Start");
     const fullPath: string = imagesDir + name;
+    logger.info(`[ImageHelper] - Fullpath: ${fullPath}`)
     try {
       return fs.existsSync(fullPath);
     } catch (e) {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, ReactElement } from "react";
-import { getStylings } from "./util";
-const headerStyles = getStylings();
+const headerStyles = require("./header.module.css")
 import { useMediaQuery } from "react-responsive";
 
 interface INavLinks {

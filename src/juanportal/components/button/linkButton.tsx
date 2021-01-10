@@ -1,7 +1,6 @@
 import React, { ReactElement } from "react";
-import { getStylings } from "./util";
-const classes = getStylings();
-import { getLightStylingByColour } from "./util";
+const classes = require("./button.module.css")
+import { getLightStylingByColour } from "../util";
 
 interface IParams {
   href: string;

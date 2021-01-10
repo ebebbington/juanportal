@@ -1,20 +1,16 @@
-const chai = require("chai");
-const chaiAsPromised = require("chai-as-promised");
+import chai from "chai"
 const expect = chai.expect;
 
-const logger = require("../../helpers/logger");
-logger.debug = function () {};
-logger.info = function () {};
-const RedisHelper = require("../../helpers/RedisHelper");
-require("dotenv").config();
+import { RedisHelper } from "../../helpers/RedisHelper"
+import dotenv from "dotenv"
+dotenv.config()
 
-chai.use(chaiAsPromised);
 chai.should();
 
 describe("RedisHelper", () => {
   describe("Properties", () => {
     describe("host", () => {
-      const Redis = new RedisHelper();
+      const Redis = new RedisHelper({});
 
       it("Should equal the value in the .env file", () => {
         expect(Redis.host).to.equal(process.env.REDIS_HOST);
@@ -22,15 +18,15 @@ describe("RedisHelper", () => {
     });
 
     describe("port", () => {
-      const Redis = new RedisHelper();
+      const Redis = new RedisHelper({});
 
       it("Should equal the value in the .env file", () => {
-        expect(Redis.port).to.equal(process.env.REDIS_PORT);
+        expect(Redis.port).to.equal(Number(process.env.REDIS_PORT));
       });
     });
 
     describe("cacheDuration", () => {
-      const Redis = new RedisHelper();
+      const Redis = new RedisHelper({});
 
       it("Should equal the value in the .env file", () => {
         expect(Redis.cacheDuration).to.equal(
@@ -59,9 +55,10 @@ describe("RedisHelper", () => {
     describe("channels", () => {
       it("Should contain the correct channels", () => {
         const channels = { chat: "chat" };
-        const Redis = new RedisHelper();
-        expect(Redis.channels).to.haveOwnProperty("chat");
-        expect(Redis.channels.chat).to.equal(channels["chat"]);
+        const Redis = new RedisHelper({});
+        expect(Object.keys(Redis.channels).length).to.equal(1)
+        expect(Object.keys(Redis.channels)[0]).to.equal("chat")
+        expect(Redis.channels.chat).to.equal("chat")
       });
     });
   });

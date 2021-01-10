@@ -1,29 +1,18 @@
-const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
+import chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
 const expect = chai.expect
-const app = require('.././app')
+import app from '../app'
 
-const logger = require('../helpers/logger')
-logger.info = function (a) {}
-logger.debug = function (a) {}
+import logger from '../helpers/logger'
 
 chai.use(chaiAsPromised)
 chai.should()
 
 describe('App', () => {
-  describe('Test specific', () => {
-    it('Info logging should be disabled for this test file', () => {
-      const response = logger.info('Test')
-      expect(response).to.equal(undefined)
-    })
-    it('Debug logging should be disabled for this test file', () => {
-      const response = logger.debug('Test')
-      expect(response).to.equal(undefined)
-    })
-  })
   describe('Middleware', () => {
     it('Should be using cookie parser', () => {
       let found = false
+      // @ts-ignore
       app._router.stack.forEach(stackObj => {
         if (stackObj.name === 'cookieParser')
           found = true
@@ -32,6 +21,7 @@ describe('App', () => {
     })
     it('Should be using logger middleware', () => {
       let found = false
+      // @ts-ignore
       app._router.stack.forEach(stackObj => {
         if (stackObj.name === 'logger')
           found = true
@@ -40,6 +30,7 @@ describe('App', () => {
     })
     it('Should be using body parser', () => {
       let found = false
+      // @ts-ignore
       app._router.stack.forEach(stackObj => {
         if (stackObj.name === 'jsonParser')
           found = true
@@ -47,7 +38,7 @@ describe('App', () => {
       expect(found).to.equal(true)
     })
   })
-  describe('Confirgurations', () => {
+  describe('Configurations', () => {
     it('Should set the view engine to Pug', () => {
       expect(app.get('view engine')).to.equal('pug')
     })

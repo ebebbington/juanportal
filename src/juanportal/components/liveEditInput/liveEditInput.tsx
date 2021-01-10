@@ -1,7 +1,6 @@
 import React, { ReactElement, useState } from "react";
 // import ReactDOM from 'react-dom'
-import { getStylings } from "./util";
-const styles = getStylings();
+const styles = require("./liveEditInput.module.css")
 
 interface IProps {
   title: string;

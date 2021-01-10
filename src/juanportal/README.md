@@ -16,6 +16,10 @@ This side of JuanPortal also uses TypeScript where it can, as well as the class 
 
 **_Please see the example file in each directory if it exists to understand how this project is architectured_**
 
+- `artillery`
+
+  - For our stress tests (`npm run stress`)
+
 - `bin`
 
   - Server
@@ -63,10 +67,18 @@ This side of JuanPortal also uses TypeScript where it can, as well as the class 
 - `.env`
 
   - Configurations for the environment
+  
+- `.eslint*`
+
+  - Configurations for using elsint to lint (`npm run lint`)
 
 - `.gitignore`
 
   - Files for Git to ignore
+  
+- `.prettierignore`
+
+  - Ignore files when using prettier to format (`npm run fmt:*`)
 
 - `app.*`
 
@@ -91,10 +103,6 @@ This side of JuanPortal also uses TypeScript where it can, as well as the class 
 - `README.md`
 
   - Documentation for this section
-
-- `TODO.md`
-
-  - Contains the list of todo's, whats left and what's been completed
 
 - `tsconfig.json`
 
@@ -176,11 +184,11 @@ Though there are two scripts to do this:
 
 - Building TS files
 
-  `npm run buildTS`
+  `npm run build:server`
 
 - Building TSX files
 
-  `npm run buildTSX`
+  `npm run build:client`
 
 # Mocha Tests
 
@@ -238,15 +246,7 @@ it('Should respond with a 200 status code', (done) => {
 
 The command(s) to do this are inside of the `package.json` file:
 
-- JS files
-
-`npm run test path/to/test/test.js`
-
-- TS files
-
-Should you be using a TS test, you need to run the second test command:
-
-`npm run test2 tests/some/dir/myTest.ts`
+`npm run test`
 
 # Artillery Tests
 

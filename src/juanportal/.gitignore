@@ -10,3 +10,6 @@ interfaces/controllers/*.js
 routes/*.js
 helpers/*.js
 juanportal.config.js
+**/*.js.map
+*.js.map
+bin/www.js

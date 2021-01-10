@@ -9,8 +9,7 @@ import React, {
 import LinkButton from "../button/linkButton";
 import Button from "../button/button";
 import { notify, fetchToApiAsJson } from "../util";
-import { getStylings } from "./util";
-const styles = getStylings();
+const styles = require("./Profile.module.css");
 import io from "socket.io-client";
 const socket = io("http://127.0.0.1:9002");
 

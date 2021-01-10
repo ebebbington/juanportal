@@ -1,12 +1,8 @@
-const chai = require("chai");
-const chaiAsPromised = require("chai-as-promised");
+import chai from "chai"
+import chaiAsPromised from "chai-as-promised"
 const expect = chai.expect;
-const app = require("../../app");
-const chaiHttp = require("chai-http");
-
-const logger = require("../../helpers/logger");
-logger.info = function (a) {};
-logger.debug = function (a) {};
+import app from "../../app"
+import chaiHttp from "chai-http"
 
 chai.use(chaiAsPromised);
 chai.should();

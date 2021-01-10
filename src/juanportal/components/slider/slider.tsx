@@ -1,8 +1,8 @@
 import React, { ReactElement, useState } from "react";
 // import ReactDOM from 'react-dom'
 // import { notify, fetchToApiAsJson } from '../util'
-import { getStylings } from "./util";
-const sliderStylings = getStylings();
+const sliderStylings = require("./button.module.css")
+
 
 interface IProps {
   title: string;

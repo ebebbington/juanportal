@@ -1,7 +1,6 @@
 import React, { ReactElement, useState } from "react";
 import { notify, fetchToApiAsJson } from "../util";
-import { getStylings } from "./util";
-const formStyles = getStylings();
+const formStyles = require("./RegisterForm.module.css");
 import Button from "../button/button";
 
 /**

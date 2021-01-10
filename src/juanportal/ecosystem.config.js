@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "JuanPortal",
-      script: "bin/www",
+      script: "bin/www.js",
       ignore_watch: "public/images",
       //watch: true,
       //output: 'logs/out.log', // Console logs

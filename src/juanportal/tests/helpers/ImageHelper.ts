@@ -1,26 +1,20 @@
-const chai = require("chai");
-const chaiAsPromised = require("chai-as-promised");
+import chai from "chai"
 const expect = chai.expect;
 
-const rewire = require("rewire");
-const fs = require("fs");
-const { imagesDir, rootDir } = require("../../juanportal.config.js");
+import ImageHelper from "../../helpers/ImageHelper"
+import fs from "fs"
+import config from "../../juanportal.config.js"
+const { imagesDir } = config
 
-const logger = require("../../helpers/logger");
-//logger.debug = function () {}
-//logger.info = function () {}
-
-chai.use(chaiAsPromised);
 chai.should();
 
 describe("ImageHelper", () => {
   describe("Methods", () => {
-    const ImageHelper = rewire("../../helpers/ImageHelper");
     const Image = new ImageHelper();
 
     describe("saveToFS", () => {
       it("Should return false when no filename is passed in", () => {
-        const result = Image.saveToFS();
+        const result = Image.saveToFS("", "fkfjkj");
         expect(result).to.equal(false);
       });
 
@@ -32,7 +26,7 @@ describe("ImageHelper", () => {
       });
 
       it("Should save a file even when no file is passed in", () => {
-        const saved = Image.saveToFS("testname2.jpg");
+        const saved = Image.saveToFS("testname2.jpg", "");
         expect(saved).to.equal(true);
         fs.unlinkSync(imagesDir + "testname2.jpg");
       });

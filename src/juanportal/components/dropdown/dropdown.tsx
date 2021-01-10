@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 // import ReactDOM from 'react-dom'
-import { getStylings } from "./util";
-const dropdownStylings = getStylings();
+const dropdownStylings = require("./dropdown.module.css")
 
 interface ILiData {
   text: string;
