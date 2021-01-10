@@ -2,88 +2,92 @@
 
 This section provides the web socket server, which aids in:
 
-* realtime updates of profiles deleted
+- realtime updates of profiles deleted
 
 This container contains:
 
-* Node SocketIO Server
-
+- Node SocketIO Server
 
 # Directory Structure / Description
 
-* `node_modules/`
+- `bin/`
 
-    * Holds our modules we require
-    
-* `test/`
+  - Unused. It was the original way to start the server
 
-    * Holds our test files
+- `node_modules/`
 
-* `.env`
+  - Holds our modules we require
 
-    * Our environmental file
-    
-* `.nycrc`
+- `test/`
 
-    * Configuration file for using code coverage
-    
-* `app.ts`
+  - Holds our test files
 
-    * Entry point file to bootstrap the application
+- `.env`
 
-* `ecosystem.config.js`
+  - Our environmental file
+  
+- `.eslint*`
 
-    * Entry point for PM2 to manage our application
+  - Configuration files for `eslint`, which we use for linting (`npm run lint`)
 
-* `server.ts`
+- `.nycrc`
 
-    * Our main file, holds the HTTP server and web scoket server
+  - Configuration file for using code coverage
+  
+- `.prettierignore`
 
-* `package-lock.json`
+  - For prettier to ignore certain files when formatting (`npm run fmt:)
 
-    * Defines dependencies for package.json dependencies
+- `app.ts`
 
-* `package.json`
+  - Entry point file to bootstrap the application
 
-    * Defines dependencies for NPM
-    
-* `server.ts`
+- `ecosystem.config.js`
 
-    * Server class to start the express application
-    
-* `socket.ts`
+  - Entry point for PM2 to manage our application
 
-    * Socket class to handle anything socket related
+- `server.ts`
 
-* `tsconfig.json`
+  - Holds the HTTP server and also bootstraps the web socket server
 
-    * Configuration file for TypeScript
+- `package-lock.json`
+
+  - Defines dependencies for package.json dependencies
+
+- `package.json`
+
+  - Defines dependencies for NPM
+
+- `socket.ts`
+
+  - Handles all ws connections
+
+- `tsconfig.json`
+
+  - Configuration file for TypeScript
 
 # Tools Used
 
 This is the list of all tools used here, which also act as the tools learnt, or tools implemented to learn:
 
-* HTTP Server
+- HTTP Server
 
-* Node
+- Node
 
-    * HTTP Server
-    * SocketIO
+  - HTTP Server
+  - SocketIO
 
 # Building
 
 We use the `package.json` file to build
 
-To do so, run: `npm run buildTS`.
+To do so, run: `npm run build`.
 
 # Chai/Mocha Tests
 
 Tests are created that resemble the file structure.
 
-Code coverage is included as a `package.json` script but is ignored as I
-haven't found a way to get it working properly. This is mainly due to NYC 
-needing a file to be required for it to be covered - something i'm not doing
-as I am using Typescript
+Code coverage is included as a `package.json` script.
 
 Note: The docker environment needs to be running
 
@@ -91,7 +95,7 @@ Note: The docker environment needs to be running
 
 ## Running the Tests
 
-`npm run testTS`
+`npm run test`
 
 `npm run cov`
 

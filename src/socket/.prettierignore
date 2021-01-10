@@ -1,0 +1,6 @@
+node_modules
+bin/*.js
+controllers/*.js
+*.js
+coverage
+.nyc_output
