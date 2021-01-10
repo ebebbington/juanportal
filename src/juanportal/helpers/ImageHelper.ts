@@ -120,4 +120,4 @@ class ImageHelper {
 
 }
 
-module.exports = ImageHelper
+export default ImageHelper

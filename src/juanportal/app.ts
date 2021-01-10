@@ -159,7 +159,7 @@ class Server {
 }
 
 const server = Server.bootstrap()
-module.exports = server.app
+export default server.app
 
 // ///////////////////////////////
 // HTTP Logging

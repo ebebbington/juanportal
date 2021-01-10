@@ -1,6 +1,8 @@
-const winston = require('winston')
-require('dotenv').config()
-const { rootDir } = require('../juanportal.config')
+import winston from 'winston'
+import dotenv from "dotenv"
+dotenv.config()
+import config  from '../juanportal.config'
+const { rootDir } = config
 const errorLogFile = rootDir + '/logs/error.log'
 
 const format = {
@@ -9,6 +11,7 @@ const format = {
       winston.format.align()
     ),
     development: winston.format.combine(
+      winston.format.timestamp(),
       winston.format.colorize(),
       winston.format.simple(),
       winston.format.align()
@@ -23,16 +26,12 @@ const transports = {
     development:
         new winston.transports.Console({
             level: 'debug',
-            timestamp: function () {
-                return (new Date()).toISOString();
-            }
         })
-
 }
 
 const env = process.env.NODE_ENV === "production" ? "production" : "development"
 
-module.exports = new winston.createLogger({
+export default winston.createLogger({
     format: format[env],
     transports: transports[env]
 })

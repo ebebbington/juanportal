@@ -1,7 +1,7 @@
-const express = require('express')
+import express from 'express'
 const router = express.Router()
-const RedisHelper = require('../helpers/RedisHelper')
-const Redis = new RedisHelper({cache: true})
+import RedisHelper, {RedisCacheHelper} from '../helpers/RedisHelper'
+const Redis = new RedisHelper({cache: true}) as RedisCacheHelper
 
 
 // On '/' render index.pug in views/ as pug expects it to be in views
@@ -12,4 +12,4 @@ router
     })
 })
 
-module.exports = router
+export default router

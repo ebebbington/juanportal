@@ -69,9 +69,10 @@
     //"sourceMap": true // what are source maps?
   },
   "include": [
-    "app.ts",
+    "*.ts",
     "helpers/*.ts",
     "middleware/*.ts",
-    "components/util.ts"
+    "components/util.ts",
+    "routes/*.ts"
   ]
 }

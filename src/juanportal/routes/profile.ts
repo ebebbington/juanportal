@@ -1,15 +1,22 @@
-const express = require('express')
+import express from 'express'
 const app = express()
-const logger = require('../helpers/logger')
-const ImageHelper = require('../helpers/ImageHelper')
-const RedisHelper = require('../helpers/RedisHelper')
-const Redis = new RedisHelper({cache: true})
-
+import logger from '../helpers/logger'
+import ImageHelper from '../helpers/ImageHelper'
+import RedisHelper, {RedisCacheHelper} from '../helpers/RedisHelper'
+const Redis = new RedisHelper({cache: true}) as RedisCacheHelper
 
 // For when an image is submited in the form when POSTing a profile
-const multer = require('multer')
+import multer from "multer"
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
+
+export interface MulterFile {
+  key: string // Available using `S3`.
+  path: string // Available using `DiskStorage`.
+  mimetype: string
+  originalname: string
+  size: number
+}
 
 app.route('/id/:id')
   .get(Redis.cache.route('profile'), (req, res) => {
@@ -36,7 +43,7 @@ app.route('/image')
   .post(upload.single('image'), (req, res) => {
     // todo add checks so people just cant willy nilly send requests e.g. JWT 
     logger.info('[POST /profile/image]')
-    const filename = req.query.filename
+    const filename = req.query.filename as string
     if (!filename) {
       return res.status(400).json({success: false, message: 'No filename was passed in'})
     }
@@ -83,4 +90,4 @@ app.route('/image')
     }
   })
 
-module.exports = app
+export default app

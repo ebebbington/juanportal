@@ -13,6 +13,13 @@ interface IKVPair {
     [key: string]: string
 }
 
+export interface RedisCacheHelper {
+    port: number
+    host: string
+    cacheDuration: number
+    cache: redisCache.ExpressRedisCache
+}
+
 /**
  * @example
  * For caching:
@@ -91,4 +98,4 @@ class RedisHelper {
     }
 }
 
-module.exports = RedisHelper
+export default RedisHelper
