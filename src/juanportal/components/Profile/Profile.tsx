@@ -2,7 +2,7 @@ import React, {useState, useEffect, ReactElement, Dispatch, SetStateAction} from
 //import ReactDOM from 'react-dom'
 import LinkButton from '../button/linkButton'
 import Button from '../button/button'
-import { notify, fetchToApiAsJson } from '../util.js'
+import {notify, fetchToApiAsJson} from '../util'
 import { getStylings } from './util'
 const styles = getStylings()
 import io from 'socket.io-client'
@@ -116,15 +116,12 @@ const Profile = (props: IProps): ReactElement => {
     const findProfile = (): void => {
         console.log('[findProfile]')
         const url = '/api/profile/id/' + idOfProfileToFind
-        //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
-        fetchToApiAsJson(url).then((res) => {
-            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
-            notify('Find Profile', res.message, 'success')
+        fetchToApiAsJson!(url).then((res) => {
+            notify!('Find Profile', res.message, 'success')
             const arr = [res.data] as IProfile[]
             setProfiles(arr)
         }).catch((err) => {
-            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
-            notify('Find Profile', `Error occured, see console`, 'error')
+            notify!('Find Profile', `Error occured, see console`, 'error')
             console.error(err)
         })
     }
@@ -143,14 +140,11 @@ const Profile = (props: IProps): ReactElement => {
     const findManyProfiles = (): void => {
         console.log('[findManyProfiles]')
         const url = '/api/profile/count/' + numberOfProfilesToGet
-        //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
-        fetchToApiAsJson(url).then((res) => {
-            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
-            notify('Find Many Profiles', res.message, 'success')
+        fetchToApiAsJson!(url).then((res) => {
+            notify!('Find Many Profiles', res.message, 'success')
             setProfiles(res.data)
         }).catch((err) => {
-            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
-            notify('Find Many Profiles', 'Failed', 'error')
+            notify!('Find Many Profiles', 'Failed', 'error')
             console.error('Error caught when trying to find many profiles')
             console.error(err)
         })
@@ -197,10 +191,8 @@ const Profile = (props: IProps): ReactElement => {
         const profileOptions = { method: 'DELETE' }
         const imageUrl: string = '/profile/image?filename=' + filename
         const imageOptions = { method: 'DELETE' }
-        //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
-        fetchToApiAsJson(profileUrl, profileOptions).then(() => fetchToApiAsJson(imageUrl, imageOptions)).then((res) => {
-            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
-            notify('Delete Profile', res.message, 'success')
+        fetchToApiAsJson!(profileUrl, profileOptions).then(() => fetchToApiAsJson!(imageUrl, imageOptions)).then((res) => {
+            notify!('Delete Profile', res.message, 'success')
             const updatedProfiles = profiles.filter((obj) => {
                 return obj._id !== id
             })
@@ -220,8 +212,7 @@ const Profile = (props: IProps): ReactElement => {
             }
             socket.emit('profileDeleted', { profileId: id})
         }).catch((err) => {
-            //@ts-ignore Error when running webpack: "Cannot invoke an object which is possibly undefined". Well it never is.. so idk how to fix it
-            notify('Delete Profile', err.message, 'error')
+            notify!('Delete Profile', err.message, 'error')
             console.error('Error caught when trying to delete a profile:')
             console.error(err)
         })

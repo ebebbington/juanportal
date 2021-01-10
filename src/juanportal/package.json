@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "node_modules/.bin/mocha --exit tests",
-    "build:all": "npm ci && node_modules/.bin/tsc && npm run build:client",
-    "build:server": "node_modules/.bin/tsc && pm2 restart all",
+    "build:all": "npm ci && npm run build:server && npm run build:client",
+    "build:server": "node_modules/.bin/tsc",
     "build:client": "node_modules/.bin/webpack-cli --config webpack.config.js",
     "stress": "node_modules/.bin/artillery run",
     "testReact": "node_modules/.bin/jest",
