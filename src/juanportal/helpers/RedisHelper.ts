@@ -13,7 +13,7 @@ interface IKVPair {
     [key: string]: string
 }
 
-export interface RedisCacheHelper {
+export interface IRedisCacheHelper {
     port: number
     host: string
     cacheDuration: number
@@ -44,7 +44,7 @@ export interface RedisCacheHelper {
  * @param {boolean} pub True for if this instance will use a publisher
  * @param {boolean} sub True if this instance will use a subscriber
  */
-class RedisHelper {
+export class RedisHelper {
 
     public readonly host:           string|undefined    = process.env.REDIS_HOST
     public readonly port:           number|undefined    = Number(process.env.REDIS_PORT)
@@ -97,5 +97,3 @@ class RedisHelper {
         }
     }
 }
-
-export default RedisHelper

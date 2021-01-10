@@ -7,9 +7,6 @@ public/images
 app.js
 interfaces/models/*.js
 interfaces/controllers/*.js
-models/*.js
-controllers/*.js
-helpers/ImageHelper.js
-helpers/MailHelper.js
-middleware/*.js
-public/javascripts/components/*.js
+routes/*.js
+helpers/*.js
+juanportal.config.js

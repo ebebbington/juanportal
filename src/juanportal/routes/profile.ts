@@ -2,21 +2,17 @@ import express from 'express'
 const app = express()
 import logger from '../helpers/logger'
 import ImageHelper from '../helpers/ImageHelper'
-import RedisHelper, {RedisCacheHelper} from '../helpers/RedisHelper'
-const Redis = new RedisHelper({cache: true}) as RedisCacheHelper
+// eslint-disable-next-line
+// @ts-ignore
+import { RedisHelper, IRedisCacheHelper } from '../helpers/RedisHelper'
+// eslint-disable-next-line
+// @ts-ignore
+const Redis = new RedisHelper({cache: true}) as IRedisCacheHelper
 
-// For when an image is submited in the form when POSTing a profile
+// For when an image is submitted in the form when POSTing a profile
 import multer from "multer"
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
-
-export interface MulterFile {
-  key: string // Available using `S3`.
-  path: string // Available using `DiskStorage`.
-  mimetype: string
-  originalname: string
-  size: number
-}
 
 app.route('/id/:id')
   .get(Redis.cache.route('profile'), (req, res) => {

@@ -1,7 +1,11 @@
 import express from 'express'
 const app = express()
-import RedisHelper, { RedisCacheHelper } from '../helpers/RedisHelper'
-const Redis: RedisCacheHelper = new RedisHelper({cache: true}) as RedisCacheHelper
+// eslint-disable-next-line
+// @ts-ignore
+import { RedisHelper, IRedisCacheHelper } from '../helpers/RedisHelper'
+// eslint-disable-next-line
+// @ts-ignore
+const Redis = new RedisHelper({cache: true}) as IRedisCacheHelper
 
 app.route('/')
   .get(Redis.cache.route('chat'), (req, res) => {

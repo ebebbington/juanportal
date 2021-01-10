@@ -1,7 +1,11 @@
 import express from 'express'
 const router = express.Router()
-import RedisHelper, {RedisCacheHelper} from '../helpers/RedisHelper'
-const Redis = new RedisHelper({cache: true}) as RedisCacheHelper
+// eslint-disable-next-line
+// @ts-ignore
+import { RedisHelper, IRedisCacheHelper } from '../helpers/RedisHelper'
+// eslint-disable-next-line
+// @ts-ignore
+const Redis = new RedisHelper({cache: true}) as IRedisCacheHelper
 
 
 // On '/' render index.pug in views/ as pug expects it to be in views
