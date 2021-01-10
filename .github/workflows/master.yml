@@ -30,6 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Client Lint Checks
+        run: |
+          npm run lint
       - name: Client Tests
         run: |
           cd src/juanportal
