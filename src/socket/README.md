@@ -10,6 +10,10 @@ This container contains:
 
 # Directory Structure / Description
 
+- `bin/`
+
+  - Unused. It was the original way to start the server
+
 - `node_modules/`
 
   - Holds our modules we require
@@ -21,10 +25,18 @@ This container contains:
 - `.env`
 
   - Our environmental file
+  
+- `.eslint*`
+
+  - Configuration files for `eslint`, which we use for linting (`npm run lint`)
 
 - `.nycrc`
 
   - Configuration file for using code coverage
+  
+- `.prettierignore`
+
+  - For prettier to ignore certain files when formatting (`npm run fmt:)
 
 - `app.ts`
 
@@ -36,7 +48,7 @@ This container contains:
 
 - `server.ts`
 
-  - Our main file, holds the HTTP server and web scoket server
+  - Holds the HTTP server and also bootstraps the web socket server
 
 - `package-lock.json`
 
@@ -46,13 +58,9 @@ This container contains:
 
   - Defines dependencies for NPM
 
-- `server.ts`
-
-  - Server class to start the express application
-
 - `socket.ts`
 
-  - Socket class to handle anything socket related
+  - Handles all ws connections
 
 - `tsconfig.json`
 
@@ -73,16 +81,13 @@ This is the list of all tools used here, which also act as the tools learnt, or 
 
 We use the `package.json` file to build
 
-To do so, run: `npm run buildTS`.
+To do so, run: `npm run build`.
 
 # Chai/Mocha Tests
 
 Tests are created that resemble the file structure.
 
-Code coverage is included as a `package.json` script but is ignored as I
-haven't found a way to get it working properly. This is mainly due to NYC
-needing a file to be required for it to be covered - something i'm not doing
-as I am using Typescript
+Code coverage is included as a `package.json` script.
 
 Note: The docker environment needs to be running
 
@@ -90,7 +95,7 @@ Note: The docker environment needs to be running
 
 ## Running the Tests
 
-`npm run testTS`
+`npm run test`
 
 `npm run cov`
 
