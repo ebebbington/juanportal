@@ -58,15 +58,6 @@ export class RedisHelper {
   };
 
   public constructor(params: IParams) {
-    if (!this.host || !this.port || !this.cacheDuration) {
-      logger.error("Env data for Redis has not been correctly defined");
-      const data = {
-        host: this.host,
-        port: this.port,
-        cacheDuration: this.cacheDuration,
-      };
-      logger.error(JSON.stringify(data));
-    }
     if (params && params.cache) {
       this.cache = redisCache({
         host: this.host,
@@ -92,19 +83,19 @@ export class RedisHelper {
   private initialiseCacheLogging(): void {
     if (this.cache) {
       this.cache
-        .on("error", (err) => {
-          logger.error("Redis cache has encourtered a problem");
-          logger.error(err);
-        })
+        // .on("error", (err) => {
+        //   logger.error("Redis cache has encourtered a problem");
+        //   logger.error(err);
+        // })
         .on("message", (message) => {
           logger.info("Redis cache has received a message: " + message);
         })
         .on("connected", () => {
           logger.info("Redis cache has connected");
-        })
-        .on("disconnected", () => {
-          logger.info("Redis cache has disconnected");
         });
+      // .on("disconnected", () => {
+      //   logger.info("Redis cache has disconnected");
+      // });
     }
   }
 }

@@ -31,6 +31,16 @@ const transports = {
 const env =
   process.env.NODE_ENV === "production" ? "production" : "development";
 
+export function getLogger(
+  environment: "production" | "development"
+): winston.Logger {
+  console.log("returning logger for " + environment);
+  return winston.createLogger({
+    format: format[environment],
+    transports: transports[environment],
+  });
+}
+
 export default winston.createLogger({
   format: format[env],
   transports: transports[env],

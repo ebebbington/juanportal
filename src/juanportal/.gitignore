@@ -13,3 +13,4 @@ juanportal.config.js
 **/*.js.map
 *.js.map
 bin/www.js
+.nyc_output

@@ -34,7 +34,7 @@ class ImageHelper {
    * @return {boolean} False if it still exists or an error occured, true if successed
    */
   // eslint-disable-next-line
-  public saveToFS(filename: string, file: any): boolean {
+  public saveToFS(filename: string, file?: any): boolean {
     logger.info("[ImageHelper - saveToFS]");
     if (!filename) {
       logger.error("No filename was passed in to save to fs");
@@ -42,34 +42,15 @@ class ImageHelper {
     }
     if (file) {
       logger.info("file has been passed in");
-      try {
-        fs.createWriteStream(imagesDir + filename).write(file.buffer);
-        return this.existsOnFS(filename);
-      } catch (e) {
-        logger.error(e);
-        // this is for when we need to only specify file and not file.buffer
-        try {
-          fs.createWriteStream(imagesDir + filename).write(file);
-          const exists = this.existsOnFS(filename);
-          logger.info(
-            `[ImageHelper] - Does ${imagesDir + filename} exist: ${exists}`
-          );
-          return exists;
-        } catch (err) {
-          logger.error(err);
-          return false;
-        }
-      }
-    }
-    // Else just copy the default image
-    if (!file) {
-      logger.info("No file was passed in");
-      const sampleImage = fs.readFileSync(imagesDir + "sample.jpg");
-      fs.createWriteStream(imagesDir + filename).write(sampleImage);
-      //fs.createReadStream(imagesDir + 'sample.jpg').pipe(fs.createWriteStream(imagesDir + filename))
+      fs.writeFileSync(imagesDir + filename, file.buffer);
       return this.existsOnFS(filename);
     }
-    return false;
+    // Else just copy the default image
+    logger.info("No file was passed in");
+    const sampleImage = fs.readFileSync(imagesDir + "sample.jpg");
+    fs.writeFileSync(imagesDir + filename, sampleImage);
+    //fs.createReadStream(imagesDir + 'sample.jpg').pipe(fs.createWriteStream(imagesDir + filename))
+    return this.existsOnFS(filename);
   }
 
   /**
@@ -88,11 +69,7 @@ class ImageHelper {
     logger.info("[ImageHelper - existsOnFS] Start");
     const fullPath: string = imagesDir + name;
     logger.info(`[ImageHelper] - Fullpath: ${fullPath}`);
-    try {
-      return fs.existsSync(fullPath);
-    } catch (e) {
-      return false;
-    }
+    return fs.existsSync(fullPath);
   }
 
   /**

@@ -21,14 +21,14 @@ describe("ImageHelper", () => {
       it("Should save a file", () => {
         const image = fs.readFileSync(imagesDir + "sample.jpg");
         const saved = Image.saveToFS("testname.jpg", image);
-        expect(saved).to.equal(true);
         fs.unlinkSync(imagesDir + "testname.jpg");
+        expect(saved).to.equal(true);
       });
 
       it("Should save a file even when no file is passed in", () => {
         const saved = Image.saveToFS("testname2.jpg", "");
-        expect(saved).to.equal(true);
         fs.unlinkSync(imagesDir + "testname2.jpg");
+        expect(saved).to.equal(true);
       });
     });
 
@@ -51,6 +51,11 @@ describe("ImageHelper", () => {
         fs.createWriteStream(imagesDir + "testfile.jpg");
         const stillExists = Image.deleteFromFS("testfile.jpg");
         expect(stillExists).to.equal(false);
+      });
+
+      it("Should throw an error internally and return false if the input is invalid", () => {
+        const exists = Image.deleteFromFS("dhs/effv/\r\b");
+        expect(exists).to.equal(false);
       });
     });
   });

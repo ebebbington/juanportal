@@ -125,6 +125,7 @@ class Server {
    * @return {void}
    */
   private initiateLogging(): void {
+    /* istanbul ignore if */
     if (this.env === "production") {
       this.app.use(morgan("combined"));
     }

@@ -53,9 +53,7 @@ app
         .status(500)
         .json({ success: false, message: "Failed to save the file" });
     }
-    if (saved) {
-      return res.status(200).json({ success: true, message: "Saved the file" });
-    }
+    return res.status(200).json({ success: true, message: "Saved the file" });
   })
 
   /**

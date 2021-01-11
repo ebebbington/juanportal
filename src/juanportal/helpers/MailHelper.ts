@@ -5,6 +5,20 @@ import config from "../juanportal.config";
 const mail = config.mail;
 import logger from "./logger";
 
+interface NodeMailerSendResponse {
+  accepted: string[]; // email addressed sent to
+  rejected: string[] | []; // unsure, never teested
+  envelopeTime: number;
+  messageTime: number;
+  messageSize: number;
+  response: string; // "250 2.0.0 OK  16... 84sm... - gsmtp"
+  envelop: {
+    from: string;
+    to: string[];
+  };
+  messageId: string;
+}
+
 /**
  * @class MailHelper
  *
@@ -38,7 +52,9 @@ export default class MailHelper {
     subject: string;
     text: string;
     html?: string;
-  }): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  }): Promise<NodeMailerSendResponse> {
+    // Return type for sending mail is any :/
     // Create a transporter
     const transporterOptions = {
       host: "smtp.gmail.com",
@@ -50,17 +66,27 @@ export default class MailHelper {
       },
     };
     const transporter = nodemailer.createTransport(transporterOptions);
+    await transporter.verify();
 
     // Send the email
-    await transporter.sendMail({
+    const mailOptions: {
+      from: string;
+      to: string;
+      subject: string;
+      text: string;
+      html?: string;
+    } = {
       from: `"${mail.user}👻" <${mail.email}>`, // 'Edward <email address>
       to: data.to,
       subject: data.subject,
       text: data.text,
-      html: data.html,
-    });
+    };
+    if (data.html) mailOptions.html = data.html;
+    const info = transporter.sendMail(mailOptions);
+    /* istanbul ignore next */
     // Get the response
     logger.debug("Send the email");
+    return info;
   }
 }
 
@@ -98,7 +124,7 @@ export default class MailHelper {
 //   // send mail with defined transport object
 //   let info = await transporter.sendMail({
 //     from: '"Fred Foo 👻" <foo@example.com>', // sender address
-//     to: "edward.bebbington@intercity.technology, baz@example.com", // list of receivers
+//     to: "someone@example.com, baz@example.com", // list of receivers
 //     subject: "Hello ✔", // Subject line
 //     text: "Hello world?", // plain text body
 //     html: "<b>Hello world?</b>" // html body

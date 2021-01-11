@@ -14,12 +14,17 @@
     ],
     "sourceMap": true,
   "exclude": [
+    "public",
+    "components",
+    "data",
       "bin",
       "coverage",
       "tests",
-      "helpers/logger.js",
-      "ecosystem.config.js"
+      "jest.config.js",
+      "webpack.config.js",
+      "ecosystem.config.js",
+      "routes/chat.ts"
    ],
-   "reporter": "text",
+   "reporter": "html",
      "instrument": true
 }

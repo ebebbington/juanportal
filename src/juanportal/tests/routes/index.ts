@@ -8,7 +8,8 @@ chai.use(chaiHttp);
 
 describe("Route /", () => {
   describe("GET", () => {
-    it("Should respond with a 200 status", (done) => {
+    it("Should respond with a 200 status", function (done) {
+      this.timeout(10000);
       chai
         .request(app)
         .get("/")
