@@ -1,8 +1,8 @@
 import React, { ReactElement, useState } from "react";
 // import ReactDOM from 'react-dom'
 // import { notify, fetchToApiAsJson } from '../util'
-const sliderStylings = require("./button.module.css")
-
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const sliderStylings = require("./button.module.css");
 
 interface IProps {
   title: string;

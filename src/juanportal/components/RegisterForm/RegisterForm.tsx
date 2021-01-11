@@ -1,5 +1,6 @@
 import React, { ReactElement, useState } from "react";
 import { notify, fetchToApiAsJson } from "../util";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const formStyles = require("./RegisterForm.module.css");
 import Button from "../button/button";
 

@@ -1,10 +1,10 @@
-import chai from "chai"
+import chai from "chai";
 const expect = chai.expect;
 
-import ImageHelper from "../../helpers/ImageHelper"
-import fs from "fs"
-import config from "../../juanportal.config.js"
-const { imagesDir } = config
+import ImageHelper from "../../helpers/ImageHelper";
+import fs from "fs";
+import config from "../../juanportal.config.js";
+const { imagesDir } = config;
 
 chai.should();
 

@@ -67,7 +67,7 @@ This side of JuanPortal also uses TypeScript where it can, as well as the class 
 - `.env`
 
   - Configurations for the environment
-  
+
 - `.eslint*`
 
   - Configurations for using elsint to lint (`npm run lint`)
@@ -75,7 +75,7 @@ This side of JuanPortal also uses TypeScript where it can, as well as the class 
 - `.gitignore`
 
   - Files for Git to ignore
-  
+
 - `.prettierignore`
 
   - Ignore files when using prettier to format (`npm run fmt:*`)

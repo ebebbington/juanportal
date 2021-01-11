@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 // import ReactDOM from 'react-dom'
-const dropdownStylings = require("./dropdown.module.css")
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const dropdownStylings = require("./dropdown.module.css");
 
 interface ILiData {
   text: string;

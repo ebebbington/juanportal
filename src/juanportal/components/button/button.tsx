@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react";
 import { getLightStylingByColour } from "../util";
-const classes = require("./button.module.css")
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const classes = require("./button.module.css");
 
 interface IParams {
   text: string;

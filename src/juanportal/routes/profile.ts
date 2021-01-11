@@ -71,21 +71,17 @@ app
     // todo add checks so people just cant willy nilly send requests e.g. JWT
     const filename = req.query.filename;
     if (typeof filename !== "string" || !filename) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Filename property passed in must be a string and set",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Filename property passed in must be a string and set",
+      });
     }
     if (filename.indexOf("sample.jpg") > -1) {
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message:
-            "Didn't delete as it is our default picture. But it's all good :)",
-        });
+      return res.status(200).json({
+        success: true,
+        message:
+          "Didn't delete as it is our default picture. But it's all good :)",
+      });
     }
     const Image = new ImageHelper();
     // check it exists first

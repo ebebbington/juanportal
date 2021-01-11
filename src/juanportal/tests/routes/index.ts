@@ -1,7 +1,7 @@
-import chai from "chai"
+import chai from "chai";
 const expect = chai.expect;
-import app from "../../app"
-import chaiHttp from "chai-http"
+import app from "../../app";
+import chaiHttp from "chai-http";
 
 chai.should();
 chai.use(chaiHttp);

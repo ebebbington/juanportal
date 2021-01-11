@@ -1,5 +1,6 @@
 import React, { useState, useEffect, ReactElement } from "react";
-const headerStyles = require("./header.module.css")
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const headerStyles = require("./header.module.css");
 import { useMediaQuery } from "react-responsive";
 
 interface INavLinks {

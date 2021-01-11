@@ -33,7 +33,7 @@ class ImageHelper {
    *
    * @return {boolean} False if it still exists or an error occured, true if successed
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any @typescript-eslint/explicit-module-boundary-types
   public saveToFS(filename: string, file: any): boolean {
     logger.info("[ImageHelper - saveToFS]");
     if (!filename) {
@@ -50,8 +50,10 @@ class ImageHelper {
         // this is for when we need to only specify file and not file.buffer
         try {
           fs.createWriteStream(imagesDir + filename).write(file);
-          const exists = this.existsOnFS(filename)
-          logger.info(`[ImageHelper] - Does ${imagesDir + filename} exist: ${exists}`)
+          const exists = this.existsOnFS(filename);
+          logger.info(
+            `[ImageHelper] - Does ${imagesDir + filename} exist: ${exists}`
+          );
           return exists;
         } catch (err) {
           logger.error(err);
@@ -85,7 +87,7 @@ class ImageHelper {
   public existsOnFS(name: string): boolean {
     logger.info("[ImageHelper - existsOnFS] Start");
     const fullPath: string = imagesDir + name;
-    logger.info(`[ImageHelper] - Fullpath: ${fullPath}`)
+    logger.info(`[ImageHelper] - Fullpath: ${fullPath}`);
     try {
       return fs.existsSync(fullPath);
     } catch (e) {

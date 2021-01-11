@@ -1,10 +1,10 @@
 import React, { ReactElement } from "react";
 import { useState, useEffect, useReducer } from "react";
-import { getStylings } from "./util";
 import Button from "../button/button";
 import openSocket from "socket.io-client";
 const socket = openSocket("http://0.0.0.0:9002");
-const classes = require("./Chat.module.css")
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const classes = require("./Chat.module.css");
 
 const Chat = (): ReactElement => {
   socket.removeAllListeners();

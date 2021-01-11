@@ -1,6 +1,7 @@
 import React, { ReactElement, useState } from "react";
 // import ReactDOM from 'react-dom'
-const styles = require("./liveEditInput.module.css")
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const styles = require("./liveEditInput.module.css");
 
 interface IProps {
   title: string;

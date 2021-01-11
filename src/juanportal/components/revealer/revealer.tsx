@@ -1,6 +1,8 @@
 import React from "react";
 // import ReactDOM from 'react-dom'
-const styles = require("./revealer.module.css")
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const styles = require("./revealer.module.css");
 
 interface IProps {
   iconClass: string;

@@ -1,9 +1,9 @@
-import chai from "chai"
+import chai from "chai";
 const expect = chai.expect;
 
-import { RedisHelper } from "../../helpers/RedisHelper"
-import dotenv from "dotenv"
-dotenv.config()
+import { RedisHelper } from "../../helpers/RedisHelper";
+import dotenv from "dotenv";
+dotenv.config();
 
 chai.should();
 
@@ -56,9 +56,9 @@ describe("RedisHelper", () => {
       it("Should contain the correct channels", () => {
         const channels = { chat: "chat" };
         const Redis = new RedisHelper({});
-        expect(Object.keys(Redis.channels).length).to.equal(1)
-        expect(Object.keys(Redis.channels)[0]).to.equal("chat")
-        expect(Redis.channels.chat).to.equal("chat")
+        expect(Object.keys(Redis.channels).length).to.equal(1);
+        expect(Object.keys(Redis.channels)[0]).to.equal("chat");
+        expect(Redis.channels.chat).to.equal("chat");
       });
     });
   });
