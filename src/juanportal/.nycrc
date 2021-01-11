@@ -1,0 +1,25 @@
+{
+  "all": true,
+  "check-coverage": true,
+  "branches": 85,
+  "lines": 95,
+  "functions": 95,
+  "statements": 95,
+  "extension": [
+      ".ts"
+  ],
+  "include": [
+      "**/*.js",
+      "**/*.ts"
+    ],
+    "sourceMap": true,
+  "exclude": [
+      "bin",
+      "coverage",
+      "tests",
+      "helpers/logger.js",
+      "ecosystem.config.js"
+   ],
+   "reporter": "text",
+     "instrument": true
+}

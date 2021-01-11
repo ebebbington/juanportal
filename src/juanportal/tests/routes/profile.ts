@@ -1,11 +1,9 @@
 import chai from "chai"
-import chaiAsPromised from "chai-as-promised"
 const expect = chai.expect;
 import app from "../../app"
 import chaiHttp from "chai-http"
 import fs from "fs"
 
-chai.use(chaiAsPromised);
 chai.should();
 chai.use(chaiHttp);
 
