@@ -7,3 +7,5 @@ artillery
 coverage
 .nyc_output
 public/libs
+bin/www.js
+components/util.js

@@ -62,7 +62,7 @@ This side of JuanPortal also uses TypeScript where it can, as well as the class 
 
 - `.babelrc`
 
-  - Contains configurations for babel
+  - Contains configurations for babel, which is use dby jest when testing components
 
 - `.env`
 
