@@ -6,6 +6,6 @@ export default {
   mail: {
     email: "EdwardSBebbington@gmail.com",
     user: "Eddo Bebbo",
-    pass: "JahRastafarI1",
+    pass: "I am a secret :)",
   },
 };
