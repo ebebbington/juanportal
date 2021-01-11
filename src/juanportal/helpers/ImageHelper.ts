@@ -33,7 +33,7 @@ class ImageHelper {
    *
    * @return {boolean} False if it still exists or an error occured, true if successed
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any @typescript-eslint/explicit-module-boundary-types
+  // eslint-disable-next-line
   public saveToFS(filename: string, file: any): boolean {
     logger.info("[ImageHelper - saveToFS]");
     if (!filename) {
