@@ -11,7 +11,6 @@ const mail = {
   pass: mailPassword,
   user: config.mail.user,
 };
-console.log(mail);
 
 interface NodeMailerSendResponse {
   accepted: string[]; // email addressed sent to
