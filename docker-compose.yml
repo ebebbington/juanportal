@@ -28,8 +28,6 @@ services:
       - ./src/juanportal:/var/www/juanportal
     working_dir: /var/www/juanportal
     command: bash -c "npm run start"
-    environment:
-      - MAIL_PASSWORD
     networks:
       - juanportal-network
 

@@ -54,13 +54,11 @@ jobs:
       - name: Client Tests
         run: |
           cd src/juanportal
+          echo 'MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}"' >> .env
           npm run build:all
-          export MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
           docker-compose up -d > /dev/null
           docker exec juanportal_node npm run cov
           docker exec juanportal_node npm run test:client
-        env:
-          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
 
   socket-checks:
     runs-on: ubuntu-latest
