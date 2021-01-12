@@ -44,7 +44,9 @@ jobs:
           npm run build:all
           docker-compose up -d > /dev/null
           docker exec -i juanportal_node /bin/bash -c 'export MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}" && npm run cov'
-          docker exec juanportal_node npm run testReact
+          docker exec juanportal_node npm run test:client
+        env:
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
 
   socket-checks:
     runs-on: ubuntu-latest
@@ -64,3 +66,4 @@ jobs:
           npm run build
           docker-compose up -d > /dev/null
           docker exec juanportal_socket npm run cov
+
