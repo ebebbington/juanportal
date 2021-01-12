@@ -38,7 +38,7 @@ app
     })
    */
   .post(upload.single("image"), (req, res) => {
-    // todo add checks so people just cant willy nilly send requests e.g. JWT
+    // todo add checks so people just cant willy nilly send requests e.g. JWT and ext checks
     logger.info("[POST /profile/image]");
     const filename = req.query.filename as string;
     if (!filename) {
@@ -47,12 +47,7 @@ app
         .json({ success: false, message: "No filename was passed in" });
     }
     const Image = new ImageHelper();
-    const saved = Image.saveToFS(filename, req.file);
-    if (!saved) {
-      return res
-        .status(500)
-        .json({ success: false, message: "Failed to save the file" });
-    }
+    Image.saveToFS(filename, req.file);
     return res.status(200).json({ success: true, message: "Saved the file" });
   })
 
@@ -67,8 +62,8 @@ app
    */
   .delete(upload.single("image"), (req, res) => {
     // todo add checks so people just cant willy nilly send requests e.g. JWT
-    const filename = req.query.filename;
-    if (typeof filename !== "string" || !filename) {
+    const filename: string = req.query.filename as string;
+    if (!filename) {
       return res.status(400).json({
         success: false,
         message: "Filename property passed in must be a string and set",
@@ -89,17 +84,10 @@ app
         .status(404)
         .json({ success: false, message: "File was not found on the server" });
     }
-    const stillExists = Image.deleteFromFS(filename);
-    if (stillExists) {
-      return res
-        .status(500)
-        .json({ success: false, message: "Failed to delete the file" });
-    }
-    if (!stillExists) {
-      return res
+    Image.deleteFromFS(filename);
+    return res
         .status(200)
         .json({ success: true, message: "Deleted the file" });
-    }
   });
 
 export default app;

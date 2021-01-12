@@ -63,7 +63,7 @@ describe("Route /profile/image", () => {
         });
     });
 
-    it("Should respond with a 500 on unsuccessfully saving", (done) => {
+    it("Should respond with a 400 if no filename was passed in", (done) => {
       chai
         .request(app)
         .post(`/profile/image?filename=`)
@@ -74,6 +74,22 @@ describe("Route /profile/image", () => {
           done();
         });
     });
+
+    // it("Extension validation", (done) => {
+    //   const filename = ".gitignore";
+    //   chai
+    //       .request(app)
+    //       .post(`/profile/image?filename=${filename}`)
+    //       .attach("file", filename)
+    //       //.send(file)
+    //       .end((err, res) => {
+    //         expect(res.status).to.equal(500);
+    //         const json = JSON.parse(res.text);
+    //         expect(json.success).to.equal(false);
+    //         expect(json.message).to.equal("Failed to save the file")
+    //         done();
+    //       });
+    // })
   });
 
   describe("DELETE", () => {
@@ -92,7 +108,33 @@ describe("Route /profile/image", () => {
         });
     });
 
-    it("Should respond with a 500 on failing to delete", (done) => {
+    it("Should return 400 if no filename was passed in", (done) => {
+      chai
+          .request(app)
+          .delete(`/profile/image?filename=`)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            const json = JSON.parse(res.text);
+            expect(json.success).to.equal(false);
+            expect(json.message).to.equal("Filename property passed in must be a string and set")
+            done();
+          });
+    })
+
+    it("Shouldn't delete if filename is sample.jpg", (done) => {
+      chai
+          .request(app)
+          .delete(`/profile/image?filename=sample.jpg`)
+          .end((err, res) => {
+            expect(res.status).to.equal(200);
+            const json = JSON.parse(res.text);
+            expect(json.success).to.equal(true);
+            expect(json.message).to.equal("Didn't delete as it is our default picture. But it's all good :)")
+            done();
+          });
+    })
+
+    it("Should respond with a 404 when file does not exist", (done) => {
       chai
         .request(app)
         .delete(`/profile/image?filename=sampleTEST3.jpg`)

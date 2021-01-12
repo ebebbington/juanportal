@@ -81,8 +81,7 @@ export class RedisHelper {
   }
 
   private initialiseCacheLogging(): void {
-    if (this.cache) {
-      this.cache
+      this.cache!
         // .on("error", (err) => {
         //   logger.error("Redis cache has encourtered a problem");
         //   logger.error(err);
@@ -96,6 +95,6 @@ export class RedisHelper {
       // .on("disconnected", () => {
       //   logger.info("Redis cache has disconnected");
       // });
-    }
+
   }
 }

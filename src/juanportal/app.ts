@@ -86,7 +86,7 @@ class Server {
   constructor() {
     // define properties
     this.viewEngine = "pug";
-    this.env = process.env.NODE_ENV || "";
+    this.env = (process.env.NODE_ENV as string);
     //create expressjs application
     this.app = express();
     this.app.use(cors());
@@ -95,10 +95,10 @@ class Server {
     this.app.io = socketIo();
     //configure application
     this.configure();
-    // start HTTP logging
-    this.initiateLogging();
     // setup routes
     this.defineRoutes();
+    // start HTTP logging
+    this.initiateLogging();
   }
 
   /**
@@ -125,29 +125,11 @@ class Server {
    * @return {void}
    */
   private initiateLogging(): void {
-    /* istanbul ignore if */
-    if (this.env === "production") {
-      this.app.use(morgan("combined"));
-    }
+    // if (this.env === "production") {
+    //   this.app.use(morgan("combined"));
+    // }
     // Everything else use development logging
-    if (this.env !== "production") {
-      this.app.use(
-        morgan("dev", {
-          skip: function (req, res) {
-            return res.statusCode < 400;
-          },
-          stream: process.stderr,
-        })
-      );
-      this.app.use(
-        morgan("dev", {
-          skip: function (req, res) {
-            return res.statusCode >= 400;
-          },
-          stream: process.stdout,
-        })
-      );
-    }
+    this.app.use(morgan("dev"))
   }
 
   /**

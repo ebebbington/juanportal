@@ -5,6 +5,8 @@ const expect = chai.expect;
 import fs from "fs";
 
 import { getLogger } from "../../helpers/logger";
+process.env["NODE_ENV"] = "production"
+import logger from "../../helpers/logger"
 
 chai.should();
 
