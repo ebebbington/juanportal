@@ -1,7 +1,4 @@
-import "mocha";
-
 import chai from "chai";
-import chaiAsPromised from "chai-as-promised";
 const expect = chai.expect;
 import app from "../../app";
 import chaiHttp from "chai-http";
@@ -14,16 +11,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 import logger from "../../helpers/logger";
-// @ts-ignore
-logger.debug = function (): void {
-  return;
-};
-// @ts-ignore
-logger.info = function (): void {
-  return;
-};
 
-chai.use(chaiAsPromised);
 chai.use(chaiHttp);
 chai.should();
 

@@ -154,9 +154,9 @@ export default abstract class BaseModel implements IIndexSignature {
   private empty(): void {
     this.fieldsToExpose.forEach((value: string) => {
       // eslint-disable-next-line no-prototype-builtins
-      if (this.hasOwnProperty(value)) {
-        this[value] = null;
-      }
+      //if (this.hasOwnProperty(value)) {
+      this[value] = null;
+      //}
     });
   }
 
@@ -191,20 +191,6 @@ export default abstract class BaseModel implements IIndexSignature {
     query: { [key: string]: unknown },
     data: { [key: string]: unknown }
   ): Promise<Document | boolean> {
-    const dataToUpdate: { [key: string]: unknown } = {}; // to store fields to update
-    // Loop through the key values pairs provided
-    Object.keys(data).forEach((propName: string) => {
-      // Check the props passed in are in this class
-      if (Object.prototype.hasOwnProperty.call(this, propName)) {
-        // Check if that prop passed in is different than
-        // the existing prop
-        if (this[propName] !== data[propName]) {
-          // Push the data to update!
-          // this[propName] = data[propName]
-          dataToUpdate[propName] = data[propName];
-        }
-      }
-    });
     // Convert the _id to an object id if passed in
     if (query && query._id) {
       query._id = this.generateObjectId(query._id as string);
@@ -214,12 +200,19 @@ export default abstract class BaseModel implements IIndexSignature {
     }
     const options = { upsert: true };
     const MongooseModel = this.getMongooseModel();
+    console.log("finding and updating using:");
+    console.log({
+      query,
+      data,
+      options,
+    });
     const oldDocument = await MongooseModel.findOneAndUpdate(
       query,
-      dataToUpdate,
+      data,
       options
     );
-    if ((Array.isArray(oldDocument) && !oldDocument.length) || !oldDocument) {
+    if (oldDocument === null) {
+      // Document doesn't exist
       return false;
     }
     const updatedDocument = await MongooseModel.findOne(data);
@@ -355,16 +348,11 @@ export default abstract class BaseModel implements IIndexSignature {
    * @returns {boolean} Success of the method call
    */
   public async delete(
-    query: { [key: string]: unknown } = {},
+    query: { [key: string]: unknown },
     deleteMany = false
   ): Promise<boolean> {
-    // warn
-    if (Object.keys(query).length === 0)
-      logger.warn(
-        `[BaseModel: delete - query param isnt defined. If deleteMany is defined (${deleteMany}) its going to delete all`
-      );
     // convert _id if passed in
-    if (query && query._id) {
+    if (query._id) {
       query._id = this.generateObjectId(query._id as string);
       if (!query._id) {
         return false;

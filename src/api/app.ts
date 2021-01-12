@@ -128,11 +128,11 @@ class Server {
    */
   private initiateLogging(): void {
     // For production environment
+    /* istanbul ignore if */
     if (this.env === "production") {
       this.app.use(morgan("combined"));
-    }
-    // Everything else use development logging
-    if (this.env !== "production") {
+    } else {
+      // Everything else use development logging
       this.app.use(
         morgan("dev", {
           skip: function (req: express.Request, res: express.Response) {
@@ -175,14 +175,14 @@ class Server {
     mongoose
       .connect(this.dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
       .then(() => {
-        if (this.env === "development") {
-          logger.info("Database connection has opened");
-        }
-      })
-      .catch((err: Error) => {
-        logger.error("Error when making conn to db");
-        logger.error(err);
+        //if (this.env === "development") {
+        logger.info("Database connection has opened");
+        //}
       });
+    // .catch((err: Error) => {
+    //   logger.error("Error when making conn to db");
+    //   logger.error(err);
+    // });
   }
 
   /**

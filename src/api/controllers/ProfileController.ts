@@ -38,6 +38,7 @@ export default class ProfileController {
     res: express.Response,
     next?: express.NextFunction
   ): Promise<express.Response> {
+    /* istanbul ignore if */
     if (next) {
       //
     }
@@ -121,12 +122,8 @@ export default class ProfileController {
    */
   public static async GetProfileById(
     req: express.Request<import("express-serve-static-core").ParamsDictionary>,
-    res: express.Response,
-    next?: express.NextFunction
+    res: express.Response
   ): Promise<express.Response> {
-    if (next) {
-      //
-    }
     logger.info("[Profile Controller - GetProfileById]");
 
     //
@@ -188,12 +185,8 @@ export default class ProfileController {
    */
   public static async DeleteProfileById(
     req: express.Request<import("express-serve-static-core").ParamsDictionary>,
-    res: express.Response,
-    next?: express.NextFunction
+    res: express.Response
   ): Promise<express.Response> {
-    if (next) {
-      //
-    }
     logger.info("[ProfileController - DeleteProfileById]");
 
     //
@@ -247,13 +240,8 @@ export default class ProfileController {
   public static async PostProfile(
     req: IMulterRequest &
       express.Request<import("express-serve-static-core").ParamsDictionary>,
-    res: express.Response,
-    next?: express.NextFunction
+    res: express.Response
   ): Promise<express.Response> {
-    /* istanbul ignore if */
-    if (next) {
-      //
-    }
     logger.info("[ProfileController - PostProfile]");
 
     //

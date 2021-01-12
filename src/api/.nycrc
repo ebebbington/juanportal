@@ -23,6 +23,6 @@
       "ecosystem.config.js",
       "routes/test.js"
    ],
-   "reporter": "text",
+   "reporter": "html",
      "instrument": true
 }
