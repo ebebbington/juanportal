@@ -3,14 +3,15 @@
 import nodemailer from "nodemailer";
 import config from "../juanportal.config";
 import logger from "./logger";
-// import dotenv from "dotenv";
-// dotenv.config();
+import dotenv from "dotenv";
+dotenv.config();
 const mailPassword = process.env.MAIL_PASSWORD;
 const mail = {
   email: config.mail.email,
   pass: mailPassword,
   user: config.mail.user,
 };
+console.log(mail);
 
 interface NodeMailerSendResponse {
   accepted: string[]; // email addressed sent to
