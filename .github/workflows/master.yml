@@ -43,8 +43,7 @@ jobs:
           cd src/juanportal
           npm run build:all
           docker-compose up -d > /dev/null
-          export MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}"
-          docker exec juanportal_node npm run cov
+          docker exec -i juanportal_node /bin/bash -c 'export MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }} && npm run cov'
           docker exec juanportal_node npm run testReact
 
   socket-checks:
