@@ -40,7 +40,9 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Install NPM Dependencies
-        run: npm ci
+        run: |
+          cd src/juanportal
+          npm ci
       - name: Client Lint Checks
         run: |
           cd src/juanportal
