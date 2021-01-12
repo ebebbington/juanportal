@@ -2,13 +2,13 @@ import React, { ReactElement, useState } from "react";
 // import ReactDOM from 'react-dom'
 // import { notify, fetchToApiAsJson } from '../util'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const sliderStylings = require("./button.module.css");
+const sliderStylings = require("./slider.module.css");
 
 interface IProps {
   title: string;
   setChecked: boolean;
   id?: string;
-  checkHandler?: (id: string, isChecked: boolean) => void;
+  checkHandler?: (id: string | null, isChecked: boolean) => void;
 }
 
 /**
@@ -43,9 +43,9 @@ const Slider = ({
   );
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleInputCheck = (event: React.MouseEvent): void => {
-    const inputIsChecked = event.target.checked;
-    const id = event.target.dataset.id || null;
+  const handleInputCheck = (event: React.MouseEvent<HTMLInputElement>): void => {
+    const inputIsChecked = event.currentTarget.checked;
+    const id = event.currentTarget.dataset.id;
     // First display our slider correctly
     if (inputIsChecked) {
       setIsChecked(true);

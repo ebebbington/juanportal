@@ -49,6 +49,16 @@ test("Image Upload", () => {
   expect(filename).toBe("test-pic.png");
 });
 
+test("Image text should be 'No File Chosen' when cancelling image selection that results in choosing no file", () => {
+  const { container } = render(<RegisterForm />);
+  const file = new File(["(⌐□_□)"], "", { type: "image/png" });
+  const imageInput = screen.getByTitle("Picture upload");
+  Simulate.change(imageInput, { target: { files: [file] } });
+  const filename = container.querySelector("i#filename").textContent;
+  expect(filename).toBe("");
+});
+
+// TODO
 test("Submit Profile", () => {
   const { container } = render(<RegisterForm />);
   // name change
@@ -63,10 +73,12 @@ test("Submit Profile", () => {
   const file = new File(["(⌐□_□)"], "test-pic.png", { type: "image/png" });
   const imageInput = screen.getByTitle("Picture upload");
   Simulate.change(imageInput, { target: { files: [file] } });
-  // submit
-  Simulate.submit(container.querySelector("div > button"));
-  // assertions
   console.log(window.location.href);
+  // submit
+  const submitButton = document.querySelector("button");
+  submitButton.click();
+  //Simulate.submit(container.querySelector("div > button"));
+  // assertions
   expect(window.location.href).toEqual("http://localhost/");
   const nameElements = container.querySelectorAll("h3");
   let names = [];

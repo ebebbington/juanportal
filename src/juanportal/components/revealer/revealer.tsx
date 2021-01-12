@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactElement} from "react";
 // import ReactDOM from 'react-dom'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -34,32 +34,31 @@ interface IProps {
  * @param {string} text The text to accompany the icon e.g. "See analytics"
  * @param {Function} clickHandler? Your own defined function to handle a click of the button. Passes back the event object
  */
-const Revealer = ({ iconClass, text, clickHandler }: IProps): React.FC => {
-  const defaultWidth = 63; // px
+const Revealer = ({ iconClass, text, clickHandler }: IProps): ReactElement=> {
+  const defaultWidth = 77; // px
 
-  const handleMouseEnter = (event: React.MouseEvent): void => {
-    const buttonElem = event.target;
-    const textElem = event.target.children[1];
-    if (buttonElem && textElem) {
-      const textWidth: number = textElem.offsetWidth;
-      const newWidth: string = defaultWidth + textWidth + "px";
-      buttonElem.style.width = newWidth;
-    }
+  const handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement>): void => {
+    const buttonElem = event.currentTarget;
+    buttonElem.style.width = "100%"
   };
 
-  const handleMouseLeave = (event: React.MouseEvent): void => {
-    const buttonElem: HTMLElement = event.target;
-    if (buttonElem) {
-      buttonElem.style.width = defaultWidth + "px";
-    }
+  const handleMouseLeave = (event: React.MouseEvent<HTMLButtonElement>): void => {
+    const buttonElem = event.currentTarget;
+    buttonElem.style.width = defaultWidth + "px";
   };
+
+  const handleButtonClick = (event: React.MouseEvent): void => {
+    if (clickHandler) {
+      clickHandler(event)
+    }
+  }
 
   return (
     <button
       className={styles.revealerContainer}
       onMouseEnter={(event): void => handleMouseEnter(event)}
       onMouseLeave={(event): void => handleMouseLeave(event)}
-      onClick={(event): void => clickHandler(event)}
+      onClick={(event): void => handleButtonClick(event)}
     >
       <i className={`fa fa-3x ${iconClass}`}></i>
       <h2>{text}</h2>

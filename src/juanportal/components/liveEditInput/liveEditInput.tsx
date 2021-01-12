@@ -6,7 +6,7 @@ const styles = require("./liveEditInput.module.css");
 interface IProps {
   title: string;
   inputVal?: string;
-  saveHandler?: (data: { val: string; id: string | number }) => void;
+  saveHandler?: (data: { val: string; id?: string | number }) => void;
   id?: string | number;
 }
 
@@ -51,8 +51,8 @@ const LiveEditInput = ({
   };
 
   const handleClick = (target: React.MouseEvent): void => {
-    const val: string = target.dataset.value;
-    const id: string | number = target.dataset.id;
+    const val: string = target.dataset.val;
+    const id: string | number | undefined = target.dataset.id;
     if (saveHandler) {
       saveHandler({ val, id });
     }

@@ -3,6 +3,9 @@ import { notify, fetchToApiAsJson } from "../util";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const formStyles = require("./RegisterForm.module.css");
 import Button from "../button/button";
+import Revealer from "../revealer/revealer";
+import Slider from "../slider/slider";
+import {render} from "@testing-library/react";
 
 /**
  * @class RegisterForm
@@ -359,7 +362,8 @@ const RegisterForm = (): ReactElement => {
         </div>
       </fieldset>
     </form>
-  );
+
+);
 };
 
 export default RegisterForm;

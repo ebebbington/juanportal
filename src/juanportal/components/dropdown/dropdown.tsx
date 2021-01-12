@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {ReactElement, useState} from "react";
 // import ReactDOM from 'react-dom'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const dropdownStylings = require("./dropdown.module.css");
@@ -42,19 +42,22 @@ interface IProps {
  * @param {Array<{text: string, id?: string, checked: boolean}>} liData Data used to populate the list items, where `id` can be used to identify certain data
  * @param {Function} checkedHandler On change of input, calls this function passing in the text, checked, and id data should the calling component wish to do extra logic when data is changed
  */
-const Dropdown = ({ title, liData, checkedHandler }: IProps): React.FC => {
+const Dropdown = ({ title, liData, checkedHandler }: IProps): ReactElement => {
   // Just loop through the data provided to get the number of checked
   // items, to display this count on initial load
   let countOfChecked = 0;
   liData.forEach((data) => {
     if (data.checked) countOfChecked += 1;
   });
+
+  const [listItems, setListItems] = useState(liData)
   const [selected, setSelected] = useState(countOfChecked);
 
-  const handleChange = (event: React.MouseEvent): void => {
-    const text: string = event.target.value;
-    const isChecked: boolean = event.target.checked;
-    const id: string = event.target.dataset.id;
+  const handleChange = (event: React.FormEvent<HTMLInputElement>): void => {
+    console.log("[Dropdown] HandleChange")
+    const text: string = event.currentTarget.value;
+    const isChecked: boolean = event.currentTarget.checked;
+    const id = event.currentTarget.dataset.id;
     const passBackData: {
       text: string;
       id?: string;
@@ -66,8 +69,12 @@ const Dropdown = ({ title, liData, checkedHandler }: IProps): React.FC => {
     };
     // Show how many are selected for this component
     setSelected(isChecked ? selected + 1 : selected - 1);
+    const otherListItems = listItems.filter(item => item.text !== text)
+    const newListItems = [...otherListItems, passBackData]
+    setListItems(newListItems)
     // Then call passed in function to let them do anything they need with the data
     if (checkedHandler) {
+      console.log('yes checked handler')
       checkedHandler(passBackData);
     }
   };
@@ -87,13 +94,13 @@ const Dropdown = ({ title, liData, checkedHandler }: IProps): React.FC => {
         {selected} Selected
       </button>
       <ul className="dropdown-menu" aria-labelledby="dropdown-description">
-        {liData.map((data) => (
-          <li key={data.text}>
+        {listItems.map((data) => (
+          <li key={data.text + Math.random().toString(36)}>
             <label>
               <input
                 type="checkbox"
                 defaultChecked={data.checked}
-                onChange={(event): void => handleChange(event)}
+                onChange={(event): void => handleChange(event, )}
                 data-id={data.id}
                 value={data.text}
               ></input>

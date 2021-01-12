@@ -1,7 +1,7 @@
 /* Container */
 .revealerContainer {
   max-width: fit-content;
-  --width: 63px;
+  --width: 77px;
   background: var(--custom-white);
   display: flex; /* Display the icon and text in a row */
   overflow: hidden; /* To hide the text, given the width is only around the icon */
@@ -13,7 +13,7 @@
   /* Below will make the container fit the 3x size nicely */
   width: var(--width);
   height: 55px;
-  transition: width 1s ease-in-out;
+  transition: width 2s ease;
 }
 .revealerContainer:hover {
   cursor: pointer;

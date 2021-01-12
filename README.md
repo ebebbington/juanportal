@@ -8,9 +8,15 @@
   <a href="https://img.shields.io/badge/API%20coverage-95.16%25-green">
     <img src="https://img.shields.io/badge/API%20coverage-95.16%25-green">
   </a>
-  <a href="https://img.shields.io/badge/API%20coverage-100%25-green">
+  <a href="https://img.shields.io/badge/Socket%20coverage-100%25-green">
       <img src="https://img.shields.io/badge/Socket%20coverage-100%25-green">
   </a>
+  <a href="https://img.shields.io/badge/Server%20coverage-100%25-green">
+    <img src="https://img.shields.io/badge/Server%20coverage-100%25-green">
+  </a>
+  <a href="https://img.shields.io/badge/Client%20coverage-100%25-green">
+    <img src="https://img.shields.io/badge/Client%20coverage-100%25-green">
+  </a>  
   <a href="https://github.com/ebebbington/juanportal/actions">
     <img src="https://img.shields.io/github/workflow/status/ebebbington/juanportal/CodeQL?label=CodeQL">
   </a>

@@ -55,37 +55,38 @@ import Header from "../../../components/header/header";
 //     window.history.replaceState({}, "Test Title", "/");
 // })
 
+test("Title is as expected on initial render", () => {
+  render(<Header />);
+  const h1 = document.querySelector("h1")
+  const text = h1.textContent
+  expect(text).toBe("Home")
+})
+
 test("Clicks on the menu to expand and collapse it", () => {
   const { container } = render(<Header />);
   const menuButton = document.querySelector("button");
-  //console.log(menuButton)
-  //console.log(container.querySelector('button'))
   const listContainer = container.querySelector(".menuHolder");
-  //console.log(getComputedStyle(listContainer, null).display)
   let isExpanded = getComputedStyle(listContainer, null).display === "block";
+  let ariaButtonText = document.getElementById("header-button-label").textContent
   expect(isExpanded).toBe(true);
+  expect(ariaButtonText).toBe("Close Sidebar")
   fireEvent.click(menuButton, { button: 1 });
+  menuButton.click()
   isExpanded =
-    getComputedStyle(container.querySelector(".menuHolder"), null).display ===
+    getComputedStyle(document.querySelector(".menuHolder"), null).display ===
     "block";
-  setTimeout(() => {
-    expect(isExpanded).toBe(false);
-  }, 2000);
+  ariaButtonText =  document.getElementById("header-button-label").textContent
+  expect(isExpanded).toBe(false);
 });
 
-test("Clicking Home Link", () => {
+test("Home Link HREF is correct", () => {
   const { container } = render(<Header />);
   const homeLink = container.querySelector('a[href="/"]');
-  //expect(window.location.href).toBe('http://localhost/')
   expect(homeLink).not.toBe(null);
 });
 
-test("Add Profile Link", () => {
+test("Profile Link HREF is correct", () => {
   const { container } = render(<Header />);
   const profileLink = container.querySelector('a[href="/profile/add"]');
-  //window.location.assign = jest.fn() // Create a spy
-  //fireEvent.click(homeLink, { button: 2 })
-  //expect(window.location.href).toBe('http://localhost/profile/add')
-  //expect(window.location.assign).toHaveBeenCalledWith('/profile/add')
   expect(profileLink).not.toBe(null);
 });
