@@ -81,13 +81,13 @@ export class RedisHelper {
   }
 
   private initialiseCacheLogging(): void {
-    this.cache!// .on("error", (err) => {
-    //   logger.error("Redis cache has encourtered a problem");
-    //   logger.error(err);
-    // })
-    .on("message", (message) => {
-      logger.info("Redis cache has received a message: " + message);
-    })
+    this.cache! // .on("error", (err) => {
+      //   logger.error("Redis cache has encourtered a problem");
+      //   logger.error(err);
+      // })
+      .on("message", (message) => {
+        logger.info("Redis cache has received a message: " + message);
+      })
       .on("connected", () => {
         logger.info("Redis cache has connected");
       });
