@@ -1,4 +1,4 @@
-import React, {ReactElement} from "react";
+import React, { ReactElement } from "react";
 // import ReactDOM from 'react-dom'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -34,24 +34,28 @@ interface IProps {
  * @param {string} text The text to accompany the icon e.g. "See analytics"
  * @param {Function} clickHandler? Your own defined function to handle a click of the button. Passes back the event object
  */
-const Revealer = ({ iconClass, text, clickHandler }: IProps): ReactElement=> {
+const Revealer = ({ iconClass, text, clickHandler }: IProps): ReactElement => {
   const defaultWidth = 77; // px
 
-  const handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement>): void => {
+  const handleMouseEnter = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ): void => {
     const buttonElem = event.currentTarget;
-    buttonElem.style.width = "100%"
+    buttonElem.style.width = "100%";
   };
 
-  const handleMouseLeave = (event: React.MouseEvent<HTMLButtonElement>): void => {
+  const handleMouseLeave = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ): void => {
     const buttonElem = event.currentTarget;
     buttonElem.style.width = defaultWidth + "px";
   };
 
   const handleButtonClick = (event: React.MouseEvent): void => {
     if (clickHandler) {
-      clickHandler(event)
+      clickHandler(event);
     }
-  }
+  };
 
   return (
     <button

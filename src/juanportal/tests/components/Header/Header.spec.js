@@ -57,25 +57,26 @@ import Header from "../../../components/header/header";
 
 test("Title is as expected on initial render", () => {
   render(<Header />);
-  const h1 = document.querySelector("h1")
-  const text = h1.textContent
-  expect(text).toBe("Home")
-})
+  const h1 = document.querySelector("h1");
+  const text = h1.textContent;
+  expect(text).toBe("Home");
+});
 
 test("Clicks on the menu to expand and collapse it", () => {
   const { container } = render(<Header />);
   const menuButton = document.querySelector("button");
   const listContainer = container.querySelector(".menuHolder");
   let isExpanded = getComputedStyle(listContainer, null).display === "block";
-  let ariaButtonText = document.getElementById("header-button-label").textContent
+  let ariaButtonText = document.getElementById("header-button-label")
+    .textContent;
   expect(isExpanded).toBe(true);
-  expect(ariaButtonText).toBe("Close Sidebar")
+  expect(ariaButtonText).toBe("Close Sidebar");
   fireEvent.click(menuButton, { button: 1 });
-  menuButton.click()
+  menuButton.click();
   isExpanded =
     getComputedStyle(document.querySelector(".menuHolder"), null).display ===
     "block";
-  ariaButtonText =  document.getElementById("header-button-label").textContent
+  ariaButtonText = document.getElementById("header-button-label").textContent;
   expect(isExpanded).toBe(false);
 });
 

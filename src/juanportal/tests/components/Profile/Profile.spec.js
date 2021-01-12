@@ -1,4 +1,5 @@
-import { render } from '@testing-library/react'
+import { render } from "@testing-library/react";
+import Profile from "../../../components/Profile/Profile";
 
 // import '@testing-library/jest-dom/extend-expect'
 //
@@ -21,6 +22,6 @@ import { render } from '@testing-library/react'
 // })
 
 test("placeholder", () => {
-  render(<Profile id={5} />)
+  render(<Profile id={5} />);
   expect(true).toBe(true);
 });

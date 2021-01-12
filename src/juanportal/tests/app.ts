@@ -2,14 +2,13 @@ import chai from "chai";
 const expect = chai.expect;
 import app from "../app";
 
-import logger from "../helpers/logger";
-
 chai.should();
 
 describe("App", () => {
   describe("Middleware", () => {
     it("Should be using cookie parser", () => {
       let found = false;
+      // eslint-disable-next-line
       // @ts-ignore
       app._router.stack.forEach((stackObj) => {
         if (stackObj.name === "cookieParser") found = true;
@@ -18,6 +17,7 @@ describe("App", () => {
     });
     it("Should be using logger middleware", () => {
       let found = false;
+      // eslint-disable-next-line
       // @ts-ignore
       app._router.stack.forEach((stackObj) => {
         if (stackObj.name === "logger") found = true;
@@ -26,6 +26,7 @@ describe("App", () => {
     });
     it("Should be using body parser", () => {
       let found = false;
+      // eslint-disable-next-line
       // @ts-ignore
       app._router.stack.forEach((stackObj) => {
         if (stackObj.name === "jsonParser") found = true;

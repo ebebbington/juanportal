@@ -43,7 +43,9 @@ const Slider = ({
   );
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleInputCheck = (event: React.MouseEvent<HTMLInputElement>): void => {
+  const handleInputCheck = (
+    event: React.MouseEvent<HTMLInputElement>
+  ): void => {
     const inputIsChecked = event.currentTarget.checked;
     const id = event.currentTarget.dataset.id;
     // First display our slider correctly

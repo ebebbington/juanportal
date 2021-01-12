@@ -1,6 +1,6 @@
 import "mocha";
 
-const chai = require("chai");
+import chai from "chai";
 const expect = chai.expect;
 
 import MailHelper from "../../helpers/MailHelper";

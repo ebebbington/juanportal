@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom/extend-expect";
-import { Simulate } from "react-dom/test-utils";
+// import { Simulate } from "react-dom/test-utils";
 
 import React from "react";
 import { render } from "@testing-library/react";

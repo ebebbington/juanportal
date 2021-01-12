@@ -54,7 +54,6 @@ describe("RedisHelper", () => {
 
     describe("channels", () => {
       it("Should contain the correct channels", () => {
-        const channels = { chat: "chat" };
         const Redis = new RedisHelper({});
         expect(Object.keys(Redis.channels).length).to.equal(1);
         expect(Object.keys(Redis.channels)[0]).to.equal("chat");

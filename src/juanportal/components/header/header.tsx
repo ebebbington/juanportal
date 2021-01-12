@@ -46,7 +46,7 @@ const Header = (): ReactElement => {
     useMediaQuery({ query: `(min-width: 990px` })
   );
 
-  const [menuShowStyle, setMenuShowStyle] = useState({ display: "block"})
+  const [menuShowStyle, setMenuShowStyle] = useState({ display: "block" });
 
   /**
    * URL of the current page
@@ -105,11 +105,11 @@ const Header = (): ReactElement => {
    */
   const handleMenuClick = (): void => {
     // Opposite of what the value already is
-    const expanded = menuExpanded
+    const expanded = menuExpanded;
     if (expanded) {
-      setMenuShowStyle({ display: "none"})
+      setMenuShowStyle({ display: "none" });
     } else {
-      setMenuShowStyle({ display: "none"})
+      setMenuShowStyle({ display: "none" });
     }
     setMenuExpanded(!menuExpanded);
   };
@@ -130,9 +130,8 @@ const Header = (): ReactElement => {
           <i className="fa fa-2x fa-bars" />
         </button>
         <div
-          className={`${
-            headerStyles.navMenu
-          } menuHolder`} style={menuShowStyle}
+          className={`${headerStyles.navMenu} menuHolder`}
+          style={menuShowStyle}
         >
           <ul>
             {navLinks.map((navLink: INavLinks) => {
