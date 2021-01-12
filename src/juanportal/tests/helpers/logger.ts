@@ -5,8 +5,8 @@ const expect = chai.expect;
 import fs from "fs";
 
 import { getLogger } from "../../helpers/logger";
-process.env["NODE_ENV"] = "production"
-import logger from "../../helpers/logger"
+process.env["NODE_ENV"] = "production";
+import logger from "../../helpers/logger";
 
 chai.should();
 
@@ -19,6 +19,7 @@ describe("logger", () => {
       const result = fs.readFileSync("./logs/error.log");
       fs.unlinkSync("./logs/error.log");
       expect(result.toString()).to.equal("error: errrrr\n");
+      console.log(logger);
       fs.rmdirSync("./logs", { recursive: true });
     });
   });

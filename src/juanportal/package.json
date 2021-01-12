@@ -80,6 +80,7 @@
     "jest-cli": "^24.9.0",
     "mocha": "^6.2.2",
     "nyc": "^15.1.0",
+    "prettier": "^2.2.1",
     "source-map-support": "^0.5.19",
     "style-loader": "^1.1.2",
     "ts-loader": "^6.2.1",

@@ -28,10 +28,9 @@ const transports = {
   }),
 };
 
-type EnvTypes = "production" | "development"
+type EnvTypes = "production" | "development";
 
-const env: EnvTypes =
-  process.env.NODE_ENV as EnvTypes;
+const env: EnvTypes = process.env.NODE_ENV as EnvTypes;
 
 export function getLogger(
   environment: "production" | "development"

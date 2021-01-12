@@ -85,9 +85,7 @@ app
         .json({ success: false, message: "File was not found on the server" });
     }
     Image.deleteFromFS(filename);
-    return res
-        .status(200)
-        .json({ success: true, message: "Deleted the file" });
+    return res.status(200).json({ success: true, message: "Deleted the file" });
   });
 
 export default app;

@@ -86,7 +86,7 @@ class Server {
   constructor() {
     // define properties
     this.viewEngine = "pug";
-    this.env = (process.env.NODE_ENV as string);
+    this.env = process.env.NODE_ENV as string;
     //create expressjs application
     this.app = express();
     this.app.use(cors());
@@ -129,7 +129,7 @@ class Server {
     //   this.app.use(morgan("combined"));
     // }
     // Everything else use development logging
-    this.app.use(morgan("dev"))
+    this.app.use(morgan("dev"));
   }
 
   /**
