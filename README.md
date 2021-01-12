@@ -14,8 +14,8 @@
   <a href="https://img.shields.io/badge/Server%20coverage-94.74%25-green">
     <img src="https://img.shields.io/badge/Server%20coverage-94.74%25-green">
   </a>
-  <a href="https://img.shields.io/badge/Client%20coverage-0%25-green">
-    <img src="https://img.shields.io/badge/Client%20coverage-0%25-green">
+  <a href="https://img.shields.io/badge/Client%20coverage-60.34%25-green">
+    <img src="https://img.shields.io/badge/Client%20coverage-60.34%25-green">
   </a>  
   <a href="https://github.com/ebebbington/juanportal/actions">
     <img src="https://img.shields.io/github/workflow/status/ebebbington/juanportal/CodeQL?label=CodeQL">

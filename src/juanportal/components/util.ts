@@ -126,6 +126,8 @@ export const fetchToApiAsJson = (
         }
       })
       .catch((err) => {
+        console.error("err for fetching:");
+        console.error(err);
         reject(err);
       });
   });

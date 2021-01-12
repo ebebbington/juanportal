@@ -155,14 +155,17 @@ const RegisterForm = (): ReactElement => {
     console.log("[validateForm]");
     if (!name || name.length < 2) {
       notify!("Name", "Must be set and longer than 2 characters", "error");
+      console.log("Form failed validation");
       return false;
     }
     if (name.length > 150) {
       notify!("Name", "Must not be longer than 150 characters", "error");
+      console.log("Form failed validation");
       return false;
     }
     if (description.length > 400) {
       notify!("Description", "Must be less than 400 characters", "error");
+      console.log("Form failed validation");
       return false;
     }
     const exts = ["jpg", "jpeg", "png"];
@@ -170,8 +173,10 @@ const RegisterForm = (): ReactElement => {
     const fileExt = arr[arr.length - 1].toLowerCase();
     if (filename && !exts.includes(fileExt)) {
       notify!("Image", "File must be of type .jpg, .png or .jpeg", "error");
+      console.log("Form failed validation");
       return false;
     }
+    console.log("Form validated");
     return true;
   };
 
@@ -240,6 +245,8 @@ const RegisterForm = (): ReactElement => {
           );
           return false;
         }
+        console.log("Seem to register ok, heres some data to help:");
+        console.log(res);
         notify!(
           "Profile Upload",
           res.message,
@@ -288,14 +295,14 @@ const RegisterForm = (): ReactElement => {
     }
   };
 
-  const componentDidUpdate = (): void => {
-    console.log("[componentDidUpdate]");
-    console.log("Name: " + name);
-    console.log("Description: " + description);
-    console.log("Filename: " + filename);
-    console.log("File: ");
-  };
-  componentDidUpdate();
+  // const componentDidUpdate = (): void => {
+  //   console.log("[componentDidUpdate]");
+  //   console.log("Name: " + name);
+  //   console.log("Description: " + description);
+  //   console.log("Filename: " + filename);
+  //   console.log("File: ");
+  // };
+  //componentDidUpdate();
 
   return (
     <form className={formStyles.form}>

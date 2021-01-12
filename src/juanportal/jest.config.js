@@ -22,7 +22,7 @@ module.exports = {
   moduleNameMapper: {
     "\\.(css|less)$": "identity-obj-proxy",
   },
-  //testURL: "127.0.0.1:9002/"
+  //testURL: "http://localhost:9002"
   //rootDir: './tests/components',
   //testMatch: ['*.spec.js']
 };
