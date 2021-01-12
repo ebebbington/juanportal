@@ -61,8 +61,8 @@ export default class MailHelper {
     html?: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }): Promise<NodeMailerSendResponse> {
-    console.log('sending mail, here are deets:')
-    console.log(mail)
+    console.log("sending mail, here are deets:");
+    console.log(mail);
     // Return type for sending mail is any :/
     // Create a transporter
     const transporterOptions = {
