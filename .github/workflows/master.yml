@@ -46,7 +46,7 @@ jobs:
           docker exec juanportal_node npm run cov
           docker exec juanportal_node npm run test:client
         env:
-          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          MAIL_PASSWORD: "${{ secrets.MAIL_PASSWORD }}"
 
   socket-checks:
     runs-on: ubuntu-latest
