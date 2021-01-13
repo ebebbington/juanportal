@@ -1,4 +1,4 @@
-FROM node:10.15.3
+FROM node:latest
 
 # Update and install required packages
 RUN     apt-get update
