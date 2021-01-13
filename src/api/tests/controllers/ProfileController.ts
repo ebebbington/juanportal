@@ -249,7 +249,7 @@ describe("ProfileController", () => {
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.data).to.equal("name");
-        // todo :: add testting for image file extensions
+        // todo :: add testing for image file extensions
       });
 
       it("Should save on a valid profile", async () => {

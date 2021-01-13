@@ -218,7 +218,7 @@ const RegisterForm = (): ReactElement => {
     const form: HTMLFormElement | undefined = document.querySelector("form") as
       | HTMLFormElement
       | undefined;
-    const data = new FormData(form); // TODO TEST ME, ENSURE I WORK, as the below commented out code was throwing errors, and this line is just much simpler, BUT it may not work
+    const data = new FormData(form);
     // const data = new URLSearchParams()
     // for (const pair of new FormData(form as HTMLFormElement | undefined)) {
     //     data.append(pair[0], pair[1])

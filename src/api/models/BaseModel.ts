@@ -286,7 +286,7 @@ export default abstract class BaseModel implements IIndexSignature {
    * @returns {[object]|boolean} False if an error, array if the db query returned data
    */
   public async find(
-    query?: { [key: string]: unknown }, // TODO THIS SHOULD NOT BE OPTIONAl
+    query?: { [key: string]: unknown },
     limiter = 1,
     sortable = {}
   ): Promise<boolean | Document[]> {

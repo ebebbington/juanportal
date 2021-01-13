@@ -2,11 +2,7 @@ import express from "express";
 const app = express();
 import logger from "../helpers/logger";
 import ImageHelper from "../helpers/ImageHelper";
-// eslint-disable-next-line
-// @ts-ignore
 import { RedisHelper, IRedisCacheHelper } from "../helpers/RedisHelper";
-// eslint-disable-next-line
-// @ts-ignore
 const Redis = new RedisHelper({ cache: true }) as IRedisCacheHelper;
 
 // For when an image is submitted in the form when POSTing a profile
