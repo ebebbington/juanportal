@@ -1,21 +1,21 @@
-import React, { useState, ReactElement, FunctionComponent } from 'react'
-import { getStylings } from './util'
-const classes = getStylings()
-import {getLightStylingByColour} from './util'
+import React, { ReactElement } from "react";
+import { getLightStylingByColour } from "../util";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const classes = require("./button.module.css");
 
 interface IParams {
-  text: string,
-  lightColour: string,
-  clickHandler?: Function,
-  id?: any
+  text: string;
+  lightColour: string;
+  clickHandler?: (event: React.MouseEvent, id?: string | number) => void;
+  id?: string | number;
 }
 
 /**
  * @name Button
- * 
+ *
  * @description Overview
- * This component is responsible for any button 
- * 
+ * This component is responsible for any button
+ *
  * @example
  * // anotherComponent.jsx
  * import Button from '../button/button'
@@ -29,29 +29,35 @@ interface IParams {
  * @param {string} text Text to display inside the button
  * @param {string} lightColour Determines whether the button is a red, amber or green traffic light
  * @param {Function} clickHandler Your handler to handle the click of the button
- * 
+ *
  * @return {HTMLCollection}
  */
-const Button = ({text, lightColour, clickHandler, id}: IParams) => {
+const Button = ({
+  text,
+  lightColour,
+  clickHandler,
+  id,
+}: IParams): ReactElement => {
+  if (!text) return <></>;
+  if (!lightColour) return <></>;
 
-  if (!text) return <></>
-  if (!lightColour) return <></>
+  const lightStyling = getLightStylingByColour(lightColour);
+  if (!lightStyling) return <></>;
 
-  const lightStyling = getLightStylingByColour(lightColour)
-  if (!lightStyling) return <></>
-
-  const handleClick = (event: any) => {
+  const handleClick = (event: React.MouseEvent): void => {
     if (clickHandler) {
-      clickHandler(event, id)
+      clickHandler(event, id);
     }
-  }
+  };
 
   return (
-    <button className={`${classes.trafficLight} ${lightStyling} btn`} onClick={event => handleClick(event)}>
+    <button
+      className={`${classes.trafficLight} ${lightStyling} btn`}
+      onClick={(event): void => handleClick(event)}
+    >
       {text}
     </button>
-  )
+  );
+};
 
-}
-
-export default Button
+export default Button;

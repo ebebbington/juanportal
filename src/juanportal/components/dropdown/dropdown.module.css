@@ -1,44 +1,44 @@
 /* Container */
 .dropdownContainer {
-    text-align: center;
-    position: relative;
+  text-align: center;
+  position: relative;
 }
 .dropdownContainer > p {
-    margin-bottom: 0;
-    display: block; /* So they label sits above the buttom */
+  margin-bottom: 0;
+  display: block; /* So they label sits above the buttom */
 }
 /* The button to open the dropdown */
 .dropdownContainer > button {
-    background-color: var(--custom-white);
-    color: var(--custom-black);
-    border: 0.1em var(--custom-black) solid;
-    /*border-radius: 100px;*/
+  background-color: var(--custom-white);
+  color: var(--custom-black);
+  border: 0.1em var(--custom-black) solid;
+  /*border-radius: 100px;*/
 }
 /* Then invert the colours */
 .dropdownContainer > button:hover {
-    background: var(--custom-black);
-    color: var(--custom-white);
-    transform: scale(1.1);
+  background: var(--custom-black);
+  color: var(--custom-white);
+  transform: scale(1.1);
 }
 /* The list container */
 .dropdownContainer > ul {
-    padding: 0;
-    overflow-y: scroll;
-    max-height: 12em;
-    top: 100%;
-    margin-bottom: 75px;
-    margin-top: 0;
-    /* overwrite bootstrap css to center the dropdown based on the button */
-    /* Reason why it's important is because bootstrap adds the styles dynamically, meaning those styles take 1st priority */
-    left: 50% !important;
-    transform: translate3d(-50%, 77%, 0px) !important;
+  padding: 0;
+  overflow-y: scroll;
+  max-height: 12em;
+  top: 100%;
+  margin-bottom: 75px;
+  margin-top: 0;
+  /* overwrite bootstrap css to center the dropdown based on the button */
+  /* Reason why it's important is because bootstrap adds the styles dynamically, meaning those styles take 1st priority */
+  left: 50% !important;
+  transform: translate3d(-50%, 77%, 0px) !important;
 }
 /* Each list item */
 .dropdownContainer > ul li {
-    color: var(--custom-blue);
-    padding: 5px 5px;
+  color: var(--custom-blue);
+  padding: 5px 5px;
 }
 /* Add some space between the checkbox and text */
 .dropdownContainer > ul li > label > input {
-    margin-right: 0.3em;
+  margin-right: 0.3em;
 }

@@ -1,10 +1,10 @@
 {
   "all": true,
   "check-coverage": true,
-  "branches": 85,
-  "lines": 95,
-  "functions": 95,
-  "statements": 95,
+  "branches": 100,
+  "lines": 97,
+  "functions": 97,
+  "statements": 97,
   "extension": [
       ".ts"
   ],

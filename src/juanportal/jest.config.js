@@ -17,12 +17,12 @@
  */
 
 module.exports = {
-    //verbose: true,
-    collectCoverage: true,
-    "moduleNameMapper": {
-        "\\.(css|less)$": "identity-obj-proxy"
-    },
-    //testURL: "127.0.0.1:9002/"
-    //rootDir: './tests/components',
-    //testMatch: ['*.spec.js']
-}
+  //verbose: true,
+  collectCoverage: true,
+  moduleNameMapper: {
+    "\\.(css|less)$": "identity-obj-proxy",
+  },
+  //testURL: "http://localhost:9002"
+  //rootDir: './tests/components',
+  //testMatch: ['*.spec.js']
+};

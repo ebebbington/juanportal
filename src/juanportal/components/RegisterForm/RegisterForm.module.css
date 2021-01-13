@@ -2,72 +2,72 @@
  * Whole form
  */
 .form {
-    text-align: center;
-    background-color: var(--custom-white);
-    padding: 1em;
-    border-radius: 8px;
+  text-align: center;
+  background-color: var(--custom-white);
+  padding: 1em;
+  border-radius: 8px;
 }
 .form button {
-    width: 101%;
+  width: 101%;
 }
 /**
  * Fieldset
  */
 fieldset {
-    display: flex;
+  display: flex;
 }
 /**
  * Label containers for each field (text, input etc)
  */
 .fieldContainer {
-    margin: 1em 0 1em 0;
+  margin: 1em 0 1em 0;
 }
 /**
  * Each input element
  */
 .fieldContainer > input {
-    text-align: center;
-    display: block;
-    margin: auto;
-    padding: 0.2em;
+  text-align: center;
+  display: block;
+  margin: auto;
+  padding: 0.2em;
 }
 /**
  * File input container
  */
 .fileUploadContainer {
-    width: fit-content;
-    margin: 0.3em auto 0.3em auto;
+  width: fit-content;
+  margin: 0.3em auto 0.3em auto;
 }
 /* filename */
 .fileUploadContainer > p {
-    margin: auto;
-    background-color: var(--custom-blue);
+  margin: auto;
+  background-color: var(--custom-blue);
 }
 /**
  * File input element
  */
 .fileUploadContainer > input[type="file"] {
-    background-color: var(--custom-grey);
-    display: none
+  background-color: var(--custom-grey);
+  display: none;
 }
 /**
  * File name inside file input container. Reason for the end of the below selector is because the upload button was pushed slightly when the <i> element had no content, so to combat this, only apply the margins when it has content
  */
 .fileUploadContainer > i:not(:empty) {
-    margin-left: 0.3em; /* To space the text and button apart */
-    color: var(--custom-blue);
+  margin-left: 0.3em; /* To space the text and button apart */
+  color: var(--custom-blue);
 }
 /* Submit button container */
 .submitContainer {
-    width: fit-content; /* To reduce the area when clicking the submit button as it still fired when clicking far away (as container area was larger) */
-    width: 80%;
-    margin: 1em auto 1em auto;
+  width: fit-content; /* To reduce the area when clicking the submit button as it still fired when clicking far away (as container area was larger) */
+  width: 80%;
+  margin: 1em auto 1em auto;
 }
 /**
  * Submit button, most of the styles below are to seperate the button from the main fields to not confuse that its part of the fields to fill in
  */
 .submitContainer button {
-    width: 100%; /* same width as the container so there cant be any outside clicks */
-    font-size: 1.5em;
-    padding: 0.5em;
+  width: 100%; /* same width as the container so there cant be any outside clicks */
+  font-size: 1.5em;
+  padding: 0.5em;
 }

@@ -1,20 +1,21 @@
-import React, { useState, ReactElement, FunctionComponent } from 'react'
-import { getStylings } from './util'
-const classes = getStylings()
-import {getLightStylingByColour} from './util'
+import React, { ReactElement } from "react";
+import { getLightStylingByColour } from "../util";
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const classes = require("./button.module.css");
 
 interface IParams {
-  iconClass: string,
-  text: string,
-  lightColour: string
+  iconClass: string;
+  text: string;
+  lightColour: string;
 }
 
 /**
  * @name IconButton
- * 
+ *
  * @description Overview
  * This component is responsible for buttons that contain an icon with text below
- * 
+ *
  * @example When including inside another component
  * // anotherComponent.jsx
  * import IconButton from '../button/iconButton'
@@ -28,24 +29,29 @@ interface IParams {
  * @param {string} iconClass Font awesome class of the icon to display
  * @param {string} text Text to display inside the 'button'
  * @param {string} lightColour Determines whether the button is a red, amber or green traffic light
- * 
+ *
  * @return {HTMLCollection}
  */
-const IconButton = ({iconClass, text, lightColour}: IParams) => {
+const IconButton = ({
+  iconClass,
+  text,
+  lightColour,
+}: IParams): ReactElement => {
+  if (!text) return <></>;
+  if (!lightColour) return <></>;
+  if (!iconClass) return <></>;
 
-    if (!text) return <></>
-    if (!lightColour) return <></>
-    if (!iconClass) return <></>
+  const lightStyling = getLightStylingByColour(lightColour);
+  if (!lightStyling) return <></>;
 
-    const lightStyling = getLightStylingByColour(lightColour)
-    if (!lightStyling) return <></>
+  return (
+    <button
+      className={`${classes.trafficLight} ${lightStyling} btn ${classes.round}`}
+    >
+      <i className={iconClass}></i>
+      <p>{text}</p>
+    </button>
+  );
+};
 
-    return (
-        <button className={`${classes.trafficLight} ${lightStyling} btn ${classes.round}`}>
-          <i className={iconClass}></i>
-          <p>{text}</p>
-        </button>
-    )
-}
-
-export default IconButton
+export default IconButton;

@@ -1,8 +1,8 @@
 import express from "express";
+const app = express();
 import ProfileController from "../controllers/ProfileController";
 
 import multer from "multer";
-const app = express();
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
@@ -18,7 +18,9 @@ app
    *  dataType: 'json'
    * })
    */
-  .get(ProfileController.GetProfilesByAmount);
+  .get(async (req, res) => {
+    await ProfileController.GetProfilesByAmount(req, res);
+  });
 
 app
   .route("/id/:id")

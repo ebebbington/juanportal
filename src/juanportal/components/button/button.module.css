@@ -20,57 +20,57 @@
 /* Traffic light buttons */
 /* Swap out the white text and give each button a bit of an effect */
 .trafficLight {
-    color: var(--custom-white);
-    width: auto;
-    padding: 0.3em 0.4em;
-    margin: 0.1em 0.1em;
-    transition-duration: 0.3s;
+  color: var(--custom-white);
+  width: auto;
+  padding: 0.3em 0.4em;
+  margin: 0.1em 0.1em;
+  transition-duration: 0.3s;
 }
 .trafficLight:hover {
-    background-color: var(--custom-white);
-    box-shadow: 0px 0px 5px 1px;
+  background-color: var(--custom-white);
+  box-shadow: 0px 0px 5px 1px;
 }
 .trafficLight:focus {
-    color: var(--custom-white);
+  color: var(--custom-white);
 }
 
 .greenLight {
-    background-color: var(--custom-green);
+  background-color: var(--custom-green);
 }
 .greenLight i {
-    color: var(--custom-white);
+  color: var(--custom-white);
 }
 .greenLight p {
-    color: var(--custom-white);
+  color: var(--custom-white);
 }
 .greenLight:hover {
-    color: var(--custom-green);
+  color: var(--custom-green);
 }
 .redLight {
-    background-color: var(--custom-red);
+  background-color: var(--custom-red);
 }
 .redLight:hover {
-    color: var(--custom-red);
+  color: var(--custom-red);
 }
 .amberLight {
-    background-color: var(--custom-orange);
+  background-color: var(--custom-orange);
 }
 .amberLight:hover {
-    color: var(--custom-orange);
+  color: var(--custom-orange);
 }
 /* When there is an icon and text as the content within */
 .greenLight:hover i,
 .greenLight:hover p {
-    color: var(--custom-green);
+  color: var(--custom-green);
 }
 /* When there is an icon and text as the content within */
 .redLight:hover i,
 .redLight:hover p {
-    color: var(--custom-red);
+  color: var(--custom-red);
 }
 /* For rounded elements */
 .round {
-    border-radius: 50%;
-    width: 57px;
-    height: 57px;
+  border-radius: 50%;
+  width: 57px;
+  height: 57px;
 }

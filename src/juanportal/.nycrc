@@ -1,0 +1,30 @@
+{
+  "all": true,
+  "check-coverage": true,
+  "branches": 92,
+  "lines": 89,
+  "functions": 94,
+  "statements": 88,
+  "extension": [
+      ".ts"
+  ],
+  "include": [
+      "**/*.js",
+      "**/*.ts"
+    ],
+    "sourceMap": true,
+  "exclude": [
+    "public",
+    "components",
+    "data",
+      "bin",
+      "coverage",
+      "tests",
+      "jest.config.js",
+      "webpack.config.js",
+      "ecosystem.config.js",
+      "routes/chat.ts"
+   ],
+   "reporter": "text",
+     "instrument": true
+}

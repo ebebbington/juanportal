@@ -1,41 +1,40 @@
 /* Container for all content */
 .profile {
-    overflow: hidden;
-    border: 1px solid var(--custom-grey);
-    background-color: var(--custom-white);
-    padding: 1em;
-    margin: 0.5em; /* Push it away from the top and bottom */
-    display: flex;
-    width: 97%;
+  overflow: hidden;
+  border: 1px solid var(--custom-grey);
+  background-color: var(--custom-white);
+  padding: 1em;
+  margin: 0.5em; /* Push it away from the top and bottom */
+  display: flex;
+  width: 97%;
 }
 /* Image of the profile */
 img {
-    max-width: 100%;
-    max-height: 100%;
-    width: 100%;
-    overflow: hidden;
-    display: block;
-
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  overflow: hidden;
+  display: block;
 }
 /* Container for the actions */
 .actions {
-    text-align: center;
+  text-align: center;
 }
 /* Each action inside the above container */
 .action {
-    display: block;
-    margin: 0.5em auto 0.5em auto;
+  display: block;
+  margin: 0.5em auto 0.5em auto;
 }
 /* Name associated with the profile */
 .name {
-    text-align: center;
-    text-overflow: ellipsis;
-    overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 /* Description of the profile */
 .description {
-    word-break: break-word;
-    text-align: center;
-    text-overflow: ellipsis;
-    overflow: hidden;
+  word-break: break-word;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

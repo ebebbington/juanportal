@@ -25,7 +25,7 @@ This container contains:
 - `.env`
 
   - Our environmental file
-  
+
 - `.eslint*`
 
   - Configuration files for `eslint`, which we use for linting (`npm run lint`)
@@ -33,7 +33,7 @@ This container contains:
 - `.nycrc`
 
   - Configuration file for using code coverage
-  
+
 - `.prettierignore`
 
   - For prettier to ignore certain files when formatting (`npm run fmt:)

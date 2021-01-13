@@ -7,7 +7,7 @@ const expect = chai.expect;
 import ProfileModel, { ProfileDocument } from "../../models/ProfileModel";
 import MongooseModel from "../../schemas/ProfileSchema";
 import ProfileController from "../../controllers/ProfileController";
-import { req, res, next, TestResponse } from "../utils";
+import { req, res, TestResponse } from "../utils";
 import { Document, LeanDocument } from "mongoose";
 import Doc = Mocha.reporters.Doc;
 
@@ -51,8 +51,7 @@ describe("ProfileController", () => {
         req.params.id = "I cannot be parsed to a number";
         const response = ((await ProfileController.GetProfileById(
           req,
-          res,
-          next
+          res
         )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
@@ -66,8 +65,7 @@ describe("ProfileController", () => {
         req.params.id = Profile._id;
         const response = ((await ProfileController.GetProfileById(
           req,
-          res,
-          next
+          res
         )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(200);
         expect(response.jsonMessage.success).to.equal(true);
@@ -87,8 +85,7 @@ describe("ProfileController", () => {
         req.params.id = validObjectId;
         const response = ((await ProfileController.GetProfileById(
           req,
-          res,
-          next
+          res
         )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(404);
         expect(response.jsonMessage.success).to.equal(false);
@@ -101,8 +98,7 @@ describe("ProfileController", () => {
         req.params.id = "I cannot be parsed to a number";
         const response = ((await ProfileController.DeleteProfileById(
           req,
-          res,
-          next
+          res
         )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
@@ -115,8 +111,7 @@ describe("ProfileController", () => {
         req.params.id = mongoose.Types.ObjectId();
         const response = ((await ProfileController.DeleteProfileById(
           req,
-          res,
-          next
+          res
         )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(404);
         expect(response.jsonMessage.success).to.equal(false);
@@ -128,8 +123,7 @@ describe("ProfileController", () => {
         req.params.id = Profile._id;
         const response = ((await ProfileController.DeleteProfileById(
           req,
-          res,
-          next
+          res
         )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(200);
         expect(response.jsonMessage.success).to.equal(true);
@@ -143,8 +137,7 @@ describe("ProfileController", () => {
         req.params.count = null;
         const response = ((await ProfileController.GetProfilesByAmount(
           req,
-          res,
-          next
+          res
         )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
@@ -155,8 +148,7 @@ describe("ProfileController", () => {
         req.params.count = "i cannot be parsed to a number";
         const response = ((await ProfileController.GetProfilesByAmount(
           req,
-          res,
-          next
+          res
         )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
@@ -169,8 +161,7 @@ describe("ProfileController", () => {
         req.params.count = -1;
         const response = ((await ProfileController.GetProfilesByAmount(
           req,
-          res,
-          next
+          res
         )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
@@ -191,8 +182,7 @@ describe("ProfileController", () => {
         await Profile.delete({ name: profiles[2].name });
         const response = ((await ProfileController.GetProfilesByAmount(
           req,
-          res,
-          next
+          res
         )) as unknown) as TestResponse;
         await Profile.create(profiles[0]);
         await Profile.create(profiles[1]);
@@ -211,8 +201,7 @@ describe("ProfileController", () => {
         await saveProfileAndFindAndReturnModel();
         const response = ((await ProfileController.GetProfilesByAmount(
           req,
-          res,
-          next
+          res
         )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(200);
         expect(response.jsonMessage.success).to.equal(true);
@@ -229,8 +218,7 @@ describe("ProfileController", () => {
         req.file = null;
         const response = ((await ProfileController.PostProfile(
           req,
-          res,
-          next
+          res
         )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
@@ -242,8 +230,7 @@ describe("ProfileController", () => {
         req.file = { originalname: "sample" };
         const response = ((await ProfileController.PostProfile(
           req,
-          res,
-          next
+          res
         )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
@@ -257,13 +244,12 @@ describe("ProfileController", () => {
         req.file = null;
         const response = ((await ProfileController.PostProfile(
           req,
-          res,
-          next
+          res
         )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(400);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.data).to.equal("name");
-        // todo :: add testting for image file extensions
+        // todo :: add testing for image file extensions
       });
 
       it("Should save on a valid profile", async () => {
@@ -272,8 +258,7 @@ describe("ProfileController", () => {
         req.file = null;
         const response = ((await ProfileController.PostProfile(
           req,
-          res,
-          next
+          res
         )) as unknown) as TestResponse;
         expect(response.statusCode).to.equal(200);
         expect(response.jsonMessage.success).to.equal(true);

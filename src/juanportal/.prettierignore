@@ -1,0 +1,11 @@
+node_modules
+helpers/*.js
+routes/*.js
+app.js
+juanportal.config.js
+artillery
+coverage
+.nyc_output
+public/libs
+bin/www.js
+components/util.js

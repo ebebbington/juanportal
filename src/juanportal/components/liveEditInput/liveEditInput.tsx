@@ -1,25 +1,25 @@
-import React, { useState, ReactElement, useEffect } from 'react'
-import ReactDOM from 'react-dom'
-import { getStylings } from './util'
-const styles = getStylings()
+import React, { ReactElement, useState } from "react";
+// import ReactDOM from 'react-dom'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const styles = require("./liveEditInput.module.css");
 
 interface IProps {
-    title: string,
-    inputVal?: any,
-    saveHandler?: Function,
-    id?: any
+  title: string;
+  inputVal?: string;
+  saveHandler?: (data: { val: string; id?: string | number }) => void;
+  id?: string | number;
 }
 
 /**
  * @name LiveEditInput
- * 
+ *
  * @description
  * An input element that lets the user save a value on the go,
  * with a save button that accompanies it.
  * Take for example a form-type element that you dont want wrapped
  * inside a form - this is where this comes in - it displays a value and you can
  * update it with the save button that displays
- * 
+ *
  * @example
  * import LiveEditInput from '../liveEditInput/liveEditInput'
  * const Test = () => {
@@ -28,41 +28,60 @@ interface IProps {
  *     <LiveEditInput title="Update Password" inputVal="Current password" saveHandler={handleSave} id="could be email"/>
  *   )
  * }
- * 
+ *
  * @param {string} title Description for the live edit e.g. Password
  * @param {string} inputVal Value to pre-populate the input field with
  * @param {Function} saveHandler Your function that will be called when the save button is clicked. Passes in the input value and your passed in id if present
  * @param {any} id An id you want to associate the value with e.g. when a new vlaue saves, the id could point to a users profile
  */
-const LiveEditInput = ({title, inputVal = '', saveHandler, id}: IProps) => {
+const LiveEditInput = ({
+  title,
+  inputVal = "",
+  saveHandler,
+  id,
+}: IProps): ReactElement => {
+  const [inputSize, setInputSize] = useState(
+    inputVal.length ? inputVal.length : 1
+  );
+  const [inputValue, setInputValue] = useState(inputVal);
 
-    const [inputSize, setInputSize] = useState(inputVal.length ? inputVal.length : 1)
-    const [inputValue, setInputValue] = useState(inputVal)
+  const handleInputChange = (value: string): void => {
+    setInputValue(value);
+    setInputSize(value.length ? value.length : 1);
+  };
 
-    const handleInputChange = (value: string) => {
-        setInputValue(value)
-        setInputSize(value.length ? value.length : 1)
+  const handleClick = (target: React.MouseEvent): void => {
+    const val: string = target.dataset.val;
+    const id: string | number | undefined = target.dataset.id;
+    if (saveHandler) {
+      saveHandler({ val, id });
     }
+  };
 
-    const handleClick = (target: any) => {
-        const value: string = target.dataset.value
-        const id: any = target.dataset.id || null
-        if (saveHandler) {
-            saveHandler({value, id})
-        }
-    }
-
-    return (
-        <div className={styles.liveEditContainer}>
-            <p>{title}</p>
-            <label>
-                <input size={inputSize} type="text" className="form-control" value={inputValue} title={title} onChange={event => handleInputChange(event.target.value)}></input>
-                <div className={styles.saveHolder}>
-                    <button data-val={inputValue} data-id={id} className="fa fa-check btn" title={title} onClick={event => handleClick(event.target)}></button>
-                </div>
-            </label>
+  return (
+    <div className={styles.liveEditContainer}>
+      <p>{title}</p>
+      <label>
+        <input
+          size={inputSize}
+          type="text"
+          className="form-control"
+          value={inputValue}
+          title={title}
+          onChange={(event): void => handleInputChange(event.target.value)}
+        ></input>
+        <div className={styles.saveHolder}>
+          <button
+            data-val={inputValue}
+            data-id={id}
+            className="fa fa-check btn"
+            title={title}
+            onClick={(event): void => handleClick(event.target)}
+          ></button>
         </div>
-    )
-}
+      </label>
+    </div>
+  );
+};
 
-export default LiveEditInput
+export default LiveEditInput;

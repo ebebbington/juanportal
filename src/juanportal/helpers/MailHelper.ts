@@ -1,80 +1,118 @@
 "use strict";
 
-const nodemailer = require('nodemailer')
-const mail = require('../juanportal.config.js')['mail']
-const logger = require('./logger.js')
+import nodemailer from "nodemailer";
+import config from "../juanportal.config";
+import logger from "./logger";
+import dotenv from "dotenv";
+dotenv.config();
+const mailPassword = process.env.MAIL_PASSWORD;
+const mail = {
+  email: config.mail.email,
+  pass: mailPassword,
+  user: config.mail.user,
+};
+
+interface NodeMailerSendResponse {
+  accepted: string[]; // email addressed sent to
+  rejected: string[] | []; // unsure, never teested
+  envelopeTime: number;
+  messageTime: number;
+  messageSize: number;
+  response: string; // "250 2.0.0 OK  16... 84sm... - gsmtp"
+  envelop: {
+    from: string;
+    to: string[];
+  };
+  messageId: string;
+}
 
 /**
  * @class MailHelper
- * 
+ *
  * @description Send emails from the server
- * 
+ *
  * @author Edward bebbington
- * 
+ *
  * @method send Send email email
- * 
+ *
  */
 export default class MailHelper {
-
   /**
    * Send an email
-   * 
+   *
    * @method send
-   * 
+   *
    * @example
    * MailHelper.send(data).catch((err) => {
    *   logger.error('Failed to send an email. Most likely because the password isnt set in the config')
    * })
-   * 
+   *
    * @description Gets the servers email data, along with the params to construct
    * and email and send it
-   * 
+   *
    * @param {{to: string, subject: string, text: string, html?: string}} data Required data to send the email
-   * 
-   * @returns {void|object} Void, but if an error is thrown, its passed into the catch
+   *
+   * @returns {void}
    */
-  public static async send (data: {to: string, subject: string, text: string, html?: string}): Promise<void|object> { 
-      // Create a transporter
-      const transporterOptions = {
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-          user: mail.email,
-          pass: mail.pass
-        }
-      }
-      const transporter = nodemailer.createTransport(transporterOptions)
+  public static async send(data: {
+    to: string;
+    subject: string;
+    text: string;
+    html?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  }): Promise<NodeMailerSendResponse> {
+    // Return type for sending mail is any :/
+    // Create a transporter
+    const transporterOptions = {
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: mail.email,
+        pass: mail.pass,
+      },
+    };
+    const transporter = nodemailer.createTransport(transporterOptions);
+    await transporter.verify();
 
-      // Send the email
-      await transporter.sendMail({
-        from: `"${mail.user}👻" <${mail.email}>`, // 'Edward <email address>
-        to: data.to,
-        subject: data.subject,
-        text: data.text,
-        html: data.html
-      })
-      // Get the response
-      logger.debug('Send the email')
+    // Send the email
+    const mailOptions: {
+      from: string;
+      to: string;
+      subject: string;
+      text: string;
+      html?: string;
+    } = {
+      from: `"${mail.user}👻" <${mail.email}>`, // 'Edward <email address>
+      to: data.to,
+      subject: data.subject,
+      text: data.text,
+    };
+    if (data.html) mailOptions.html = data.html;
+    const info = transporter.sendMail(mailOptions);
+    /* istanbul ignore next */
+    // Get the response
+    logger.debug("Send the email");
+    return info;
   }
 }
 
-function example () {
-  const data: {
-    to: string,
-    subject: string,
-    text: string,
-    html: string
-  } = {
-    to: 'EdwardSBebbington@hotmail.com',
-    subject: 'hello',
-    text: 'hello world',
-    html: '<b>hi</b>' // overwrites the text if present
-  }
-  MailHelper.send(data).catch((err) => {
-    logger.error('Failed to send an email. Most likely because the password isnt set in the config')
-  })
-}
+// function example () {
+//   const data: {
+//     to: string,
+//     subject: string,
+//     text: string,
+//     html: string
+//   } = {
+//     to: 'EdwardSBebbington@hotmail.com',
+//     subject: 'hello',
+//     text: 'hello world',
+//     html: '<b>hi</b>' // overwrites the text if present
+//   }
+//   MailHelper.send(data).catch((err) => {
+//     logger.error('Failed to send an email. Most likely because the password isnt set in the config')
+//   })
+// }
 
 // // async..await is not allowed in global scope, must use a wrapper
 // async function sendWithRealAcc(){
@@ -93,7 +131,7 @@ function example () {
 //   // send mail with defined transport object
 //   let info = await transporter.sendMail({
 //     from: '"Fred Foo 👻" <foo@example.com>', // sender address
-//     to: "edward.bebbington@intercity.technology, baz@example.com", // list of receivers
+//     to: "someone@example.com, baz@example.com", // list of receivers
 //     subject: "Hello ✔", // Subject line
 //     text: "Hello world?", // plain text body
 //     html: "<b>Hello world?</b>" // html body
