@@ -42,7 +42,9 @@ class ImageHelper {
     }
     if (file) {
       logger.info("file has been passed in");
-      fs.writeFileSync(imagesDir + filename, file.buffer);
+      /* istanbul ignore line */
+      const buf = file.buffer instanceof ArrayBuffer ? file.buffer.toString() : file.buffer
+      fs.writeFileSync(imagesDir + filename, buf);
       return this.existsOnFS(filename);
     }
     // Else just copy the default image
