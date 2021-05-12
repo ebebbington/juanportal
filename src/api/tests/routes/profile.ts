@@ -97,10 +97,10 @@ describe("Profile Route", function () {
 
     it("Should respond with a 404 status on no profiles found", async () => {
       const Profile = new ProfileModel();
-      const result = ((await Profile.find({}, 9)) as unknown) as Document[];
-      const profiles = (result.map((res) => {
+      const result = (await Profile.find({}, 9)) as unknown as Document[];
+      const profiles = result.map((res) => {
         return res.toObject();
-      }) as unknown) as ProfileDocument[];
+      }) as unknown as ProfileDocument[];
       await Profile.delete({ name: profiles[0].name });
       await Profile.delete({ name: profiles[1].name });
       await Profile.delete({ name: profiles[2].name });
