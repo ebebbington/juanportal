@@ -58,7 +58,7 @@ describe("Socket", () => {
         if (client1 && client2) {
           client2.emit("profileDeleted", data);
           // The type for event is just Function...
-          // eslintlint-disable-next-line @typescript-eslint/no-explicit-any
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           client1.on("profileDeleted", (event: any) => {
             expect(event.profileId).to.equal(2);
             done();
@@ -77,7 +77,7 @@ describe("Socket", () => {
         client2.on("connect", function () {
           client2.emit("profileDeleted", { profileId: 97 });
           // The type for event is just Function...
-          // eslintlint-disable-next-line @typescript-eslint/no-explicit-any
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           client1.on("profileDeleted", (event: any) => {
             expect(event.profileId).to.equal(97);
             if (client1 && client1.connected) client1.disconnect();
