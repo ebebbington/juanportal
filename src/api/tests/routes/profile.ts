@@ -10,6 +10,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 import logger from "../../helpers/logger";
+import { profile } from "winston";
 
 chai.use(chaiHttp);
 chai.should();
@@ -94,20 +95,24 @@ describe("Profile Route", function () {
     it("Should respond with a 404 status on no profiles found", async () => {
       const Profile = new ProfileModel();
       const profiles = await Profile.find<IProfileDocument>({}, 9);
-      await Profile.delete({ name: profiles[0].name });
-      await Profile.delete({ name: profiles[1].name });
-      await Profile.delete({ name: profiles[2].name });
-      chai
-        .request(app)
-        .get("/api/profile/count/6")
-        .end(async (_err, res) => {
-          await Profile.create(profiles[0]);
-          await Profile.create(profiles[1]);
-          await Profile.create(profiles[2]);
-          const json = JSON.parse(res.text);
-          expect(json.success).to.equal(false);
-          expect(res.status).to.equal(404);
-        });
+      if (profiles) {
+        await Profile.delete({ name: profiles[0].name });
+        await Profile.delete({ name: profiles[1].name });
+        await Profile.delete({ name: profiles[2].name });
+        chai
+          .request(app)
+          .get("/api/profile/count/6")
+          .end(async (_err, res) => {
+            await Profile.create(profiles[0]);
+            await Profile.create(profiles[1]);
+            await Profile.create(profiles[2]);
+            const json = JSON.parse(res.text);
+            expect(json.success).to.equal(false);
+            expect(res.status).to.equal(404);
+          });
+      } else {
+        expect(true).to.equal(false);
+      }
     });
   });
 
