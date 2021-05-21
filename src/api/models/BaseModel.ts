@@ -2,7 +2,7 @@ import mongoose, { Document, Model } from "mongoose";
 
 import IIndexSignature from "../interfaces/models/IndexSignatureInterface";
 import logger from "../helpers/logger";
-import { IProfileDocument } from "../schemas/ProfileSchema";
+import { IProfileDocument, IProfile } from "../schemas/ProfileSchema";
 
 interface ValidationError {
   errors: {
@@ -241,7 +241,9 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @return {void|object} Return value is set if validation errors are returned
    */
-  public async create(data: IProfileDocument): Promise<void | ValidationError> {
+  public async create(
+    data: IProfile | IProfileDocument
+  ): Promise<void | ValidationError> {
     const MongooseModel = this.getMongooseModel();
     const document = new MongooseModel(data);
     try {

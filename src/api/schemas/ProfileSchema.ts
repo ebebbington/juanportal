@@ -60,12 +60,16 @@ const ProfileSchema = new mongoose.Schema(
 //     next()
 //   })
 
-// Represents A document retrieved from the db
-export interface IProfileDocument extends Document {
-  _id: mongoose.Types.ObjectId;
+// Representation of data associated with a document
+export interface IProfile {
   name: string;
   description: string;
   image: string;
+}
+
+// Represents A document retrieved from the db
+export interface IProfileDocument extends IProfile, Document {
+  _id: mongoose.Types.ObjectId;
 }
 
 // Represents the typeof this files default export
