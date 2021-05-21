@@ -21,7 +21,7 @@ chai.use(chaiAsPromised);
 chai.should();
 import dotenv from "dotenv";
 dotenv.config();
-const dbUrl = process.env.DB_URL;
+const dbUrl = process.env.DB_URL as string;
 import mongoose from "mongoose";
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -160,9 +160,13 @@ describe("BaseModel", () => {
         await document.save();
         const Test = new TestModel();
         const result = await Test.find<ITestDocument>();
-        expect(result[0].forename).to.equal("Hello");
-        expect(Test.forename).to.equal("Hello");
-        await MongooseModel.deleteMany({});
+        if (result) {
+          expect(result[0].forename).to.equal("Hello");
+          expect(Test.forename).to.equal("Hello");
+          await MongooseModel.deleteMany({});
+        } else {
+          expect(true).to.equal(false);
+        }
       });
 
       it("Should correctly query when limit is defined", async () => {
@@ -188,8 +192,12 @@ describe("BaseModel", () => {
         await document.save();
         const Test = new TestModel();
         const result = await Test.find<ITestDocument>(undefined);
-        expect(result[0].forename).to.equal("Hello");
         await MongooseModel.deleteMany({});
+        if (result) {
+          expect(result[0].forename).to.equal("Hello");
+        } else {
+          expect(true).to.equal(false);
+        }
       });
 
       it("Should correctly query when query is defined", async () => {
@@ -199,8 +207,12 @@ describe("BaseModel", () => {
         await document.save();
         const Test = new TestModel();
         const result = await Test.find<ITestDocument>({ forename: "Edwuardo" });
-        expect(result[0].forename).to.equal("Edwuardo");
         await MongooseModel.deleteMany({});
+        if (result) {
+          expect(result[0].forename).to.equal("Edwuardo");
+        } else {
+          expect(true).to.equal(false);
+        }
       });
 
       it("Should correctly query when sortables is defined", async () => {
@@ -213,9 +225,13 @@ describe("BaseModel", () => {
         const Test = new TestModel();
         const sortables = { forename: "desc" };
         const result = await Test.find<ITestDocument>({}, 3, sortables);
-        expect(result[0].forename).to.equal("Zelda");
-        expect(result[1].forename).to.equal("Kenny");
-        expect(result[2].forename).to.equal("Edwuardo");
+        if (result) {
+          expect(result[0].forename).to.equal("Zelda");
+          expect(result[1].forename).to.equal("Kenny");
+          expect(result[2].forename).to.equal("Edwuardo");
+        } else {
+          expect(true).to.equal(false);
+        }
         await MongooseModel.deleteMany({});
       });
 
@@ -235,15 +251,19 @@ describe("BaseModel", () => {
         await document.save();
         const Test = new TestModel();
         const result = await Test.find<ITestDocument>({ forename: "Edwuardo" });
-        expect(result ? result.length : 0).to.equal(1);
-        expect(result[0].forename).to.equal("Edwuardo");
-        expect(result[0].surname).to.equal("Bebbingtano");
-        expect(result[0].postcode).to.not.exist;
-        expect(result[0].age).to.equal(21);
-        expect(Test.forename).to.equal("Edwuardo");
-        expect(Test.surname).to.equal("Bebbingtano");
-        expect(Test.postcode).to.equal(null);
-        expect(Test.age).to.equal(21);
+        if (result) {
+          expect(result ? result.length : 0).to.equal(1);
+          expect(result[0].forename).to.equal("Edwuardo");
+          expect(result[0].surname).to.equal("Bebbingtano");
+          expect(result[0].postcode).to.not.exist;
+          expect(result[0].age).to.equal(21);
+          expect(Test.forename).to.equal("Edwuardo");
+          expect(Test.surname).to.equal("Bebbingtano");
+          expect(Test.postcode).to.equal(null);
+          expect(Test.age).to.equal(21);
+        } else {
+          expect(true).to.equal(false);
+        }
         await MongooseModel.deleteMany({});
       });
 
