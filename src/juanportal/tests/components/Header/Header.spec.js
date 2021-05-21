@@ -67,9 +67,8 @@ test("Clicks on the menu to expand and collapse it", () => {
   const menuButton = document.querySelector("button");
   const listContainer = container.querySelector(".menuHolder");
   let isExpanded = getComputedStyle(listContainer, null).display === "block";
-  let ariaButtonText = document.getElementById(
-    "header-button-label"
-  ).textContent;
+  let ariaButtonText = document.getElementById("header-button-label")
+    .textContent;
   expect(isExpanded).toBe(true);
   expect(ariaButtonText).toBe("Close Sidebar");
   fireEvent.click(menuButton, { button: 1 });
