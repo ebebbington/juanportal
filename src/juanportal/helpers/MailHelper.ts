@@ -59,7 +59,6 @@ export default class MailHelper {
     subject: string;
     text: string;
     html?: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }): Promise<NodeMailerSendResponse> {
     // Return type for sending mail is any :/
     // Create a transporter

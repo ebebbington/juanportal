@@ -5,15 +5,6 @@ import chaiAsPromised from "chai-as-promised";
 const expect = chai.expect;
 import chaiHttp from "chai-http";
 import MongooseModel from "../../schemas/ProfileSchema";
-import logger from "../../helpers/logger";
-// @ts-ignore
-logger.debug = function (): void {
-  return;
-};
-// @ts-ignore
-logger.info = function (): void {
-  return;
-};
 
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);

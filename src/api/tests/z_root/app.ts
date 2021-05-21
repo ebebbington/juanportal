@@ -5,23 +5,14 @@ const expect = chai.expect;
 import app from "../../app";
 import mongoose from "mongoose";
 
-import logger from "../../helpers/logger";
-// @ts-ignore
-logger.debug = function (): void {
-  return;
-};
-// @ts-ignore
-logger.info = function (): void {
-  return;
-};
-
 chai.should();
 
 describe("App", () => {
   describe("Middleware", () => {
     it("Should be using cookie parser", () => {
       let found = false;
-      // deno-lint-ignore @typescript-eslint/no-explicit-any
+      // Running the tests MAKES us slap this any on it
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       app._router.stack.forEach((stackObj: any) => {
         if (stackObj.name === "cookieParser") found = true;
       });
@@ -29,7 +20,8 @@ describe("App", () => {
     });
     it("Should be using logger middleware", () => {
       let found = false;
-      // deno-lint-ignore @typescript-eslint/no-explicit-any
+      // Running the tests MAKES us slap this any on it
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       app._router.stack.forEach((stackObj: any) => {
         if (stackObj.name === "logger") found = true;
       });
@@ -37,7 +29,8 @@ describe("App", () => {
     });
     it("Should be using body parser", () => {
       let found = false;
-      // deno-lint-ignore @typescript-eslint/no-explicit-any
+      // Running the tests MAKES us slap this any on it
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       app._router.stack.forEach((stackObj: any) => {
         if (stackObj.name === "jsonParser") found = true;
       });

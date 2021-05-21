@@ -1,14 +1,10 @@
 import "mocha";
-
-const chai = require("chai");
-const chaiAsPromised = require("chai-as-promised");
+import express from "express";
+import chai from "chai";
+import chaiAsPromised from "chai-as-promised";
 const expect = chai.expect;
-const JWT = require("../../helpers/JWT");
+import JWT from "../../helpers/JWT";
 import { res, next } from "../utils";
-
-const logger = require("../../helpers/logger");
-logger.debug = function () {};
-logger.info = function () {};
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -42,15 +38,14 @@ describe("JWT", () => {
 
       it("Should return nothing on valid payload", () => {
         const token = JWT.createToken(validPayload);
-        console.log("the token: ");
-        console.log(token);
-        const tokenParts = token.split(".");
+        expect(typeof token).to.equal("string");
+        const tokenParts = (token as string).split(".");
         expect(tokenParts.length).to.equal(3);
         const req = {
           headers: {
             authorization: token,
           },
-        };
+        } as express.Request;
         const response = JWT.checkToken(req, res, next);
         expect(response).to.not.exist;
       });
@@ -63,28 +58,40 @@ describe("JWT", () => {
           headers: {
             authorization: token,
           },
-        };
+        } as express.Request;
         const response = JWT.checkToken(req, res, next);
         expect(response).to.not.exist;
       });
 
-      it("Should fail when checking an invalid token", () => {
+      it("Should fail when checking an invalid token", async () => {
         const req = {
           headers: {
             authorization: "not a valid or signed token",
           },
+        } as express.Request;
+        const response = JWT.checkToken(req, res, next) as unknown as {
+          statusCode: number;
+          jsonMessage: {
+            success: boolean;
+            message: string;
+          };
         };
-        const response = JWT.checkToken(req, res, next);
         expect(response.statusCode).to.equal(403);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.message).to.equal("jwt malformed");
       });
 
-      it("Should return a  403 status if no token in req", () => {
+      it("Should return a  403 status if no token in req", async () => {
         const req = {
           headers: {},
+        } as express.Request;
+        const response = JWT.checkToken(req, res, next) as unknown as {
+          statusCode: number;
+          jsonMessage: {
+            success: boolean;
+            message: string;
+          };
         };
-        const response = JWT.checkToken(req, res, next);
         expect(response.statusCode).to.equal(403);
         expect(response.jsonMessage.success).to.equal(false);
         expect(response.jsonMessage.message).to.equal(

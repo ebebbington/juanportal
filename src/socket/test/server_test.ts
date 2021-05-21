@@ -1,5 +1,5 @@
 import "mocha";
-const chai = require("chai");
+import chai from "chai";
 //const expect = chai.expect;
 chai.should();
 process.env["PORT"] = "8999";

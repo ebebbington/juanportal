@@ -1,28 +1,19 @@
 import "mocha";
 
-const chai = require("chai");
+import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 const expect = chai.expect;
 
 import ProfileModel from "../../models/ProfileModel";
-import MongooseModel, {
-  IProfileDocument,
-  IProfile,
-} from "../../schemas/ProfileSchema";
+import MongooseModel, { IProfileDocument } from "../../schemas/ProfileSchema";
 import ProfileController from "../../controllers/ProfileController";
 import { req, res, TestResponse } from "../utils";
-import { Document, LeanDocument } from "mongoose";
-import Doc = Mocha.reporters.Doc;
 
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 dotenv.config();
-const dbUrl = process.env.DB_URL;
+const dbUrl = process.env.DB_URL as string;
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
-
-const logger = require("../../helpers/logger");
-logger.debug = function () {};
-logger.info = function () {};
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -35,7 +26,7 @@ describe("ProfileController", () => {
       image: "TESTPROFILEIMAGE.jpg",
     };
 
-    async function saveProfileAndFindAndReturnModel() {
+    async function saveProfileAndFindAndReturnModel(): Promise<ProfileModel> {
       const Profile = new ProfileModel();
       const document = new MongooseModel(profileData);
       await document.save();
@@ -43,7 +34,7 @@ describe("ProfileController", () => {
       return Profile;
     }
 
-    async function deleteProfile() {
+    async function deleteProfile(): Promise<void> {
       await MongooseModel.deleteMany({ name: profileData.name });
     }
 
@@ -180,8 +171,8 @@ describe("ProfileController", () => {
         if (result === false) {
           return;
         }
-        const profiles: any = result.map((res) => {
-          return res.toObject();
+        const profiles = result.map((r) => {
+          return r.toObject();
         });
         await Profile.delete({ name: profiles[0].name });
         await Profile.delete({ name: profiles[1].name });

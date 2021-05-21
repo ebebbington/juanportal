@@ -5,7 +5,6 @@ import chaiHttp from "chai-http";
 import ProfileModel from "../../models/ProfileModel";
 import fs from "fs";
 import MongooseModel, { IProfileDocument } from "../../schemas/ProfileSchema";
-import { Document } from "mongoose";
 import multer from "multer";
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -22,7 +21,7 @@ describe("Profile Route", function () {
       chai
         .request(app)
         .get("/api/profile/count/hello")
-        .end((err, res) => {
+        .end((_err, res) => {
           expect(res.status).to.equal(400);
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(false);
@@ -42,8 +41,7 @@ describe("Profile Route", function () {
       chai
         .request(app)
         .get("/api/profile/count/5")
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .end(async (err: any, res: any) => {
+        .end(async (_err, res) => {
           console.log("4");
           expect(res.status).to.equal(200);
           const json = JSON.parse(res.text);
@@ -56,8 +54,7 @@ describe("Profile Route", function () {
       chai
         .request(app)
         .get("/api/profile/count/0")
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .end((err: any, res: any) => {
+        .end((_err, res) => {
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(false);
           expect(res.status).to.equal(400);
@@ -87,8 +84,7 @@ describe("Profile Route", function () {
       chai
         .request(app)
         .get("/api/profile/count/" + numberOfProfilesToFind)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .end((err: any, res: any) => {
+        .end((_err, res) => {
           const json = JSON.parse(res.text);
           // So here it's a fix to get the amount of profiles whether an array or single object (one profile) was given back
           expect(json.data.length).to.equal(actualNumberOfProfiles);
@@ -97,25 +93,25 @@ describe("Profile Route", function () {
 
     it("Should respond with a 404 status on no profiles found", async () => {
       const Profile = new ProfileModel();
-      const result = (await Profile.find({}, 9)) as unknown as Document[];
-      const profiles = result.map((res) => {
-        return res.toObject();
-      }) as unknown as IProfileDocument[];
-      await Profile.delete({ name: profiles[0].name });
-      await Profile.delete({ name: profiles[1].name });
-      await Profile.delete({ name: profiles[2].name });
-      chai
-        .request(app)
-        .get("/api/profile/count/6")
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .end(async (err: any, res: any) => {
-          await Profile.create(profiles[0]);
-          await Profile.create(profiles[1]);
-          await Profile.create(profiles[2]);
-          const json = JSON.parse(res.text);
-          expect(json.success).to.equal(false);
-          expect(res.status).to.equal(404);
-        });
+      const profiles = await Profile.find<IProfileDocument>({}, 9);
+      if (profiles) {
+        await Profile.delete({ name: profiles[0].name });
+        await Profile.delete({ name: profiles[1].name });
+        await Profile.delete({ name: profiles[2].name });
+        chai
+          .request(app)
+          .get("/api/profile/count/6")
+          .end(async (_err, res) => {
+            await Profile.create(profiles[0]);
+            await Profile.create(profiles[1]);
+            await Profile.create(profiles[2]);
+            const json = JSON.parse(res.text);
+            expect(json.success).to.equal(false);
+            expect(res.status).to.equal(404);
+          });
+      } else {
+        expect(true).to.equal(false);
+      }
     });
   });
 
@@ -135,8 +131,7 @@ describe("Profile Route", function () {
       chai
         .request(app)
         .get("/api/profile/id/hello")
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .end((err: any, res: any) => {
+        .end((_err, res) => {
           expect(res.status).to.equal(400);
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(false);
@@ -150,7 +145,7 @@ describe("Profile Route", function () {
       chai
         .request(app)
         .get("/api/profile/id/" + Profile._id)
-        .end(async (err: any, res: any) => {
+        .end(async (_err, res) => {
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(true);
           expect(json.data._id).to.exist;
@@ -163,7 +158,7 @@ describe("Profile Route", function () {
       chai
         .request(app)
         .get("/api/profile/id/" + Profile._id)
-        .end((err: any, res: any) => {
+        .end((_err, res) => {
           expect(res.status).to.equal(200);
         });
     });
@@ -172,7 +167,7 @@ describe("Profile Route", function () {
       chai
         .request(app)
         .get("/api/profile/id/" + "8949549n848n94n899897b788n8gyhghyi7878")
-        .end((err: any, res: any) => {
+        .end((_err, res) => {
           expect(res.status).to.equal(404);
           expect(JSON.parse(res.text).success).to.equal(false);
           done();
@@ -189,7 +184,7 @@ describe("Profile Route", function () {
       chai
         .request(app)
         .delete("/api/profile/id/hello")
-        .end((err: any, res: any) => {
+        .end((_err, res) => {
           expect(res.status).to.equal(400);
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(false);
@@ -210,7 +205,7 @@ describe("Profile Route", function () {
       chai
         .request(app)
         .delete("/api/profile/id/" + Profile._id)
-        .end((err: any, res: any) => {
+        .end((_err, res) => {
           const json = JSON.parse(res.text);
           expect(res.status).to.equal(200);
           expect(json.success).to.equal(true);
@@ -221,7 +216,7 @@ describe("Profile Route", function () {
       chai
         .request(app)
         .delete("/api/profile/id/4h89g58h9g589h89g589hg5h98g598g589h")
-        .end((err: any, res: any) => {
+        .end((_err, res) => {
           const json = JSON.parse(res.text);
           expect(res.status).to.equal(404);
           expect(json.success).to.equal(false);
@@ -242,12 +237,12 @@ describe("Profile Route", function () {
     it("Should succeed with valid data, and update the database", async () => {
       chai
         .request(app)
-        // @ts-ignore
-        .post("/api/profile", upload.single("image"))
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .post("/api/profile", upload.single("image") as any)
         .field("name", newProfile.name)
         .field("description", newProfile.description)
         .attach("image", fs.readFileSync(sampleImagePath), newProfile.image)
-        .end(async (err: any, res: any) => {
+        .end(async (_err, res) => {
           expect(res.status).to.equal(200);
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(true);
@@ -263,12 +258,12 @@ describe("Profile Route", function () {
     it("Should fail if the name fails validation", async () => {
       chai
         .request(app)
-        // @ts-ignore
-        .post("/api/profile", upload.single("image"))
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .post("/api/profile", upload.single("image") as any)
         .field("name", "")
         .field("description", newProfile.description)
         .attach("image", fs.readFileSync(sampleImagePath), newProfile.image)
-        .end(async (err: any, res: any) => {
+        .end(async (_err, res) => {
           expect(res.status).to.equal(400);
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(false);
@@ -279,12 +274,12 @@ describe("Profile Route", function () {
     it("Should pass if no description is given", async () => {
       chai
         .request(app)
-        // @ts-ignore
-        .post("/api/profile", upload.single("image"))
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .post("/api/profile", upload.single("image") as any)
         .field("name", newProfile.name)
         .field("description", "")
         .attach("image", fs.readFileSync(sampleImagePath), newProfile.image)
-        .end(async (err: any, res: any) => {
+        .end(async (_err, res) => {
           expect(res.status).to.equal(200);
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(true);
@@ -300,12 +295,12 @@ describe("Profile Route", function () {
     it("Should fail if image fails validation", async () => {
       chai
         .request(app)
-        // @ts-ignore
-        .post("/api/profile", upload.single("image"))
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .post("/api/profile", upload.single("image") as any)
         .field("name", newProfile.name)
         .field("description", newProfile.description)
         .attach("image", fs.readFileSync(sampleImagePath), "sample")
-        .end(async (err: any, res: any) => {
+        .end(async (_err, res) => {
           expect(res.status).to.equal(400);
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(false);
@@ -320,7 +315,7 @@ describe("Profile Route", function () {
         .post("/api/profile")
         .field("name", newProfile.name)
         .field("description", newProfile.description)
-        .end(async (err: any, res: any) => {
+        .end(async (_err, res) => {
           expect(res.status).to.equal(200);
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(true);
@@ -338,12 +333,12 @@ describe("Profile Route", function () {
       await document.save();
       chai
         .request(app)
-        // @ts-ignore
-        .post("/api/profile", upload.single("image"))
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .post("/api/profile", upload.single("image") as any)
         .field("name", newProfile.name)
         .field("description", newProfile.description)
         .attach("image", fs.readFileSync(sampleImagePath), newProfile.image)
-        .end(async (err: any, res: any) => {
+        .end(async (_err, res) => {
           expect(res.status).to.equal(400);
           const json = JSON.parse(res.text);
           expect(json.success).to.equal(false);

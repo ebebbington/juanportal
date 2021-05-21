@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import configs from "../api.config";
 const privateKey = configs.privateKey;
 import express from "express";
-import logger from "../helpers/logger"; // eslint-disable-line
+import logger from "../helpers/logger";
 
 const options = {
   expiresIn: "1h",
@@ -123,4 +123,4 @@ class JWT {
 //     jwt.verify(token, privateKey, options) // no error thrown
 // }
 
-module.exports = JWT;
+export default JWT;

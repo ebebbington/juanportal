@@ -190,7 +190,7 @@ export default abstract class BaseModel implements IIndexSignature {
   public async update<T>(
     query: { [key: string]: unknown },
     data: { [key: string]: unknown }
-  ): Promise<Document<T> | boolean> {
+  ): Promise<T | boolean> {
     // Convert the _id to an object id if passed in
     if (query && query._id) {
       query._id = this.generateObjectId(query._id as string);
@@ -200,12 +200,6 @@ export default abstract class BaseModel implements IIndexSignature {
     }
     const options = { upsert: true };
     const MongooseModel = this.getMongooseModel();
-    console.log("finding and updating using:");
-    console.log({
-      query,
-      data,
-      options,
-    });
     const oldDocument = await MongooseModel.findOneAndUpdate(
       query,
       data,
@@ -217,8 +211,7 @@ export default abstract class BaseModel implements IIndexSignature {
     }
     const updatedDocument = await MongooseModel.findOne(data);
     this.stripNonExposableFields(updatedDocument);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.fill(updatedDocument as Document);
+    this.fill(updatedDocument);
     return oldDocument;
   }
 
@@ -287,7 +280,7 @@ export default abstract class BaseModel implements IIndexSignature {
     query?: { [key: string]: unknown },
     limiter = 1,
     sortable = {}
-  ): Promise<false | Document<T>[]> {
+  ): Promise<false | T[]> {
     // Convert the _id to an object id if passed in
     if (query && query._id) {
       query._id = this.generateObjectId(query._id as string);

@@ -8,27 +8,27 @@ describe("App", () => {
   describe("Middleware", () => {
     it("Should be using cookie parser", () => {
       let found = false;
-      // eslint-disable-next-line
-      // @ts-ignore
-      app._router.stack.forEach((stackObj) => {
+      // Running the tests MAKES us slap this any on it
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      app._router.stack.forEach((stackObj: any) => {
         if (stackObj.name === "cookieParser") found = true;
       });
       expect(found).to.equal(true);
     });
     it("Should be using logger middleware", () => {
       let found = false;
-      // eslint-disable-next-line
-      // @ts-ignore
-      app._router.stack.forEach((stackObj) => {
+      // Running the tests MAKES us slap this any on it
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      app._router.stack.forEach((stackObj: any) => {
         if (stackObj.name === "logger") found = true;
       });
       expect(found).to.equal(true);
     });
     it("Should be using body parser", () => {
       let found = false;
-      // eslint-disable-next-line
-      // @ts-ignore
-      app._router.stack.forEach((stackObj) => {
+      // Running the tests MAKES us slap this any on it
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      app._router.stack.forEach((stackObj: any) => {
         if (stackObj.name === "jsonParser") found = true;
       });
       expect(found).to.equal(true);

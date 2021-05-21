@@ -17,27 +17,16 @@ import "mocha"; // Because this file was throwing TS errors about 'cannot find n
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 const expect = chai.expect;
-import logger from "../../helpers/logger";
-// @ts-ignore
-logger.debug = function (): void {
-  return;
-};
-// @ts-ignore
-logger.info = function (): void {
-  return;
-};
 chai.use(chaiAsPromised);
 chai.should();
 import dotenv from "dotenv";
 dotenv.config();
-const dbUrl = process.env.DB_URL;
-const mongoose = require("mongoose");
+const dbUrl = process.env.DB_URL as string;
+import mongoose from "mongoose";
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 
 import BaseModel from "../../models/BaseModel";
-import { DH_CHECK_P_NOT_PRIME } from "constants";
-import { Model } from "mongoose";
-import dot = Mocha.reporters.dot;
+import { Model, Types } from "mongoose";
 const Schema = mongoose.Schema;
 const schema = new Schema({
   forename: {
@@ -50,6 +39,18 @@ const schema = new Schema({
 });
 const MongooseModel = mongoose.model("Test", schema);
 
+interface ITest {
+  age: number | null;
+  forename: string | null;
+  surname: string | null;
+  postcode: string | null;
+  fullname: string | null;
+}
+
+interface ITestDocument extends ITest, Document {
+  _id: Types.ObjectId;
+}
+
 class TestModel extends BaseModel {
   //
   // Implemented abstract properties
@@ -58,7 +59,7 @@ class TestModel extends BaseModel {
   public created_at: string | null = null;
   public updated_at: string | null = null;
   public fieldsToExpose: string[] = ["forename", "surname", "age"];
-  public tablename: string = "Test";
+  public tablename = "Test";
 
   //
   // Custom properties
@@ -75,10 +76,10 @@ class TestModel extends BaseModel {
   //
 
   constructor(props?: {
-    forename: any;
-    surname: any;
-    postcode: any;
-    age: any;
+    forename: string | null;
+    surname: string | null;
+    postcode: string | null;
+    age: number | null;
   }) {
     super(); // requires no props
 
@@ -102,7 +103,7 @@ class TestModel extends BaseModel {
   // Abstract methods
   //
 
-  public getMongooseModel(): Model<any> {
+  public getMongooseModel(): Model<ITestDocument> {
     return MongooseModel;
   }
 }
@@ -112,7 +113,7 @@ describe("BaseModel", () => {
     describe("updated_at", () => {
       it("Should be an abstract property and implemented", () => {
         const Test = new TestModel();
-        const hasProp = Test.hasOwnProperty("updated_at");
+        const hasProp = Object.hasOwnProperty.call(Test, "updated_at");
         expect(hasProp).to.equal(true);
       });
     });
@@ -120,7 +121,7 @@ describe("BaseModel", () => {
     describe("created_at", () => {
       it("Should be an abstract property", () => {
         const Test = new TestModel();
-        const hasProp = Test.hasOwnProperty("created_at");
+        const hasProp = Object.hasOwnProperty.call(Test, "created_at");
         expect(hasProp).to.equal(true);
       });
     });
@@ -128,7 +129,7 @@ describe("BaseModel", () => {
     describe("fieldsToExpose", () => {
       it("Should be an abstract property", () => {
         const Test = new TestModel();
-        const hasProp = Test.hasOwnProperty("fieldsToExpose");
+        const hasProp = Object.hasOwnProperty.call(Test, "fieldsToExpose");
         expect(hasProp).to.equal(true);
       });
     });
@@ -136,7 +137,7 @@ describe("BaseModel", () => {
     describe("tablename", () => {
       it("Should be an abstract property", () => {
         const Test = new TestModel();
-        const hasProp = Test.hasOwnProperty("tablename");
+        const hasProp = Object.hasOwnProperty.call(Test, "tablename");
         expect(hasProp).to.equal(true);
       });
     });
@@ -158,12 +159,14 @@ describe("BaseModel", () => {
         });
         await document.save();
         const Test = new TestModel();
-        const result: any = await Test.find();
-        console.log("result:");
-        console.log(result);
-        expect(result[0].forename).to.equal("Hello");
-        expect(Test.forename).to.equal("Hello");
-        await MongooseModel.deleteMany({});
+        const result = await Test.find<ITestDocument>();
+        if (result) {
+          expect(result[0].forename).to.equal("Hello");
+          expect(Test.forename).to.equal("Hello");
+          await MongooseModel.deleteMany({});
+        } else {
+          expect(true).to.equal(false);
+        }
       });
 
       it("Should correctly query when limit is defined", async () => {
@@ -177,8 +180,8 @@ describe("BaseModel", () => {
         document = new MongooseModel({ forename: "Hello4" });
         await document.save();
         const Test = new TestModel();
-        const result: any = await Test.find(undefined, 4);
-        expect(result.length).to.equal(4);
+        const result = await Test.find<ITestDocument>(undefined, 4);
+        expect(result ? result.length : 0).to.equal(4);
         await MongooseModel.deleteMany({});
       });
 
@@ -188,9 +191,13 @@ describe("BaseModel", () => {
         });
         await document.save();
         const Test = new TestModel();
-        const result: any = await Test.find(undefined);
-        expect(result[0].forename).to.equal("Hello");
+        const result = await Test.find<ITestDocument>(undefined);
         await MongooseModel.deleteMany({});
+        if (result) {
+          expect(result[0].forename).to.equal("Hello");
+        } else {
+          expect(true).to.equal(false);
+        }
       });
 
       it("Should correctly query when query is defined", async () => {
@@ -199,9 +206,13 @@ describe("BaseModel", () => {
         });
         await document.save();
         const Test = new TestModel();
-        const result: any = await Test.find({ forename: "Edwuardo" });
-        expect(result[0].forename).to.equal("Edwuardo");
+        const result = await Test.find<ITestDocument>({ forename: "Edwuardo" });
         await MongooseModel.deleteMany({});
+        if (result) {
+          expect(result[0].forename).to.equal("Edwuardo");
+        } else {
+          expect(true).to.equal(false);
+        }
       });
 
       it("Should correctly query when sortables is defined", async () => {
@@ -213,16 +224,20 @@ describe("BaseModel", () => {
         await document.save();
         const Test = new TestModel();
         const sortables = { forename: "desc" };
-        const result: any = await Test.find({}, 3, sortables);
-        expect(result[0].forename).to.equal("Zelda");
-        expect(result[1].forename).to.equal("Kenny");
-        expect(result[2].forename).to.equal("Edwuardo");
+        const result = await Test.find<ITestDocument>({}, 3, sortables);
+        if (result) {
+          expect(result[0].forename).to.equal("Zelda");
+          expect(result[1].forename).to.equal("Kenny");
+          expect(result[2].forename).to.equal("Edwuardo");
+        } else {
+          expect(true).to.equal(false);
+        }
         await MongooseModel.deleteMany({});
       });
 
       it("Should return false when no results were found", async () => {
         const Test = new TestModel();
-        const result: any = await Test.find({ name: "I dont exist" });
+        const result = await Test.find<ITestDocument>({ name: "I dont exist" });
         expect(result).to.equal(false);
       });
 
@@ -235,16 +250,20 @@ describe("BaseModel", () => {
         });
         await document.save();
         const Test = new TestModel();
-        const result: any = await Test.find({ forename: "Edwuardo" });
-        expect(result.length).to.equal(1);
-        expect(result[0].forename).to.equal("Edwuardo");
-        expect(result[0].surname).to.equal("Bebbingtano");
-        expect(result[0].postcode).to.not.exist;
-        expect(result[0].age).to.equal(21);
-        expect(Test.forename).to.equal("Edwuardo");
-        expect(Test.surname).to.equal("Bebbingtano");
-        expect(Test.postcode).to.equal(null);
-        expect(Test.age).to.equal(21);
+        const result = await Test.find<ITestDocument>({ forename: "Edwuardo" });
+        if (result) {
+          expect(result ? result.length : 0).to.equal(1);
+          expect(result[0].forename).to.equal("Edwuardo");
+          expect(result[0].surname).to.equal("Bebbingtano");
+          expect(result[0].postcode).to.not.exist;
+          expect(result[0].age).to.equal(21);
+          expect(Test.forename).to.equal("Edwuardo");
+          expect(Test.surname).to.equal("Bebbingtano");
+          expect(Test.postcode).to.equal(null);
+          expect(Test.age).to.equal(21);
+        } else {
+          expect(true).to.equal(false);
+        }
         await MongooseModel.deleteMany({});
       });
 
@@ -256,8 +275,8 @@ describe("BaseModel", () => {
         document = new MongooseModel({ forename: "Zelda" });
         await document.save();
         const Test = new TestModel();
-        const result: any = await Test.find({}, 2);
-        expect(result.length).to.equal(2);
+        const result = await Test.find<ITestDocument>({}, 2);
+        expect(result ? result.length : 0).to.equal(2);
       });
     });
 
@@ -341,11 +360,15 @@ describe("BaseModel", () => {
         const document = new MongooseModel({ forename: "Edwuardo" });
         await document.save();
         const Test = new TestModel();
-        const oldDocument: any = await Test.update(
+        const oldDocument = await Test.update<ITestDocument>(
           { forename: "Edwuardo" },
           { forename: "Harry Potter" }
         );
-        expect(oldDocument.forename).to.equal("Edwuardo");
+        if (typeof oldDocument !== "boolean") {
+          expect(oldDocument.forename).to.equal("Edwuardo");
+        } else {
+          expect(true).to.equal(false);
+        }
         await MongooseModel.deleteMany({});
       });
 
@@ -356,11 +379,10 @@ describe("BaseModel", () => {
         });
         await document.save();
         const Test = new TestModel();
-        const oldDocument: any = await Test.update(
+        await Test.update<ITestDocument>(
           { forename: "Edwuardo" },
           { forename: "Harry Potter" }
         );
-        expect(oldDocument.forename).to.equal("Edwuardo");
         expect(Test.forename).to.equal("Harry Potter");
         expect(Test.age).to.equal(102);
         await MongooseModel.deleteMany({});
@@ -385,7 +407,7 @@ describe("BaseModel", () => {
         if (err) {
           // just to bypass tsc errors
           const fieldName: string = Object.keys(err.errors)[0];
-          const errorMessage: string = err.errors[fieldName].message;
+          //const errorMessage: string = err.errors[fieldName].message;
           expect(fieldName).to.equal("forename");
         }
       });
