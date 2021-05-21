@@ -90,7 +90,7 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @return {mongoose.Types.ObjectId|boolean} The id, or false if cannot convert
    */
-  private generateObjectId(id: string): mongoose.Types.ObjectId | boolean {
+  private generateObjectId(id: string): mongoose.Types.ObjectId | false {
     try {
       // if the id isnt already an object id, convert it
       const objectId = new mongoose.Types.ObjectId(id);
@@ -187,10 +187,10 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @return {Promise<Document|boolean>} The old document (before updating) or false based on the success
    */
-  public async update(
+  public async update<T>(
     query: { [key: string]: unknown },
     data: { [key: string]: unknown }
-  ): Promise<Document | boolean> {
+  ): Promise<Document<T> | boolean> {
     // Convert the _id to an object id if passed in
     if (query && query._id) {
       query._id = this.generateObjectId(query._id as string);
@@ -240,9 +240,7 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @return {void|object} Return value is set if validation errors are returned
    */
-  public async create(data: {
-    [key: string]: unknown;
-  }): Promise<void | ValidationError> {
+  public async create<T>(data: T): Promise<void | ValidationError> {
     const MongooseModel = this.getMongooseModel();
     const document = new MongooseModel(data);
     try {
@@ -285,11 +283,11 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @returns {[object]|boolean} False if an error, array if the db query returned data
    */
-  public async find(
+  public async find<T>(
     query?: { [key: string]: unknown },
     limiter = 1,
     sortable = {}
-  ): Promise<boolean | Document[]> {
+  ): Promise<false | Document<T>[]> {
     // Convert the _id to an object id if passed in
     if (query && query._id) {
       query._id = this.generateObjectId(query._id as string);

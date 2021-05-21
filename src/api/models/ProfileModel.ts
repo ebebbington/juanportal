@@ -5,16 +5,7 @@
 
 import BaseModel from "./BaseModel";
 import { Model } from "mongoose";
-import MongooseModel from "../schemas/ProfileSchema";
-import * as mongoose from "mongoose";
-
-export interface ProfileDocument {
-  _id: mongoose.Types.ObjectId;
-  name: string;
-  description: string;
-  image: string;
-  [key: string]: unknown;
-}
+import MongooseModel, { IProfileDocument } from "../schemas/ProfileSchema";
 
 /**
  * @class ProfileModel
@@ -117,8 +108,7 @@ export default class ProfileModel extends BaseModel {
    *
    * @return {Document} The mongoose model from the schema
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected getMongooseModel(): Model<any> {
+  protected getMongooseModel(): Model<IProfileDocument> {
     return MongooseModel;
   }
 }

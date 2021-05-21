@@ -4,8 +4,11 @@ const chai = require("chai");
 import chaiAsPromised from "chai-as-promised";
 const expect = chai.expect;
 
-import ProfileModel, { ProfileDocument } from "../../models/ProfileModel";
-import MongooseModel from "../../schemas/ProfileSchema";
+import ProfileModel from "../../models/ProfileModel";
+import MongooseModel, {
+  IProfileDocument,
+  IProfile,
+} from "../../schemas/ProfileSchema";
 import ProfileController from "../../controllers/ProfileController";
 import { req, res, TestResponse } from "../utils";
 import { Document, LeanDocument } from "mongoose";
@@ -173,10 +176,13 @@ describe("ProfileController", () => {
       it("Should fail when no profiles were found", async () => {
         req.params.count = 5;
         const Profile = new ProfileModel();
-        const result = (await Profile.find({}, 9)) as unknown as Document[];
-        const profiles = result.map((res) => {
+        const result = await Profile.find<IProfileDocument>({}, 9);
+        if (result === false) {
+          return;
+        }
+        const profiles: any = result.map((res) => {
           return res.toObject();
-        }) as unknown as ProfileDocument[];
+        });
         await Profile.delete({ name: profiles[0].name });
         await Profile.delete({ name: profiles[1].name });
         await Profile.delete({ name: profiles[2].name });

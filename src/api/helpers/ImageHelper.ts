@@ -29,7 +29,7 @@ export default class ImageHelper {
    *
    * @return {string|boolean} The random string | no extension
    */
-  public static generateRandomName(filename: string): string | boolean {
+  public static generateRandomName(filename: string): string | false {
     const extension: string = path.extname(filename);
     if (extension === "") {
       return false;

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Model, Document } from "mongoose";
 
 const ProfileSchema = new mongoose.Schema(
   {
@@ -60,4 +60,22 @@ const ProfileSchema = new mongoose.Schema(
 //     next()
 //   })
 
-export default mongoose.model("Profile", ProfileSchema);
+// Representation of data associated with a document
+export interface IProfile {
+  name: string;
+  description: string;
+  image: string;
+}
+
+// Represents A document retrieved from the db
+export interface IProfileDocument extends IProfile, Document {
+  _id: mongoose.Types.ObjectId;
+}
+
+// Represents the typeof this files default export
+export type IProfileModel = Model<IProfileDocument>;
+
+export default mongoose.model<IProfileDocument, IProfileModel>(
+  "Profile",
+  ProfileSchema
+);
