@@ -10,7 +10,7 @@ import BaseModel from "../../models/BaseModel";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
-const dbUrl = process.env.DB_URL;
+const dbUrl = process.env.DB_URL as string;
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 
 chai.use(chaiAsPromised);
