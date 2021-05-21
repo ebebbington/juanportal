@@ -2,7 +2,6 @@ import mongoose, { Document, Model } from "mongoose";
 
 import IIndexSignature from "../interfaces/models/IndexSignatureInterface";
 import logger from "../helpers/logger";
-import { IProfileDocument, IProfile } from "../schemas/ProfileSchema";
 
 interface ValidationError {
   errors: {

@@ -6,7 +6,6 @@ import ProfileModel from "../models/ProfileModel";
 import ImageHelper from "../helpers/ImageHelper";
 import logger from "../helpers/logger";
 import { IProfileDocument } from "../schemas/ProfileSchema";
-import { Document } from "mongoose";
 
 /**
  * @class ProfileController
