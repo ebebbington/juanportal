@@ -2,7 +2,7 @@ import express from "express";
 import { IData } from "../interfaces/controllers/DataInterface";
 import { IMulterRequest } from "../interfaces/controllers/MulterRequestInterface";
 
-import ProfileModel from "../models/ProfileModel";
+import ProfileModel, { ProfileDocument } from "../models/ProfileModel";
 import ImageHelper from "../helpers/ImageHelper";
 import logger from "../helpers/logger";
 import { Document } from "mongoose";
@@ -87,7 +87,7 @@ export default class ProfileController {
     //
 
     const Profile = new ProfileModel();
-    const profiles = await Profile.find({}, count);
+    const profiles = await Profile.find<ProfileDocument>({}, count);
 
     if (profiles === false) {
       logger.error("No profiles were found");
@@ -147,21 +147,8 @@ export default class ProfileController {
 
     const id: string = req.params.id;
     const Profile = new ProfileModel();
-    const profile = await Profile.find({ _id: id });
-    if (profile !== false) {
-      logger.info("A profile was found");
-      const data: IData = {
-        success: true,
-        message: "Successfully got profile",
-        data: {
-          _id: Profile._id,
-          name: Profile.name,
-          description: Profile.description,
-          image: Profile.image,
-        },
-      };
-      return res.status(200).json(data);
-    } else {
+    const profile = await Profile.find<ProfileDocument>({ _id: id });
+    if (profile === false) {
       logger.error("No profile was found");
       const data: IData = {
         success: false,
@@ -170,6 +157,18 @@ export default class ProfileController {
       };
       return res.status(404).json(data);
     }
+    logger.info("A profile was found");
+    const data: IData = {
+      success: true,
+      message: "Successfully got profile",
+      data: {
+        _id: Profile._id,
+        name: Profile.name,
+        description: Profile.description,
+        image: Profile.image,
+      },
+    };
+    return res.status(200).json(data);
   }
 
   /**
@@ -209,7 +208,7 @@ export default class ProfileController {
     //
 
     const Profile = new ProfileModel();
-    const profile = await Profile.find({ _id: req.params.id });
+    const profile = await Profile.find<ProfileDocument>({ _id: req.params.id });
     if (profile === false) {
       logger.error(
         `The profile you are trying to delete doesnt exist, with the id of ${req.params.id}`
@@ -276,7 +275,7 @@ export default class ProfileController {
     //
 
     const Profile = new ProfileModel();
-    const existingProfile = await Profile.find({ name: req.body.name });
+    const existingProfile = await Profile.find<ProfileDocument>({ name: req.body.name });
     if (existingProfile !== false) {
       logger.error(`Profile with the name ${req.body.name} already exists`);
       const data: IData = {

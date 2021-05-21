@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { Model, Document } from "mongoose";
+import { ProfileDocument } from "../models/ProfileModel";
 
 const ProfileSchema = new mongoose.Schema(
   {
@@ -60,4 +61,15 @@ const ProfileSchema = new mongoose.Schema(
 //     next()
 //   })
 
-export default mongoose.model("Profile", ProfileSchema);
+// Represents A document retrieved from the db
+export interface IProfileDocument extends Document {
+  _id: mongoose.Types.ObjectId,
+  name: string,
+  description: string,
+  image: string
+}
+
+// Represents the typeof this files default export
+export type IProfileModel = Model<IProfileDocument>
+
+export default mongoose.model<IProfileDocument, IProfileModel>("Profile", ProfileSchema);
