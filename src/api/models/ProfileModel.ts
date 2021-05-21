@@ -5,16 +5,10 @@
 
 import BaseModel from "./BaseModel";
 import { Model } from "mongoose";
-import MongooseModel, { IProfileDocument, IProfileModel } from "../schemas/ProfileSchema";
-import * as mongoose from "mongoose";
-
-export interface ProfileDocument {
-  _id: mongoose.Types.ObjectId;
-  name: string;
-  description: string;
-  image: string;
-  [key: string]: unknown;
-}
+import MongooseModel, {
+  IProfileDocument,
+  IProfileModel,
+} from "../schemas/ProfileSchema";
 
 /**
  * @class ProfileModel

@@ -2,9 +2,10 @@ import express from "express";
 import { IData } from "../interfaces/controllers/DataInterface";
 import { IMulterRequest } from "../interfaces/controllers/MulterRequestInterface";
 
-import ProfileModel, { ProfileDocument } from "../models/ProfileModel";
+import ProfileModel from "../models/ProfileModel";
 import ImageHelper from "../helpers/ImageHelper";
 import logger from "../helpers/logger";
+import { IProfileDocument } from "../schemas/ProfileSchema";
 import { Document } from "mongoose";
 
 /**
@@ -87,7 +88,7 @@ export default class ProfileController {
     //
 
     const Profile = new ProfileModel();
-    const profiles = await Profile.find<ProfileDocument>({}, count);
+    const profiles = await Profile.find<IProfileDocument>({}, count);
 
     if (profiles === false) {
       logger.error("No profiles were found");
@@ -147,7 +148,7 @@ export default class ProfileController {
 
     const id: string = req.params.id;
     const Profile = new ProfileModel();
-    const profile = await Profile.find<ProfileDocument>({ _id: id });
+    const profile = await Profile.find<IProfileDocument>({ _id: id });
     if (profile === false) {
       logger.error("No profile was found");
       const data: IData = {
@@ -208,7 +209,9 @@ export default class ProfileController {
     //
 
     const Profile = new ProfileModel();
-    const profile = await Profile.find<ProfileDocument>({ _id: req.params.id });
+    const profile = await Profile.find<IProfileDocument>({
+      _id: req.params.id,
+    });
     if (profile === false) {
       logger.error(
         `The profile you are trying to delete doesnt exist, with the id of ${req.params.id}`
@@ -275,7 +278,9 @@ export default class ProfileController {
     //
 
     const Profile = new ProfileModel();
-    const existingProfile = await Profile.find<ProfileDocument>({ name: req.body.name });
+    const existingProfile = await Profile.find<IProfileDocument>({
+      name: req.body.name,
+    });
     if (existingProfile !== false) {
       logger.error(`Profile with the name ${req.body.name} already exists`);
       const data: IData = {

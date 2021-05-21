@@ -4,8 +4,8 @@ const chai = require("chai");
 import chaiAsPromised from "chai-as-promised";
 const expect = chai.expect;
 
-import ProfileModel, { ProfileDocument } from "../../models/ProfileModel";
-import MongooseModel from "../../schemas/ProfileSchema";
+import ProfileModel from "../../models/ProfileModel";
+import MongooseModel, { IProfileDocument } from "../../schemas/ProfileSchema";
 import ProfileController from "../../controllers/ProfileController";
 import { req, res, TestResponse } from "../utils";
 import { Document, LeanDocument } from "mongoose";

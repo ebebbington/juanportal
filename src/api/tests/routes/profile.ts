@@ -2,9 +2,9 @@ import chai from "chai";
 const expect = chai.expect;
 import app from "../../app";
 import chaiHttp from "chai-http";
-import ProfileModel, { ProfileDocument } from "../../models/ProfileModel";
+import ProfileModel from "../../models/ProfileModel";
 import fs from "fs";
-import MongooseModel from "../../schemas/ProfileSchema";
+import MongooseModel, { IProfileDocument } from "../../schemas/ProfileSchema";
 import { Document } from "mongoose";
 import multer from "multer";
 const storage = multer.memoryStorage();
@@ -100,7 +100,7 @@ describe("Profile Route", function () {
       const result = (await Profile.find({}, 9)) as unknown as Document[];
       const profiles = result.map((res) => {
         return res.toObject();
-      }) as unknown as ProfileDocument[];
+      }) as unknown as IProfileDocument[];
       await Profile.delete({ name: profiles[0].name });
       await Profile.delete({ name: profiles[1].name });
       await Profile.delete({ name: profiles[2].name });
