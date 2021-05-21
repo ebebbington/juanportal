@@ -241,9 +241,7 @@ export default abstract class BaseModel implements IIndexSignature {
    *
    * @return {void|object} Return value is set if validation errors are returned
    */
-  public async create(
-    data: IProfile | IProfileDocument
-  ): Promise<void | ValidationError> {
+  public async create<T>(data: T): Promise<void | ValidationError> {
     const MongooseModel = this.getMongooseModel();
     const document = new MongooseModel(data);
     try {

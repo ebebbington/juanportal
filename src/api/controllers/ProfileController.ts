@@ -100,9 +100,7 @@ export default class ProfileController {
       return res.status(404).json(data);
     }
 
-    logger.info(
-      `Profiles with a length of ${(profiles as Document[]).length} were found`
-    );
+    logger.info(`Profiles with a length of ${profiles.length} were found`);
     const data: IData = {
       success: true,
       message: "Grabbed profiles",

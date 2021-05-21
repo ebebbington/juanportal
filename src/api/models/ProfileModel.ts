@@ -5,10 +5,7 @@
 
 import BaseModel from "./BaseModel";
 import { Model } from "mongoose";
-import MongooseModel, {
-  IProfileDocument,
-  IProfileModel,
-} from "../schemas/ProfileSchema";
+import MongooseModel, { IProfileDocument } from "../schemas/ProfileSchema";
 
 /**
  * @class ProfileModel
