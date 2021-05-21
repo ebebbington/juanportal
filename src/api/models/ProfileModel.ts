@@ -3,7 +3,7 @@
 // import { Schema } from "inspector";
 // import { FILE } from "dns";
 
-import BaseModel, { A } from "./BaseModel";
+import BaseModel from "./BaseModel";
 import { Model } from "mongoose";
 import MongooseModel, { IProfileDocument, IProfileModel } from "../schemas/ProfileSchema";
 import * as mongoose from "mongoose";
