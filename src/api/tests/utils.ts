@@ -36,7 +36,7 @@ export type TestResponse = {
   jsonMessage: {
     success: boolean;
     message: string;
-    // eslint-disable-next-line no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any;
   };
 };

@@ -1,5 +1,5 @@
 import "mocha";
-const chai = require("chai");
+import chai from "chai";
 const expect = chai.expect;
 chai.should();
 import SocketIO from "socket.io-client";
@@ -57,7 +57,7 @@ describe("Socket", () => {
         expect(client2).to.exist;
         if (client1 && client2) {
           client2.emit("profileDeleted", data);
-          client1.on("profileDeleted", (event: any) => {
+          client1.on("profileDeleted", (event) => {
             expect(event.profileId).to.equal(2);
             done();
           });
@@ -74,7 +74,7 @@ describe("Socket", () => {
         const client2 = SocketIO.connect("http://0.0.0.0:9009");
         client2.on("connect", function () {
           client2.emit("profileDeleted", { profileId: 97 });
-          client1.on("profileDeleted", (event: any) => {
+          client1.on("profileDeleted", (event) => {
             expect(event.profileId).to.equal(97);
             if (client1 && client1.connected) client1.disconnect();
             if (client2 && client2.connected) client2.disconnect();

@@ -1,14 +1,10 @@
 import "mocha";
 
-const chai = require("chai");
-const chaiAsPromised = require("chai-as-promised");
+import chai from "chai";
+import chaiAsPromised from "chai-as-promised";
 const expect = chai.expect;
-const JWT = require("../../helpers/JWT");
+import JWT from "../../helpers/JWT";
 import { res, next } from "../utils";
-
-const logger = require("../../helpers/logger");
-logger.debug = function () {};
-logger.info = function () {};
 
 chai.use(chaiAsPromised);
 chai.should();

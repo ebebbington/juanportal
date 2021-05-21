@@ -1,13 +1,9 @@
 import "mocha";
 
-const chai = require("chai");
-const chaiAsPromised = require("chai-as-promised");
+import chai from "chai";
+import chaiAsPromised from "chai-as-promised";
 const expect = chai.expect;
 import ImageHelper from "../../helpers/ImageHelper";
-
-const logger = require("../../helpers/logger");
-logger.debug = function () {};
-logger.info = function () {};
 
 chai.use(chaiAsPromised);
 chai.should();
