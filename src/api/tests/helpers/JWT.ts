@@ -69,36 +69,34 @@ describe("JWT", () => {
             authorization: "not a valid or signed token",
           },
         } as express.Request;
-        const response = JWT.checkToken(req, res, next);
-        if (response) {
-          const json = (await response.json()) as unknown as {
+        const response = JWT.checkToken(req, res, next) as unknown as {
+          statusCode: number;
+          jsonMessage: {
             success: boolean;
             message: string;
           };
-          expect(response.statusCode).to.equal(403);
-          expect(json.success).to.equal(false);
-          expect(json.message).to.equal("jwt malformed");
-        } else {
-          expect(true).to.equal(false);
-        }
+        };
+        expect(response.statusCode).to.equal(403);
+        expect(response.jsonMessage.success).to.equal(false);
+        expect(response.jsonMessage.message).to.equal("jwt malformed");
       });
 
       it("Should return a  403 status if no token in req", async () => {
         const req = {
           headers: {},
         } as express.Request;
-        const response = JWT.checkToken(req, res, next);
-        if (response) {
-          const json = (await response.json()) as unknown as {
+        const response = JWT.checkToken(req, res, next) as unknown as {
+          statusCode: number;
+          jsonMessage: {
             success: boolean;
             message: string;
           };
-          expect(response.statusCode).to.equal(403);
-          expect(json.success).to.equal(false);
-          expect(json.message).to.equal("Authorisation header is not set");
-        } else {
-          expect(false).to.equal(true);
-        }
+        };
+        expect(response.statusCode).to.equal(403);
+        expect(response.jsonMessage.success).to.equal(false);
+        expect(response.jsonMessage.message).to.equal(
+          "Authorisation header is not set"
+        );
       });
     });
   });

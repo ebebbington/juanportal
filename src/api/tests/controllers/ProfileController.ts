@@ -171,7 +171,9 @@ describe("ProfileController", () => {
         if (result === false) {
           return;
         }
-        const profiles = result;
+        const profiles = result.map((r) => {
+          return r.toObject();
+        });
         await Profile.delete({ name: profiles[0].name });
         await Profile.delete({ name: profiles[1].name });
         await Profile.delete({ name: profiles[2].name });
