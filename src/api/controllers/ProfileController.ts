@@ -131,12 +131,12 @@ export default class ProfileController {
     const parsedId = parseInt(req.params.id);
     if (isNaN(parsedId)) {
       logger.error(`The id of ${req.params.id} cannot be parsed to an int`);
-      const data: IData = {
+      const response: IData = {
         success: false,
         message: "Failed to parse the id to a number",
         data: null,
       };
-      return res.status(400).json(data);
+      return res.status(400).json(response);
     }
 
     //
@@ -148,12 +148,12 @@ export default class ProfileController {
     const profile = await Profile.find<IProfileDocument>({ _id: id });
     if (profile === false) {
       logger.error("No profile was found");
-      const data: IData = {
+      const response: IData = {
         success: false,
         message: "Couldnt find a profile",
         data: null,
       };
-      return res.status(404).json(data);
+      return res.status(404).json(response);
     }
     logger.info("A profile was found");
     const data: IData = {
