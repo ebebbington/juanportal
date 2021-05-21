@@ -10,7 +10,6 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 import logger from "../../helpers/logger";
-import { profile } from "winston";
 
 chai.use(chaiHttp);
 chai.should();
