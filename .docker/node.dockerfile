@@ -16,4 +16,3 @@ COPY src/$PROJECT_NAME/package.json src/$PROJECT_NAME/package-lock.json src/$PRO
 RUN npm ci --prefer-offline --no-audit --progress=false
 COPY src/$PROJECT_NAME/. .
 RUN npm run build
-COPY src/$PROJECT_NAME/. .
