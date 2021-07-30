@@ -13,9 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: API Test and Coverage Check
         run: |
-          cd src/api
-          npm run build
-          docker-compose up -d > /dev/null
+          docker-compose up -d api mongo > /dev/null
           docker exec juanportal_api npm run cov
       - name: API Format Check
         run: |
@@ -39,10 +37,6 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - name: Install NPM Dependencies
-        run: |
-          cd src/juanportal
-          npm ci
       - name: Client Lint Checks
         run: |
           cd src/juanportal
@@ -55,8 +49,7 @@ jobs:
         run: |
           cd src/juanportal
           echo 'MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}"' >> .env
-          npm run build:all
-          docker-compose up -d > /dev/null
+          docker-compose up -d node redis > /dev/null
           docker exec juanportal_node npm run cov
           docker exec juanportal_node npm run test:client
 
@@ -74,8 +67,6 @@ jobs:
           npm run lint
       - name: Socket Test and Coverage Check
         run: |
-          cd src/socket
-          npm run build
-          docker-compose up -d > /dev/null
+          docker-compose up -d socket > /dev/null
           docker exec juanportal_socket npm run cov
 

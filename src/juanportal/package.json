@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test:server": "node_modules/.bin/mocha -r ts-node/register -r source-map-support/register --exit tests/**/*.ts",
-    "build:all": "npm ci && npm run build:server && npm run build:client",
+    "build:all": "npm run build:server && npm run build:client",
+    "build": "npm run build:all",
     "build:server": "node_modules/.bin/tsc",
     "build:client": "node_modules/.bin/webpack-cli --config webpack.config.js",
     "stress": "node_modules/.bin/artillery run",
