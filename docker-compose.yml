@@ -39,7 +39,7 @@ services:
       - ./src/juanportal/tsconfig.json:/var/www/juanportal/tsconfig.json
       - ./src/juanportal/webpack.config.js:/var/www/juanportal/webpack.config.js
     working_dir: /var/www/juanportal
-    command: bash -c "npm run start"
+    command: bash -c "npm ci --prefer-offline --no-audit --progress=false && npm run build && npm run start"
     networks:
       - juanportal-network
 
@@ -83,7 +83,7 @@ services:
       - ./src/api/package.json:/var/www/api/package.json
       - ./src/api/tsconfig.json:/var/www/api/tsconfig.json
     working_dir: /var/www/api
-    command: bash -c "pm2-runtime ecosystem.config.js"
+    command: bash -c "npm ci --prefer-offline --no-audit --progress=false && npm run build && pm2-runtime ecosystem.config.js"
     networks:
       - juanportal-network
 
@@ -111,7 +111,7 @@ services:
       - ./src/socket/socket.ts:/var/www/socket/socket.ts
       - ./src/socket/tsconfig.json:/var/www/socket/tsconfig.json
     working_dir: /var/www/socket
-    command: bash -c "npm run start"
+    command: bash -c "npm ci --prefer-offline --no-audit --progress=false && npm run build && npm run start"
     depends_on:
       - redis
     networks:

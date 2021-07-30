@@ -13,6 +13,3 @@ RUN npm cache clean -f \
 ARG PROJECT_NAME
 WORKDIR /var/www/$PROJECT_NAME
 COPY src/$PROJECT_NAME/package.json src/$PROJECT_NAME/package-lock.json src/$PROJECT_NAME/tsconfig.json ./
-RUN npm ci --prefer-offline --no-audit --progress=false
-COPY src/$PROJECT_NAME/. .
-RUN npm run build
