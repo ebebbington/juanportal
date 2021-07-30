@@ -36,10 +36,11 @@ services:
       - ./src/juanportal/views:/var/www/juanportal/views
       - ./src/juanportal/app.ts:/var/www/juanportal/app.ts
       - ./src/juanportal/package.json:/var/www/juanportal/package.json
+      - ./src/juanportal/package-lock.json:/var/www/juanportal/package-lock.json
       - ./src/juanportal/tsconfig.json:/var/www/juanportal/tsconfig.json
       - ./src/juanportal/webpack.config.js:/var/www/juanportal/webpack.config.js
     working_dir: /var/www/juanportal
-    command: bash -c "npm ci --prefer-offline --no-audit --progress=false && npm run build && npm run start"
+    command: bash -c "npm -v && npm ci --prefer-offline --no-audit --progress=false && npm run build && npm run start"
     networks:
       - juanportal-network
 
@@ -81,9 +82,10 @@ services:
       - ./src/api/schemas:/var/www/api/schemas
       - ./src/api/app.ts:/var/www/api/app.ts
       - ./src/api/package.json:/var/www/api/package.json
+      - ./src/api/package-lock.json:/var/www/api/package-lock.json
       - ./src/api/tsconfig.json:/var/www/api/tsconfig.json
     working_dir: /var/www/api
-    command: bash -c "npm ci --prefer-offline --no-audit --progress=false && npm run build && pm2-runtime ecosystem.config.js"
+    command: bash -c "npm -v && npm ci --prefer-offline --no-audit --progress=false && npm run build && pm2-runtime ecosystem.config.js"
     networks:
       - juanportal-network
 
@@ -103,10 +105,11 @@ services:
       args:
         PROJECT_NAME: "socket"
     volumes:
-      - ./src/socket/bin:/var/www/socket
+      - ./src/socket/bin:/var/www/socket/bin
       - ./src/socket/test:/var/www/socket/test
       - ./src/socket/app.ts:/var/www/socket/app.ts
       - ./src/socket/package.json:/var/www/socket/package.json
+      - ./src/socket/package-lock.json:/var/www/socket/package-lock.json
       - ./src/socket/server.ts:/var/www/socket/server.ts
       - ./src/socket/socket.ts:/var/www/socket/socket.ts
       - ./src/socket/tsconfig.json:/var/www/socket/tsconfig.json

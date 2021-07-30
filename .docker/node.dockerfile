@@ -1,15 +1,14 @@
 FROM debian:stable-slim
 
-RUN apt-get --fix-missing update -y \
-  && apt-get install -f \
-  && apt-get upgrade -y \
-  && apt-get install bash curl unzip -y \
+RUN apt-get update && apt-get install bash curl unzip -y \
   && apt-get install -y --no-install-recommends npm \
-  && npm install -g npm@latest
-RUN npm cache clean -f \
+  && apt-get install -y nodejs \
+  && npm install -g npm@latest \
   && npm i pm2 -g
 
 # Copy over rest of files across
 ARG PROJECT_NAME
 WORKDIR /var/www/$PROJECT_NAME
-COPY src/$PROJECT_NAME/package.json src/$PROJECT_NAME/package-lock.json src/$PROJECT_NAME/tsconfig.json ./
+COPY src/$PROJECT_NAME/tsconfig.json ./
+
+COPY src/$PROJECT_NAME/. .
