@@ -70,7 +70,6 @@
     "@types/socket.io-client": "^1.4.32",
     "@typescript-eslint/eslint-plugin": "^4.13.0",
     "@typescript-eslint/parser": "^4.13.0",
-    "artillery": "^1.6.0-29",
     "babel-loader": "^8.2.2",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",

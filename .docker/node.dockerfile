@@ -9,6 +9,5 @@ RUN apt-get update && apt-get install bash curl unzip -y \
 # Copy over rest of files across
 ARG PROJECT_NAME
 WORKDIR /var/www/$PROJECT_NAME
-COPY src/$PROJECT_NAME/tsconfig.json ./
-
+COPY src/$PROJECT_NAME/tsconfig.json src/$PROJECT_NAME/package.json src/$PROJECT_NAME/package-lock.json ./
 COPY src/$PROJECT_NAME/. .
