@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: API Test and Coverage Check
         run: |
-          docker-compose up -d api mongo > /dev/null
+          docker-compose up -d api mongodb > /dev/null
           docker exec juanportal_api npm run cov
       - name: API Format Check
         run: |
@@ -40,10 +40,12 @@ jobs:
       - name: Client Lint Checks
         run: |
           cd src/juanportal
+          npm ci
           npm run lint
       - name: Client Fmt Checks
         run: |
           cd src/juanportal
+          npm ci
           npm run fmt:check
       - name: Client Tests
         run: |
