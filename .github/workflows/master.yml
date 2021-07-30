@@ -35,12 +35,12 @@ jobs:
       - name: Client Lint Checks
         run: |
           cd src/juanportal
+          npm i fsevents@latest -f --save-optional
           npm ci
           npm run lint
       - name: Client Fmt Checks
         run: |
           cd src/juanportal
-          npm i fsevents@latest -f --save-optional
           npm ci
           npm run fmt:check
       - name: Client Tests
