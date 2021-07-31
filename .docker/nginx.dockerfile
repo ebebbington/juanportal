@@ -1,7 +1,4 @@
-FROM nginx:latest
-
-# Update and install required packages
-RUN     apt-get update
+FROM nginx:alpine
 
 # Copy nginx config file
 COPY    ./.docker/config/juanportal.conf /etc/nginx/conf.d/juanportal.conf

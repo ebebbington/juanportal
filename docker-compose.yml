@@ -14,7 +14,7 @@ services:
       - api
       - node
     volumes:
-      - ./src/juanportal:/var/www/juanportal
+      - ./src/juanportal/public:/var/www/juanportal/public
     working_dir: /var/www/juanportal
     networks:
       - juanportal-network
@@ -24,8 +24,21 @@ services:
     build:
       context: .
       dockerfile: .docker/node.dockerfile
+      args:
+        PROJECT_NAME: "juanportal"
     volumes:
-      - ./src/juanportal:/var/www/juanportal
+      - ./src/juanportal/bin:/var/www/juanportal/bin
+      - ./src/juanportal/components:/var/www/juanportal/components
+      - ./src/juanportal/helpers:/var/www/juanportal/helpers
+      - ./src/juanportal/public:/var/www/juanportal/public
+      - ./src/juanportal/routes:/var/www/juanportal/routes
+      - ./src/juanportal/tests:/var/www/juanportal/tests
+      - ./src/juanportal/views:/var/www/juanportal/views
+      - ./src/juanportal/app.ts:/var/www/juanportal/app.ts
+      - ./src/juanportal/package.json:/var/www/juanportal/package.json
+      - ./src/juanportal/package-lock.json:/var/www/juanportal/package-lock.json
+      - ./src/juanportal/tsconfig.json:/var/www/juanportal/tsconfig.json
+      - ./src/juanportal/webpack.config.js:/var/www/juanportal/webpack.config.js
     working_dir: /var/www/juanportal
     command: bash -c "npm run start"
     networks:
@@ -56,8 +69,21 @@ services:
     build:
       context: .
       dockerfile: .docker/node.dockerfile
+      args:
+        PROJECT_NAME: "api"
     volumes:
-      - ./src/api:/var/www/api
+      - ./src/api/bin:/var/www/api/bin
+      - ./src/api/controllers:/var/www/api/controllers
+      - ./src/api/helpers:/var/www/api/helpers
+      - ./src/api/interfaces:/var/www/api/interfaces
+      - ./src/api/routes:/var/www/api/routes
+      - ./src/api/tests:/var/www/api/tests
+      - ./src/api/models:/var/www/api/models
+      - ./src/api/schemas:/var/www/api/schemas
+      - ./src/api/app.ts:/var/www/api/app.ts
+      - ./src/api/package.json:/var/www/api/package.json
+      - ./src/api/package-lock.json:/var/www/api/package-lock.json
+      - ./src/api/tsconfig.json:/var/www/api/tsconfig.json
     working_dir: /var/www/api
     command: bash -c "pm2-runtime ecosystem.config.js"
     networks:
@@ -65,9 +91,7 @@ services:
 
   redis:
     container_name: juanportal_redis
-    build:
-      context: .
-      dockerfile: .docker/redis.dockerfile
+    image: redis:6-alpine
     ports:
       - "6379:6379"
     networks:
@@ -78,8 +102,17 @@ services:
     build:
       context: .
       dockerfile: .docker/node.dockerfile
+      args:
+        PROJECT_NAME: "socket"
     volumes:
-      - ./src/socket:/var/www/socket
+      - ./src/socket/bin:/var/www/socket/bin
+      - ./src/socket/test:/var/www/socket/test
+      - ./src/socket/app.ts:/var/www/socket/app.ts
+      - ./src/socket/package.json:/var/www/socket/package.json
+      - ./src/socket/package-lock.json:/var/www/socket/package-lock.json
+      - ./src/socket/server.ts:/var/www/socket/server.ts
+      - ./src/socket/socket.ts:/var/www/socket/socket.ts
+      - ./src/socket/tsconfig.json:/var/www/socket/tsconfig.json
     working_dir: /var/www/socket
     command: bash -c "npm run start"
     depends_on:

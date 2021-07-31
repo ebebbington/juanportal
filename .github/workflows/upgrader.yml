@@ -18,10 +18,13 @@ jobs:
       - name: Upgrade all Dependencies
         run: |
           cd src/juanportal
+          npm i
           npm update
           cd ../api
+          npm i
           npm update
           cd ../socket
+          npm i
           npm update
 
       - name: Create Pull Request

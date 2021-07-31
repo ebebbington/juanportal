@@ -1,6 +1,6 @@
 "use strict";
 
-import nodemailer from "nodemailer";
+import nodemailer, { SentMessageInfo } from "nodemailer";
 import config from "../juanportal.config";
 import logger from "./logger";
 import dotenv from "dotenv";
@@ -11,20 +11,6 @@ const mail = {
   pass: mailPassword,
   user: config.mail.user,
 };
-
-interface NodeMailerSendResponse {
-  accepted: string[]; // email addressed sent to
-  rejected: string[] | []; // unsure, never teested
-  envelopeTime: number;
-  messageTime: number;
-  messageSize: number;
-  response: string; // "250 2.0.0 OK  16... 84sm... - gsmtp"
-  envelop: {
-    from: string;
-    to: string[];
-  };
-  messageId: string;
-}
 
 /**
  * @class MailHelper
@@ -59,7 +45,7 @@ export default class MailHelper {
     subject: string;
     text: string;
     html?: string;
-  }): Promise<NodeMailerSendResponse> {
+  }): Promise<SentMessageInfo> {
     // Return type for sending mail is any :/
     // Create a transporter
     const transporterOptions = {

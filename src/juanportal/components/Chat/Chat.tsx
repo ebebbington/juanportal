@@ -90,9 +90,8 @@ const Chat = (): ReactElement => {
   const handleInputKeyPress = (event: React.MouseEvent): void => {
     // Click the submit button when pressing enter
     if (event.keyCode === 13) {
-      const submitButton: HTMLElement = document.querySelector(
-        ".footer > button"
-      );
+      const submitButton: HTMLElement =
+        document.querySelector(".footer > button");
       if (submitButton) submitButton.click();
     }
   };

@@ -1,15 +1,13 @@
 FROM debian:stable-slim
 
-RUN apt update -y \
-  && apt install bash curl unzip -y \
-  && apt install make \
-  && apt install -y --no-install-recommends nodejs \
-  && apt install -y --no-install-recommends npm \
-  && npm install -g npm@latest
+RUN apt-get update && apt-get install bash curl unzip -y \
+  && apt-get install -y --no-install-recommends npm \
+  && apt-get install -y nodejs \
+  && npm install -g npm@latest \
+  && npm i pm2 -g
 
-RUN npm cache clean -f
-RUN npm install -g n
-RUN n stable
-
-# Install PM2
-RUN     yes | npm i pm2 -g
+# Copy over rest of files across
+ARG PROJECT_NAME
+WORKDIR /var/www/$PROJECT_NAME
+COPY src/$PROJECT_NAME/tsconfig.json src/$PROJECT_NAME/package.json src/$PROJECT_NAME/package-lock.json ./
+COPY src/$PROJECT_NAME/. .

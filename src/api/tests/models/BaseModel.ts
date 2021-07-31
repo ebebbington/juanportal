@@ -103,7 +103,8 @@ class TestModel extends BaseModel {
   // Abstract methods
   //
 
-  public getMongooseModel(): Model<ITestDocument> {
+  // eslint-disable-next-line
+  public getMongooseModel(): Model<any> {
     return MongooseModel;
   }
 }

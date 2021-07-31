@@ -14,8 +14,9 @@ jobs:
       - name: API Test and Coverage Check
         run: |
           cd src/api
+          npm ci
           npm run build
-          docker-compose up -d > /dev/null
+          docker-compose up -d api mongodb > /dev/null
           docker exec juanportal_api npm run cov
       - name: API Format Check
         run: |
@@ -24,39 +25,31 @@ jobs:
       - name: API Linter Check
         run: |
           cd src/api
+          npm run build
           npm run lint
 
   client-checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Cache NPM dependencies
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm
-          key: ${{ runner.OS }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-      - name: Install NPM Dependencies
-        run: |
-          cd src/juanportal
-          npm ci
       - name: Client Lint Checks
         run: |
           cd src/juanportal
+          npm i fsevents@latest -f --save-optional
+          npm ci
           npm run lint
       - name: Client Fmt Checks
         run: |
           cd src/juanportal
+          npm ci
           npm run fmt:check
       - name: Client Tests
         run: |
           cd src/juanportal
           echo 'MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}"' >> .env
-          npm run build:all
-          docker-compose up -d > /dev/null
+          npm ci
+          npm run build
+          docker-compose up -d node redis > /dev/null
           docker exec juanportal_node npm run cov
           docker exec juanportal_node npm run test:client
 
@@ -75,7 +68,8 @@ jobs:
       - name: Socket Test and Coverage Check
         run: |
           cd src/socket
+          npm ci
           npm run build
-          docker-compose up -d > /dev/null
+          docker-compose up -d socket > /dev/null
           docker exec juanportal_socket npm run cov
 

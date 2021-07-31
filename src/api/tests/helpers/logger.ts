@@ -6,6 +6,13 @@ import fs from "fs";
 import { getLogger } from "../../helpers/logger";
 
 chai.should();
+function wait(): Buffer {
+  const result = fs.readFileSync("./logs/error.log");
+  if (!result) {
+    return wait();
+  }
+  return result;
+}
 
 describe("logger", () => {
   describe("Production", () => {
@@ -13,7 +20,7 @@ describe("logger", () => {
       const prodLogger = getLogger("production");
       prodLogger.info("Hello :)");
       prodLogger.error("errrrr");
-      const result = fs.readFileSync("./logs/error.log");
+      const result = wait();
       fs.unlinkSync("./logs/error.log");
       expect(result.toString()).to.equal("error: errrrr\n");
     });

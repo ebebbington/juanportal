@@ -48,7 +48,7 @@ describe("ImageHelper", () => {
 
     describe("deleteFromFS", () => {
       it("Should return false for not existing anymore", () => {
-        fs.createWriteStream(imagesDir + "testfile.jpg");
+        fs.writeFileSync(imagesDir + "testfile.jpg", "");
         const stillExists = Image.deleteFromFS("testfile.jpg");
         expect(stillExists).to.equal(false);
       });
