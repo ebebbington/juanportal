@@ -43,10 +43,7 @@ class ImageHelper {
     if (file) {
       logger.info("file has been passed in");
       /* istanbul ignore line */
-      const buf =
-        file.buffer instanceof ArrayBuffer
-          ? file.buffer.toString()
-          : file.buffer;
+      const buf = file.buffer;
       fs.writeFileSync(imagesDir + filename, buf);
       return this.existsOnFS(filename);
     }

@@ -10,14 +10,19 @@ import multer from "multer";
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-app.route("/id/:id").get(Redis.cache.route("profile"), (req, res) => {
-  const id = req.params.id;
-  res.status(200).render("profile/view", { title: "View Profile", id: id });
-});
+app.route("/id/:id")
+  .get(Redis.cache.route("profile"), (req, res) => {
+    const id = req.params.id;
+    res.status(200).render("profile/view", { title: "View Profile", id: id });
+  });
 
-app.route("/add").get(Redis.cache.route("profile/add"), (req, res) => {
-  res.status(200).render("profile/add", { title: "Add Profile" });
-});
+app.route("/add")
+  /**
+   * @example hello
+   */
+  .get(Redis.cache.route("profile/add"), (req, res) => {
+    res.status(200).render("profile/add", { title: "Add Profile" });
+  });
 
 app
   .route("/image")
