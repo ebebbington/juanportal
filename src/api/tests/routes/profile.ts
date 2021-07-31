@@ -95,7 +95,6 @@ describe("Profile Route", function () {
       const Profile = new ProfileModel();
       const profiles = await Profile.find<IProfileDocument>({}, 9);
       if (profiles) {
-        console.log(profiles)
         for (const profile of profiles) {
           await Profile.delete({ name: profile.name });
         }
