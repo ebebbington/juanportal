@@ -24,7 +24,7 @@ describe("logger", () => {
       const prodLogger = getLogger("production");
       prodLogger.info("Hello :)");
       prodLogger.error("errrrr");
-      const result = wait()
+      const result = wait();
       fs.unlinkSync("./logs/error.log");
       expect(result.toString()).to.equal("error: errrrr\n");
       console.log(logger);
