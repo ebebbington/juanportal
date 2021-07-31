@@ -95,9 +95,10 @@ describe("Profile Route", function () {
       const Profile = new ProfileModel();
       const profiles = await Profile.find<IProfileDocument>({}, 9);
       if (profiles) {
-        await Profile.delete({ name: profiles[0].name });
-        await Profile.delete({ name: profiles[1].name });
-        await Profile.delete({ name: profiles[2].name });
+        console.log(profiles)
+        for (const profile of profiles) {
+          await Profile.delete({ name: profile.name });
+        }
         chai
           .request(app)
           .get("/api/profile/count/6")
