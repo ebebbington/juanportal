@@ -1,6 +1,7 @@
 // eslint-disable-next-line
 // @ts-ignore No types :/
-import vNotify from "Notify";
+import vNotify from "vanilla-notify";
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const buttonStyling = require("./button/button.module.css");
 
