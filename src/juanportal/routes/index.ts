@@ -1,14 +1,13 @@
 import express from "express";
 const router = express.Router();
+const app = express()
 import { RedisHelper, IRedisCacheHelper } from "../helpers/RedisHelper";
 const Redis = new RedisHelper({ cache: true }) as IRedisCacheHelper;
 
-// On '/' render index.pug in views/ as pug expects it to be in views
-router.get("/", Redis.cache.route("index"), (req, res) => {
-  return res.render("index.pug", {
-    // pass in variables to the file
+app.route("/").get(Redis.cache.route(), (req, res) => {
+  res.status(200).render("index.pug", {
     title: "Home",
   });
 });
 
-export default router;
+export default app;

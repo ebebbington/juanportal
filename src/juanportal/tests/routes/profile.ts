@@ -7,6 +7,9 @@ import fs from "fs";
 chai.should();
 chai.use(chaiHttp);
 
+import { IRedisCacheHelper, RedisHelper } from "../../helpers/RedisHelper";
+const Redis = new RedisHelper({ cache: true }) as IRedisCacheHelper;
+
 describe("Route *", () => {
   describe("JWT", () => {
     it("Should create a token");
@@ -21,6 +24,7 @@ describe("Route /profile/add", () => {
         .request(app)
         .get("/profile/add")
         .end((err, res) => {
+          Redis.cache.del('/profile/add', () => {})
           expect(res.status).to.equal(200);
           done();
         });
@@ -35,6 +39,7 @@ describe("Route /profile/id/:id", () => {
         .request(app)
         .get("/profile/id/4439034")
         .end((err, res) => {
+          Redis.cache.del('/profile/id/4439034', () => {})
           expect(res.status).to.equal(200);
           done();
         });
