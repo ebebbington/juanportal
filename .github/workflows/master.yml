@@ -14,7 +14,9 @@ jobs:
       - name: API Test and Coverage Check
         run: |
           cd src/api
-          docker-compose up -d api mongodb > /dev/null
+          docker-compose up -d api mongodb
+          sleep 10
+          docker logs juanportal_api
           docker exec juanportal_api npm run cov
       - name: API Format Check
         run: |
@@ -32,6 +34,7 @@ jobs:
       - name: Client Lint Checks
         run: |
           cd src/juanportal
+          npm i fsevents@latest -f --save-optional
           npm run lint
       - name: Client Fmt Checks
         run: |
