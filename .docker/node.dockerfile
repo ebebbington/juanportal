@@ -11,3 +11,6 @@ ARG PROJECT_NAME
 WORKDIR /var/www/$PROJECT_NAME
 COPY src/$PROJECT_NAME/tsconfig.json src/$PROJECT_NAME/package.json src/$PROJECT_NAME/package-lock.json ./
 COPY src/$PROJECT_NAME/. .
+RUN npm ci
+RUN npm run build
+COPY src/$PROJECT_NAME/. .
