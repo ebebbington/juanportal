@@ -16,7 +16,9 @@ describe("Route /", () => {
         .request(app)
         .get("/")
         .end((err, res) => {
-          Redis.cache.del("/", () => {});
+          Redis.cache.del("/", () => {
+            // dont need to do anything
+          });
           expect(res.status).to.equal(200);
           done();
         });
