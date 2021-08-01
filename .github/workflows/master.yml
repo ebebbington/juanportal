@@ -44,9 +44,11 @@ jobs:
           npm ci
           npm run fmt:check
       - name: Client Tests
+        env:
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
         run: |
           cd src/juanportal
-          echo 'MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}' >> .env
+          echo "MAIL_PASSWORD=$MAIL_PASSWORD" >> .env
           npm ci
           npm run build
           docker-compose up -d node redis > /dev/null
