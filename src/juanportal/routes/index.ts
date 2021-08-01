@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-const app = express()
+const app = express();
 import { RedisHelper, IRedisCacheHelper } from "../helpers/RedisHelper";
 const Redis = new RedisHelper({ cache: true }) as IRedisCacheHelper;
 
