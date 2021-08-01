@@ -1,5 +1,6 @@
 import express from "express";
 const app = express();
+app.disable("x-powered-by");
 import { RedisHelper, IRedisCacheHelper } from "../helpers/RedisHelper";
 const Redis = new RedisHelper({ cache: true }) as IRedisCacheHelper;
 
