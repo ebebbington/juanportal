@@ -11,8 +11,6 @@ const mail = {
   pass: mailPassword,
   user: config.mail.user,
 };
-console.log(mailPassword);
-console.log(process.env);
 /**
  * @class MailHelper
  *

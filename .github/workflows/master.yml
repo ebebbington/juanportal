@@ -52,8 +52,6 @@ jobs:
           npm ci
           npm run build
           docker-compose up -d node redis > /dev/null
-          cat .env
-          docker exec juanportal_node node helpers/MailHelper.js
           docker exec juanportal_node npm run cov
           docker exec juanportal_node npm run test:client
 
