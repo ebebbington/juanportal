@@ -2,6 +2,8 @@ import chai from "chai";
 const expect = chai.expect;
 import app from "../../app";
 import chaiHttp from "chai-http";
+import { IRedisCacheHelper, RedisHelper } from "../../helpers/RedisHelper";
+const Redis = new RedisHelper({ cache: true }) as IRedisCacheHelper;
 
 chai.should();
 chai.use(chaiHttp);
@@ -14,6 +16,9 @@ describe("Route /", () => {
         .request(app)
         .get("/")
         .end((err, res) => {
+          Redis.cache.del("/", () => {
+            // dont need to do anything
+          });
           expect(res.status).to.equal(200);
           done();
         });
