@@ -15,7 +15,7 @@
     "start": "pm2-runtime ecosystem.config.js",
     "fmt:check": "node_modules/.bin/prettier --check .",
     "fmt:fix": "node_modules/.bin/prettier --write .",
-    "lint": "node_modules/.bin/eslint --ext '.ts,.tsx' . && node_modules/.bin/eslint --ext .js -c .eslint.js.rc tests/components"
+    "lint": "npm i --no-save eslint && node_modules/.bin/eslint --ext '.ts,.tsx' . && node_modules/.bin/eslint --ext .js -c .eslint.js.rc tests/components"
   },
   "author": "",
   "license": "ISC",
@@ -75,7 +75,6 @@
     "css-loader": "^3.4.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "eslint": "^7.17.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^24.9.0",
     "jest-cli": "^24.9.0",
