@@ -21,7 +21,8 @@
       "tests",
       "helpers/logger.js",
       "ecosystem.config.js",
-      "routes/test.js"
+      "routes/test.js",
+      "routes/profile.ts"
    ],
    "reporter": "text",
      "instrument": true
