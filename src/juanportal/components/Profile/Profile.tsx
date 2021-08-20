@@ -76,10 +76,10 @@ interface IProfile {
  * @method handleDelete Handles the deletion of a profile
  */
 const Profile = (props: IProps): ReactElement => {
-  // eslint-disable-next-line
-  // @ts-ignore
   if (
     "removeAllListeners" in socket &&
+    // eslint-disable-next-line
+    // @ts-ignore
     typeof socket.removeAllListeners === "function"
   ) {
     // eslint-disable-next-line
