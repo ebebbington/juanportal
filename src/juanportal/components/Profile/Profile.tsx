@@ -78,7 +78,10 @@ interface IProfile {
 const Profile = (props: IProps): ReactElement => {
   // eslint-disable-next-line
   // @ts-ignore
-  if ("removeAllListeners" in socket && typeof socket.removeAllListeners === "function") {
+  if (
+    "removeAllListeners" in socket &&
+    typeof socket.removeAllListeners === "function"
+  ) {
     // eslint-disable-next-line
     // @ts-ignore
     socket.removeAllListeners();
