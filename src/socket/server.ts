@@ -7,7 +7,7 @@ const port = process.env.PORT as string;
 if (!port) {
   throw new Error("PORT env var must be set");
 }
-import socketIo, { Server as SocketIOServer } from "socket.io";
+import { Server as SocketIOServer } from "socket.io";
 import SocketServer from "./socket";
 
 /**
@@ -51,7 +51,7 @@ class Server {
     this.app = express();
     this.httpServer = http.createServer(this.app);
     //this.io = socketIo.listen(this.httpServer);
-    this.io = socketIo(this.httpServer, { transports: ["polling"] });
+    this.io = new SocketIOServer(this.httpServer, { transports: ["polling"] });
     this.configure();
     this.listen();
     this.handleSocketConnection();
