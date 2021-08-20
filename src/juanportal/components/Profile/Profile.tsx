@@ -76,8 +76,14 @@ interface IProfile {
  * @method handleDelete Handles the deletion of a profile
  */
 const Profile = (props: IProps): ReactElement => {
+  // eslint-disable-next-line
   // @ts-ignore
-  socket.removeAllListeners();
+  if ("removeAllListeners" in socket && typeof socket.removeAllListeners === "function") {
+    // eslint-disable-next-line
+    // @ts-ignore
+    socket.removeAllListeners();
+  }
+  socket.offAny();
 
   const { count } = props;
   const id = props.id ? props.id : props.match ? props.match.params.id : "";
