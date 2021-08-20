@@ -15,17 +15,14 @@ jobs:
         run: |
           npm i -g npm-check-updates
           cd src/juanportal
-          npm i
-          npm update
           npm-check-updates -u
+          npm i
           cd ../api
-          npm i
-          npm update
           npm-check-updates -u
+          npm i
           cd ../socket
-          npm i
-          npm update
           npm-check-updates -u
+          npm i
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
