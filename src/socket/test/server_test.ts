@@ -4,12 +4,12 @@ import chai from "chai";
 chai.should();
 process.env["PORT"] = "8999";
 import Server from "../server";
-import SocketIO from "socket.io-client";
+import io from "socket.io-client";
 
 describe("Server", () => {
   describe("Unit", function () {
     it("Should spin up a server and accept requests", (done) => {
-      const client1 = SocketIO.connect("http://0.0.0.0:8999");
+      const client1 = io("http://0.0.0.0:8999");
       client1.on("connect", function () {
         console.log("get in mate");
         client1.close();
@@ -21,7 +21,7 @@ describe("Server", () => {
 
   describe("Integration", () => {
     it("Should have a server listening on port 9009 to accept requests", (done) => {
-      const client1 = SocketIO.connect("http://0.0.0.0:9009");
+      const client1 = io("http://0.0.0.0:9009");
       client1.on("connect", function () {
         client1.close();
         done();

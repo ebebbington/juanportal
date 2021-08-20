@@ -22,6 +22,7 @@ module.exports = {
   moduleNameMapper: {
     "\\.(css|less)$": "identity-obj-proxy",
   },
+  testEnvironment: "jsdom",
   //testURL: "http://localhost:9002"
   //rootDir: './tests/components',
   //testMatch: ['*.spec.js']

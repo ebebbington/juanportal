@@ -5,12 +5,12 @@ import SocketServer from ".././socket";
 import dotenv from "dotenv";
 dotenv.config();
 const port = process.env.NODE_PORT || 9009;
-import socketIo from "socket.io";
+import { Server } from "socket.io";
 
 app.set("port", port);
 
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = new Server(server);
 
 server.listen(port);
 server.on("error", onError);

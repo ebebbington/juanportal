@@ -11,7 +11,7 @@ import Button from "../button/button";
 import { notify, fetchToApiAsJson } from "../util";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const styles = require("./Profile.module.css");
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 const socket = io("http://127.0.0.1:9002");
 
 interface IProps {
@@ -76,7 +76,17 @@ interface IProfile {
  * @method handleDelete Handles the deletion of a profile
  */
 const Profile = (props: IProps): ReactElement => {
-  socket.removeAllListeners();
+  if (
+    "removeAllListeners" in socket &&
+    // eslint-disable-next-line
+    // @ts-ignore
+    typeof socket.removeAllListeners === "function"
+  ) {
+    // eslint-disable-next-line
+    // @ts-ignore
+    socket.removeAllListeners();
+  }
+  socket.offAny();
 
   const { count } = props;
   const id = props.id ? props.id : props.match ? props.match.params.id : "";

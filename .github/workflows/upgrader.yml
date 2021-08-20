@@ -13,15 +13,16 @@ jobs:
 
       - name: Upgrade all Dependencies
         run: |
+          npm i -g npm-check-updates
           cd src/juanportal
+          npm-check-updates -u
           npm i
-          npm update
           cd ../api
+          npm-check-updates -u
           npm i
-          npm update
           cd ../socket
+          npm-check-updates -u
           npm i
-          npm update
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
