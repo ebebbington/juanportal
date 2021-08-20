@@ -3,7 +3,7 @@ import chai from "chai";
 const expect = chai.expect;
 chai.should();
 import io from "socket.io-client";
-import type { Socket } from "socket.io-client"
+import type { Socket } from "socket.io-client";
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
