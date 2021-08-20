@@ -2,19 +2,20 @@ import "mocha";
 import chai from "chai";
 const expect = chai.expect;
 chai.should();
-import io, { Socket as Client } from "socket.io-client";
+import io from "socket.io-client";
+import type { Socket } from "socket.io-client"
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
-import Socket from "../socket";
+import SocketS from "../socket";
 
 describe("Socket", () => {
   describe("Methods", () => {
     describe("`handle`", function () {
-      let client1: null | Client;
-      let client2: null | Client;
+      let client1: null | Socket;
+      let client2: null | Socket;
       let httpServer: null | http.Server = null;
-      let SocketServer: null | Socket = null;
+      let SocketServer: null | SocketS = null;
 
       before(function (done) {
         {
@@ -26,7 +27,7 @@ describe("Socket", () => {
         }
         {
           const io = new Server(httpServer, { transports: ["polling"] });
-          SocketServer = new Socket(io);
+          SocketServer = new SocketS(io);
           SocketServer.handle();
         }
         client1 = io("http://0.0.0.0:8999");
