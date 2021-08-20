@@ -2,17 +2,17 @@ import "mocha";
 import chai from "chai";
 const expect = chai.expect;
 chai.should();
-import SocketIO from "socket.io-client";
+import io, { Socket as Client } from "socket.io-client";
 import express from "express";
 import http from "http";
-import socketIo from "socket.io";
+import { Server } from "socket.io";
 import Socket from "../socket";
 
 describe("Socket", () => {
   describe("Methods", () => {
     describe("`handle`", function () {
-      let client1: null | SocketIOClient.Socket;
-      let client2: null | SocketIOClient.Socket;
+      let client1: null | Client;
+      let client2: null | Client;
       let httpServer: null | http.Server = null;
       let SocketServer: null | Socket = null;
 
@@ -25,13 +25,13 @@ describe("Socket", () => {
           });
         }
         {
-          const io = socketIo(httpServer, { transports: ["polling"] });
+          const io = new Server(httpServer, { transports: ["polling"] });
           SocketServer = new Socket(io);
           SocketServer.handle();
         }
-        client1 = SocketIO.connect("http://0.0.0.0:8999");
+        client1 = io("http://0.0.0.0:8999");
         client1.on("connect", function () {
-          client2 = SocketIO.connect("http://0.0.0.0:8999");
+          client2 = io("http://0.0.0.0:8999");
           client2.on("connect", function () {
             done();
           });
@@ -71,9 +71,9 @@ describe("Socket", () => {
   });
   describe("Integration", () => {
     it("Should handle requests when within the docker environment", (done) => {
-      const client1 = SocketIO.connect("http://0.0.0.0:9009");
+      const client1 = io("http://0.0.0.0:9009");
       client1.on("connect", function () {
-        const client2 = SocketIO.connect("http://0.0.0.0:9009");
+        const client2 = io("http://0.0.0.0:9009");
         client2.on("connect", function () {
           client2.emit("profileDeleted", { profileId: 97 });
           // The type for event is just Function...
