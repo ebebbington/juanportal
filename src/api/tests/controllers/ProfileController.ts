@@ -13,7 +13,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 const dbUrl = process.env.DB_URL as string;
-mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(dbUrl);
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -75,7 +75,7 @@ describe("ProfileController", () => {
       });
 
       it("Should fail when no profile was found", async () => {
-        const validObjectId = mongoose.Types.ObjectId();
+        const validObjectId = new mongoose.Types.ObjectId();
         req.params.id = validObjectId;
         const response = (await ProfileController.GetProfileById(
           req,
@@ -102,7 +102,7 @@ describe("ProfileController", () => {
       });
 
       it("Should fail when the profile doesnt exist", async () => {
-        req.params.id = mongoose.Types.ObjectId();
+        req.params.id = new mongoose.Types.ObjectId();
         const response = (await ProfileController.DeleteProfileById(
           req,
           res
