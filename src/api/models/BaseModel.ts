@@ -242,10 +242,12 @@ export default abstract class BaseModel implements IIndexSignature {
       this.fill(document);
       logger.info("[BaseModel - create: filled the model]");
     } catch (validationError) {
-      const fieldName: string = Object.keys(validationError.errors)[0];
-      const errorMessage: string = validationError.errors[fieldName].message;
-      logger.error(`Validation error: ${errorMessage}`);
-      return validationError as ValidationError;
+      if (validationError instanceof mongoose.Error.ValidationError) {
+        const fieldName: string = Object.keys(validationError.errors)[0];
+        const errorMessage: string = validationError.errors[fieldName].message;
+        logger.error(`Validation error: ${errorMessage}`);
+        return validationError;
+      }
     }
   }
 
@@ -353,7 +355,7 @@ export default abstract class BaseModel implements IIndexSignature {
     // delete a single doucment
     if (!deleteMany) {
       const result = await MongooseModel.deleteOne(query);
-      if (result.ok === 1 && result.deletedCount === 1) {
+      if (result.acknowledged === true && result.deletedCount === 1) {
         this.empty();
         return true;
       } else {
@@ -366,7 +368,11 @@ export default abstract class BaseModel implements IIndexSignature {
       return false;
     }
     const result = await MongooseModel.deleteMany(query);
-    if (result.ok === 1 && result.deletedCount && result.deletedCount >= 1) {
+    if (
+      result.acknowledged === true &&
+      result.deletedCount &&
+      result.deletedCount >= 1
+    ) {
       this.empty();
       return true;
     } else {
