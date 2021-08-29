@@ -172,13 +172,11 @@ class Server {
    * @return {void}
    */
   private instantiateDbConnection(): void {
-    mongoose
-      .connect(this.dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
-      .then(() => {
-        //if (this.env === "development") {
-        logger.info("Database connection has opened");
-        //}
-      });
+    mongoose.connect(this.dbUrl).then(() => {
+      //if (this.env === "development") {
+      logger.info("Database connection has opened");
+      //}
+    });
     // .catch((err: Error) => {
     //   logger.error("Error when making conn to db");
     //   logger.error(err);
