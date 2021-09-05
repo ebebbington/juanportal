@@ -23,7 +23,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const dbUrl = process.env.DB_URL as string;
 import mongoose from "mongoose";
-mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(dbUrl);
 
 import BaseModel from "../../models/BaseModel";
 import { Model, Types } from "mongoose";
