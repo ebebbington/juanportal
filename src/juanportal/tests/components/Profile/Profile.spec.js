@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import Profile from "../../../components/Profile/Profile";
 import React from "react";
-import "setimmediate"
+import "setimmediate";
 
 // import '@testing-library/jest-dom/extend-expect'
 //

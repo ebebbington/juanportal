@@ -100,9 +100,7 @@ class JWT {
       return token;
     } catch (err) {
       const { message } = err as { message: string }
-      if (err instanceof Error) {
-        logger.error(`Failed to sign the token: ${message}`);
-      }
+      logger.error(`Failed to sign the token: ${message}`);
       return false;
     }
   }

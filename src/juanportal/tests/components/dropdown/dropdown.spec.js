@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/extend-expect";
 // import { Simulate } from "react-dom/test-utils";
-import "setimmediate"
+import "setimmediate";
 
 import React from "react";
 import { render } from "@testing-library/react";
