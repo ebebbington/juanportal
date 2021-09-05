@@ -68,10 +68,12 @@ jobs:
       - name: Socket Format Checks
         run: |
           cd src/socket
+          npm i fsevents@latest -f --save-optional
           npm run fmt:check
       - name: Socket Lint Checks
         run: |
           cd src/socket
+          npm i fsevents@latest -f --save-optional
           npm run lint
       - name: Socket Test and Coverage Check
         run: |

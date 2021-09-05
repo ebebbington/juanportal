@@ -192,10 +192,11 @@ export default abstract class BaseModel implements IIndexSignature {
     data: { [key: string]: unknown }
   ): Promise<T | boolean> {
     // Convert the _id to an object id if passed in
-    if (query && typeof query._id === "string") {
-      query._id = this.generateObjectId(query._id);
-    } else {
-      return false
+    if (query && query._id) {
+      query._id = this.generateObjectId(query._id as string);
+      if (!query._id) {
+        return false;
+      }
     }
     const options = { upsert: true };
     const MongooseModel = this.getMongooseModel();
