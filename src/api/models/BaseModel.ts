@@ -355,6 +355,7 @@ export default abstract class BaseModel implements IIndexSignature {
     // delete a single doucment
     if (!deleteMany) {
       const result = await MongooseModel.deleteOne(query);
+      console.log(result)
       if (result.acknowledged === true && result.deletedCount === 1) {
         this.empty();
         return true;
