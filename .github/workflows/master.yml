@@ -11,6 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 'lts/*'
+
       - name: API Test and Coverage Check
         run: |
           npm -v
@@ -33,6 +38,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 'lts/*'
+
       - name: Client Lint Checks
         run: |
           cd src/juanportal
@@ -58,6 +68,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 'lts/*'
+
       - name: Socket Format Checks
         run: |
           cd src/socket
