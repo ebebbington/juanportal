@@ -351,12 +351,6 @@ describe("BaseModel", () => {
         expect(res).to.equal(false);
       });
 
-      it("Fails to parse the query id into an object id when passed in as invalid, and returns false", async () => {
-        const Test = new TestModel();
-        const res = await Test.update({ _id: { name: "ed" } }, { forename: "hello" });
-        expect(res).to.equal(false);
-      });
-
       it("Should return the old document after updating", async () => {
         const document = new MongooseModel({ forename: "Edwuardo" });
         await document.save();

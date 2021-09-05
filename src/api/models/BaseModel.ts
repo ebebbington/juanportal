@@ -76,31 +76,6 @@ export default abstract class BaseModel implements IIndexSignature {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected abstract getMongooseModel(): Model<any>;
 
-  /**
-   * Create a mongoose object id from the passed in value
-   *
-   * @method generateObjectId
-   *
-   * @example
-   * const _id = this.generateObjectId(id)
-   * if (!_id) console.log('Failed to convert')
-   * if (_id) console.log('Converted')
-   *
-   * @param {string} id Id of a document to convert
-   *
-   * @return {mongoose.Types.ObjectId|boolean} The id, or false if cannot convert
-   */
-  private generateObjectId(id: string): mongoose.Types.ObjectId | false {
-    try {
-      // if the id isnt already an object id, convert it
-      const objectId = new mongoose.Types.ObjectId(id);
-      return objectId;
-    } catch (err) {
-      logger.error(`failed to convert ${id} to a mongoose object id`);
-      return false;
-    }
-  }
-
   private stripNonExposableFields(document: Document): void {
     Object.keys(document.toObject()).forEach((property: string) => {
       const allowedToExpose = this.fieldsToExpose.includes(property);
@@ -191,16 +166,6 @@ export default abstract class BaseModel implements IIndexSignature {
     query: { [key: string]: unknown },
     data: { [key: string]: unknown }
   ): Promise<T | boolean> {
-    // Convert the _id to an object id if passed in
-    if (query && query._id) {
-      if (typeof query._id !== "string") {
-        return false
-      }
-      query._id = this.generateObjectId(query._id as string);
-      if (!query._id) {
-        return false;
-      }
-    }
     const options = { upsert: true };
     const MongooseModel = this.getMongooseModel();
     const oldDocument = await MongooseModel.findOneAndUpdate(
@@ -286,13 +251,6 @@ export default abstract class BaseModel implements IIndexSignature {
     limiter = 1,
     sortable = {}
   ): Promise<false | T[]> {
-    // Convert the _id to an object id if passed in
-    if (query && query._id) {
-      query._id = this.generateObjectId(query._id as string);
-      if (!query._id) {
-        return false;
-      }
-    }
     // If query is empty, set it to an empty object
     if (!query) {
       query = {};
@@ -347,13 +305,6 @@ export default abstract class BaseModel implements IIndexSignature {
     query: { [key: string]: unknown },
     deleteMany = false
   ): Promise<boolean> {
-    // convert _id if passed in
-    if (query._id) {
-      query._id = this.generateObjectId(query._id as string);
-      if (!query._id) {
-        return false;
-      }
-    }
     const MongooseModel = this.getMongooseModel();
     // delete a single doucment
     if (!deleteMany) {
