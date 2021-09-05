@@ -335,7 +335,8 @@ describe("BaseModel", () => {
     describe("update", () => {
       it("Should return false if no document was found with the models id", async () => {
         const Test = new TestModel();
-        const res = await Test.update({ _id: 567467 }, { forename: "hello" });
+        const id = new mongoose.Types.ObjectId();
+        const res = await Test.update({ _id: id }, { forename: "hello" });
         expect(res).to.equal(false);
       });
 
