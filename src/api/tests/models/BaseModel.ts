@@ -353,7 +353,7 @@ describe("BaseModel", () => {
 
       it("Fails to parse the query id into an object id when passed in as invalid, and returns false", async () => {
         const Test = new TestModel();
-        const res = await Test.update({ _id: {} }, { forename: "hello" });
+        const res = await Test.update({ _id: { name: "ed" } }, { forename: "hello" });
         expect(res).to.equal(false);
       });
 
