@@ -356,12 +356,11 @@ export default abstract class BaseModel implements IIndexSignature {
     if (!deleteMany) {
       const result = await MongooseModel.deleteOne(query);
       console.log(result)
-      if (result.acknowledged === true && result.deletedCount === 1) {
+      if (result.deletedCount === 1) {
         this.empty();
         return true;
-      } else {
-        return false;
       }
+      return false;
     }
     // delete many documents
     // and if the query is empty and wipe isnt allowed, don't let them delete EVERYTHING
