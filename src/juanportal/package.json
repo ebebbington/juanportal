@@ -79,6 +79,7 @@
     "mocha": "9.1.1",
     "nyc": "15.1.0",
     "prettier": "2.3.2",
+    "setimmediate": "^1.0.5",
     "source-map-support": "0.5.19",
     "style-loader": "3.2.1",
     "ts-loader": "9.2.5",
