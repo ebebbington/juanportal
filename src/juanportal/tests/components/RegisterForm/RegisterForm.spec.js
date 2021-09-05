@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom/extend-expect";
 import "whatwg-fetch";
+import "setimmediate";
 
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";

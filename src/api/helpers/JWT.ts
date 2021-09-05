@@ -59,12 +59,9 @@ class JWT {
       logger.info("Verified JWT in request");
       next();
     } catch (err) {
-      if (err instanceof Error) {
-        logger.error(`Failed to verify the token: ${err.message}`);
-        return res
-          .status(403)
-          .json({ success: false, message: err.message, data: token });
-      }
+      const { message } = err as { message: string };
+      logger.error(`Failed to verify the token: ${message}`);
+      return res.status(403).json({ success: false, message, data: token });
     }
   }
 
@@ -100,9 +97,8 @@ class JWT {
       const token = jwt.sign(payload, privateKey, options as jwt.SignOptions);
       return token;
     } catch (err) {
-      if (err instanceof Error) {
-        logger.error(`Failed to sign the token: ${err.message}`);
-      }
+      const { message } = err as { message: string };
+      logger.error(`Failed to sign the token: ${message}`);
       return false;
     }
   }

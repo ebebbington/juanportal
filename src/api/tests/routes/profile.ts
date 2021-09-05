@@ -10,6 +10,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 import logger from "../../helpers/logger";
+import mongoose from "mongoose";
 
 chai.use(chaiHttp);
 chai.should();
@@ -115,7 +116,7 @@ describe("Profile Route", function () {
     });
   });
 
-  describe("GET /profile/id/:id", () => {
+  describe("GET /api/profile/id/:id", () => {
     const newProfile = {
       name: "TESTPROFILENAME",
       description: "TESTPROFILEDESCRIPTION",
@@ -166,7 +167,7 @@ describe("Profile Route", function () {
     it("Should respond with 404 if no profile was found", (done) => {
       chai
         .request(app)
-        .get("/api/profile/id/" + "8949549n848n94n899897b788n8gyhghyi7878")
+        .get("/api/profile/id/" + new mongoose.Types.ObjectId().toString())
         .end((_err, res) => {
           expect(res.status).to.equal(404);
           expect(JSON.parse(res.text).success).to.equal(false);
@@ -179,7 +180,7 @@ describe("Profile Route", function () {
     });
   });
 
-  describe("DELETE /profile/id/:id", function () {
+  describe("DELETE /api/profile/id/:id", function () {
     it("Should fail when the id cannot be parsed", (done) => {
       chai
         .request(app)
@@ -215,7 +216,7 @@ describe("Profile Route", function () {
     it("Should fail on an invalid profile", (done) => {
       chai
         .request(app)
-        .delete("/api/profile/id/4h89g58h9g589h89g589hg5h98g598g589h")
+        .delete("/api/profile/id/" + new mongoose.Types.ObjectId().toString())
         .end((_err, res) => {
           const json = JSON.parse(res.text);
           expect(res.status).to.equal(404);

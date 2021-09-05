@@ -10,11 +10,6 @@ app.set("port", port);
 //create http server
 const server = http.createServer(app);
 server.listen(port);
-// Attach socket io we assigned in app.ts to the server (handling is handled inside the respective route)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const io = app.io;
-io.attach(server);
 server.on("error", onError);
 server.on("listening", onListening);
 

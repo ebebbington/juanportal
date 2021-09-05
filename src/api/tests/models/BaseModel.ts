@@ -23,7 +23,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const dbUrl = process.env.DB_URL as string;
 import mongoose from "mongoose";
-mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(dbUrl);
 
 import BaseModel from "../../models/BaseModel";
 import { Model, Types } from "mongoose";
@@ -146,12 +146,6 @@ describe("BaseModel", () => {
 
   describe("Methods", () => {
     describe("find", () => {
-      it("Should return false if a query _id was passed in and failed parsing", async () => {
-        const Test = new TestModel();
-        const result = await Test.find({ _id: "5" });
-        expect(result).to.equal(false);
-      });
-
       it("Should correctly query when limit isnt defined", async () => {
         await MongooseModel.deleteMany({});
         // insert one
@@ -282,12 +276,6 @@ describe("BaseModel", () => {
     });
 
     describe("delete", () => {
-      it("Should return false if an query _id is passed in but cannot be parsed", async () => {
-        const Test = new TestModel();
-        const result = await Test.delete({ _id: "5" });
-        expect(result).to.equal(false);
-      });
-
       it("Should return true if successful deleteOne", async () => {
         const document = new MongooseModel({ forename: "Edward" });
         await document.save();
@@ -347,13 +335,8 @@ describe("BaseModel", () => {
     describe("update", () => {
       it("Should return false if no document was found with the models id", async () => {
         const Test = new TestModel();
-        const res = await Test.update({ _id: 567467 }, { forename: "hello" });
-        expect(res).to.equal(false);
-      });
-
-      it("Fails to parse the query id into an object id when passed in as invalid, and returns false", async () => {
-        const Test = new TestModel();
-        const res = await Test.update({ _id: {} }, { forename: "hello" });
+        const id = new mongoose.Types.ObjectId();
+        const res = await Test.update({ _id: id }, { forename: "hello" });
         expect(res).to.equal(false);
       });
 
