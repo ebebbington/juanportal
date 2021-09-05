@@ -14,8 +14,8 @@ jobs:
 
       - name: API Test and Coverage Check
         run: |
-          npm i -g fsevents
           cd src/api
+          npm i fsevents@latest -f --save-optional
           npm ci
           npm run build
           docker-compose up -d api mongodb > /dev/null
