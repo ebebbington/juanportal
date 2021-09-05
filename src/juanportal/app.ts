@@ -7,7 +7,6 @@ import dotenv from "dotenv";
 dotenv.config();
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
-import socketIo from "socket.io";
 import cors from "cors";
 import profileRoute from "./routes/profile.js";
 import indexRoute from "./routes/index.js";
@@ -90,9 +89,6 @@ class Server {
     //create expressjs application
     this.app = express();
     this.app.use(cors());
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    this.app.io = socketIo();
     //configure application
     this.configure();
     // setup routes
