@@ -355,7 +355,6 @@ export default abstract class BaseModel implements IIndexSignature {
     // delete a single doucment
     if (!deleteMany) {
       const result = await MongooseModel.deleteOne(query);
-      console.log(result)
       if (result.deletedCount === 1) {
         this.empty();
         return true;
@@ -368,15 +367,10 @@ export default abstract class BaseModel implements IIndexSignature {
       return false;
     }
     const result = await MongooseModel.deleteMany(query);
-    if (
-      result.acknowledged === true &&
-      result.deletedCount &&
-      result.deletedCount >= 1
-    ) {
+    if (result.deletedCount >= 1) {
       this.empty();
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 }
