@@ -37,7 +37,6 @@ jobs:
 
       - name: Client Lint Checks
         run: |
-          npm i -g fsevents
           cd src/juanportal
           npm i fsevents@latest -f --save-optional
           npm ci
