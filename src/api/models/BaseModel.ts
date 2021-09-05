@@ -192,16 +192,15 @@ export default abstract class BaseModel implements IIndexSignature {
     data: { [key: string]: unknown }
   ): Promise<T | boolean> {
     // Convert the _id to an object id if passed in
-    logger.debug('inside update')
     if (query && query._id) {
-      logger.debug('_id is set')
+      if (typeof query._id !== "string") {
+        return false
+      }
       query._id = this.generateObjectId(query._id as string);
-      logger.debug('_id: ' + query._id)
       if (!query._id) {
         return false;
       }
     }
-    logger.debug('after conditional, ', query._id)
     const options = { upsert: true };
     const MongooseModel = this.getMongooseModel();
     const oldDocument = await MongooseModel.findOneAndUpdate(
