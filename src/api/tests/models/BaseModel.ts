@@ -146,12 +146,6 @@ describe("BaseModel", () => {
 
   describe("Methods", () => {
     describe("find", () => {
-      it("Should return false if a query _id was passed in and failed parsing", async () => {
-        const Test = new TestModel();
-        const result = await Test.find({ _id: "5" });
-        expect(result).to.equal(false);
-      });
-
       it("Should correctly query when limit isnt defined", async () => {
         await MongooseModel.deleteMany({});
         // insert one
@@ -282,12 +276,6 @@ describe("BaseModel", () => {
     });
 
     describe("delete", () => {
-      it("Should return false if an query _id is passed in but cannot be parsed", async () => {
-        const Test = new TestModel();
-        const result = await Test.delete({ _id: "5" });
-        expect(result).to.equal(false);
-      });
-
       it("Should return true if successful deleteOne", async () => {
         const document = new MongooseModel({ forename: "Edward" });
         await document.save();
