@@ -20,13 +20,13 @@ jobs:
           npm run build
           docker-compose up -d api mongodb > /dev/null
           docker exec juanportal_api npm run cov
-          docker cp juanportal_api:/var/www/api/coverage/coverage.xml .
+          docker cp juanportal_api:/var/www/api/coverage/clover.xml .
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v2.1.0
         with:
           name: juanportal-api
-          file: coverage.xml
+          file: clover.xml
           fail_ci_if_error: true
 
       - name: API Format Check
@@ -64,14 +64,14 @@ jobs:
           docker-compose up -d node redis > /dev/null
           docker exec juanportal_node npm run cov
           docker exec juanportal_node npm run test:client
-          docker cp juanportal_node:/var/www/juanportal/coverage/coverage.xml .
+          docker cp juanportal_node:/var/www/juanportal/coverage/clover.xml .
           ls
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v2.1.0
         with:
           name: juanportal-node
-          file: coverage.xml
+          file: clover.xml
           fail_ci_if_error: true
 
   socket-checks:
@@ -100,12 +100,12 @@ jobs:
           npm run build
           docker-compose up -d socket > /dev/null
           docker exec juanportal_socket npm run cov
-          docker cp juanportal_socket:/var/www/socket/coverage/coverage.xml .
+          docker cp juanportal_socket:/var/www/socket/coverage/clover.xml .
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v2.1.0
         with:
           name: juanportal-socket
-          file: coverage.xml
+          file: clover.xml
           fail_ci_if_error: true
 
