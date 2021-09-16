@@ -24,6 +24,6 @@
       "routes/test.js",
       "routes/profile.ts"
    ],
-   "reporter": "lcov",
+   "reporter": "clover",
      "instrument": true
 }

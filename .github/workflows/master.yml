@@ -20,13 +20,13 @@ jobs:
           npm run build
           docker-compose up -d api mongodb > /dev/null
           docker exec juanportal_api npm run cov
-          docker cp juanportal_api:/var/www/api/coverage .
+          docker cp juanportal_api:/var/www/api/coverage/coverage.xml .
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v2.1.0
         with:
           name: juanportal-api
-          files: ./coverage
+          files: coverage.xml
 
       - name: API Format Check
         run: |
@@ -63,13 +63,14 @@ jobs:
           docker-compose up -d node redis > /dev/null
           docker exec juanportal_node npm run cov
           docker exec juanportal_node npm run test:client
-          docker cp juanportal_node:/var/www/juanportal/coverage .
+          docker cp juanportal_node:/var/www/juanportal/coverage/coverage.xml .
+          ls
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v2.1.0
         with:
           name: juanportal-node
-          files: ./coverage
+          file: coverage.xml
 
   socket-checks:
     runs-on: ubuntu-latest
@@ -97,11 +98,11 @@ jobs:
           npm run build
           docker-compose up -d socket > /dev/null
           docker exec juanportal_socket npm run cov
-          docker cp juanportal_socket:/var/www/socket/coverage .
+          docker cp juanportal_socket:/var/www/socket/coverage/coverage.xml .
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v2.1.0
         with:
           name: juanportal-socket
-          files: ./coverage
+          files: coverage.xml
 
