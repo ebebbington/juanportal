@@ -71,8 +71,15 @@ jobs:
         uses: codecov/codecov-action@v2.1.0
         with:
           name: juanportal-node
-          files: clover.xml,clover_server.xml
+          file: clover.xml
           fail_ci_if_error: true
+
+      - name: Upload Coverage
+        uses: codecov/codecov-action@v2.1.0
+        with:
+          name: juanportal-node2
+          file: clover_server.xml
+          fail_ci_if_error: true 
 
   socket-checks:
     runs-on: ubuntu-latest
