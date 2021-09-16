@@ -26,7 +26,8 @@ jobs:
         uses: codecov/codecov-action@v2.1.0
         with:
           name: juanportal-api
-          files: coverage.xml
+          file: coverage.xml
+          fail_ci_if_error: true
 
       - name: API Format Check
         run: |
@@ -71,6 +72,7 @@ jobs:
         with:
           name: juanportal-node
           file: coverage.xml
+          fail_ci_if_error: true
 
   socket-checks:
     runs-on: ubuntu-latest
@@ -104,5 +106,6 @@ jobs:
         uses: codecov/codecov-action@v2.1.0
         with:
           name: juanportal-socket
-          files: coverage.xml
+          file: coverage.xml
+          fail_ci_if_error: true
 
