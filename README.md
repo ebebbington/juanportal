@@ -8,9 +8,6 @@
   <a href="https://codecov.io/gh/ebebbington/juanportal">
     <img src="https://codecov.io/gh/ebebbington/juanportal/branch/master/graph/badge.svg?token=SPG3SR0D8Q"/>
   </a>
-  <a href="https://github.com/ebebbington/juanportal/actions">
-    <img src="https://img.shields.io/github/workflow/status/ebebbington/juanportal/CodeQL?label=CodeQL">
-  </a>
   <a href="https://sonarcloud.io/dashboard?id=ebebbington_juanportal">
     <img src="https://sonarcloud.io/api/project_badges/measure?project=ebebbington_juanportal&metric=alert_status">
   </a>
