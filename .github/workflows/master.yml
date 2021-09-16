@@ -65,13 +65,13 @@ jobs:
           docker exec juanportal_node npm run cov
           docker exec juanportal_node npm run test:client
           docker cp juanportal_node:/var/www/juanportal/coverage/clover.xml .
-          ls
+          docker cp juanportal_node:/var/www/juanportal/cov-server/clover.xml clover_server.xml
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v2.1.0
         with:
           name: juanportal-node
-          file: clover.xml
+          files: clover.xml,clover_server.xml
           fail_ci_if_error: true
 
   socket-checks:
