@@ -20,6 +20,6 @@
       "ecosystem.config.js",
       "app.*"
    ],
-   "reporter": "html",
+   "reporter": "clover",
      "instrument": true
 }

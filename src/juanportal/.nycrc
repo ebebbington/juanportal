@@ -25,6 +25,6 @@
       "ecosystem.config.js",
       "routes/chat.ts"
    ],
-   "reporter": "text",
+   "reporter": "clover",
      "instrument": true
 }
