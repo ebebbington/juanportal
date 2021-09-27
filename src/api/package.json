@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "typescript": "4.4.3",
-    "mocha": "9.1.1",
+    "mocha": "9.1.2",
     "@istanbuljs/nyc-config-typescript": "1.0.1",
     "@types/body-parser": "1.19.1",
     "@types/chai": "4.2.22",
