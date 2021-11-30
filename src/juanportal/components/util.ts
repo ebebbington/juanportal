@@ -56,6 +56,7 @@ export const notify = (title: string, text: string, type: string): void => {
   // Checking for an old script and removing it because prior to this, the body would just fill up
   // with script tags, so here it's just a cleanup job
   const oldNotifyScript = document.querySelector("script#notify");
+  /* istanbul ignore if */
   if (oldNotifyScript) {
     // remove
     oldNotifyScript.parentNode?.removeChild(oldNotifyScript);
