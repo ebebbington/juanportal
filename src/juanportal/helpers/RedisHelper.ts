@@ -1,4 +1,5 @@
 import { createClient } from "redis";
+type RedisClient = ReturnType<typeof createClient>
 import dotenv from "dotenv";
 import redisCache from "express-redis-cache";
 dotenv.config();
