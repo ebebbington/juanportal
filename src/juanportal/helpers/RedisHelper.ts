@@ -72,7 +72,7 @@ export class RedisHelper {
         socket: {
           host: this.host,
           port: this.port as number,
-        }
+        },
       });
     }
     if (params && params.pub) {
@@ -80,7 +80,7 @@ export class RedisHelper {
         socket: {
           host: this.host,
           port: this.port as number,
-        }
+        },
       });
     }
   }
