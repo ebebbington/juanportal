@@ -14,12 +14,12 @@ ReactDOM.render(<Header />, document.getElementById("header"));
 const App = (): ReactElement => {
   return (
     <Router>
-      <Route exact path="/">
+      <Route path="/">
         <Profile count={5} />
       </Route>
-      <Route path="/profile/id/:id" component={Profile} />
+      <Route path="/profile/id/:id" element={<Profile />} />
       {/*<Route exact path="/chat" component={Chat} />*/}
-      <Route exact path="/profile/add" component={RegisterForm} />
+      <Route path="/profile/add" element={<RegisterForm />} />
     </Router>
   );
 };
