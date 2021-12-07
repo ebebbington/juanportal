@@ -1,4 +1,5 @@
-import redis from "redis";
+import { createClient } from "redis";
+type RedisClient = ReturnType<typeof createClient>;
 import dotenv from "dotenv";
 import redisCache from "express-redis-cache";
 dotenv.config();
@@ -51,8 +52,8 @@ export class RedisHelper {
     process.env.REDIS_CACHE_EXPIRE
   );
   public cache: redisCache.ExpressRedisCache | null = null;
-  public sub: redis.RedisClient | null = null;
-  public pub: redis.RedisClient | null = null;
+  public sub: RedisClient | null = null;
+  public pub: RedisClient | null = null;
   public readonly channels: IKVPair = {
     chat: "chat",
   };
@@ -67,15 +68,19 @@ export class RedisHelper {
       this.initialiseCacheLogging();
     }
     if (params && params.sub) {
-      this.sub = redis.createClient({
-        host: this.host,
-        port: this.port as number,
+      this.sub = createClient({
+        socket: {
+          host: this.host,
+          port: this.port as number,
+        },
       });
     }
     if (params && params.pub) {
-      this.pub = redis.createClient({
-        host: this.host,
-        port: this.port as number,
+      this.pub = createClient({
+        socket: {
+          host: this.host,
+          port: this.port as number,
+        },
       });
     }
   }
