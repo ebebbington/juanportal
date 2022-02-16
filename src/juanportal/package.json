@@ -37,8 +37,7 @@
     "react-router": "6.2.1",
     "react-router-dom": "6.2.1",
     "redis": "4.0.2",
-    "socket.io-client": "4.4.1",
-    "winston": "3.6.0"
+    "socket.io-client": "4.4.1"
   },
   "devDependencies": {
     "@babel/core": "7.16.12",
@@ -63,7 +62,6 @@
     "@types/react-responsive": "8.0.5",
     "@types/react-router": "5.1.18",
     "@types/react-router-dom": "5.3.3",
-    "@types/redis": "4.0.11",
     "babel-loader": "8.2.3",
     "chai": "4.3.6",
     "chai-http": "4.3.0",
