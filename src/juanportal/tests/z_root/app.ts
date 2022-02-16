@@ -15,15 +15,6 @@ describe("App", () => {
       });
       expect(found).to.equal(true);
     });
-    it("Should be using body parser", () => {
-      let found = false;
-      // Running the tests MAKES us slap this any on it
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      app._router.stack.forEach((stackObj: any) => {
-        if (stackObj.name === "jsonParser") found = true;
-      });
-      expect(found).to.equal(true);
-    });
   });
   describe("Configurations", () => {
     it("Should set the view engine to Pug", () => {
