@@ -5,7 +5,6 @@ import express from "express";
 import morgan from "morgan";
 import dotenv from "dotenv";
 dotenv.config();
-import bodyParser from "body-parser";
 import cors from "cors";
 import profileRoute from "./routes/profile.js";
 import indexRoute from "./routes/index.js";
@@ -107,8 +106,6 @@ class Server {
     this.app.set("view engine", this.viewEngine); // view engine
     this.app.set("views", __dirname + "/views"); // set dir to look for views
     this.app.use(express.static(__dirname + "/public")); // serve from public
-    this.app.use(bodyParser.json({ limit: "50mb" }));
-    this.app.use(bodyParser.urlencoded({ limit: "50mb", extended: false }));
   }
 
   /**
