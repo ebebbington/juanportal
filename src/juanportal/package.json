@@ -72,7 +72,7 @@
     "enzyme-adapter-react-16": "1.15.6",
     "identity-obj-proxy": "3.0.0",
     "jest": "27.4.7",
-    "jest-cli": "27.4.7",
+    "jest-cli": "27.5.1",
     "mocha": "9.2.0",
     "nyc": "15.1.0",
     "setimmediate": "^1.0.5",
