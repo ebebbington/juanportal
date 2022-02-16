@@ -1,5 +1,5 @@
+import express from "express";
 import http, { Server as HTTPServer } from "http";
-import express, { Application as ExpressApp } from "express";
 import dotenv from "dotenv";
 dotenv.config();
 const port = process.env.PORT as string;
@@ -30,9 +30,9 @@ class Server {
   private readonly httpServer: HTTPServer;
 
   /**
-   * @var {ExpressApp} Used to be passed into the HTTP server for easier setup
+   * @var {express.Application} Used to be passed into the HTTP server for easier setup
    */
-  public readonly app: ExpressApp;
+  public readonly app: express.Application;
 
   /**
    * @var {SocketIOServer} The SocketIO connection (io)
