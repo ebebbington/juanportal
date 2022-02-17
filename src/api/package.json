@@ -42,7 +42,7 @@
     "chai-as-promised": "7.1.1",
     "chai-http": "4.3.0",
     "nyc": "15.1.0",
-    "ts-node": "10.4.0",
+    "ts-node": "10.5.0",
     "source-map-support": "0.5.21"
   }
 }
