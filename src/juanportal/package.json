@@ -33,7 +33,7 @@
     "react-responsive": "8.2.0",
     "react-router": "6.2.1",
     "react-router-dom": "6.2.1",
-    "redis": "4.0.2",
+    "redis": "4.0.3",
     "socket.io-client": "4.4.1",
     "winston": "3.6.0"
   },
