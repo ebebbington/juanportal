@@ -23,7 +23,8 @@
       "jest.config.js",
       "webpack.config.js",
       "ecosystem.config.js",
-      "routes/chat.ts"
+      "routes/chat.ts",
+      "babel.config.js"
    ],
    "reporter": "clover",
      "instrument": true

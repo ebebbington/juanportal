@@ -5,7 +5,6 @@ import express from "express";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import profileRoute from "./routes/profile";
 dotenv.config();
@@ -114,7 +113,6 @@ class Server {
    * @return {void}
    */
   private configure(): void {
-    this.app.use(cookieParser());
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(bodyParser.json());
   }
