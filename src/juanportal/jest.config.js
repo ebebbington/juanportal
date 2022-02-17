@@ -22,9 +22,6 @@ module.exports = {
   moduleNameMapper: {
     "\\.(css|less)$": "identity-obj-proxy",
   },
-  transform: {
-    "^.+\\.tsx?$": "ts-jest",
-  },
   testEnvironment: "jsdom",
   //testURL: "http://localhost:9002"
   //rootDir: './tests/components',
