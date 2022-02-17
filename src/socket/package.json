@@ -14,7 +14,7 @@
     "lint": "npm i --no-save eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser && node_modules/.bin/eslint --ext .ts ."
   },
   "dependencies": {
-    "dotenv": "15.0.0",
+    "dotenv": "16.0.0",
     "express": "4.17.3",
     "socket.io": "4.4.1"
   },
